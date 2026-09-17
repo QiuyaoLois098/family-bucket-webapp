@@ -1,0 +1,16 @@
+{
+  "name": "family-bucket-list",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "The Family Bucket List — two-screen interactive installation",
+  "scripts": {
+    "dev": "concurrently -n server,client -c cyan,magenta \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "start": "npm run start --prefix server",
+    "build": "npm run build --prefix client",
+    "install:all": "npm install && npm install --prefix server && npm install --prefix client"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

@@ -1,0 +1,67 @@
+.debug-panel {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 50;
+  width: min(360px, calc(100vw - 32px));
+  padding: 14px 16px 16px;
+  background: rgba(12, 12, 12, 0.88);
+  color: #f3efe6;
+  font-size: 12px;
+  line-height: 1.35;
+  backdrop-filter: blur(16px);
+}
+
+.debug-panel__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.debug-panel dl {
+  margin: 0;
+}
+
+.debug-panel dl > div {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 8px;
+  padding: 4px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.debug-panel dt {
+  opacity: 0.55;
+}
+
+.debug-panel dd {
+  margin: 0;
+  word-break: break-word;
+}
+
+.debug-panel__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.debug-panel button {
+  min-height: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: transparent;
+  color: inherit;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+.is-on {
+  color: #b6d39a;
+}
+
+.is-off {
+  color: #e0a3a3;
+}
