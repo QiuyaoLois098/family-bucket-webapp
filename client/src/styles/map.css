@@ -50,13 +50,162 @@
 .nyc-map__mark {
   position: absolute;
   right: 28px;
-  bottom: 24px;
+  top: 24px;
   z-index: 4;
   margin: 0;
   letter-spacing: 0.28em;
   text-transform: uppercase;
   font-size: 0.72rem;
   opacity: 0.72;
+}
+
+.hotel-pin.is-dimmed {
+  opacity: 0.28;
+  filter: grayscale(1);
+}
+
+.hotel-pin.is-picked .hotel-pin__dot {
+  box-shadow:
+    0 0 0 7px rgba(255, 255, 255, 0.2),
+    0 0 28px 12px rgba(190, 220, 255, 0.85);
+}
+
+.nyc-map__dock {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.hotel-cards {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 18px;
+}
+
+.hotel-card {
+  pointer-events: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  line-height: 0;
+}
+
+.hotel-card img {
+  display: block;
+  height: min(28vh, 220px);
+  width: auto;
+  mix-blend-mode: lighten;
+  transition: filter 0.35s ease, transform 0.25s ease, opacity 0.35s ease;
+}
+
+.hotel-card:hover img {
+  transform: translateY(-6px);
+}
+
+.hotel-card.is-selected img {
+  filter: grayscale(1) brightness(0.82);
+}
+
+.nyc-map.has-list .hotel-card img {
+  height: min(18vh, 140px);
+}
+
+.hotel-list {
+  position: relative;
+  pointer-events: auto;
+  width: min(520px, calc(100vw - 48px));
+  padding: 18px 22px 16px;
+  border-radius: 18px;
+  background: rgba(6, 14, 32, 0.92);
+  border: 1px solid rgba(180, 210, 255, 0.18);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(18px);
+  animation: list-in 0.45s ease both;
+}
+
+.hotel-list__restart {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid rgba(180, 210, 255, 0.28);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #f4f7ff;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.68rem;
+}
+
+.hotel-list__restart:hover,
+.hotel-list__restart:focus-visible {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.hotel-list__eyebrow {
+  margin: 0 88px 6px 0;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  font-size: 0.68rem;
+  opacity: 0.62;
+}
+
+.hotel-list h2 {
+  margin: 0 0 10px;
+  font-family: var(--serif);
+  font-size: 1.45rem;
+  font-weight: 500;
+}
+
+.hotel-list ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hotel-list li {
+  display: grid;
+  gap: 1px;
+  padding: 7px 0 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.hotel-list li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.hotel-list strong {
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+}
+
+.hotel-list span {
+  font-size: 0.88rem;
+  opacity: 0.72;
+}
+
+@keyframes list-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .hotel-pin {
