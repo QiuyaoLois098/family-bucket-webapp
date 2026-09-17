@@ -1,0 +1,107 @@
+.nyc-map {
+  position: relative;
+  height: 100dvh;
+  overflow: hidden;
+  background: #041430;
+  color: #f4f7ff;
+}
+
+.nyc-map__canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: #041430;
+}
+
+.nyc-map .leaflet-container {
+  width: 100%;
+  height: 100%;
+  background: #041430;
+}
+
+.nyc-map .leaflet-tile-pane {
+  filter: sepia(1) hue-rotate(192deg) saturate(4.4) brightness(0.52) contrast(1.38);
+}
+
+.nyc-map .leaflet-control-container {
+  display: none;
+}
+
+.nyc-map__wash,
+.nyc-map__vignette {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+}
+
+.nyc-map__wash {
+  z-index: 2;
+  background:
+    radial-gradient(circle at 42% 46%, rgba(90, 160, 255, 0.18), transparent 36%),
+    rgba(4, 18, 48, 0.22);
+  mix-blend-mode: multiply;
+}
+
+.nyc-map__vignette {
+  z-index: 3;
+  box-shadow: inset 0 0 140px 28px rgba(2, 10, 28, 0.55);
+}
+
+.nyc-map__mark {
+  position: absolute;
+  right: 28px;
+  bottom: 24px;
+  z-index: 4;
+  margin: 0;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  opacity: 0.72;
+}
+
+.hotel-pin {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none !important;
+  border: 0;
+}
+
+.hotel-pin--left {
+  flex-direction: row-reverse;
+}
+
+.hotel-pin__dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #f7fbff;
+  box-shadow:
+    0 0 0 6px rgba(255, 255, 255, 0.16),
+    0 0 18px 8px rgba(190, 220, 255, 0.55);
+  animation: pin-glow 2.8s ease-in-out infinite;
+}
+
+.hotel-pin__label {
+  color: #f7fbff;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-shadow: 0 0 12px rgba(180, 210, 255, 0.7);
+  white-space: nowrap;
+}
+
+@keyframes pin-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 6px rgba(255, 255, 255, 0.14),
+      0 0 16px 6px rgba(190, 220, 255, 0.45);
+  }
+  50% {
+    box-shadow:
+      0 0 0 9px rgba(255, 255, 255, 0.08),
+      0 0 26px 10px rgba(190, 220, 255, 0.8);
+  }
+}

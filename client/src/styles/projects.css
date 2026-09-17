@@ -1,0 +1,121 @@
+.project-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 80;
+}
+
+.project-menu__toggle {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 82;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  border-radius: 14px;
+  background: rgba(8, 12, 20, 0.55);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(12px);
+}
+
+.project-menu__toggle span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: #f4f0e6;
+  border-radius: 2px;
+}
+
+.project-menu.is-open .project-menu__toggle span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.project-menu.is-open .project-menu__toggle span:nth-child(2) {
+  opacity: 0;
+}
+
+.project-menu.is-open .project-menu__toggle span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+.project-menu__toggle span {
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.project-menu__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  border: 0;
+  background: rgba(4, 8, 16, 0.45);
+}
+
+.project-menu__drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 81;
+  width: min(360px, 86vw);
+  height: 100dvh;
+  padding: 96px 28px 32px;
+  background: #121015;
+  color: #f7f2e8;
+  box-shadow: 18px 0 50px rgba(0, 0, 0, 0.35);
+}
+
+.project-menu__eyebrow {
+  margin: 0 0 22px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  opacity: 0.55;
+}
+
+.project-menu__drawer ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.project-menu__drawer button {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  border-radius: 16px;
+  padding: 18px 18px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  color: inherit;
+}
+
+.project-menu__drawer button strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: 1.45rem;
+  font-weight: 500;
+}
+
+.project-menu__drawer button span {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  opacity: 0.62;
+}
+
+.project-menu__drawer button.is-active,
+.project-menu__drawer button:hover {
+  background: rgba(212, 179, 106, 0.16);
+}
+
+.preview {
+  padding-left: 88px;
+}
