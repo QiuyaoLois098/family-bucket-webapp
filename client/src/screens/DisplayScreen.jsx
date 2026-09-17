@@ -12,11 +12,15 @@ export default function DisplayScreen() {
           <section className={`panel ${!state.destination ? "is-active" : ""}`}>
             <IdleDisplay />
           </section>
-          <section className={`panel ${state.destination ? "is-active" : ""}`}>
+          <section className={`panel panel--reveal ${state.destination ? "is-active" : ""}`}>
             {state.destination ? <ImageReveal state={state} /> : null}
           </section>
           <section className={`panel panel--memories ${state.phase === "itinerary" ? "is-active" : ""}`}>
-            <MemorySequence itinerary={state.itinerary} destinationId={state.destination} />
+            <MemorySequence
+              itinerary={state.itinerary}
+              destinationId={state.destination}
+              heroUrl={state.imageUrl}
+            />
           </section>
         </main>
       )}
