@@ -155,30 +155,38 @@ export class ExperienceSession extends EventEmitter {
   async startItineraryGeneration() {
     const jobId = ++this.itineraryJobId;
     const { destination, answers } = this.state;
-    const startedAt = Date.now();
-
     const result = await generateItinerary({ destination, answers });
     if (jobId !== this.itineraryJobId) return;
-    if (this.state.phase === PHASES.IDLE) return;
+    if (this.state.phase !== PHASES.REVEAL) return;
 
     const itinerary = result.itinerary || getDestination(destination)?.fallbackItinerary || null;
-    const wait = Math.max(0, config.revealHoldMs - (Date.now() - startedAt));
 
-    const finish = () => {
-      if (jobId !== this.itineraryJobId) return;
-      if (this.state.phase === PHASES.IDLE) return;
-      this.set(
-        {
-          itinerary,
-          itineraryStatus: result.ok ? "ready" : "fallback",
-          phase: PHASES.ITINERARY,
-        },
-        result.ok ? "itinerary-ready" : "itinerary-fallback",
-      );
-    };
+    this.set(
+      {
+        itinerary,
+        itineraryStatus: result.ok ? "ready" : "fallback",
+      },
+      result.ok ? "itinerary-ready" : "itinerary-fallback",
+    );
+  }
 
+  shake() {
+    this.touch();
+    if (this.state.phase !== PHASES.REVEAL) return;
+
+    const dest = getDestination(this.state.destination);
+    const itinerary = this.state.itinerary || dest?.fallbackItinerary || null;
+    this.itineraryJobId += 1;
     clearTimeout(this.revealTimer);
-    this.revealTimer = setTimeout(finish, wait);
+    this.quiet();
+    this.set(
+      {
+        itinerary,
+        itineraryStatus: this.state.itinerary ? this.state.itineraryStatus : "fallback",
+        phase: PHASES.ITINERARY,
+      },
+      "shake",
+    );
   }
 
   reset(reason = "manual") {
@@ -214,7 +222,7 @@ export class ExperienceSession extends EventEmitter {
     }
 
     if (phase === PHASES.REVEAL) {
-      this.debugSimulateItinerary();
+      this.shake();
       return;
     }
 

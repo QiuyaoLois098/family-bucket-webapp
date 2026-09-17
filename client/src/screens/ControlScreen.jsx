@@ -35,11 +35,12 @@ export default function ControlScreen() {
               className={`panel ${phase === "reveal" || phase === "itinerary" ? "is-active" : ""}`}
               inert={phase !== "reveal" && phase !== "itinerary" ? "" : undefined}
             >
-              {phase === "reveal" && !state.itinerary ? (
+              {phase === "reveal" ? (
                 <div className="itinerary itinerary--waiting">
-                  <p className="eyebrow">Composing your journey</p>
-                  <h2>Holding the last light…</h2>
-                  <p>A personalized itinerary is being written from your answers.</p>
+                  <h2>Pick up the snow globe and shake it to see the itinerary</h2>
+                  <button type="button" className="shake-button" onClick={actions.shake}>
+                    Shake
+                  </button>
                 </div>
               ) : (
                 <ItineraryView
