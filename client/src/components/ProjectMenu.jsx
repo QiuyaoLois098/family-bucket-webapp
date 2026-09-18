@@ -14,8 +14,8 @@ export default function ProjectMenu() {
   }, []);
 
   useEffect(() => {
-    document.title = current.title;
-  }, [current]);
+    document.title = "Expedia Interaction Demo";
+  }, []);
 
   useEffect(() => {
     setOpen(false);

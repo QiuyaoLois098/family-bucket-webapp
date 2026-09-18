@@ -14,13 +14,27 @@
   inset: 0;
 }
 
+.idle-display {
+  background-color: #1b3a4a;
+}
+
+.idle-display__base,
 .idle-display__slide {
   position: absolute;
   inset: -8%;
-  background-size: cover;
-  background-position: center;
+  width: 116%;
+  height: 116%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.idle-display__base {
+  opacity: 1;
+}
+
+.idle-display__slide {
   opacity: 0;
-  animation: ambient 42s ease-in-out infinite;
+  animation: ambient 42s linear infinite;
   transform: scale(1.08);
 }
 
@@ -183,18 +197,14 @@
 
 @keyframes ambient {
   0%,
-  14% {
-    opacity: 0;
+  12% {
+    opacity: 1;
     transform: scale(1.08);
   }
-  16%,
-  30% {
-    opacity: 0.55;
-    transform: scale(1.14);
-  }
-  33%,
+  16.66%,
   100% {
     opacity: 0;
+    transform: scale(1.14);
   }
 }
 

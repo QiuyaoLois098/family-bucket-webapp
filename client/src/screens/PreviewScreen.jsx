@@ -33,7 +33,7 @@ export default function PreviewScreen() {
       <header className="preview__header">
         <div>
           <p className="eyebrow">Installation preview</p>
-          <h1>The Family Bucket List</h1>
+          <h1>Expedia Interaction Demo</h1>
         </div>
         <nav>
           <Link to="/control" target="_blank" rel="noreferrer">
