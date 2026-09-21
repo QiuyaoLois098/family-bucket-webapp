@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import Celebration from "../components/vrbo/Celebration.jsx";
 import GuestPhone from "../components/vrbo/GuestPhone.jsx";
 import MainChatScreen from "../components/vrbo/MainChatScreen.jsx";
 import RankingScreen from "../components/vrbo/RankingScreen.jsx";
@@ -15,7 +14,7 @@ const propertyById = new Map(properties.map((property) => [property.id, property
 
 export default function VrboScreen() {
   const { state, allSubmitted, actions } = useVrboExperience();
-  const { stage, messages, typing, selections, submitted, ranked, results, chosenPropertyId } = state;
+  const { stage, messages, typing, selections, submitted, ranked, results } = state;
 
   const submittedCount = users.filter((user) => Boolean(submitted[user.id])).length;
 
@@ -51,9 +50,7 @@ export default function VrboScreen() {
               typing={typing}
               userById={userById}
               propertyLookup={propertyLookup}
-              celebrating={state.celebrating}
             />
-            <Celebration active={state.celebrating} />
           </div>
         </section>
 
@@ -64,7 +61,6 @@ export default function VrboScreen() {
               stage={stage}
               ranked={ranked}
               results={results}
-              chosenPropertyId={chosenPropertyId}
               preferenceById={preferenceById}
               submittedCount={submittedCount}
               guestCount={users.length}

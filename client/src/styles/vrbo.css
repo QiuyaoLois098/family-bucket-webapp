@@ -436,15 +436,13 @@
   list-style: none;
 }
 
-/* Sized as a container so the bar contents shrink with the row, not the window. */
+/* Equal-width bars so every preference label gets the same room. */
 .vrbo-rank__item {
   container-type: size;
   flex: 1 1 0;
   min-height: 16px;
-  align-self: flex-start;
-  width: calc(74% + var(--tier, 1) * 26%);
+  width: 100%;
   cursor: grab;
-  transition: width 0.3s ease;
 }
 
 .vrbo-rank__item:active {
@@ -531,30 +529,12 @@
 }
 
 .vrbo-rank__results {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(10px, 1.1vw, 20px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   flex: 1;
   min-height: 0;
-}
-
-.vrbo-rank__actions {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  flex: 0 0 auto;
-}
-
-.vrbo-rank__panel--sent {
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.vrbo-rank__sent-card {
-  width: min(340px, 64%);
-  min-height: 0;
+  overflow-y: auto;
 }
 
 /* ---------- preference cards ---------- */
@@ -631,12 +611,13 @@
 .vrbo-pref--rank .vrbo-pref__label {
   flex: 1;
   min-width: 0;
-  font-size: min(34cqh, 1.35rem);
+  font-size: min(28cqh, 0.95rem);
   font-weight: 500;
   letter-spacing: 0.01em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.2;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
 }
 
 .vrbo-pref__rank {
@@ -683,9 +664,15 @@
   display: block;
 }
 
-.vrbo-property--result .vrbo-property__image {
-  flex: 1 1 44%;
+.vrbo-property--result {
+  flex: 1 1 0;
   min-height: 0;
+}
+
+.vrbo-property--result .vrbo-property__image {
+  flex: 0 0 auto;
+  aspect-ratio: 16 / 9;
+  max-height: 42%;
 }
 
 .vrbo-property--chat .vrbo-property__image {

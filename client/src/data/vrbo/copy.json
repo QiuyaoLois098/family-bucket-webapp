@@ -26,14 +26,7 @@
     "moveDown": "Move lower",
     "resultsTitle": "Your top two stays",
     "resultsSubtitle": "Scored against your ranked priorities",
-    "selectHint": "Tap a stay to choose it",
-    "sendCta": "Send to Group Chat",
-    "sendLocked": "Choose a stay first",
-    "backCta": "Back to ranking",
-    "matchLabel": "match",
-    "sentTitle": "Sent to the group",
-    "sentSubtitle": "It's in the chat.",
-    "sentAgain": "Start over"
+    "matchLabel": "match"
   },
   "phone": {
     "idleTitle": "Group chat in progress",

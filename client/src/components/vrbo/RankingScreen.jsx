@@ -91,7 +91,7 @@ function RankingPanel({ ranked, preferenceById, canFind, onReorder, onMove, onFi
   );
 }
 
-function ResultsPanel({ results, chosenPropertyId, onChoose, onBack, onSend }) {
+function ResultsPanel({ results }) {
   return (
     <motion.div key="results" className="vrbo-rank__panel vrbo-rank__panel--light" {...panelMotion}>
       <div className="vrbo-rank__head">
@@ -107,46 +107,9 @@ function ResultsPanel({ results, chosenPropertyId, onChoose, onBack, onSend }) {
             matched={result.matched}
             matchPercent={result.matchPercent}
             badge={result.badge}
-            selected={chosenPropertyId === result.property.id}
-            onSelect={onChoose}
           />
         ))}
       </div>
-
-      <div className="vrbo-rank__actions">
-        <button type="button" className="vrbo-rank__ghost" onClick={onBack}>
-          {copy.ranking.backCta}
-        </button>
-        <button type="button" className="vrbo-rank__cta" disabled={!chosenPropertyId} onClick={onSend}>
-          {chosenPropertyId ? copy.ranking.sendCta : copy.ranking.sendLocked}
-        </button>
-      </div>
-    </motion.div>
-  );
-}
-
-function SentPanel({ result, onReset }) {
-  return (
-    <motion.div
-      key="sent"
-      className="vrbo-rank__panel vrbo-rank__panel--blue vrbo-rank__panel--sent"
-      {...panelMotion}
-    >
-      <h2>{copy.ranking.sentTitle}</h2>
-      <p className="vrbo-rank__lede">{copy.ranking.sentSubtitle}</p>
-      {result ? (
-        <div className="vrbo-rank__sent-card">
-          <PropertyCard
-            property={result.property}
-            variant="chat"
-            matched={result.matched}
-            matchPercent={result.matchPercent}
-          />
-        </div>
-      ) : null}
-      <button type="button" className="vrbo-rank__ghost" onClick={onReset}>
-        {copy.ranking.sentAgain}
-      </button>
     </motion.div>
   );
 }
@@ -155,15 +118,12 @@ export default function RankingScreen({
   stage,
   ranked,
   results,
-  chosenPropertyId,
   preferenceById,
   submittedCount,
   guestCount,
   allSubmitted,
   actions,
 }) {
-  const chosen = results.find((result) => result.property.id === chosenPropertyId) ?? results[0];
-
   return (
     <div className="vrbo-rank">
       <AnimatePresence mode="wait" initial={false}>
@@ -183,18 +143,7 @@ export default function RankingScreen({
           />
         ) : null}
 
-        {stage === "results" ? (
-          <ResultsPanel
-            key="results"
-            results={results}
-            chosenPropertyId={chosenPropertyId}
-            onChoose={actions.chooseProperty}
-            onBack={actions.backToRanking}
-            onSend={actions.sendToChat}
-          />
-        ) : null}
-
-        {stage === "sent" ? <SentPanel key="sent" result={chosen} onReset={actions.reset} /> : null}
+        {stage === "results" ? <ResultsPanel key="results" results={results} /> : null}
       </AnimatePresence>
     </div>
   );

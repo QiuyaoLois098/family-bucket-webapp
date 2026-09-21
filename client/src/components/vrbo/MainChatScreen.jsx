@@ -18,7 +18,7 @@ function Avatar({ user }) {
   );
 }
 
-export default function MainChatScreen({ messages, typing, userById, propertyLookup, celebrating }) {
+export default function MainChatScreen({ messages, typing, userById, propertyLookup }) {
   const feedRef = useRef(null);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function MainChatScreen({ messages, typing, userById, propertyLoo
   }, [messages.length, typing.length]);
 
   return (
-    <div className={`vrbo-chat ${celebrating ? "is-celebrating" : ""}`}>
+    <div className="vrbo-chat">
       <header className="vrbo-chat__header">
         <div className="vrbo-chat__stack">
           {Object.values(userById).map((user) => (

@@ -6,7 +6,7 @@ import properties from "../data/vrbo/properties.json";
 import users from "../data/vrbo/users.json";
 import { rankProperties } from "../utils/rankProperties.js";
 
-export const STAGES = ["intro", "selecting", "ranking", "results", "sent"];
+export const STAGES = ["intro", "selecting", "ranking", "results"];
 
 const preferenceOrder = new Map(preferences.map((preference, index) => [preference.id, index]));
 const preferenceById = new Map(preferences.map((preference) => [preference.id, preference]));
@@ -31,8 +31,6 @@ function createInitialState(runId = 0) {
     submitted: emptyMap(() => null),
     ranked: [],
     results: [],
-    chosenPropertyId: null,
-    celebrating: false,
   };
 }
 
@@ -113,20 +111,7 @@ function reducer(state, action) {
         ...state,
         stage: "results",
         results: rankProperties(properties, state.ranked),
-        chosenPropertyId: null,
       };
-
-    case "BACK_TO_RANKING":
-      return { ...state, stage: "ranking", chosenPropertyId: null };
-
-    case "CHOOSE_PROPERTY":
-      return { ...state, chosenPropertyId: action.propertyId };
-
-    case "MARK_SENT":
-      return { ...state, stage: "sent" };
-
-    case "CELEBRATE":
-      return { ...state, celebrating: true };
 
     case "RESET":
       return createInitialState(state.runId + 1);
@@ -228,50 +213,6 @@ export default function useVrboExperience() {
     [],
   );
   const findStay = useCallback(() => dispatch({ type: "SHOW_RESULTS" }), []);
-  const backToRanking = useCallback(() => dispatch({ type: "BACK_TO_RANKING" }), []);
-  const chooseProperty = useCallback((propertyId) => dispatch({ type: "CHOOSE_PROPERTY", propertyId }), []);
-
-  // Stage 4 finale — the chosen stay lands in the chat and the group reacts.
-  const sendToChat = useCallback(() => {
-    const { chosenPropertyId } = stateRef.current;
-    if (!chosenPropertyId) return;
-    const property = properties.find((item) => item.id === chosenPropertyId);
-    if (!property) return;
-
-    const { reveal, reactions, propertyAuthorId, propertyPause, celebrationPause } = chatScript.finale;
-    dispatch({ type: "MARK_SENT" });
-
-    let offset = reveal.pause ?? 0;
-    schedule(() => dispatch({ type: "SET_TYPING", userId: reveal.authorId }), offset);
-    offset += reveal.typing ?? 0;
-    schedule(
-      () => dispatch({ type: "ADD_MESSAGE", message: makeMessage({ authorId: reveal.authorId, text: reveal.text }) }),
-      offset,
-    );
-
-    offset += propertyPause ?? 0;
-    schedule(
-      () =>
-        dispatch({
-          type: "ADD_MESSAGE",
-          message: makeMessage({ authorId: propertyAuthorId, kind: "property", propertyId: property.id }),
-        }),
-      offset,
-    );
-
-    offset += celebrationPause ?? 0;
-    schedule(() => dispatch({ type: "CELEBRATE" }), offset);
-
-    reactions.forEach((line) => {
-      offset += line.pause ?? 0;
-      schedule(() => dispatch({ type: "SET_TYPING", userId: line.authorId }), offset);
-      offset += line.typing ?? 0;
-      schedule(
-        () => dispatch({ type: "ADD_MESSAGE", message: makeMessage({ authorId: line.authorId, text: line.text }) }),
-        offset,
-      );
-    });
-  }, [schedule]);
 
   const reset = useCallback(() => {
     clearTimers();
@@ -287,9 +228,6 @@ export default function useVrboExperience() {
       setRanked,
       moveRanked,
       findStay,
-      backToRanking,
-      chooseProperty,
-      sendToChat,
       reset,
     },
   };
