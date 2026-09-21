@@ -4,7 +4,6 @@ import ControlScreen from "./screens/ControlScreen.jsx";
 import DisplayScreen from "./screens/DisplayScreen.jsx";
 import NycMapScreen from "./screens/NycMapScreen.jsx";
 import PreviewScreen from "./screens/PreviewScreen.jsx";
-import VrboScreen from "./vrbo/VrboScreen.jsx";
 
 export default function App() {
   return (
@@ -13,7 +12,6 @@ export default function App() {
       <Routes>
         <Route path="/" element={<PreviewScreen />} />
         <Route path="/map" element={<NycMapScreen />} />
-        <Route path="/vrbo" element={<VrboScreen />} />
         <Route path="/control" element={<ControlScreen />} />
         <Route path="/display" element={<DisplayScreen />} />
         <Route path="*" element={<Navigate to="/" replace />} />

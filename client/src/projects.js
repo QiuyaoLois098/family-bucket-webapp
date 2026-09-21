@@ -14,13 +14,6 @@ export const PROJECTS = [
     path: "/map",
     match: (pathname) => pathname.startsWith("/map"),
   },
-  {
-    id: "vrbo",
-    title: "VRBO",
-    subtitle: "Maine Cabin 2027 · four-screen group trip",
-    path: "/vrbo",
-    match: (pathname) => pathname.startsWith("/vrbo"),
-  },
 ];
 
 export function projectFromPath(pathname) {
