@@ -478,6 +478,21 @@
   max-width: 14ch;
 }
 
+.vrbo-rank__panel--waiting.is-loading h2 {
+  max-width: 16ch;
+}
+
+.vrbo-rank__spinner {
+  display: block;
+  width: clamp(36px, 4.5vw, 52px);
+  height: clamp(36px, 4.5vw, 52px);
+  margin: 0 auto 22px;
+  border: 3px solid rgba(255, 255, 255, 0.22);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: vrbo-spin 0.85s linear infinite;
+}
+
 .vrbo-rank__dots {
   display: flex;
   gap: 12px;
@@ -495,6 +510,12 @@
 .vrbo-rank__dots span.is-done {
   background: #ffffff;
   transform: scaleY(1.6);
+}
+
+@keyframes vrbo-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Ranked list — top of the column is the group's highest priority. */
@@ -1207,7 +1228,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .vrbo-confetti,
-  .vrbo-phone__pulse {
+  .vrbo-phone__pulse,
+  .vrbo-rank__spinner {
     display: none;
   }
 }

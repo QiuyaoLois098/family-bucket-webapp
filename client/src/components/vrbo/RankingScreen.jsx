@@ -10,21 +10,34 @@ const panelMotion = {
   transition: { duration: 0.42, ease: "easeOut" },
 };
 
-function WaitingPanel({ submittedCount, total }) {
+function WaitingPanel({ submittedCount, total, ready }) {
   return (
     <motion.div
-      key="waiting"
-      className="vrbo-rank__panel vrbo-rank__panel--blue vrbo-rank__panel--waiting"
+      key={ready ? "loading" : "waiting"}
+      className={`vrbo-rank__panel vrbo-rank__panel--blue vrbo-rank__panel--waiting ${
+        ready ? "is-loading" : ""
+      }`}
       {...panelMotion}
     >
-      <h2>{copy.ranking.waitingTitle}</h2>
-      <p className="vrbo-rank__lede">{copy.ranking.waitingSubtitle}</p>
-      <p className="vrbo-rank__hint">{copy.ranking.waitingHint}</p>
-      <div className="vrbo-rank__dots" aria-hidden="true">
-        {Array.from({ length: total }, (_, index) => (
-          <span key={index} className={index < submittedCount ? "is-done" : ""} />
-        ))}
-      </div>
+      {ready ? (
+        <>
+          <span className="vrbo-rank__spinner" aria-hidden="true" />
+          <h2>{copy.ranking.loadingTitle}</h2>
+          <p className="vrbo-rank__lede">{copy.ranking.loadingSubtitle}</p>
+          <p className="vrbo-rank__hint">{copy.ranking.loadingHint}</p>
+        </>
+      ) : (
+        <>
+          <h2>{copy.ranking.waitingTitle}</h2>
+          <p className="vrbo-rank__lede">{copy.ranking.waitingSubtitle}</p>
+          <p className="vrbo-rank__hint">{copy.ranking.waitingHint}</p>
+          <div className="vrbo-rank__dots" aria-hidden="true">
+            {Array.from({ length: total }, (_, index) => (
+              <span key={index} className={index < submittedCount ? "is-done" : ""} />
+            ))}
+          </div>
+        </>
+      )}
     </motion.div>
   );
 }
@@ -140,7 +153,12 @@ export default function RankingScreen({
     <div className="vrbo-rank">
       <AnimatePresence mode="wait" initial={false}>
         {stage === "intro" || stage === "selecting" ? (
-          <WaitingPanel key="waiting" submittedCount={submittedCount} total={guestCount} />
+          <WaitingPanel
+            key={allSubmitted ? "loading" : "waiting"}
+            submittedCount={submittedCount}
+            total={guestCount}
+            ready={allSubmitted}
+          />
         ) : null}
 
         {stage === "ranking" ? (
