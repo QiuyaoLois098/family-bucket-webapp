@@ -120,32 +120,8 @@ button {
 }
 
 .preview__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 24px;
   flex: 0 0 auto;
-  z-index: 2;
-}
-
-.preview__header h1 {
-  margin: 0;
-  font-family: var(--serif);
-  font-size: 2.4rem;
-  font-weight: 500;
-}
-
-.preview__header nav {
-  display: flex;
-  gap: 18px;
-}
-
-.preview__header a {
-  color: var(--gold-bright);
-  text-decoration: none;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-size: 0.72rem;
+  height: 125px;
 }
 
 .preview__stage {

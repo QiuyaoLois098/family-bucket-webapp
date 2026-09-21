@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "name": "Harborline Cabin",
+    "location": "Bar Harbor, Maine",
+    "description": "3 BR · Wood stove · Deck over the pines · Dogs welcome",
+    "image": "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=1200&q=70",
+    "gradient": "linear-gradient(140deg, #3f5b4c, #8fa58a)",
+    "nightly": "$412",
+    "sleeps": "Sleeps 6",
+    "features": ["pet-friendly", "great-view", "outdoor-space", "fireplace"]
+  },
+  {
+    "id": 2,
+    "name": "The Glass Boathouse",
+    "location": "Camden, Maine",
+    "description": "2 BR · Chef's kitchen · Dock access · Water on three sides",
+    "image": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=70",
+    "gradient": "linear-gradient(140deg, #35566b, #9dc0cf)",
+    "nightly": "$538",
+    "sleeps": "Sleeps 4",
+    "features": ["close-to-water", "great-view", "full-kitchen", "outdoor-space"]
+  },
+  {
+    "id": 3,
+    "name": "Blueberry Hill Farmhouse",
+    "location": "Blue Hill, Maine",
+    "description": "5 BR · Farm kitchen · Two fireplaces · Fenced meadow",
+    "image": "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1200&q=70",
+    "gradient": "linear-gradient(140deg, #7a5638, #d3b18c)",
+    "nightly": "$389",
+    "sleeps": "Sleeps 10",
+    "features": ["lots-of-bedrooms", "full-kitchen", "pet-friendly", "fireplace", "outdoor-space"]
+  },
+  {
+    "id": 4,
+    "name": "Cove Street Townhouse",
+    "location": "Portland, Maine",
+    "description": "4 BR · Walk to the Old Port · Marble kitchen · Rooftop",
+    "image": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=1200&q=70",
+    "gradient": "linear-gradient(140deg, #4a4557, #b0a6bd)",
+    "nightly": "$466",
+    "sleeps": "Sleeps 8",
+    "features": ["walkable", "full-kitchen", "lots-of-bedrooms", "outdoor-space"]
+  },
+  {
+    "id": 5,
+    "name": "Lantern Cove Retreat",
+    "location": "Boothbay Harbor, Maine",
+    "description": "4 BR · Heated private pool · Ocean bluff · Outdoor shower",
+    "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=70",
+    "gradient": "linear-gradient(140deg, #2f6076, #8ec5cd)",
+    "nightly": "$712",
+    "sleeps": "Sleeps 8",
+    "features": ["private-pool", "great-view", "close-to-water", "outdoor-space"]
+  },
+  {
+    "id": 6,
+    "name": "Pine & Pond Lodge",
+    "location": "Rangeley, Maine",
+    "description": "6 BR · Indoor pool · Stone hearth · Pond and canoes",
+    "image": "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1200&q=70",
+    "gradient": "linear-gradient(140deg, #4b4030, #c0a678)",
+    "nightly": "$624",
+    "sleeps": "Sleeps 12",
+    "features": ["private-pool", "fireplace", "lots-of-bedrooms", "pet-friendly", "close-to-water"]
+  }
+]

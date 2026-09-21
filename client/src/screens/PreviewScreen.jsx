@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 
 const FRAME_WIDTH = 1080;
 const FRAME_HEIGHT = 1920;
@@ -30,23 +29,7 @@ export default function PreviewScreen() {
 
   return (
     <div className="preview">
-      <header className="preview__header">
-        <div>
-          <p className="eyebrow">Installation preview</p>
-          <h1>Expedia Interaction Demo</h1>
-        </div>
-        <nav>
-          <Link to="/control" target="_blank" rel="noreferrer">
-            Open Screen A
-          </Link>
-          <Link to="/display" target="_blank" rel="noreferrer">
-            Open Screen B
-          </Link>
-          <Link to="/control?debug=true" target="_blank" rel="noreferrer">
-            Debug A
-          </Link>
-        </nav>
-      </header>
+      <header className="preview__header" aria-hidden="true" />
       <div className="preview__stage" ref={stageRef}>
         <div className="preview__pair">
           <div className="preview__frame" style={frameStyle}>

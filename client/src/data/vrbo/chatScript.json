@@ -1,0 +1,24 @@
+{
+  "groupTitle": "Maine Trip 2027",
+  "groupSubtitle": "Jamie, Sarah, Chris",
+  "intro": [
+    { "authorId": "jamie", "text": "We need to lock in a place today", "pause": 1100, "typing": 900 },
+    { "authorId": "jamie", "text": "What does everyone want??", "pause": 700, "typing": 900 }
+  ],
+  "handoffPause": 900,
+  "preference": {
+    "typing": 700,
+    "stagger": 1000
+  },
+  "finale": {
+    "reveal": { "authorId": "jamie", "text": "I might've found the perfect place...", "pause": 300, "typing": 1000 },
+    "propertyAuthorId": "jamie",
+    "propertyPause": 700,
+    "reactions": [
+      { "authorId": "sarah", "text": "You're a magician", "pause": 900, "typing": 700 },
+      { "authorId": "chris", "text": "LOVE IT BOOK IT NOW!!!", "pause": 700, "typing": 700 },
+      { "authorId": "sarah", "text": "Maine 2027 is officially happening", "pause": 800, "typing": 600 }
+    ],
+    "celebrationPause": 500
+  }
+}

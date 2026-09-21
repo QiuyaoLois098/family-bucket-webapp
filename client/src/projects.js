@@ -14,6 +14,13 @@ export const PROJECTS = [
     path: "/map",
     match: (pathname) => pathname.startsWith("/map"),
   },
+  {
+    id: "vrbo-group-trip",
+    title: "Vrbo Group Trip",
+    subtitle: "Five-screen group booking flow",
+    path: "/vrbo",
+    match: (pathname) => pathname.startsWith("/vrbo"),
+  },
 ];
 
 export function projectFromPath(pathname) {

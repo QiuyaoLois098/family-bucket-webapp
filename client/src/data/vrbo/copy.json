@@ -1,0 +1,51 @@
+{
+  "maxSelections": 3,
+  "stage": {
+    "eyebrow": "Vrbo · Group Travel Installation",
+    "title": "Find Our Stay",
+    "restart": "Restart demo"
+  },
+  "screenLabels": {
+    "chat": "Display 1 · Group Chat",
+    "ranking": "Display 2 · Group Priorities"
+  },
+  "chat": {
+    "typingLabel": "typing"
+  },
+  "ranking": {
+    "waitingTitle": "What matters most to everyone?",
+    "waitingSubtitle": "Waiting for everyone's picks...",
+    "waitingHint": "Each guest is choosing what they need on their own phone.",
+    "title": "What matters most to us?",
+    "instruction": "Drag to rank your group's priorities",
+    "mostImportant": "Most important",
+    "lessImportant": "Less important",
+    "cta": "Find Our Stay",
+    "ctaLocked": "Waiting for all three guests",
+    "moveUp": "Move higher",
+    "moveDown": "Move lower",
+    "resultsTitle": "Your top two stays",
+    "resultsSubtitle": "Scored against your ranked priorities",
+    "selectHint": "Tap a stay to choose it",
+    "sendCta": "Send to Group Chat",
+    "sendLocked": "Choose a stay first",
+    "backCta": "Back to ranking",
+    "matchLabel": "match",
+    "sentTitle": "Sent to the group",
+    "sentSubtitle": "It's in the chat.",
+    "sentAgain": "Start over"
+  },
+  "phone": {
+    "idleTitle": "Group chat in progress",
+    "idleSubtitle": "Hang tight...",
+    "title": "What do you need?",
+    "subtitle": "Pick up to {max}",
+    "counter": "{count} of {max} selected",
+    "submit": "Submit",
+    "submitLocked": "Pick at least one",
+    "doneTitle": "You're all set",
+    "doneSubtitle": "Sent to the group",
+    "doneWaiting": "Waiting for the others...",
+    "doneReady": "Now rank them together on the big screen"
+  }
+}

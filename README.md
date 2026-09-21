@@ -112,6 +112,35 @@ Then open:
 - `http://localhost:3002/control`
 - `http://localhost:3002/display`
 
+## Vrbo group trip (`/vrbo`)
+
+A second installation prototype that simulates five displays in one browser window: two large screens on top (group chat, group priorities) and three guest phones along the bottom.
+
+```
+http://localhost:5188/vrbo
+```
+
+Flow: the chat plays a scripted intro → each phone picks up to three preferences and submits → every pick animates into the chat → once all three submit, the right screen aggregates the preferences into a draggable ranked list (top = highest priority) → **Find Our Stay** scores the properties → pick one and **Send to Group Chat** for the reveal and celebration. **Restart demo** (top right) resets everything.
+
+Rows can be reordered by dragging or with the `↑ ↓` buttons on each row, so the ranking works on a touchscreen without hover. Each row is also a little narrower than the one above it, so the priority order reads from across the room.
+
+The palette lives in the `.vrbo-stage` custom properties at the top of `client/src/styles/vrbo.css`: warm cream page, brand blue (`#4169d8`) for the ranking and phone screens, sky blue (`#79cff3`) for selected states, warm white for the chat and property cards, and charcoal instead of pure black for type and device bezels.
+
+All copy and content lives in `client/src/data/vrbo/`:
+
+| File | What it controls |
+| --- | --- |
+| `users.json` | The three guests: name, colour, chat side, phone label |
+| `preferences.json` | Selectable preferences and the chat line each one posts |
+| `properties.json` | The six stays, including `features` used for scoring |
+| `rankingWeights.json` | Scoring weights and how many results to show |
+| `chatScript.json` | Intro conversation, finale messages, and all timings |
+| `copy.json` | Headlines, button labels, and the per-guest selection limit |
+
+Scoring lives in `client/src/utils/rankProperties.js`. `weightMode: "linear"` gives the top-ranked preference a weight equal to the number of ranked preferences and counts down from there (3, 2, 1 for three preferences). Switch to `"explicit"` to use the `explicitWeights` array verbatim.
+
+Property images are hotlinked from Unsplash and fall back to the `gradient` field in `properties.json` if they fail to load. Swap the `image` values for files in `client/public/images/` to run fully offline.
+
 ## Notes
 
 - Generated images are stored in `server/generated/` and served at `/generated/...`.

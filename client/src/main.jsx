@@ -9,6 +9,7 @@ import "./styles/display.css";
 import "./styles/debug.css";
 import "./styles/projects.css";
 import "./styles/map.css";
+import "./styles/vrbo.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
