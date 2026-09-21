@@ -1,0 +1,62 @@
+{
+  "features": [
+    { "id": "F1", "description": "best view of the sunset" },
+    { "id": "F2", "description": "the best cup of coffee" },
+    { "id": "F3", "description": "a late night hang" },
+    { "id": "F4", "description": "quiet rooms" },
+    { "id": "F5", "description": "the best brunch" },
+    { "id": "F6", "description": "a walk to the park" },
+    { "id": "F7", "description": "rooftop drinks" },
+    { "id": "F8", "description": "a Broadway-adjacent stay" },
+    { "id": "F9", "description": "a family-friendly hotel" },
+    { "id": "F10", "description": "spa mornings" },
+    { "id": "F11", "description": "a pet-friendly stay" },
+    { "id": "F12", "description": "skyline photo spots" },
+    { "id": "F13", "description": "after-hours food" },
+    { "id": "F14", "description": "a boutique design hotel" },
+    { "id": "F15", "description": "a quick subway hop" }
+  ],
+  "userRankWeights": [3, 2, 1],
+  "hotels": [
+    {
+      "id": "H1",
+      "features": ["F1", "F2", "F3"]
+    },
+    {
+      "id": "H2",
+      "features": ["F2", "F4", "F6"]
+    },
+    {
+      "id": "H3",
+      "features": ["F1", "F5", "F8"]
+    },
+    {
+      "id": "H4",
+      "features": ["F3", "F7", "F9"]
+    },
+    {
+      "id": "H5",
+      "features": ["F4", "F8", "F10"]
+    },
+    {
+      "id": "H6",
+      "features": ["F5", "F9", "F11"]
+    },
+    {
+      "id": "H7",
+      "features": ["F6", "F10", "F12"]
+    },
+    {
+      "id": "H8",
+      "features": ["F7", "F11", "F13"]
+    },
+    {
+      "id": "H9",
+      "features": ["F8", "F12", "F14"]
+    },
+    {
+      "id": "H10",
+      "features": ["F9", "F13", "F15"]
+    }
+  ]
+}

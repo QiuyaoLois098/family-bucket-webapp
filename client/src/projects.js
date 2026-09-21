@@ -36,9 +36,9 @@ export const NYC_HOTELS = [
 ];
 
 export const HOTEL_CARDS = [
-  { id: "sunset", src: "/images/hotel-cards/card-1.png", label: "Best view of the sunset" },
-  { id: "coffee", src: "/images/hotel-cards/card-2.png", label: "Near the best cup of coffee" },
-  { id: "night", src: "/images/hotel-cards/card-3.png", label: "Late night hang" },
+  { id: "sunset", src: "/images/hotel-cards/insert-card.png", label: "Best view of the sunset" },
+  { id: "coffee", src: "/images/hotel-cards/insert-card.png", label: "Near the best cup of coffee" },
+  { id: "night", src: "/images/hotel-cards/insert-card.png", label: "Late night hang" },
 ];
 
 export const NYC_RECOMMENDATIONS = [5, 4, 1, 3];
