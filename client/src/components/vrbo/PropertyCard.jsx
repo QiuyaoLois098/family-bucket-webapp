@@ -23,11 +23,18 @@ export default function PropertyCard({
   matchPercent = null,
   badge = null,
   selected = false,
+  dimmed = false,
   onSelect,
 }) {
   const interactive = Boolean(onSelect);
   const Tag = interactive ? "button" : "div";
-  const className = ["vrbo-property", `vrbo-property--${variant}`, selected ? "is-selected" : ""]
+  const className = [
+    "vrbo-property",
+    `vrbo-property--${variant}`,
+    selected ? "is-selected" : "",
+    dimmed ? "is-dimmed" : "",
+    interactive ? "is-interactive" : "",
+  ]
     .filter(Boolean)
     .join(" ");
 

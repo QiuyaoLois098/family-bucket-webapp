@@ -3,7 +3,9 @@
   "stage": {
     "eyebrow": "Vrbo · Group Travel Installation",
     "title": "Find Our Stay",
-    "restart": "Restart demo"
+    "restart": "Restart demo",
+    "landscapeTitle": "Rotate to landscape",
+    "landscapeBody": "This demo is designed for a wide screen. Turn the display sideways, then we’ll reload."
   },
   "screenLabels": {
     "chat": "Display 1 · Group Chat",
@@ -25,7 +27,8 @@
     "moveUp": "Move higher",
     "moveDown": "Move lower",
     "resultsTitle": "Your top two stays",
-    "resultsSubtitle": "Scored against your ranked priorities",
+    "resultsSubtitle": "Tap a stay to send it to the group chat",
+    "resultsPickedSubtitle": "Sent to the group — watch Display 1",
     "matchLabel": "match"
   },
   "phone": {

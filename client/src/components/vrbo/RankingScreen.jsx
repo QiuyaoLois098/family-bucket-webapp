@@ -91,24 +91,35 @@ function RankingPanel({ ranked, preferenceById, canFind, onReorder, onMove, onFi
   );
 }
 
-function ResultsPanel({ results }) {
+function ResultsPanel({ results, selectedPropertyId, onSelect }) {
+  const picked = Boolean(selectedPropertyId);
+
   return (
     <motion.div key="results" className="vrbo-rank__panel vrbo-rank__panel--light" {...panelMotion}>
       <div className="vrbo-rank__head">
         <h2>{copy.ranking.resultsTitle}</h2>
-        <p className="vrbo-rank__lede">{copy.ranking.resultsSubtitle}</p>
+        <p className="vrbo-rank__lede">
+          {picked ? copy.ranking.resultsPickedSubtitle : copy.ranking.resultsSubtitle}
+        </p>
       </div>
 
-      <div className="vrbo-rank__results">
-        {results.map((result) => (
-          <PropertyCard
-            key={result.property.id}
-            property={result.property}
-            matched={result.matched}
-            matchPercent={result.matchPercent}
-            badge={result.badge}
-          />
-        ))}
+      <div className={`vrbo-rank__results ${picked ? "is-picked" : ""}`}>
+        {results.map((result) => {
+          const selected = result.property.id === selectedPropertyId;
+          const lockedOut = picked && !selected;
+          return (
+            <PropertyCard
+              key={result.property.id}
+              property={result.property}
+              matched={result.matched}
+              matchPercent={result.matchPercent}
+              badge={result.badge}
+              selected={selected}
+              onSelect={picked ? undefined : onSelect}
+              dimmed={lockedOut}
+            />
+          );
+        })}
       </div>
     </motion.div>
   );
@@ -122,6 +133,7 @@ export default function RankingScreen({
   submittedCount,
   guestCount,
   allSubmitted,
+  selectedPropertyId,
   actions,
 }) {
   return (
@@ -143,7 +155,14 @@ export default function RankingScreen({
           />
         ) : null}
 
-        {stage === "results" ? <ResultsPanel key="results" results={results} /> : null}
+        {stage === "results" ? (
+          <ResultsPanel
+            key="results"
+            results={results}
+            selectedPropertyId={selectedPropertyId}
+            onSelect={actions.selectProperty}
+          />
+        ) : null}
       </AnimatePresence>
     </div>
   );

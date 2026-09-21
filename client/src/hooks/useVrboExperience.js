@@ -31,6 +31,8 @@ function createInitialState(runId = 0) {
     submitted: emptyMap(() => null),
     ranked: [],
     results: [],
+    selectedPropertyId: null,
+    celebrating: false,
   };
 }
 
@@ -47,6 +49,24 @@ function aggregatePreferences(submitted) {
     if (byCount !== 0) return byCount;
     return (preferenceOrder.get(a) ?? 0) - (preferenceOrder.get(b) ?? 0);
   });
+}
+
+function formatReasons(matched) {
+  const labels = matched
+    .slice(0, 3)
+    .map((match) => preferenceById.get(match.id)?.label)
+    .filter(Boolean);
+
+  if (!labels.length) return "everything we said we needed";
+  if (labels.length === 1) return labels[0];
+  if (labels.length === 2) return `${labels[0]} and ${labels[1]}`;
+  return `${labels.slice(0, -1).join(", ")}, and ${labels.at(-1)}`;
+}
+
+function fillTemplate(template, { name, reasons }) {
+  return String(template ?? "")
+    .replaceAll("{name}", name)
+    .replaceAll("{reasons}", reasons);
 }
 
 function withoutTyping(typing, userId) {
@@ -111,7 +131,20 @@ function reducer(state, action) {
         ...state,
         stage: "results",
         results: rankProperties(properties, state.ranked),
+        selectedPropertyId: null,
+        celebrating: false,
       };
+
+    case "SELECT_PROPERTY":
+      if (state.stage !== "results" || state.selectedPropertyId) return state;
+      if (!state.results.some((result) => result.property.id === action.propertyId)) return state;
+      return {
+        ...state,
+        selectedPropertyId: action.propertyId,
+      };
+
+    case "SET_CELEBRATING":
+      return { ...state, celebrating: Boolean(action.active) };
 
     case "RESET":
       return createInitialState(state.runId + 1);
@@ -214,6 +247,67 @@ export default function useVrboExperience() {
   );
   const findStay = useCallback(() => dispatch({ type: "SHOW_RESULTS" }), []);
 
+  const selectProperty = useCallback(
+    (propertyId) => {
+      const current = stateRef.current;
+      if (current.stage !== "results" || current.selectedPropertyId) return;
+      const result = current.results.find((entry) => entry.property.id === propertyId);
+      if (!result) return;
+
+      dispatch({ type: "SELECT_PROPERTY", propertyId });
+
+      const finale = chatScript.finale;
+      const vars = {
+        name: result.property.name,
+        reasons: formatReasons(result.matched),
+      };
+
+      let offset = finale.reveal.pause ?? 300;
+      schedule(() => dispatch({ type: "SET_TYPING", userId: finale.reveal.authorId }), offset);
+      offset += finale.reveal.typing ?? 1000;
+      schedule(() => {
+        dispatch({
+          type: "ADD_MESSAGE",
+          message: makeMessage({
+            authorId: finale.reveal.authorId,
+            text: fillTemplate(finale.reveal.text, vars),
+          }),
+        });
+      }, offset);
+
+      offset += finale.propertyPause ?? 700;
+      schedule(() => {
+        dispatch({
+          type: "ADD_MESSAGE",
+          message: makeMessage({
+            kind: "property",
+            authorId: finale.propertyAuthorId ?? "jamie",
+            propertyId,
+          }),
+        });
+      }, offset);
+
+      (finale.reactions ?? []).forEach((line) => {
+        offset += line.pause ?? 700;
+        schedule(() => dispatch({ type: "SET_TYPING", userId: line.authorId }), offset);
+        offset += line.typing ?? 700;
+        schedule(() => {
+          dispatch({
+            type: "ADD_MESSAGE",
+            message: makeMessage({
+              authorId: line.authorId,
+              text: fillTemplate(line.text, vars),
+            }),
+          });
+        }, offset);
+      });
+
+      offset += finale.celebrationPause ?? 400;
+      schedule(() => dispatch({ type: "SET_CELEBRATING", active: true }), offset);
+    },
+    [schedule],
+  );
+
   const reset = useCallback(() => {
     clearTimers();
     dispatch({ type: "RESET" });
@@ -228,6 +322,7 @@ export default function useVrboExperience() {
       setRanked,
       moveRanked,
       findStay,
+      selectProperty,
       reset,
     },
   };

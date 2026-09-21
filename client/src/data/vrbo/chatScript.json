@@ -15,10 +15,25 @@
     "propertyAuthorId": "jamie",
     "propertyPause": 700,
     "reactions": [
-      { "authorId": "sarah", "text": "You're a magician", "pause": 900, "typing": 700 },
-      { "authorId": "chris", "text": "LOVE IT BOOK IT NOW!!!", "pause": 700, "typing": 700 },
-      { "authorId": "sarah", "text": "Maine 2027 is officially happening", "pause": 800, "typing": 600 }
+      {
+        "authorId": "sarah",
+        "text": "You're a magician — {name} is perfect",
+        "pause": 900,
+        "typing": 700
+      },
+      {
+        "authorId": "chris",
+        "text": "That covers {reasons}. LOVE IT BOOK IT NOW!!!",
+        "pause": 700,
+        "typing": 800
+      },
+      {
+        "authorId": "jamie",
+        "text": "Exactly — {reasons} for everyone. Maine 2027 is locked 🔒",
+        "pause": 800,
+        "typing": 900
+      }
     ],
-    "celebrationPause": 500
+    "celebrationPause": 400
   }
 }

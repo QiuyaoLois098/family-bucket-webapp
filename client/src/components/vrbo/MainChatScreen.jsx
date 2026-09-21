@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import chatScript from "../../data/vrbo/chatScript.json";
 import copy from "../../data/vrbo/copy.json";
+import Celebration from "./Celebration.jsx";
 import PropertyCard from "./PropertyCard.jsx";
 
 const bubbleMotion = {
@@ -18,7 +19,7 @@ function Avatar({ user }) {
   );
 }
 
-export default function MainChatScreen({ messages, typing, userById, propertyLookup }) {
+export default function MainChatScreen({ messages, typing, userById, propertyLookup, celebrating }) {
   const feedRef = useRef(null);
 
   useEffect(() => {
@@ -28,7 +29,8 @@ export default function MainChatScreen({ messages, typing, userById, propertyLoo
   }, [messages.length, typing.length]);
 
   return (
-    <div className="vrbo-chat">
+    <div className={`vrbo-chat ${celebrating ? "is-celebrating" : ""}`}>
+      <Celebration active={celebrating} />
       <header className="vrbo-chat__header">
         <div className="vrbo-chat__stack">
           {Object.values(userById).map((user) => (
