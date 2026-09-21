@@ -20,18 +20,11 @@ function Letter({ dear, title, body, sign, className = "", delay = "0s" }) {
   );
 }
 
-export default function ItineraryView({ itinerary, destination, onStartOver }) {
+export default function ItineraryView({ itinerary, destination, onPrint }) {
   const wallRef = useRef(null);
   const [saving, setSaving] = useState(false);
 
-  if (!itinerary) {
-    return (
-      <div className="itinerary itinerary--waiting">
-        <p className="eyebrow">Composing your journey</p>
-        <h2>A few more seconds.</h2>
-      </div>
-    );
-  }
+  if (!itinerary) return null;
 
   const gallery = destination?.gallery || [];
   const crops = destination?.crops || [];
@@ -44,6 +37,7 @@ export default function ItineraryView({ itinerary, destination, onStartOver }) {
     setSaving(true);
     try {
       await downloadBucketListImage(wallRef.current, destination?.shortTitle || itinerary.title);
+      onPrint?.();
     } catch (error) {
       console.error(error);
     } finally {
@@ -105,16 +99,11 @@ export default function ItineraryView({ itinerary, destination, onStartOver }) {
           />
         ) : null}
       </div>
-      {onStartOver ? (
-        <div className="wall-actions">
-          <button type="button" className="wall-action" onClick={handlePrint} disabled={saving}>
-            {saving ? "Saving…" : "Print"}
-          </button>
-          <button type="button" className="wall-action" onClick={onStartOver}>
-            Start over
-          </button>
-        </div>
-      ) : null}
+      <div className="wall-actions">
+        <button type="button" className="wall-action" onClick={handlePrint} disabled={saving}>
+          {saving ? "Saving…" : "Print"}
+        </button>
+      </div>
     </div>
   );
 }

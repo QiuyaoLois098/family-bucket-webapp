@@ -1,7 +1,8 @@
+import { getDestination } from "@shared/destinations.js";
 import { ScreenChrome } from "../components/ScreenChrome.jsx";
 import IdleDisplay from "../components/IdleDisplay.jsx";
 import ImageReveal from "../components/ImageReveal.jsx";
-import MemorySequence from "../components/MemorySequence.jsx";
+import ItineraryView from "../components/ItineraryView.jsx";
 
 export default function DisplayScreen() {
   return (
@@ -16,11 +17,12 @@ export default function DisplayScreen() {
             {state.destination ? <ImageReveal state={state} /> : null}
           </section>
           <section className={`panel panel--memories ${state.phase === "itinerary" ? "is-active" : ""}`}>
-            <MemorySequence
-              itinerary={state.itinerary}
-              destinationId={state.destination}
-              heroUrl={state.imageUrl}
-            />
+            {state.phase === "itinerary" ? (
+              <ItineraryView
+                itinerary={state.itinerary}
+                destination={getDestination(state.destination)}
+              />
+            ) : null}
           </section>
         </main>
       )}

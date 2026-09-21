@@ -2,7 +2,7 @@ import { getDestination } from "@shared/destinations.js";
 import { ScreenChrome } from "../components/ScreenChrome.jsx";
 import DestinationPicker from "../components/DestinationPicker.jsx";
 import QuestionStep from "../components/QuestionStep.jsx";
-import ItineraryView from "../components/ItineraryView.jsx";
+import ItinerarySchedule from "../components/ItinerarySchedule.jsx";
 
 export default function ControlScreen() {
   return (
@@ -44,7 +44,7 @@ export default function ControlScreen() {
                   <img className="shake-globe" src="/images/snow-globe.png" alt="" />
                 </div>
               ) : (
-                <ItineraryView
+                <ItinerarySchedule
                   itinerary={state.itinerary}
                   destination={getDestination(state.destination)}
                   onStartOver={phase === "itinerary" ? actions.reset : undefined}
