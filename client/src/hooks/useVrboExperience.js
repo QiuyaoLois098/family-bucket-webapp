@@ -8,6 +8,8 @@ import { rankProperties } from "../utils/rankProperties.js";
 
 export const STAGES = ["intro", "selecting", "ranking", "results"];
 
+export const guests = users.filter((user) => user.role === "guest");
+
 const preferenceOrder = new Map(preferences.map((preference, index) => [preference.id, index]));
 const preferenceById = new Map(preferences.map((preference) => [preference.id, preference]));
 
@@ -18,7 +20,7 @@ function makeMessage(message) {
 }
 
 function emptyMap(value) {
-  return users.reduce((map, user) => ({ ...map, [user.id]: value() }), {});
+  return guests.reduce((map, user) => ({ ...map, [user.id]: value() }), {});
 }
 
 function createInitialState(runId = 0) {
@@ -38,7 +40,7 @@ function createInitialState(runId = 0) {
 
 function aggregatePreferences(submitted) {
   const counts = new Map();
-  users.forEach((user) => {
+  guests.forEach((user) => {
     (submitted[user.id] ?? []).forEach((id) => {
       counts.set(id, (counts.get(id) ?? 0) + 1);
     });
@@ -197,14 +199,14 @@ export default function useVrboExperience() {
   }, [state.runId, schedule]);
 
   const allSubmitted = useMemo(
-    () => users.every((user) => Boolean(state.submitted[user.id])),
+    () => guests.every((user) => Boolean(state.submitted[user.id])),
     [state.submitted],
   );
 
   // Stage 3 opens once every guest has sent their picks.
   useEffect(() => {
     if (!allSubmitted || state.stage !== "selecting") return undefined;
-    const lines = users.reduce((total, user) => total + (state.submitted[user.id]?.length ?? 0), 0);
+    const lines = guests.reduce((total, user) => total + (state.submitted[user.id]?.length ?? 0), 0);
     const settle = (chatScript.preference.stagger ?? 800) * Math.max(lines, 1);
     const id = schedule(() => dispatch({ type: "OPEN_RANKING" }), settle);
     return () => clearTimeout(id);

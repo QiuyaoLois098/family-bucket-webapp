@@ -353,10 +353,12 @@
   margin: 0;
   padding: clamp(9px, 1.2vh, 14px) clamp(13px, 1.2vw, 19px);
   border-radius: 22px;
-  background: var(--bubble-gray);
+  background: #ffffff;
   color: var(--charcoal);
   font-size: clamp(0.78rem, 1.7vh, 1.02rem);
   line-height: 1.4;
+  border: 1px solid rgba(32, 32, 32, 0.06);
+  box-shadow: 0 1px 0 rgba(32, 32, 32, 0.03);
 }
 
 .vrbo-chat__row--left .vrbo-chat__bubble {
@@ -365,8 +367,14 @@
 
 .vrbo-chat__row--right .vrbo-chat__bubble {
   border-bottom-right-radius: 8px;
+}
+
+/* Jamie (coordinator) speaks in blue; guests stay white on the right. */
+.vrbo-chat__row--coordinator .vrbo-chat__bubble {
   background: var(--blue-chat);
   color: #ffffff;
+  border-color: transparent;
+  box-shadow: none;
 }
 
 .vrbo-chat__bubble--typing {

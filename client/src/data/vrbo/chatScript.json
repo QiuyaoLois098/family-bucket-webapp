@@ -1,6 +1,6 @@
 {
   "groupTitle": "Maine Trip 2027",
-  "groupSubtitle": "Jamie, Sarah, Chris",
+  "groupSubtitle": "Jamie, Sarah, Alex, Chris",
   "intro": [
     { "authorId": "jamie", "text": "We need to lock in a place today", "pause": 1100, "typing": 900 },
     { "authorId": "jamie", "text": "What does everyone want??", "pause": 700, "typing": 900 }
@@ -22,14 +22,20 @@
         "typing": 700
       },
       {
-        "authorId": "chris",
+        "authorId": "alex",
         "text": "That covers {reasons}. LOVE IT BOOK IT NOW!!!",
         "pause": 700,
         "typing": 800
       },
       {
+        "authorId": "chris",
+        "text": "Yes!! Maine 2027 is officially happening",
+        "pause": 700,
+        "typing": 700
+      },
+      {
         "authorId": "jamie",
-        "text": "Exactly — {reasons} for everyone. Maine 2027 is locked 🔒",
+        "text": "Exactly — {reasons} for everyone. We're locked in 🔒",
         "pause": 800,
         "typing": 900
       }

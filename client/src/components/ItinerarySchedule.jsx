@@ -20,15 +20,6 @@ export default function ItinerarySchedule({ itinerary, destination, onStartOver 
           <h2 className="schedule__place">{place}</h2>
           <p className="schedule__tagline">{itinerary.subtitle || "Built for your family"}</p>
         </div>
-        <p className="schedule__motto">
-          Good people
-          <br />
-          Good places
-          <br />
-          Brighter
-          <br />
-          Tomorrows
-        </p>
       </header>
 
       <ol className="schedule__list">

@@ -7,11 +7,12 @@ import preferences from "../data/vrbo/preferences.json";
 import properties from "../data/vrbo/properties.json";
 import users from "../data/vrbo/users.json";
 import useLandscapeGate from "../hooks/useLandscapeGate.js";
-import useVrboExperience from "../hooks/useVrboExperience.js";
+import useVrboExperience, { guests } from "../hooks/useVrboExperience.js";
 
 const userById = Object.fromEntries(users.map((user) => [user.id, user]));
 const preferenceById = new Map(preferences.map((preference) => [preference.id, preference]));
 const propertyById = new Map(properties.map((property) => [property.id, property]));
+const [guestA, guestB, guestC] = guests;
 
 function VrboLandscapeGate() {
   return (
@@ -34,8 +35,7 @@ function VrboDemo() {
   const { stage, messages, typing, selections, submitted, ranked, results, selectedPropertyId, celebrating } =
     state;
 
-  const submittedCount = users.filter((user) => Boolean(submitted[user.id])).length;
-  const [guestA, guestB, guestC] = users;
+  const submittedCount = guests.filter((user) => Boolean(submitted[user.id])).length;
 
   const propertyLookup = useMemo(() => {
     const byId = new Map(results.map((result) => [result.property.id, result]));
@@ -93,7 +93,7 @@ function VrboDemo() {
                 results={results}
                 preferenceById={preferenceById}
                 submittedCount={submittedCount}
-                guestCount={users.length}
+                guestCount={guests.length}
                 allSubmitted={allSubmitted}
                 selectedPropertyId={selectedPropertyId}
                 actions={actions}

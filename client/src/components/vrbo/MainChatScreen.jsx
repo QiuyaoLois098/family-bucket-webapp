@@ -61,7 +61,7 @@ export default function MainChatScreen({ messages, typing, userById, propertyLoo
                 key={message.id}
                 layout
                 {...bubbleMotion}
-                className={`vrbo-chat__row vrbo-chat__row--${user.side}`}
+                className={`vrbo-chat__row vrbo-chat__row--${user.side} vrbo-chat__row--${user.role}`}
               >
                 <Avatar user={user} />
                 <div className="vrbo-chat__column">
@@ -92,7 +92,7 @@ export default function MainChatScreen({ messages, typing, userById, propertyLoo
                 layout
                 {...bubbleMotion}
                 exit={{ opacity: 0, scale: 0.9 }}
-                className={`vrbo-chat__row vrbo-chat__row--${user.side}`}
+                className={`vrbo-chat__row vrbo-chat__row--${user.side} vrbo-chat__row--${user.role}`}
               >
                 <Avatar user={user} />
                 <div className="vrbo-chat__column">

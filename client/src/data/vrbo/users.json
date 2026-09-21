@@ -5,8 +5,8 @@
     "initials": "J",
     "accent": "#4169d8",
     "onAccent": "#ffffff",
-    "side": "right",
-    "phoneLabel": "Guest A",
+    "role": "coordinator",
+    "side": "left",
     "statusLine": "Trip organizer"
   },
   {
@@ -15,9 +15,21 @@
     "initials": "S",
     "accent": "#79cff3",
     "onAccent": "#202020",
-    "side": "left",
-    "phoneLabel": "Guest B",
+    "role": "guest",
+    "side": "right",
+    "phoneLabel": "Guest A",
     "statusLine": "Bringing the dog"
+  },
+  {
+    "id": "alex",
+    "name": "Alex",
+    "initials": "A",
+    "accent": "#4a7be8",
+    "onAccent": "#ffffff",
+    "role": "guest",
+    "side": "right",
+    "phoneLabel": "Guest B",
+    "statusLine": "Flying in Thursday"
   },
   {
     "id": "chris",
@@ -25,7 +37,8 @@
     "initials": "C",
     "accent": "#202020",
     "onAccent": "#ffffff",
-    "side": "left",
+    "role": "guest",
+    "side": "right",
     "phoneLabel": "Guest C",
     "statusLine": "Driving up Friday"
   }
