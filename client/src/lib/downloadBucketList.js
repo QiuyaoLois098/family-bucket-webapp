@@ -34,7 +34,7 @@ export async function downloadBucketListImage(node, name) {
 
   try {
     const canvas = await html2canvas(node, {
-      backgroundColor: "#f3e6d2",
+      backgroundColor: "#0d0c0a",
       scale: Math.min(2, window.devicePixelRatio || 2),
       useCORS: true,
       logging: false,

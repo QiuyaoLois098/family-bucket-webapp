@@ -13,7 +13,7 @@ function homeState(previousOffered = []) {
   return {
     ...cloneState(INITIAL_STATE),
     phase: PHASES.DESTINATION,
-    offeredDestinations: pickRandomDestinations(4, previousOffered),
+    offeredDestinations: pickRandomDestinations(6, previousOffered),
     updatedAt: Date.now(),
   };
 }

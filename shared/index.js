@@ -26,7 +26,7 @@ export const INITIAL_STATE = {
   updatedAt: 0,
 };
 
-export function pickRandomDestinations(count = 4, previousIds = []) {
+export function pickRandomDestinations(count = 6, previousIds = []) {
   const ids = DESTINATIONS.map((item) => item.id);
   const previousKey = [...previousIds].sort().join("|");
 

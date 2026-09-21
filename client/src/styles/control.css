@@ -1,8 +1,8 @@
 .screen--control {
   background:
-    radial-gradient(1200px 700px at 50% -10%, rgba(212, 179, 106, 0.18), transparent 55%),
-    linear-gradient(180deg, var(--cream) 0%, var(--sand) 100%);
-  color: var(--ink);
+    radial-gradient(1200px 700px at 50% -10%, rgba(212, 179, 106, 0.1), transparent 55%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+  color: var(--text);
 }
 
 .idle-control,
@@ -41,7 +41,7 @@
   display: block;
   font-style: italic;
   font-weight: 400;
-  color: #7a5a22;
+  color: var(--gold);
 }
 
 .idle-control p {
@@ -49,7 +49,7 @@
   margin: 2rem auto 2.6rem;
   font-size: clamp(1.35rem, 3vw, 1.75rem);
   line-height: 1.55;
-  color: var(--ink-soft);
+  color: var(--text-soft);
   font-weight: 300;
 }
 
@@ -59,9 +59,9 @@
   min-width: 280px;
   min-height: 88px;
   padding: 0 48px;
-  border: 1px solid rgba(176, 138, 62, 0.55);
+  border: 1px solid rgba(212, 179, 106, 0.55);
   background: transparent;
-  color: var(--ink);
+  color: var(--text);
   letter-spacing: 0.28em;
   text-transform: uppercase;
   font-size: 1.05rem;
@@ -74,8 +74,9 @@
 .start-over-button:hover,
 .start-over-button:focus-visible,
 .start-over-button:active {
-  background: var(--ink);
-  color: var(--cream);
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--bg-deep);
   transform: translateY(-1px);
 }
 
@@ -112,61 +113,49 @@
 .destinations__grid {
   flex: 1;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  margin-top: 32px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-content: center;
+  gap: clamp(26px, 4vh, 56px) clamp(14px, 2vw, 26px);
+  margin-top: clamp(28px, 4vh, 56px);
   min-height: 0;
 }
 
 .destination-card {
-  position: relative;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.6vh, 20px);
   border: 0;
   padding: 0;
-  min-height: 28vh;
-  color: var(--white);
-  text-align: left;
+  background: transparent;
+  color: var(--text);
+  text-align: center;
 }
 
-.destination-card__image,
-.destination-card__veil {
-  position: absolute;
-  inset: 0;
+.destination-card__frame {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border-radius: 14px;
+  outline: 2px solid transparent;
+  outline-offset: 4px;
+  transition: outline-color 0.25s ease, box-shadow 0.35s ease;
 }
 
 .destination-card__image {
+  position: absolute;
+  inset: 0;
   background-size: cover;
   background-position: center;
   transform: scale(1.04);
   transition: transform 0.8s ease;
 }
 
-.destination-card__veil {
-  background: linear-gradient(180deg, rgba(12, 10, 8, 0.05) 20%, rgba(12, 10, 8, 0.78) 100%);
-}
-
-.destination-card__copy {
-  position: absolute;
-  left: 24px;
-  right: 24px;
-  bottom: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.destination-card__copy small {
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  font-size: 0.92rem;
-  opacity: 0.85;
-}
-
 .destination-card__copy strong {
   font-family: var(--serif);
   font-weight: 500;
-  font-size: clamp(1.7rem, 3.4vw, 2.35rem);
-  line-height: 1.15;
+  font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+  line-height: 1.2;
+  transition: color 0.25s ease;
 }
 
 .destination-card:hover .destination-card__image,
@@ -174,8 +163,17 @@
   transform: scale(1.1);
 }
 
-.destination-card:active {
-  filter: brightness(1.08);
+.destination-card:hover .destination-card__frame,
+.destination-card:focus-visible .destination-card__frame,
+.destination-card:active .destination-card__frame {
+  outline-color: var(--gold);
+  box-shadow: 0 0 34px rgba(212, 179, 106, 0.28);
+}
+
+.destination-card:hover .destination-card__copy strong,
+.destination-card:focus-visible .destination-card__copy strong,
+.destination-card:active .destination-card__copy strong {
+  color: var(--gold);
 }
 
 .question {
@@ -194,7 +192,7 @@
 .question__progress span {
   width: 44px;
   height: 2px;
-  background: rgba(27, 23, 18, 0.15);
+  background: rgba(247, 244, 236, 0.22);
 }
 
 .question__progress span.is-done,
@@ -213,25 +211,26 @@
   min-height: 128px;
   padding: 32px 36px;
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.28);
+  background: rgba(247, 244, 236, 0.05);
   text-align: left;
   font-family: var(--serif);
   font-size: clamp(1.9rem, 4.2vw, 2.55rem);
   font-weight: 500;
-  color: var(--ink);
+  color: var(--text);
   transition: background 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
 }
 
 .question__option:hover,
 .question__option:focus-visible {
   border-color: var(--gold);
-  background: rgba(255, 255, 255, 0.62);
+  background: rgba(247, 244, 236, 0.11);
   transform: translateX(6px);
 }
 
 .question__option:active {
-  background: var(--ink);
-  color: var(--cream);
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--bg-deep);
 }
 
 .question__option:disabled {
@@ -248,7 +247,7 @@
 }
 
 .itinerary--waiting p {
-  color: var(--ink-soft);
+  color: var(--text-soft);
   font-size: clamp(1.25rem, 2.6vw, 1.5rem);
 }
 
@@ -266,8 +265,8 @@
   min-height: 72px;
   padding: 0 42px;
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.42);
-  color: var(--ink);
+  background: rgba(247, 244, 236, 0.06);
+  color: var(--text);
   font-family: var(--serif);
   font-size: clamp(1.7rem, 3.4vw, 2.1rem);
   font-weight: 500;
@@ -275,21 +274,38 @@
 
 .shake-button:hover,
 .shake-button:focus-visible {
-  background: var(--ink);
-  color: var(--cream);
-  border-color: var(--ink);
+  background: var(--gold);
+  color: var(--bg-deep);
+  border-color: var(--gold);
+}
+
+.shake-globe {
+  width: min(62%, 500px);
+  max-height: 42vh;
+  margin: clamp(40px, 6vh, 76px) auto 0;
+  filter: drop-shadow(0 0 70px rgba(212, 179, 106, 0.16)) drop-shadow(0 26px 46px rgba(0, 0, 0, 0.6));
+  animation: globe-sway 5.5s ease-in-out infinite alternate;
+}
+
+@keyframes globe-sway {
+  from {
+    transform: translateY(0) rotate(-1.4deg);
+  }
+  to {
+    transform: translateY(-12px) rotate(1.4deg);
+  }
 }
 
 .screen--control.phase-itinerary,
 .screen--control.phase-reveal {
   background:
-    radial-gradient(circle at 50% 30%, #fff8ee 0%, #f3e6d2 42%, #e2cba8 100%);
+    radial-gradient(circle at 50% 30%, #1a1712 0%, #0d0c0a 45%, #000 100%);
 }
 
 .screen--control.phase-itinerary .screen__grain,
 .screen--display.phase-itinerary .screen__grain {
-  opacity: 0.08;
-  mix-blend-mode: multiply;
+  opacity: 0.1;
+  mix-blend-mode: screen;
 }
 
 .bucket-page {
@@ -306,7 +322,7 @@
   grid-template-rows: repeat(14, minmax(0, 1fr));
   gap: 0;
   background:
-    radial-gradient(circle at 50% 30%, #fff8ee 0%, #f3e6d2 42%, #e2cba8 100%);
+    radial-gradient(circle at 50% 30%, #1a1712 0%, #0d0c0a 45%, #000 100%);
 }
 
 .print,
@@ -318,9 +334,9 @@
 .print {
   display: flex;
   flex-direction: column;
-  background: #fff;
+  background: var(--surface);
   padding: 8px 8px 26px;
-  box-shadow: 0 18px 40px rgba(48, 28, 8, 0.16);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
   min-width: 0;
   min-height: 0;
 }
@@ -335,9 +351,9 @@
 }
 
 .letter {
-  background: #fffdf8;
+  background: #100f0d;
   padding: 22px 22px 26px;
-  box-shadow: 0 16px 34px rgba(48, 28, 8, 0.12);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -356,7 +372,7 @@
   font-family: var(--hand);
   font-size: clamp(1.7rem, 3.4vw, 2.2rem);
   font-weight: 600;
-  color: #4a3d2e;
+  color: var(--gold);
   margin-bottom: 0.35rem;
 }
 
@@ -365,7 +381,7 @@
   font-size: clamp(1.85rem, 3.6vw, 2.4rem);
   font-weight: 700;
   line-height: 1.15;
-  color: #1f1a14;
+  color: var(--text);
   margin-bottom: 0.45rem;
 }
 
@@ -373,7 +389,7 @@
   font-family: var(--hand);
   font-size: clamp(1.35rem, 2.8vw, 1.7rem);
   line-height: 1.28;
-  color: #3d3428;
+  color: #ddd7ca;
   display: -webkit-box;
   -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
@@ -384,7 +400,7 @@
   font-family: var(--hand);
   font-size: clamp(1.3rem, 2.6vw, 1.6rem);
   margin-top: 0.8rem;
-  color: #6a5a46;
+  color: var(--text-soft);
 }
 
 .print--hero {
@@ -480,19 +496,20 @@
   min-width: 200px;
   min-height: 64px;
   padding: 0 28px;
-  border: 0;
-  background: rgba(255, 253, 248, 0.88);
-  color: var(--ink);
+  border: 1px solid var(--line);
+  background: rgba(247, 244, 236, 0.08);
+  color: var(--text);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   font-size: 0.92rem;
-  box-shadow: 0 10px 24px rgba(48, 28, 8, 0.12);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
 }
 
 .wall-action:hover,
 .wall-action:active {
-  background: var(--ink);
-  color: var(--cream);
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--bg-deep);
 }
 
 .wall-action:disabled {

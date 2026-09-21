@@ -1,9 +1,13 @@
 import { QUESTIONS } from "@shared/questions.js";
 
+// Temporary: show only the first two options of each question.
+const VISIBLE_OPTIONS = 2;
+
 export default function QuestionStep({ currentQuestion, answers, onAnswer }) {
   const question = QUESTIONS[currentQuestion];
   if (!question) return null;
 
+  const options = question.options.slice(0, VISIBLE_OPTIONS);
   const locked = Boolean(answers[currentQuestion]);
 
   return (
@@ -25,7 +29,7 @@ export default function QuestionStep({ currentQuestion, answers, onAnswer }) {
         <h2>{question.prompt}</h2>
       </header>
       <div className="question__options">
-        {question.options.map((option) => (
+        {options.map((option) => (
           <button
             key={option.id}
             type="button"

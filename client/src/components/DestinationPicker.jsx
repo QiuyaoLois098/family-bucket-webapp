@@ -19,13 +19,13 @@ export default function DestinationPicker({ onSelect, offeredIds }) {
             className="destination-card"
             onClick={() => onSelect(destination.id)}
           >
-            <span
-              className="destination-card__image"
-              style={{ backgroundImage: `url(${destination.image})` }}
-            />
-            <span className="destination-card__veil" />
+            <span className="destination-card__frame">
+              <span
+                className="destination-card__image"
+                style={{ backgroundImage: `url(${destination.image})` }}
+              />
+            </span>
             <span className="destination-card__copy">
-              <small>{destination.location}</small>
               <strong>{destination.title}</strong>
             </span>
           </button>

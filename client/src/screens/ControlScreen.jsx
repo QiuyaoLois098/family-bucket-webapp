@@ -41,6 +41,7 @@ export default function ControlScreen() {
                   <button type="button" className="shake-button" onClick={actions.shake}>
                     Shake
                   </button>
+                  <img className="shake-globe" src="/images/snow-globe.png" alt="" />
                 </div>
               ) : (
                 <ItineraryView
