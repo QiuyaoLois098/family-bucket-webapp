@@ -29,7 +29,6 @@ export default function PreviewScreen() {
 
   return (
     <div className="preview">
-      <header className="preview__header" aria-hidden="true" />
       <div className="preview__stage" ref={stageRef}>
         <div className="preview__pair">
           <div className="preview__frame" style={frameStyle}>

@@ -1,6 +1,7 @@
 export { DESTINATIONS, getDestination } from "./destinations.js";
-export { QUESTIONS, BLUR_LEVELS } from "./questions.js";
+export { QUESTIONS, BLUR_LEVELS, REVEAL_VISIBLE } from "./questions.js";
 import { DESTINATIONS } from "./destinations.js";
+import { BLUR_LEVELS, REVEAL_VISIBLE } from "./questions.js";
 
 export const PHASES = {
   IDLE: "idle",
@@ -48,8 +49,13 @@ export function pickRandomDestinations(count = 6, previousIds = []) {
 }
 
 export function getBlurPx(answerCount) {
-  if (answerCount <= 0) return 40;
-  if (answerCount === 1) return 28;
-  if (answerCount === 2) return 14;
-  return 0;
+  const index = Math.min(Math.max(answerCount, 0), BLUR_LEVELS.length - 1);
+  return BLUR_LEVELS[index];
+}
+
+/** Scale factor so the viewport shows only the center fraction of the image. */
+export function getRevealScale(answerCount) {
+  const index = Math.min(Math.max(answerCount, 0), REVEAL_VISIBLE.length - 1);
+  const visible = REVEAL_VISIBLE[index];
+  return 1 / visible;
 }

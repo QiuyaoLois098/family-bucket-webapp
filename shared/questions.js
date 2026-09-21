@@ -65,3 +65,6 @@ export const QUESTIONS = [
 ];
 
 export const BLUR_LEVELS = [40, 28, 14, 0];
+
+/** How much of the destination image is visible (center crop) after each answer. */
+export const REVEAL_VISIBLE = [0.3, 0.5, 0.8, 1];

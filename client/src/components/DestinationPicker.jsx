@@ -8,7 +8,6 @@ export default function DestinationPicker({ onSelect, offeredIds }) {
   return (
     <div className="destinations">
       <header className="destinations__header">
-        <p className="eyebrow">Choose an experience</p>
         <h2>Where will you go?</h2>
         <p className="destinations__hint">Tap a destination to begin</p>
       </header>

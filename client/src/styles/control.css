@@ -97,6 +97,12 @@
 .destinations {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  padding-top: clamp(36px, 6vh, 88px);
+}
+
+.destinations__header {
+  flex: 0 0 auto;
 }
 
 .destinations__header h2,
@@ -111,20 +117,19 @@
 }
 
 .destinations__hint {
-  margin: clamp(14px, 1.8vh, 22px) 0 0;
+  margin: clamp(14px, 1.6vh, 20px) 0 0;
   color: var(--text-soft);
   font-weight: 300;
-  font-size: clamp(1rem, 1.9vw, 1.25rem);
+  font-size: clamp(1.35rem, 2.8vw, 1.9rem);
   letter-spacing: 0.06em;
 }
 
 .destinations__grid {
-  flex: 1;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-content: center;
   gap: clamp(26px, 4vh, 56px) clamp(14px, 2vw, 26px);
-  margin-top: clamp(28px, 4vh, 56px);
+  margin-top: clamp(16px, 2vh, 24px);
   min-height: 0;
 }
 
@@ -147,17 +152,17 @@
   outline: 2px solid transparent;
   outline-offset: 4px;
   transition: outline-color 0.25s ease, box-shadow 0.35s ease;
-  animation: card-wake 0.52s ease-in-out both;
+  animation: card-wake 1.8s ease-in-out infinite;
 }
 
-/* One pass down the grid on arrival, hinting that the cards are tappable. */
+/* Soft pulse so the cards keep reading as tappable. */
 @keyframes card-wake {
   0%,
   100% {
     transform: scale(1);
   }
   50% {
-    transform: scale(1.015);
+    transform: scale(1.055);
   }
 }
 
@@ -188,6 +193,8 @@
 .destination-card:active .destination-card__frame {
   outline-color: var(--gold);
   box-shadow: 0 0 34px rgba(212, 179, 106, 0.28);
+  animation-play-state: paused;
+  transform: scale(1.055);
 }
 
 .destination-card:hover .destination-card__copy strong,

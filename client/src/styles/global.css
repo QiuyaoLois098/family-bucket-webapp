@@ -116,12 +116,7 @@ button {
   overflow: hidden;
   background: #16120e;
   color: var(--white);
-  padding: 24px 36px 28px;
-}
-
-.preview__header {
-  flex: 0 0 auto;
-  height: 125px;
+  padding: 24px 36px;
 }
 
 .preview__stage {
@@ -131,13 +126,12 @@ button {
   flex: 1;
   min-height: 0;
   overflow: hidden;
-  padding-top: 20px;
 }
 
 .preview__pair {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   gap: 28px;
 }
 
