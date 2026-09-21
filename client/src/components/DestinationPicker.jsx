@@ -10,16 +10,20 @@ export default function DestinationPicker({ onSelect, offeredIds }) {
       <header className="destinations__header">
         <p className="eyebrow">Choose an experience</p>
         <h2>Where will you go?</h2>
+        <p className="destinations__hint">Tap a destination to begin</p>
       </header>
       <div className={`destinations__grid destinations__grid--${destinations.length}`}>
-        {destinations.map((destination) => (
+        {destinations.map((destination, index) => (
           <button
             key={destination.id}
             type="button"
             className="destination-card"
             onClick={() => onSelect(destination.id)}
           >
-            <span className="destination-card__frame">
+            <span
+              className="destination-card__frame"
+              style={{ animationDelay: `${index * 0.09}s` }}
+            >
               <span
                 className="destination-card__image"
                 style={{ backgroundImage: `url(${destination.image})` }}

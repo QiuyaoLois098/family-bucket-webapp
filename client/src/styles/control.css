@@ -110,6 +110,14 @@
   line-height: 1.02;
 }
 
+.destinations__hint {
+  margin: clamp(14px, 1.8vh, 22px) 0 0;
+  color: var(--text-soft);
+  font-weight: 300;
+  font-size: clamp(1rem, 1.9vw, 1.25rem);
+  letter-spacing: 0.06em;
+}
+
 .destinations__grid {
   flex: 1;
   display: grid;
@@ -139,6 +147,18 @@
   outline: 2px solid transparent;
   outline-offset: 4px;
   transition: outline-color 0.25s ease, box-shadow 0.35s ease;
+  animation: card-wake 0.52s ease-in-out both;
+}
+
+/* One pass down the grid on arrival, hinting that the cards are tappable. */
+@keyframes card-wake {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.015);
+  }
 }
 
 .destination-card__image {
