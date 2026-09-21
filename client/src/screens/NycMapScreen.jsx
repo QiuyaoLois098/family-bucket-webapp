@@ -67,6 +67,17 @@ function featureNumber(id) {
   return String(id ?? "").replace(/^F/i, "");
 }
 
+function hotelLabel(id) {
+  return `Hotel ${String(id ?? "").replace(/^H/i, "")}`;
+}
+
+function matchCopy(result) {
+  if (!result?.matchedFeatures?.length) return "No matching features";
+  return result.matchedFeatures
+    .map((match) => featureMeta(match.feature)?.description ?? featureNumber(match.feature))
+    .join(", ");
+}
+
 function RankSelect({ value, disabled, taken, onChange, label }) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef(null);
@@ -185,7 +196,9 @@ export default function NycMapScreen() {
   if (page === "intro") {
     return (
       <main className="nyc-intro">
-        <img src="/images/nyc/skyline.png" alt="Find the hotel that best suits you" />
+        <figure className="nyc-intro__frame">
+          <img src="/images/nyc/skyline.png" alt="Find the hotel that best suits you" />
+        </figure>
         <button type="button" className="nyc-skip" onClick={() => setPage("map")}>
           Start
         </button>
@@ -200,40 +213,39 @@ export default function NycMapScreen() {
         <div className="nyc-map__wash" />
         <div className="nyc-map__vignette" />
       </div>
-      {locked.length || allChosen ? null : <p className="nyc-map__prompt">Insert a card based on your vibe</p>}
+      {allChosen && !submitted ? (
+        <button type="button" className="nyc-map__prompt nyc-submit" onClick={submitPicks}>
+          Submit
+        </button>
+      ) : submitted || locked.length || allChosen ? null : (
+        <p className="nyc-map__prompt">Insert a card based on your vibe</p>
+      )}
+
+      {recommended ? (
+        <>
+          <button type="button" className="hotel-picks__restart" onClick={restart}>
+            Restart
+          </button>
+          <section className="hotel-picks" aria-live="polite">
+            <article className="hotel-pick">
+              <h2>Your top choice</h2>
+              <img className="hotel-pick__photo" src="/images/hotels/the-plaza.jpg" alt="The Plaza" />
+              <p className="hotel-pick__name">{hotelLabel(recommended[0].hotel)}</p>
+              <p className="hotel-pick__note">{matchCopy(recommended[0])}</p>
+            </article>
+            {recommended[1] ? (
+              <article className="hotel-pick">
+                <h2>Another strong contender</h2>
+                <img className="hotel-pick__photo" src="/images/hotels/st-regis.jpg" alt="The St. Regis" />
+                <p className="hotel-pick__name">{hotelLabel(recommended[1].hotel)}</p>
+                <p className="hotel-pick__note">{matchCopy(recommended[1])}</p>
+              </article>
+            ) : null}
+          </section>
+        </>
+      ) : null}
 
       <div className="nyc-map__dock">
-        {recommended ? (
-          <section className="hotel-list" aria-live="polite">
-            <button type="button" className="hotel-list__restart" onClick={restart}>
-              Restart
-            </button>
-            <p className="hotel-list__eyebrow">Your recommendation</p>
-            <h2>Top 2 hotels</h2>
-            <ol>
-              {recommended.map((result) => (
-                <li key={result.hotel}>
-                  <strong>
-                    {result.hotel}
-                    <em>{result.score} pts</em>
-                  </strong>
-                  <span>
-                    {result.matchedFeatures.length
-                      ? result.matchedFeatures.map((match) => `${match.feature} +${match.weight}`).join(" · ")
-                      : "No matching features"}
-                  </span>
-                </li>
-              ))}
-            </ol>
-          </section>
-        ) : null}
-
-        {allChosen && !submitted ? (
-          <button type="button" className="nyc-submit" onClick={submitPicks}>
-            Submit
-          </button>
-        ) : null}
-
         <div className="hotel-cards">
           {HOTEL_CARDS.map((card) => {
             const selected = locked.includes(card.id);
