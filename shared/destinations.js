@@ -8,8 +8,8 @@ export const DESTINATIONS = [
     image: "/images/destinations/costa-rica.jpg",
     gallery: [
       "/images/destinations/costa-rica.jpg",
-      "/images/memories/water.jpg",
-      "/images/memories/forest.jpg",
+      "/images/memories/forest.png",
+      "/images/memories/drive.png",
       "/images/memories/food.jpg",
     ],
     crops: ["center 40%", "center 70%", "left center", "right 30%"],
@@ -59,9 +59,9 @@ export const DESTINATIONS = [
     image: "/images/destinations/catskills.jpg",
     gallery: [
       "/images/destinations/catskills.jpg",
-      "/images/memories/forest.jpg",
+      "/images/memories/forest.png",
       "/images/memories/food.jpg",
-      "/images/memories/night.jpg",
+      "/images/memories/drive.png",
     ],
     crops: ["center 30%", "center center", "left 40%", "center 80%"],
     palette: {
@@ -110,9 +110,9 @@ export const DESTINATIONS = [
     image: "/images/destinations/kyoto.jpg",
     gallery: [
       "/images/destinations/kyoto.jpg",
-      "/images/memories/architecture.jpg",
-      "/images/memories/water.jpg",
-      "/images/memories/food.jpg",
+      "/images/memories/sakura.png",
+      "/images/memories/sushi.png",
+      "/images/memories/drive.png",
     ],
     crops: ["center 25%", "center 60%", "right center", "left 20%"],
     palette: {
@@ -161,9 +161,9 @@ export const DESTINATIONS = [
     image: "/images/destinations/lake-como.jpg",
     gallery: [
       "/images/destinations/lake-como.jpg",
-      "/images/memories/water.jpg",
-      "/images/memories/architecture.jpg",
+      "/images/memories/drive.png",
       "/images/memories/food.jpg",
+      "/images/memories/forest.png",
     ],
     crops: ["center 45%", "right 30%", "left 50%", "center 75%"],
     palette: {
@@ -207,22 +207,22 @@ export const DESTINATIONS = [
     id: "desert",
     title: "Stargazing in the desert",
     shortTitle: "The Desert",
-    location: "The American Southwest",
-    invitation: "Silence, red earth, and a sky that goes on forever.",
+    location: "Arizona",
+    invitation: "Red rock, wide sky, and a silence that goes on forever.",
     image: "/images/destinations/desert.jpg",
     gallery: [
       "/images/destinations/desert.jpg",
-      "/images/memories/night.jpg",
-      "/images/memories/architecture.jpg",
+      "/images/memories/drive.png",
       "/images/memories/food.jpg",
+      "/images/memories/forest.png",
     ],
     crops: ["center 20%", "center 70%", "left 40%", "right 25%"],
     palette: {
-      wash: "linear-gradient(180deg, #0b1020 0%, #7a3d2a 48%, #e8c9a0 100%)",
+      wash: "linear-gradient(180deg, #2a1a12 0%, #9a4a28 48%, #e8c9a0 100%)",
       accent: "#e0a35a",
     },
     imagePromptBase:
-      "Cinematic premium travel photograph of a vast desert at blue hour into night: sculpted dunes or red-rock mesas, a clear Milky Way, a simple canvas tent or low fireglow far in the distance, immense sky. No prominent people, no text, no logos. Editorial, awe-filled.",
+      "Cinematic premium travel photograph of the Arizona desert: red sandstone mesas and buttes like Monument Valley, warm late-afternoon light, sparse scrub, immense blue sky turning gold at the horizon. Editorial Southwest travel campaign quality, no people, no text, no logos.",
     fallbackItinerary: {
       title: "Your Family Escape to the Desert",
       subtitle: "Red earth by day, and a sky that rewrites the night",
@@ -263,9 +263,9 @@ export const DESTINATIONS = [
     image: "/images/destinations/alps.jpg",
     gallery: [
       "/images/destinations/alps.jpg",
-      "/images/memories/snow.jpg",
-      "/images/memories/architecture.jpg",
+      "/images/memories/snow.png",
       "/images/memories/food.jpg",
+      "/images/memories/drive.png",
     ],
     crops: ["center 30%", "center 60%", "left 20%", "right 40%"],
     palette: {

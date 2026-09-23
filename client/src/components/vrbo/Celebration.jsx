@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-const COLORS = ["#4169d8", "#79cff3", "#8bd5f7", "#4a7be8", "#a6a6a2"];
+const COLORS = ["#3857e3", "#79cff3", "#8bd5f7", "#4a7be8", "#a6a6a2"];
 const PIECES = 34;
 
 export default function Celebration({ active }) {

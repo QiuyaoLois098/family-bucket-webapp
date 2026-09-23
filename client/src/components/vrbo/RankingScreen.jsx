@@ -69,6 +69,7 @@ function RankingPanel({ ranked, preferenceById, canFind, onReorder, onMove, onFi
                   <span className="vrbo-rank__nudge">
                     <button
                       type="button"
+                      className="vrbo-btn vrbo-btn--xs"
                       aria-label={`${copy.ranking.moveUp}: ${preference.label}`}
                       disabled={index === 0}
                       onPointerDownCapture={(event) => event.stopPropagation()}
@@ -78,6 +79,7 @@ function RankingPanel({ ranked, preferenceById, canFind, onReorder, onMove, onFi
                     </button>
                     <button
                       type="button"
+                      className="vrbo-btn vrbo-btn--xs"
                       aria-label={`${copy.ranking.moveDown}: ${preference.label}`}
                       disabled={index === ranked.length - 1}
                       onPointerDownCapture={(event) => event.stopPropagation()}
@@ -97,7 +99,12 @@ function RankingPanel({ ranked, preferenceById, canFind, onReorder, onMove, onFi
         </span>
       </div>
 
-      <button type="button" className="vrbo-rank__cta" disabled={!canFind} onClick={onFind}>
+      <button
+        type="button"
+        className="vrbo-btn vrbo-btn--lg vrbo-rank__cta"
+        disabled={!canFind}
+        onClick={onFind}
+      >
         {canFind ? copy.ranking.cta : copy.ranking.ctaLocked}
       </button>
     </motion.div>

@@ -64,9 +64,9 @@
   width: min(360px, 86vw);
   height: 100dvh;
   padding: 96px 28px 32px;
-  background: #121015;
-  color: #f7f2e8;
-  box-shadow: 18px 0 50px rgba(0, 0, 0, 0.35);
+  background: #1b1f3a;
+  color: #ffffff;
+  box-shadow: 18px 0 50px rgba(27, 31, 58, 0.45);
 }
 
 .project-menu__eyebrow {
@@ -113,7 +113,7 @@
 
 .project-menu__drawer button.is-active,
 .project-menu__drawer button:hover {
-  background: rgba(212, 179, 106, 0.16);
+  background: rgba(243, 218, 89, 0.18);
 }
 
 .preview {

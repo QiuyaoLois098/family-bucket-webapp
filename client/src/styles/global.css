@@ -1,16 +1,47 @@
+@font-face {
+  font-family: "Reckless XPD";
+  src: url("/font/expedia/RecklessXPD-Regular.otf") format("opentype");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Centra No2";
+  src: url("/font/expedia/CentraNo2-Reg.otf") format("opentype");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Travel Sans";
+  src: url("/font/expedia/TravelSans-Regular.otf") format("opentype");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  --bg-deep: #000000;
-  --bg: #0a0a0a;
-  --surface: #171614;
-  --text: #f7f4ec;
-  --text-soft: #a8a29a;
-  --gold: #d4b36a;
-  --gold-bright: #e8cd93;
-  --line: rgba(247, 244, 236, 0.16);
-  --display: #000000;
-  --white: #f7f2e8;
-  --serif: "Cormorant Garamond", "Times New Roman", serif;
-  --sans: "Outfit", "Helvetica Neue", sans-serif;
+  /* Expedia brand trio */
+  --navy: #1b1f3a;
+  --yellow: #f3da59;
+  --white: #ffffff;
+
+  --bg-deep: #141828;
+  --bg: #1b1f3a;
+  --surface: #252a4a;
+  --text: #ffffff;
+  --text-soft: rgba(255, 255, 255, 0.72);
+  --gold: #f3da59;
+  --gold-bright: #f7e48a;
+  --line: rgba(255, 255, 255, 0.18);
+  --display: #1b1f3a;
+
+  /* Hierarchy: Headline → RTB → Product */
+  --serif: "Reckless XPD", "Times New Roman", serif;
+  --sans: "Centra No2", "Helvetica Neue", sans-serif;
+  --product: "Travel Sans", "Helvetica Neue", sans-serif;
   --hand: "Caveat", "Segoe Script", cursive;
 }
 
@@ -28,13 +59,13 @@ body,
 body {
   font-family: var(--sans);
   color: var(--text);
-  background: #000;
+  background: var(--navy);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
 button {
-  font-family: inherit;
+  font-family: var(--product);
   cursor: pointer;
 }
 
@@ -85,7 +116,7 @@ button {
   font-weight: 500;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--yellow);
 }
 
 .reset-control {
@@ -101,6 +132,7 @@ button {
   text-transform: uppercase;
   font-size: 0.68rem;
   padding: 12px;
+  font-family: var(--sans);
 }
 
 .reset-control:hover,
@@ -114,7 +146,7 @@ button {
   height: 100dvh;
   min-height: 100dvh;
   overflow: hidden;
-  background: #16120e;
+  background: var(--navy);
   color: var(--white);
   padding: 24px 36px;
 }
@@ -148,14 +180,15 @@ button {
   text-transform: uppercase;
   font-size: 0.72rem;
   opacity: 0.7;
+  font-family: var(--sans);
 }
 
 .preview__frame iframe {
   width: 1080px;
   height: 1920px;
   border: 0;
-  background: #000;
+  background: var(--navy);
   transform: scale(var(--scale, 0.35));
   transform-origin: top left;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 30px 80px rgba(27, 31, 58, 0.55);
 }

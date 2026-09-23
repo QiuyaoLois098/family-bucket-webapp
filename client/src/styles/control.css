@@ -1,6 +1,6 @@
 .screen--control {
   background:
-    radial-gradient(1200px 700px at 50% -10%, rgba(212, 179, 106, 0.1), transparent 55%),
+    radial-gradient(1200px 700px at 50% -10%, rgba(243, 218, 89, 0.12), transparent 55%),
     linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
   color: var(--text);
 }
@@ -59,12 +59,15 @@
   min-width: 280px;
   min-height: 88px;
   padding: 0 48px;
-  border: 1px solid rgba(212, 179, 106, 0.55);
-  background: transparent;
-  color: var(--text);
-  letter-spacing: 0.28em;
+  border: 0;
+  border-radius: 999px;
+  background: var(--yellow);
+  color: var(--navy);
+  font-family: var(--product);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   font-size: 1.05rem;
+  font-weight: 500;
   transition: background 0.35s ease, color 0.35s ease, transform 0.25s ease;
 }
 
@@ -74,9 +77,9 @@
 .start-over-button:hover,
 .start-over-button:focus-visible,
 .start-over-button:active {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: var(--bg-deep);
+  background: var(--gold-bright);
+  border-color: transparent;
+  color: var(--navy);
   transform: translateY(-1px);
 }
 
@@ -152,18 +155,6 @@
   outline: 2px solid transparent;
   outline-offset: 4px;
   transition: outline-color 0.25s ease, box-shadow 0.35s ease;
-  animation: card-wake 1.8s ease-in-out infinite;
-}
-
-/* Soft pulse so the cards keep reading as tappable. */
-@keyframes card-wake {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.03);
-  }
 }
 
 .destination-card__image {
@@ -171,8 +162,6 @@
   inset: 0;
   background-size: cover;
   background-position: center;
-  transform: scale(1.04);
-  transition: transform 0.8s ease;
 }
 
 .destination-card__copy strong {
@@ -183,18 +172,11 @@
   transition: color 0.25s ease;
 }
 
-.destination-card:hover .destination-card__image,
-.destination-card:active .destination-card__image {
-  transform: scale(1.1);
-}
-
 .destination-card:hover .destination-card__frame,
 .destination-card:focus-visible .destination-card__frame,
 .destination-card:active .destination-card__frame {
   outline-color: var(--gold);
-  box-shadow: 0 0 34px rgba(212, 179, 106, 0.28);
-  animation-play-state: paused;
-  transform: scale(1.03);
+  box-shadow: 0 0 34px rgba(243, 218, 89, 0.28);
 }
 
 .destination-card:hover .destination-card__copy strong,
@@ -248,16 +230,12 @@
 }
 
 .question__option:hover,
-.question__option:focus-visible {
-  border-color: var(--gold);
-  background: rgba(247, 244, 236, 0.11);
-  transform: translateX(6px);
-}
-
+.question__option:focus-visible,
 .question__option:active {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: var(--bg-deep);
+  border-color: var(--yellow);
+  background: var(--yellow);
+  color: var(--navy);
+  transform: translateX(6px);
 }
 
 .question__option:disabled {
@@ -291,26 +269,27 @@
   min-width: 240px;
   min-height: 72px;
   padding: 0 42px;
-  border: 1px solid var(--line);
-  background: rgba(247, 244, 236, 0.06);
-  color: var(--text);
-  font-family: var(--serif);
-  font-size: clamp(1.7rem, 3.4vw, 2.1rem);
+  border: 0;
+  border-radius: 999px;
+  background: var(--yellow);
+  color: var(--navy);
+  font-family: var(--product);
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
   font-weight: 500;
 }
 
 .shake-button:hover,
 .shake-button:focus-visible {
-  background: var(--gold);
-  color: var(--bg-deep);
-  border-color: var(--gold);
+  background: var(--gold-bright);
+  color: var(--navy);
+  border-color: transparent;
 }
 
 .shake-globe {
   width: min(62%, 500px);
   max-height: 42vh;
   margin: clamp(40px, 6vh, 76px) auto 0;
-  filter: drop-shadow(0 0 70px rgba(212, 179, 106, 0.16)) drop-shadow(0 26px 46px rgba(0, 0, 0, 0.6));
+  filter: drop-shadow(0 0 70px rgba(243, 218, 89, 0.16)) drop-shadow(0 26px 46px rgba(0, 0, 0, 0.6));
   animation: globe-sway 5.5s ease-in-out infinite alternate;
 }
 
@@ -326,7 +305,7 @@
 .screen--control.phase-itinerary,
 .screen--control.phase-reveal {
   background:
-    radial-gradient(circle at 50% 30%, #1a1712 0%, #0d0c0a 45%, #000 100%);
+    radial-gradient(circle at 50% 30%, #252a4a 0%, #1b1f3a 45%, #141828 100%);
 }
 
 .screen--control.phase-itinerary .screen__grain,
@@ -407,10 +386,10 @@
   width: 1.5px;
   background: linear-gradient(
     180deg,
-    rgba(212, 179, 106, 0.15) 0%,
-    rgba(212, 179, 106, 0.9) 12%,
-    rgba(212, 179, 106, 0.9) 88%,
-    rgba(212, 179, 106, 0.15) 100%
+    rgba(243, 218, 89, 0.15) 0%,
+    rgba(243, 218, 89, 0.9) 12%,
+    rgba(243, 218, 89, 0.9) 88%,
+    rgba(243, 218, 89, 0.15) 100%
   );
 }
 
@@ -457,7 +436,7 @@
   width: 48px;
   height: 1.5px;
   margin: 0.75rem 0 0.9rem;
-  background: rgba(212, 179, 106, 0.7);
+  background: rgba(243, 218, 89, 0.7);
 }
 
 .schedule__copy {
@@ -483,7 +462,7 @@
   grid-template-rows: repeat(14, minmax(0, 1fr));
   gap: 0;
   background:
-    radial-gradient(circle at 50% 30%, #1a1712 0%, #0d0c0a 45%, #000 100%);
+    radial-gradient(circle at 50% 30%, #252a4a 0%, #1b1f3a 45%, #141828 100%);
 }
 
 .print,
@@ -657,20 +636,23 @@
   min-width: 200px;
   min-height: 64px;
   padding: 0 28px;
-  border: 1px solid var(--line);
-  background: rgba(247, 244, 236, 0.08);
-  color: var(--text);
-  letter-spacing: 0.22em;
+  border: 0;
+  border-radius: 999px;
+  background: var(--yellow);
+  color: var(--navy);
+  font-family: var(--product);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   font-size: 0.92rem;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+  font-weight: 500;
+  box-shadow: 0 10px 24px rgba(27, 31, 58, 0.35);
 }
 
 .wall-action:hover,
 .wall-action:active {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: var(--bg-deep);
+  background: var(--gold-bright);
+  border-color: transparent;
+  color: var(--navy);
 }
 
 .wall-action:disabled {

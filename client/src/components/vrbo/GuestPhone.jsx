@@ -79,7 +79,7 @@ export default function GuestPhone({
                   </span>
                   <button
                     type="button"
-                    className="vrbo-phone__submit"
+                    className="vrbo-btn vrbo-btn--md vrbo-phone__submit"
                     disabled={selection.length === 0}
                     onClick={() => onSubmit(user.id)}
                   >
