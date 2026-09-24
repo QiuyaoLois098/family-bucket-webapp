@@ -1,0 +1,45 @@
+{
+  "groupTitle": "Hawaii Trip 2027",
+  "groupSubtitle": "Jamie, Sarah, Alex, Chris",
+  "intro": [
+    { "authorId": "jamie", "text": "We need to lock in a place today", "pause": 1100, "typing": 900 },
+    { "authorId": "jamie", "text": "What does everyone want??", "pause": 700, "typing": 900 }
+  ],
+  "handoffPause": 900,
+  "preference": {
+    "typing": 700,
+    "stagger": 1000
+  },
+  "finale": {
+    "reveal": { "authorId": "jamie", "text": "I might've found the perfect place...", "pause": 300, "typing": 1000 },
+    "propertyAuthorId": "jamie",
+    "propertyPause": 700,
+    "reactions": [
+      {
+        "authorId": "sarah",
+        "text": "You're a magician — {name} is perfect",
+        "pause": 900,
+        "typing": 700
+      },
+      {
+        "authorId": "alex",
+        "text": "That covers {reasons}. LOVE IT BOOK IT NOW!!!",
+        "pause": 700,
+        "typing": 800
+      },
+      {
+        "authorId": "chris",
+        "text": "Yes!! Hawaii 2027 is officially happening",
+        "pause": 700,
+        "typing": 700
+      },
+      {
+        "authorId": "jamie",
+        "text": "Exactly — {reasons} for everyone. We're locked in 🔒",
+        "pause": 800,
+        "typing": 900
+      }
+    ],
+    "celebrationPause": 400
+  }
+}
