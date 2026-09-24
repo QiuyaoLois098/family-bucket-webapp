@@ -70,12 +70,12 @@ export default function GuestPhone({
   onSubmit,
 }) {
   const max = copy.maxSelections;
-  const phase = locked
-    ? "idle"
-    : !joined
-      ? canJoin
-        ? "join"
-        : "closed"
+  const phase = !joined
+    ? canJoin
+      ? "join"
+      : "closed"
+    : locked
+      ? "idle"
       : submitted
         ? "done"
         : "select";
@@ -111,8 +111,7 @@ export default function GuestPhone({
             ) : null}
 
             {phase === "join" || phase === "closed" ? (
-              <motion.div key="join" className="vrbo-v2-phone__panel vrbo-v2-phone__panel--chat" {...panelMotion}>
-                <MessageFeed messages={messages} typing={typing} userById={userById} />
+              <motion.div key="join" className="vrbo-v2-phone__panel vrbo-v2-phone__panel--join" {...panelMotion}>
                 <div className="vrbo-v2-phone__join">
                   <h4>{copy.phone.joinTitle}</h4>
                   <p>{phase === "closed" ? copy.phone.joinClosed : copy.phone.joinBody}</p>

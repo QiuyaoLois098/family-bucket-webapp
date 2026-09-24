@@ -98,7 +98,9 @@ function reducer(state, action) {
       return state.stage === action.stage ? state : { ...state, stage: action.stage };
 
     case "JOIN_USER": {
-      if (state.stage !== "selecting" || state.joined[action.userId]) return state;
+      if ((state.stage !== "intro" && state.stage !== "selecting") || state.joined[action.userId]) {
+        return state;
+      }
       return {
         ...state,
         joined: { ...state.joined, [action.userId]: true },

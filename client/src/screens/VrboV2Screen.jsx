@@ -109,7 +109,7 @@ function VrboDemo() {
                 submitted={submitted[user.id]}
                 joined={Boolean(joined[user.id])}
                 locked={stage === "intro"}
-                canJoin={stage === "selecting"}
+                canJoin={stage === "intro" || stage === "selecting"}
                 groupReady={allSubmitted}
                 messages={messages}
                 typing={typing}

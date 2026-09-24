@@ -1175,15 +1175,18 @@
 }
 
 .vrbo-v2-phone__join {
-  flex: 0 0 auto;
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 1.2cqh;
-  margin-top: auto;
   padding: 2cqh 4.5cqw 2.6cqh;
   text-align: center;
-  background: linear-gradient(180deg, rgba(243, 245, 248, 0), #f3f5f8 28%);
+}
+
+.vrbo-v2-phone__panel--join {
+  justify-content: center;
 }
 
 .vrbo-v2-phone__join h4 {
@@ -1196,7 +1199,7 @@
 
 .vrbo-v2-phone__join p {
   margin: 0;
-  max-width: 26cqw;
+  max-width: 28cqw;
   font-size: max(7px, 2.1cqh);
   line-height: 1.35;
   color: rgba(32, 32, 32, 0.58);
