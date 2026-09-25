@@ -113,7 +113,7 @@ function RankSelect({ value, disabled, taken, onChange, label }) {
         aria-label={`${label} rank`}
         onClick={() => setOpen((current) => !current)}
       >
-        <span>{value ? featureNumber(value) : "–"}</span>
+        <span>{value ? featureNumber(value) : "-"}</span>
       </button>
       {open ? (
         <ul className="hotel-rank__menu" role="listbox" aria-label={`${label} features`}>

@@ -12,7 +12,7 @@ export default function DebugPanel({ role, state, connected, actions }) {
         </div>
         <div>
           <dt>destination</dt>
-          <dd>{state.destination || "—"}</dd>
+          <dd>{state.destination || "-"}</dd>
         </div>
         <div>
           <dt>question</dt>
@@ -20,7 +20,7 @@ export default function DebugPanel({ role, state, connected, actions }) {
         </div>
         <div>
           <dt>answers</dt>
-          <dd>{state.answers.length ? state.answers.join(", ") : "—"}</dd>
+          <dd>{state.answers.length ? state.answers.join(", ") : "-"}</dd>
         </div>
         <div>
           <dt>image</dt>

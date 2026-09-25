@@ -3,6 +3,6 @@
   "explicitWeights": [3, 2, 1],
   "minimumWeight": 1,
   "unmatchedWeight": 0,
-  "resultCount": 2,
-  "resultBadges": ["Best match", "Runner up"]
+  "resultCount": 3,
+  "resultBadges": ["01", "02", "03"]
 }

@@ -175,7 +175,7 @@ export default function useVrboExperience() {
 
   useEffect(() => clearTimers, [clearTimers]);
 
-  // Stage 1 — scripted intro conversation, then hand off to the phones.
+  // Stage 1 - scripted intro conversation, then hand off to the phones.
   useEffect(() => {
     let offset = 0;
     const ids = [];

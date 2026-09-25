@@ -17,7 +17,7 @@
     "reactions": [
       {
         "authorId": "sarah",
-        "text": "You're a magician — {name} is perfect",
+        "text": "You're a magician - {name} is perfect",
         "pause": 900,
         "typing": 700
       },
@@ -35,7 +35,7 @@
       },
       {
         "authorId": "jamie",
-        "text": "Exactly — {reasons} for everyone. We're locked in 🔒",
+        "text": "Exactly - {reasons} for everyone. We're locked in 🔒",
         "pause": 800,
         "typing": 900
       }

@@ -1,4 +1,4 @@
-/* Vrbo v2 group-trip installation — five simulated displays in one window. */
+/* Vrbo v2 group-trip installation - five simulated displays in one window. */
 
 @font-face {
   font-family: "Albra Sans";
@@ -500,6 +500,125 @@
   background: var(--warm-white);
 }
 
+.vrbo-v2-summary {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.8vh, 22px);
+  padding: clamp(18px, 3vh, 36px) clamp(18px, 2vw, 34px) clamp(16px, 2.4vh, 28px);
+  background: #f7f4ef;
+  color: var(--charcoal);
+}
+
+.vrbo-v2-summary--compact {
+  position: relative;
+  inset: auto;
+  height: 100%;
+  gap: 1.6cqh;
+  padding: 1.6cqh 4.5cqw 2.4cqh;
+}
+
+.vrbo-v2-summary__brand {
+  display: block;
+  width: clamp(72px, 10vw, 120px);
+  height: auto;
+  margin: 0;
+}
+
+.vrbo-v2-summary--compact .vrbo-v2-summary__brand {
+  width: max(52px, 18cqw);
+}
+
+.vrbo-v2-summary__title {
+  margin: 0;
+  font-family: var(--vrbo-v2-sans);
+  font-size: clamp(1.35rem, 3.6vh, 2.35rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: #1a2a55;
+}
+
+.vrbo-v2-summary--compact .vrbo-v2-summary__title {
+  font-size: max(11px, 3.6cqh);
+}
+
+.vrbo-v2-summary__box {
+  flex: 1;
+  min-height: 0;
+  padding: clamp(14px, 2vh, 22px);
+  border: 1.5px solid var(--blue);
+  border-radius: 18px;
+  background: #ffffff;
+  overflow-y: auto;
+}
+
+.vrbo-v2-summary--compact .vrbo-v2-summary__box {
+  padding: 2cqh 3.4cqw;
+  border-radius: 12px;
+}
+
+.vrbo-v2-summary__box p {
+  margin: 0;
+  font-family: var(--vrbo-v2-content);
+  font-size: clamp(0.95rem, 2.1vh, 1.25rem);
+  line-height: 1.45;
+  color: #1a2a55;
+}
+
+.vrbo-v2-summary--compact .vrbo-v2-summary__box p {
+  font-size: max(8px, 2.3cqh);
+  line-height: 1.4;
+}
+
+.vrbo-v2-summary__search {
+  flex: 0 0 auto;
+  width: 100%;
+  border: 0;
+  border-radius: 999px;
+  padding: clamp(14px, 2vh, 20px);
+  background: var(--blue);
+  color: #ffffff;
+  font-family: var(--vrbo-v2-sans);
+  font-size: clamp(1rem, 2.2vh, 1.35rem);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+}
+
+.vrbo-v2-summary--compact .vrbo-v2-summary__search {
+  border-radius: 999px;
+  padding: 2cqh 0;
+  font-size: max(10px, 3.2cqh);
+}
+
+.vrbo-v2-summary__footer {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(0.72rem, 1.4vh, 0.9rem);
+  color: rgba(32, 32, 32, 0.45);
+}
+
+.vrbo-v2-summary--compact .vrbo-v2-summary__footer {
+  font-size: max(6px, 1.8cqh);
+}
+
+.vrbo-v2-phone__panel--summary {
+  padding: 0;
+  min-height: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.vrbo-v2-phone__panel--summary .vrbo-v2-summary {
+  flex: 1;
+}
+
+.vrbo-v2-phone__screen.is-summary {
+  background: #f7f4ef;
+}
+
 .vrbo-v2-rank__panel {
   position: absolute;
   inset: 0;
@@ -564,6 +683,63 @@
   max-width: 16ch;
 }
 
+.vrbo-v2-rank__panel--brand {
+  align-items: flex-start;
+  justify-content: center;
+  text-align: left;
+  padding: clamp(28px, 5vh, 56px) clamp(28px, 4vw, 64px);
+}
+
+.vrbo-v2-rank__brand-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(10px, 1.6vh, 18px);
+  max-width: min(18ch, 92%);
+}
+
+.vrbo-v2-rank__brand-logo {
+  display: block;
+  width: clamp(88px, 12vw, 148px);
+  height: auto;
+  margin-bottom: clamp(6px, 1vh, 14px);
+  mix-blend-mode: screen;
+}
+
+.vrbo-v2-rank__panel--brand h2 {
+  margin: 0;
+  max-width: 12ch;
+  font-family: var(--vrbo-v2-sans);
+  font-size: clamp(1.65rem, 4.8vh, 3.1rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.vrbo-v2-rank__panel--brand .vrbo-v2-rank__lede {
+  margin: 0;
+  font-family: var(--vrbo-v2-content);
+  font-size: clamp(0.85rem, 1.8vh, 1.15rem);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.vrbo-v2-rank__panel--brand.is-loading {
+  align-items: center;
+  text-align: center;
+}
+
+.vrbo-v2-rank__panel--brand.is-loading .vrbo-v2-rank__brand-copy {
+  align-items: center;
+  max-width: 18ch;
+  text-align: center;
+}
+
+.vrbo-v2-rank__panel--brand.is-loading h2 {
+  max-width: 16ch;
+}
+
 .vrbo-v2-rank__spinner {
   display: block;
   width: clamp(36px, 4.5vw, 52px);
@@ -600,7 +776,392 @@
   }
 }
 
-/* Ranked list — top of the column is the group's highest priority. */
+/* Ranked list - top of the column is the group's highest priority. */
+
+.vrbo-v2-rank__panel--showcase {
+  padding: 0;
+  overflow: hidden;
+}
+
+.vrbo-v2-showcase {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, 0.8vh, 10px);
+  padding: clamp(14px, 2.2vh, 26px) clamp(16px, 1.8vw, 30px) clamp(10px, 1.4vh, 16px);
+  overflow: hidden;
+  background: #f7f4ef;
+  color: var(--charcoal);
+}
+
+.vrbo-v2-showcase__logo {
+  display: block;
+  width: clamp(64px, 8vw, 100px);
+  height: auto;
+  flex: 0 0 auto;
+}
+
+.vrbo-v2-showcase__title {
+  margin: 0;
+  max-width: 18ch;
+  font-family: var(--vrbo-v2-sans);
+  font-size: clamp(1.15rem, 3.2vh, 2.1rem);
+  font-weight: 700;
+  line-height: 1.12;
+  color: #1a2a55;
+}
+
+.vrbo-v2-showcase__lede {
+  margin: 0;
+  font-family: var(--vrbo-v2-content);
+  font-size: clamp(0.72rem, 1.5vh, 0.95rem);
+  color: rgba(32, 32, 32, 0.55);
+}
+
+.vrbo-v2-showcase__hero {
+  flex: 0 0 auto;
+  width: 100%;
+  height: clamp(88px, 16vh, 160px);
+  margin-top: clamp(4px, 0.8vh, 10px);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.vrbo-v2-showcase__hero img,
+.vrbo-v2-showcase__thumb-img img,
+.vrbo-v2-picker__hero img,
+.vrbo-v2-picker__thumb-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.vrbo-v2-showcase__name {
+  margin: clamp(4px, 0.7vh, 8px) 0 0;
+  font-family: var(--vrbo-v2-sans);
+  font-size: clamp(1.05rem, 2.6vh, 1.7rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: #121212;
+}
+
+.vrbo-v2-showcase__place {
+  margin: 0;
+  font-size: clamp(0.7rem, 1.4vh, 0.9rem);
+  color: rgba(32, 32, 32, 0.5);
+}
+
+.vrbo-v2-showcase__cols {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: clamp(10px, 1.4vw, 24px);
+  margin-top: clamp(2px, 0.5vh, 6px);
+}
+
+.vrbo-v2-showcase__label {
+  margin: 0 0 2px;
+  font-size: clamp(0.62rem, 1.2vh, 0.78rem);
+  font-weight: 600;
+  color: rgba(32, 32, 32, 0.45);
+}
+
+.vrbo-v2-showcase__about {
+  margin: 0;
+  font-family: var(--vrbo-v2-content);
+  font-size: clamp(0.72rem, 1.45vh, 0.92rem);
+  line-height: 1.35;
+  color: #1a2a55;
+}
+
+.vrbo-v2-showcase__highlights {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: clamp(0.72rem, 1.45vh, 0.92rem);
+  color: var(--blue);
+  font-weight: 600;
+}
+
+.vrbo-v2-showcase__rating {
+  margin: clamp(4px, 0.8vh, 10px) 0 0;
+  align-self: flex-start;
+  padding: 0.45em 1em;
+  border-radius: 999px;
+  background: rgba(56, 87, 227, 0.12);
+  color: var(--blue);
+  font-size: clamp(0.72rem, 1.45vh, 0.92rem);
+  font-weight: 600;
+}
+
+.vrbo-v2-showcase__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(10px, 1.6vw, 28px);
+  margin: clamp(2px, 0.5vh, 6px) 0 0;
+  font-family: var(--vrbo-v2-sans);
+  font-size: clamp(0.78rem, 1.6vh, 1rem);
+  font-weight: 700;
+  color: #121212;
+}
+
+.vrbo-v2-showcase__status {
+  margin: auto 0 0;
+  font-size: clamp(0.62rem, 1.2vh, 0.78rem);
+  color: rgba(32, 32, 32, 0.45);
+}
+
+.vrbo-v2-showcase__thumbs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(6px, 0.8vw, 12px);
+}
+
+.vrbo-v2-showcase__thumb {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  background: #ffffff;
+}
+
+.vrbo-v2-showcase__thumb.is-active {
+  border-color: var(--blue);
+}
+
+.vrbo-v2-showcase__thumb-img {
+  height: clamp(36px, 6.5vh, 64px);
+  overflow: hidden;
+}
+
+.vrbo-v2-showcase__thumb span {
+  display: block;
+  padding: 0 6px 6px;
+  font-size: clamp(0.55rem, 1.1vh, 0.72rem);
+  font-weight: 600;
+  color: var(--blue);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vrbo-v2-showcase__disclaimer {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(0.5rem, 1vh, 0.68rem);
+  color: rgba(32, 32, 32, 0.35);
+}
+
+/* Jamie phone stay picker */
+
+.vrbo-v2-phone__panel--results {
+  padding: 0;
+  min-height: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.vrbo-v2-phone__screen.is-results {
+  background: #ffffff;
+}
+
+.vrbo-v2-picker {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 1vh, 12px);
+  height: 100%;
+  min-height: 0;
+  padding: clamp(10px, 1.6vh, 18px) clamp(12px, 1.4vw, 22px) clamp(8px, 1.2vh, 14px);
+  overflow-y: auto;
+  background: #ffffff;
+  color: var(--charcoal);
+  scrollbar-width: none;
+}
+
+.vrbo-v2-picker::-webkit-scrollbar {
+  display: none;
+}
+
+.vrbo-v2-picker--compact {
+  gap: 1.1cqh;
+  padding: 1.2cqh 4cqw 1.4cqh;
+}
+
+.vrbo-v2-picker__logo {
+  display: block;
+  width: clamp(56px, 7vw, 88px);
+  height: auto;
+}
+
+.vrbo-v2-picker--compact .vrbo-v2-picker__logo {
+  width: max(40px, 16cqw);
+}
+
+.vrbo-v2-picker__meta {
+  margin: 0;
+  font-size: clamp(0.65rem, 1.3vh, 0.82rem);
+  color: rgba(32, 32, 32, 0.45);
+}
+
+.vrbo-v2-picker--compact .vrbo-v2-picker__meta {
+  font-size: max(6px, 1.8cqh);
+}
+
+.vrbo-v2-picker__prompt {
+  margin: 0;
+  font-family: var(--vrbo-v2-sans);
+  font-size: clamp(0.95rem, 2vh, 1.25rem);
+  font-weight: 700;
+  color: #121212;
+}
+
+.vrbo-v2-picker--compact .vrbo-v2-picker__prompt {
+  font-size: max(9px, 2.8cqh);
+}
+
+.vrbo-v2-picker__thumbs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(6px, 0.8vw, 10px);
+}
+
+.vrbo-v2-picker__thumb {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.vrbo-v2-picker__thumb.is-selected {
+  border-color: var(--blue);
+}
+
+.vrbo-v2-picker__thumb:disabled {
+  cursor: default;
+}
+
+.vrbo-v2-picker__thumb-img {
+  height: clamp(40px, 7vh, 68px);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.vrbo-v2-picker--compact .vrbo-v2-picker__thumb-img {
+  height: 7.5cqh;
+  border-radius: 6px;
+}
+
+.vrbo-v2-picker__thumb span {
+  font-size: clamp(0.58rem, 1.15vh, 0.72rem);
+  font-weight: 600;
+  color: var(--blue);
+}
+
+.vrbo-v2-picker--compact .vrbo-v2-picker__thumb span {
+  font-size: max(5px, 1.6cqh);
+}
+
+.vrbo-v2-picker__hero {
+  width: 100%;
+  height: clamp(90px, 16vh, 150px);
+  border-radius: 12px;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+
+.vrbo-v2-picker--compact .vrbo-v2-picker__hero {
+  height: 16cqh;
+  border-radius: 8px;
+}
+
+.vrbo-v2-picker__name {
+  margin: 0;
+  font-family: var(--vrbo-v2-sans);
+  font-size: clamp(1rem, 2.2vh, 1.4rem);
+  font-weight: 700;
+  color: #121212;
+}
+
+.vrbo-v2-picker--compact .vrbo-v2-picker__name {
+  font-size: max(9px, 2.8cqh);
+}
+
+.vrbo-v2-picker__about,
+.vrbo-v2-picker__stats,
+.vrbo-v2-picker__highlights {
+  margin: 0;
+  font-family: var(--vrbo-v2-content);
+  font-size: clamp(0.68rem, 1.35vh, 0.86rem);
+  line-height: 1.35;
+  color: #1a2a55;
+}
+
+.vrbo-v2-picker--compact .vrbo-v2-picker__about,
+.vrbo-v2-picker--compact .vrbo-v2-picker__stats,
+.vrbo-v2-picker--compact .vrbo-v2-picker__highlights {
+  font-size: max(6px, 1.7cqh);
+}
+
+.vrbo-v2-picker__rating {
+  margin: 0;
+  font-size: clamp(0.68rem, 1.35vh, 0.86rem);
+  font-weight: 600;
+  color: var(--blue);
+}
+
+.vrbo-v2-picker--compact .vrbo-v2-picker__rating {
+  font-size: max(6px, 1.7cqh);
+}
+
+.vrbo-v2-picker__share {
+  margin-top: auto;
+  width: 100%;
+  border: 0;
+  border-radius: 999px;
+  padding: clamp(10px, 1.6vh, 14px);
+  background: var(--blue);
+  color: #ffffff;
+  font-family: var(--vrbo-v2-sans);
+  font-size: clamp(0.82rem, 1.7vh, 1.05rem);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.vrbo-v2-picker__share:disabled {
+  opacity: 0.72;
+  cursor: default;
+}
+
+.vrbo-v2-picker--compact .vrbo-v2-picker__share {
+  padding: 1.8cqh 0;
+  font-size: max(8px, 2.4cqh);
+}
+
+.vrbo-v2-picker__nav {
+  display: flex;
+  justify-content: space-around;
+  padding-top: 4px;
+  font-size: clamp(0.58rem, 1.15vh, 0.72rem);
+  color: rgba(32, 32, 32, 0.4);
+}
+
+.vrbo-v2-picker--compact .vrbo-v2-picker__nav {
+  font-size: max(5px, 1.5cqh);
+}
 
 .vrbo-v2-rank__stack {
   display: flex;
@@ -1124,6 +1685,30 @@
   gap: 1.6cqh;
   padding: 2cqh 4.5cqw 1.6cqh;
   scrollbar-width: none;
+}
+
+.vrbo-v2-phone__feed.is-live {
+  gap: 1.4cqh;
+}
+
+.vrbo-v2-phone__property {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6cqh;
+  min-width: 0;
+}
+
+.vrbo-v2-phone__property .vrbo-v2-property {
+  width: 100%;
+}
+
+.vrbo-v2-phone__composer.is-readonly {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.vrbo-v2-phone__composer.is-readonly .vrbo-v2-phone__autofill {
+  display: none;
 }
 
 .vrbo-v2-phone__feed::-webkit-scrollbar {

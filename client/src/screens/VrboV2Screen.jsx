@@ -38,14 +38,12 @@ function VrboDemo() {
     joined,
     selections,
     submitted,
-    ranked,
+    summaryText,
     results,
+    previewPropertyId,
     selectedPropertyId,
     celebrating,
   } = state;
-
-  const joinedCount = joinedUsers.length;
-  const submittedCount = joinedUsers.filter((user) => Boolean(submitted[user.id])).length;
 
   const propertyLookup = useMemo(() => {
     const byId = new Map(results.map((result) => [result.property.id, result]));
@@ -84,12 +82,10 @@ function VrboDemo() {
             <div className="vrbo-v2-display__body">
               <RankingScreen
                 stage={stage}
-                ranked={ranked}
+                summaryText={summaryText}
                 results={results}
-                preferenceById={preferenceById}
-                submittedCount={submittedCount}
-                guestCount={joinedCount}
                 allSubmitted={allSubmitted}
+                previewPropertyId={previewPropertyId}
                 selectedPropertyId={selectedPropertyId}
                 actions={actions}
               />
@@ -110,6 +106,11 @@ function VrboDemo() {
                 joined={Boolean(joined[user.id])}
                 locked={stage === "intro"}
                 canJoin={stage === "intro" || stage === "selecting"}
+                stage={stage}
+                summaryText={summaryText}
+                results={results}
+                previewPropertyId={previewPropertyId}
+                selectedPropertyId={selectedPropertyId}
                 groupReady={allSubmitted}
                 messages={messages}
                 typing={typing}
@@ -117,6 +118,10 @@ function VrboDemo() {
                 onJoin={actions.joinGuest}
                 onToggle={actions.togglePreference}
                 onSubmit={actions.submitGuest}
+                onSearch={actions.searchStays}
+                onPreview={actions.previewProperty}
+                onShare={actions.selectProperty}
+                propertyLookup={propertyLookup}
               />
             ))}
           </div>

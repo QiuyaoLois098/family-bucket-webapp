@@ -7,9 +7,9 @@ import rankingWeights from "../data/vrbo-v2/rankingWeights.json";
 import users from "../data/vrbo-v2/users.json";
 import { rankProperties } from "../utils/rankProperties.js";
 
-export const STAGES = ["intro", "selecting", "ranking", "results"];
+export const STAGES = ["intro", "selecting", "summary", "results"];
 
-/** All four phones — planner + guests — pick preferences in v2. */
+/** All four phones - planner + guests - pick preferences in v2. */
 export const guests = users;
 export const planner = users.find((user) => user.role === "coordinator") ?? users[0];
 
@@ -35,8 +35,10 @@ function createInitialState(runId = 0) {
     joined: emptyMap(() => false),
     selections: emptyMap(() => []),
     submitted: emptyMap(() => null),
-    ranked: [],
+    priorities: [],
+    summaryText: "",
     results: [],
+    previewPropertyId: null,
     selectedPropertyId: null,
     celebrating: false,
   };
@@ -56,6 +58,34 @@ function aggregatePreferences(submitted, joined) {
     if (byCount !== 0) return byCount;
     return (preferenceOrder.get(a) ?? 0) - (preferenceOrder.get(b) ?? 0);
   });
+}
+
+function listPhrase(items) {
+  if (!items.length) return "everything the group asked for";
+  if (items.length === 1) return items[0];
+  if (items.length === 2) return `${items[0]} and ${items[1]}`;
+  return `${items.slice(0, -1).join(", ")}, and ${items.at(-1)}`;
+}
+
+export function buildSummaryText(priorities) {
+  const phrases = copy.summary?.phrases ?? {};
+  const destination = copy.summary?.destination ?? "Hawaii";
+  const parts = priorities
+    .slice(0, 4)
+    .map((id) => phrases[id] ?? preferenceById.get(id)?.label?.toLowerCase())
+    .filter(Boolean);
+
+  if (!parts.length) {
+    return `Let's find a ${destination} stay the whole group will love.`;
+  }
+
+  if (parts.length === 1) {
+    return `Let's find a ${destination} stay with ${parts[0]}.`;
+  }
+
+  const lead = parts.slice(0, -1);
+  const last = parts.at(-1);
+  return `Let's find a ${destination} stay with ${listPhrase(lead)}. ${last.charAt(0).toUpperCase()}${last.slice(1)} would be great too.`;
 }
 
 function formatReasons(matched) {
@@ -125,39 +155,39 @@ function reducer(state, action) {
         submitted: { ...state.submitted, [action.userId]: action.preferences },
       };
 
-    case "OPEN_RANKING":
+    case "OPEN_SUMMARY": {
+      const priorities = aggregatePreferences(state.submitted, state.joined);
       return {
         ...state,
-        stage: "ranking",
-        ranked: state.ranked.length ? state.ranked : aggregatePreferences(state.submitted, state.joined),
+        stage: "summary",
+        priorities,
+        summaryText: buildSummaryText(priorities),
       };
-
-    case "SET_RANKED":
-      return { ...state, ranked: action.ranked };
-
-    case "MOVE_RANKED": {
-      const index = state.ranked.indexOf(action.preferenceId);
-      const target = index + action.offset;
-      if (index < 0 || target < 0 || target >= state.ranked.length) return state;
-      const ranked = [...state.ranked];
-      ranked.splice(target, 0, ranked.splice(index, 1)[0]);
-      return { ...state, ranked };
     }
 
-    case "SHOW_RESULTS":
+    case "SHOW_RESULTS": {
+      const results = rankProperties(properties, state.priorities, rankingWeights);
       return {
         ...state,
         stage: "results",
-        results: rankProperties(properties, state.ranked, rankingWeights),
+        results,
+        previewPropertyId: results[0]?.property.id ?? null,
         selectedPropertyId: null,
         celebrating: false,
       };
+    }
+
+    case "PREVIEW_PROPERTY":
+      if (state.stage !== "results" || state.selectedPropertyId) return state;
+      if (!state.results.some((result) => result.property.id === action.propertyId)) return state;
+      return { ...state, previewPropertyId: action.propertyId };
 
     case "SELECT_PROPERTY":
       if (state.stage !== "results" || state.selectedPropertyId) return state;
       if (!state.results.some((result) => result.property.id === action.propertyId)) return state;
       return {
         ...state,
+        previewPropertyId: action.propertyId,
         selectedPropertyId: action.propertyId,
       };
 
@@ -191,7 +221,7 @@ export default function useVrboV2Experience() {
 
   useEffect(() => clearTimers, [clearTimers]);
 
-  // Stage 1 — scripted intro conversation, then hand off to the phones.
+  // Stage 1 - scripted intro conversation, then hand off to the phones.
   useEffect(() => {
     let offset = 0;
     const ids = [];
@@ -226,11 +256,11 @@ export default function useVrboV2Experience() {
     [joinedUsers, state.submitted],
   );
 
-  // Ranking opens once everyone who joined has sent their picks.
+  // Summary opens once everyone who joined has sent their picks.
   useEffect(() => {
     if (!allSubmitted || state.stage !== "selecting") return undefined;
     const settle = (chatScript.preference.typing ?? 700) + (chatScript.preference.stagger ?? 800);
-    const id = schedule(() => dispatch({ type: "OPEN_RANKING" }), settle);
+    const id = schedule(() => dispatch({ type: "OPEN_SUMMARY" }), settle);
     return () => clearTimeout(id);
   }, [allSubmitted, state.stage, schedule]);
 
@@ -253,7 +283,10 @@ export default function useVrboV2Experience() {
 
       const { typing = 700 } = chatScript.preference;
       const text = picks
-        .map((preferenceId) => preferenceById.get(preferenceId)?.chatLine ?? preferenceId)
+        .map((preferenceId) => {
+          const preference = preferenceById.get(preferenceId);
+          return preference?.chatLines?.[userId] ?? preference?.chatLine ?? preferenceId;
+        })
         .join("\n");
 
       schedule(() => dispatch({ type: "SET_TYPING", userId }), 0);
@@ -271,12 +304,14 @@ export default function useVrboV2Experience() {
     [schedule],
   );
 
-  const setRanked = useCallback((ranked) => dispatch({ type: "SET_RANKED", ranked }), []);
-  const moveRanked = useCallback(
-    (preferenceId, offset) => dispatch({ type: "MOVE_RANKED", preferenceId, offset }),
-    [],
-  );
-  const findStay = useCallback(() => dispatch({ type: "SHOW_RESULTS" }), []);
+  const searchStays = useCallback(() => {
+    if (stateRef.current.stage !== "summary") return;
+    dispatch({ type: "SHOW_RESULTS" });
+  }, []);
+
+  const previewProperty = useCallback((propertyId) => {
+    dispatch({ type: "PREVIEW_PROPERTY", propertyId });
+  }, []);
 
   const selectProperty = useCallback(
     (propertyId) => {
@@ -352,9 +387,8 @@ export default function useVrboV2Experience() {
       joinGuest,
       togglePreference,
       submitGuest,
-      setRanked,
-      moveRanked,
-      findStay,
+      searchStays,
+      previewProperty,
       selectProperty,
       reset,
     },

@@ -19,7 +19,7 @@
     "waitingSubtitle": "Waiting for everyone's picks...",
     "waitingHint": "Each guest is choosing what they need on their own phone.",
     "loadingTitle": "Pulling it all together",
-    "loadingSubtitle": "Everyone's in — building your shared priorities...",
+    "loadingSubtitle": "Everyone's in - building your shared priorities...",
     "loadingHint": "Hang tight for a moment",
     "title": "What matters most to us?",
     "instruction": "Drag to rank your group's priorities",
@@ -31,7 +31,7 @@
     "moveDown": "Move lower",
     "resultsTitle": "Your top two stays",
     "resultsSubtitle": "Tap a stay to send it to the group chat",
-    "resultsPickedSubtitle": "Sent to the group — watch Display 1",
+    "resultsPickedSubtitle": "Sent to the group - watch Display 1",
     "matchLabel": "match"
   },
   "phone": {

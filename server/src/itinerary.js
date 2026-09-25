@@ -104,5 +104,5 @@ Rules:
 - Exactly 4 moments with those times.
 - Warm, editorial travel writing. No marketing clichés like "hidden gem" overuse.
 - Do not describe what the family looks like.
-- Keep titles to 2–5 words.`;
+- Keep titles to 2-5 words.`;
 }

@@ -78,7 +78,7 @@ export const DESTINATIONS = [
           time: "Morning",
           title: "Trail Above the Creek",
           description:
-            "A leaf-strewn path follows cold water through hemlock and birch. Stop where the creek pools — the kind of place that makes everyone walk a little slower.",
+            "A leaf-strewn path follows cold water through hemlock and birch. Stop where the creek pools - the kind of place that makes everyone walk a little slower.",
         },
         {
           time: "Afternoon",
@@ -129,7 +129,7 @@ export const DESTINATIONS = [
           time: "Morning",
           title: "Temple Garden",
           description:
-            "Arrive before the lanes fill. Petals rest on moss and pond water. Walk slowly — Kyoto rewards the unhurried.",
+            "Arrive before the lanes fill. Petals rest on moss and pond water. Walk slowly - Kyoto rewards the unhurried.",
         },
         {
           time: "Afternoon",

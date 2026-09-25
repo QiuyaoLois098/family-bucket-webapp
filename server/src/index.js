@@ -37,6 +37,6 @@ server.listen(config.port, () => {
   console.log(`Screen A (control):  http://localhost:${config.port}/control`);
   console.log(`Screen B (display):  http://localhost:${config.port}/display`);
   if (!config.openaiApiKey) {
-    console.warn("OPENAI_API_KEY is not set — using local fallback images and itineraries.");
+    console.warn("OPENAI_API_KEY is not set - using local fallback images and itineraries.");
   }
 });

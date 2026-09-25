@@ -9,32 +9,55 @@
   },
   "screenLabels": {
     "chat": "Display 1 · Group Chat",
-    "ranking": "Display 2 · Group Priorities"
+    "ranking": "Display 2 · Group Search"
   },
   "chat": {
     "typingLabel": "typing"
   },
   "ranking": {
-    "waitingTitle": "What matters most to everyone?",
-    "waitingSubtitle": "Waiting for everyone's picks...",
-    "waitingHint": "Anyone can Join on a phone. Ranking starts when every joiner has submitted.",
-    "waitingJoinSubtitle": "Waiting for people to join...",
-    "waitingJoinHint": "Tap Join on any phone — 2, 3, or all 4.",
+    "waitingTitle": "Great trips start with a conversation.",
+    "waitingSubtitle": "Your group is planning...",
     "loadingTitle": "Pulling it all together",
-    "loadingSubtitle": "Everyone's in — building your shared priorities...",
+    "loadingSubtitle": "Everyone's in - writing your group summary...",
     "loadingHint": "Hang tight for a moment",
-    "title": "What matters most to us?",
-    "instruction": "Drag to rank your group's priorities",
-    "mostImportant": "Most important",
-    "lessImportant": "Less important",
-    "cta": "Find Our Stay",
-    "ctaLocked": "Waiting for everyone",
-    "moveUp": "Move higher",
-    "moveDown": "Move lower",
-    "resultsTitle": "Your top two stays",
-    "resultsSubtitle": "Tap a stay to send it to the group chat",
-    "resultsPickedSubtitle": "Sent to the group — watch Display 1",
+    "resultsTitle": "Hawaii stays for your whole crew - dog included.",
+    "resultsSubtitle": "Three picks for pool mornings and time together.",
+    "resultsPickedSubtitle": "Shared to the group - watch Display 1",
+    "resultsStatus": "{index} of {total} · Selected on Jamie's phone",
+    "resultsStatusIdle": "{index} of {total}",
+    "resultsDisclaimer": "Fictional demo listings · Illustrative photos, ratings and prices.",
+    "aboutLabel": "About this property",
+    "highlightsLabel": "Highlights",
+    "ratingLine": "{rating} Guest rating · {label}",
     "matchLabel": "match"
+  },
+  "summary": {
+    "brand": "Vrbo",
+    "title": "Describe a stay your whole group would love.",
+    "footer": "Your words. Your group's next getaway.",
+    "search": "Search",
+    "destination": "Hawaii",
+    "phrases": {
+      "private-pool": "a private pool",
+      "pet-friendly": "a dog-friendly welcome",
+      "full-kitchen": "a full kitchen for breakfast",
+      "sunset-views": "sunset views",
+      "beach-access": "easy beach access",
+      "outdoor-hangouts": "outdoor hangouts with a grill",
+      "walkable-location": "a walkable location",
+      "plenty-of-bedrooms": "room for the whole crew"
+    }
+  },
+  "stayPicker": {
+    "meta": "Hawaii · {count} stays",
+    "prompt": "Tap a stay to preview",
+    "selected": "{index} · Selected",
+    "index": "{index}",
+    "share": "Share to Hawaii Trip 2027",
+    "shared": "Shared to the trip",
+    "navExplore": "Explore",
+    "navSaved": "Saved",
+    "navTrips": "Trips"
   },
   "phone": {
     "idleSubtitle": "Hang tight...",
@@ -44,7 +67,7 @@
     "joinClosed": "Planning already started",
     "promptTitle": "What matters to you? Choose two.",
     "composerPlaceholder": "iMessage",
-    "autofillLabel": "Auto-filled — {count} messages",
+    "autofillLabel": "Auto-filled - {count} messages",
     "autofillEmpty": "Tap chips to draft your messages",
     "counter": "{count} of {max}",
     "submit": "Send",
@@ -52,7 +75,8 @@
     "doneTitle": "You're all set",
     "doneSubtitle": "Sent to the group",
     "doneWaiting": "Waiting for the others...",
-    "doneReady": "Now rank them together on the big screen",
+    "doneReady": "Jamie is searching for stays",
+    "watchPlaceholder": "Viewing group chat",
     "plannerBadge": "Planner"
   }
 }

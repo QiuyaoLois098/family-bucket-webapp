@@ -1,7 +1,11 @@
+import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import chatScript from "../../data/vrbo-v2/chatScript.json";
 import copy from "../../data/vrbo-v2/copy.json";
 import PreferenceCard from "./PreferenceCard.jsx";
+import PropertyCard from "./PropertyCard.jsx";
+import { SummaryPanel } from "./RankingScreen.jsx";
+import { StayPicker } from "./StayViews.jsx";
 
 const panelMotion = {
   initial: { opacity: 0, y: 16 },
@@ -29,14 +33,43 @@ function PhoneBubble({ user, text, isPlanner }) {
   );
 }
 
-function MessageFeed({ messages, typing, userById, children }) {
-  const visibleMessages = (messages ?? []).filter((message) => message.kind !== "property").slice(-4);
+function MessageFeed({ messages, typing, userById, propertyLookup, live = false, children }) {
+  const feedRef = useRef(null);
+  const visibleMessages = live
+    ? messages ?? []
+    : (messages ?? []).filter((message) => message.kind !== "property").slice(-4);
+
+  useEffect(() => {
+    if (!live) return;
+    const node = feedRef.current;
+    if (!node) return;
+    node.scrollTo({ top: node.scrollHeight, behavior: "smooth" });
+  }, [live, messages?.length, typing?.length]);
 
   return (
-    <div className="vrbo-v2-phone__feed">
+    <div className={`vrbo-v2-phone__feed ${live ? "is-live" : ""}`} ref={feedRef}>
       {visibleMessages.map((message) => {
         const author = userById[message.authorId];
         if (!author) return null;
+        const entry = propertyLookup?.(message.propertyId);
+        if (message.kind === "property" && entry) {
+          return (
+            <div key={message.id} className="vrbo-v2-phone__property">
+              <p className="vrbo-v2-phone__bubble-author">
+                {author.name}
+                {author.role === "coordinator" ? (
+                  <span> · {copy.phone.plannerBadge}</span>
+                ) : null}
+              </p>
+              <PropertyCard
+                property={entry.property}
+                variant="chat"
+                matched={entry.matched ?? []}
+                matchPercent={entry.matchPercent ?? null}
+              />
+            </div>
+          );
+        }
         return (
           <PhoneBubble
             key={message.id}
@@ -52,6 +85,24 @@ function MessageFeed({ messages, typing, userById, children }) {
   );
 }
 
+function ReadonlyComposer() {
+  return (
+    <div className="vrbo-v2-phone__composer is-readonly">
+      <div className="vrbo-v2-phone__composer-row">
+        <span className="vrbo-v2-phone__composer-add" aria-hidden="true">
+          +
+        </span>
+        <div className="vrbo-v2-phone__composer-field">
+          <span>{copy.phone.watchPlaceholder}</span>
+        </div>
+        <button type="button" className="vrbo-v2-phone__composer-send" disabled aria-label={copy.phone.watchPlaceholder}>
+          ↑
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function GuestPhone({
   user,
   preferences,
@@ -61,47 +112,79 @@ export default function GuestPhone({
   joined,
   locked,
   canJoin,
+  stage,
+  summaryText,
+  results,
+  previewPropertyId,
+  selectedPropertyId,
   groupReady,
   messages,
   typing,
   userById,
+  propertyLookup,
   onJoin,
   onToggle,
   onSubmit,
+  onSearch,
+  onPreview,
+  onShare,
 }) {
   const max = copy.maxSelections;
-  const phase = !joined
-    ? canJoin
-      ? "join"
-      : "closed"
-    : locked
-      ? "idle"
-      : submitted
-        ? "done"
-        : "select";
+  const isPlanner = user.role === "coordinator";
+  const groupFinished = stage === "summary" || stage === "results";
+  const phase =
+    stage === "summary" && isPlanner
+      ? "summary"
+      : stage === "results" && isPlanner && !selectedPropertyId
+        ? "results"
+        : (groupFinished && joined && !isPlanner) ||
+            (stage === "results" && isPlanner && selectedPropertyId)
+          ? "watch"
+          : !joined
+            ? canJoin
+              ? "join"
+              : "closed"
+            : locked
+              ? "idle"
+              : submitted
+                ? "done"
+                : "select";
   const atLimit = selection.length >= max;
   const canSend = selection.length === max;
-  const isPlanner = user.role === "coordinator";
   const draftLines = selection
     .map((id) => {
       const preference = preferenceById.get(id);
       if (!preference) return null;
-      return { id, text: preference.chatLine ?? preference.label };
+      const text =
+        preference.chatLines?.[user.id] ?? preference.chatLine ?? preference.label;
+      return { id, text };
     })
     .filter(Boolean);
+  const chromeOnly = phase === "summary" || phase === "results";
 
   return (
     <div className={`vrbo-v2-phone ${isPlanner ? "vrbo-v2-phone--planner" : ""}`}>
       <div className="vrbo-v2-phone__frame">
-        <div className="vrbo-v2-phone__screen">
-          <div className="vrbo-v2-phone__chrome">
-            <span className="vrbo-v2-phone__notch" aria-hidden="true" />
-          </div>
-
-          <header className="vrbo-v2-phone__trip">
-            <h3>{chatScript.groupTitle}</h3>
-            <p>{chatScript.groupSubtitle}</p>
-          </header>
+        <div
+          className={`vrbo-v2-phone__screen ${
+            phase === "summary" ? "is-summary" : ""
+          } ${phase === "results" ? "is-results" : ""}`}
+        >
+          {chromeOnly ? (
+            <div className="vrbo-v2-phone__chrome">
+              <span className="vrbo-v2-phone__notch" aria-hidden="true" />
+            </div>
+          ) : (
+            <>
+              <div className="vrbo-v2-phone__chrome">
+                <span className="vrbo-v2-phone__notch" aria-hidden="true" />
+              </div>
+              <header className="vrbo-v2-phone__trip">
+                <h3>{chatScript.groupTitle}</h3>
+                <p>{chatScript.groupSubtitle}</p>
+              </header>
+            </>
+          )}
 
           <AnimatePresence mode="wait" initial={false}>
             {phase === "idle" ? (
@@ -187,6 +270,38 @@ export default function GuestPhone({
                     </button>
                   </div>
                 </div>
+              </motion.div>
+            ) : null}
+
+            {phase === "summary" ? (
+              <motion.div key="summary" className="vrbo-v2-phone__panel vrbo-v2-phone__panel--summary" {...panelMotion}>
+                <SummaryPanel summaryText={summaryText} onSearch={onSearch} compact />
+              </motion.div>
+            ) : null}
+
+            {phase === "results" ? (
+              <motion.div key="results" className="vrbo-v2-phone__panel vrbo-v2-phone__panel--results" {...panelMotion}>
+                <StayPicker
+                  results={results}
+                  previewPropertyId={previewPropertyId}
+                  selectedPropertyId={selectedPropertyId}
+                  onPreview={onPreview}
+                  onShare={onShare}
+                  compact
+                />
+              </motion.div>
+            ) : null}
+
+            {phase === "watch" ? (
+              <motion.div key="watch" className="vrbo-v2-phone__panel vrbo-v2-phone__panel--chat" {...panelMotion}>
+                <MessageFeed
+                  messages={messages}
+                  typing={typing}
+                  userById={userById}
+                  propertyLookup={propertyLookup}
+                  live
+                />
+                <ReadonlyComposer />
               </motion.div>
             ) : null}
 
