@@ -12,7 +12,8 @@
     "ranking": "Display 2 · Group Search"
   },
   "chat": {
-    "typingLabel": "typing"
+    "typingLabel": "typing",
+    "sharedCard": "Shared from touchscreen · Vrbo"
   },
   "ranking": {
     "waitingTitle": "Great trips start with a conversation.",
@@ -22,13 +23,11 @@
     "loadingHint": "Hang tight for a moment",
     "resultsTitle": "Hawaii stays for your whole crew - dog included.",
     "resultsSubtitle": "Three picks for pool mornings and time together.",
+    "resultsHint": "Tap a stay to preview. Anyone can select and share.",
     "resultsPickedSubtitle": "Shared to the group - watch Display 1",
-    "resultsStatus": "{index} of {total} · Selected on Jamie's phone",
-    "resultsStatusIdle": "{index} of {total}",
-    "resultsDisclaimer": "Fictional demo listings · Illustrative photos, ratings and prices.",
-    "aboutLabel": "About this property",
-    "highlightsLabel": "Highlights",
-    "ratingLine": "{rating} Guest rating · {label}",
+    "resultsDisclaimer": "Fictional demo listings · Illustrative prices and ratings.",
+    "share": "Share to Hawaii Trip 2027",
+    "shared": "Shared to the trip",
     "matchLabel": "match"
   },
   "summary": {
@@ -75,8 +74,7 @@
     "doneTitle": "You're all set",
     "doneSubtitle": "Sent to the group",
     "doneWaiting": "Waiting for the others...",
-    "doneReady": "Jamie is searching for stays",
-    "watchPlaceholder": "Viewing group chat",
-    "plannerBadge": "Planner"
+    "doneReady": "Waiting for Search on Display 2",
+    "watchPlaceholder": "Viewing group chat"
   }
 }

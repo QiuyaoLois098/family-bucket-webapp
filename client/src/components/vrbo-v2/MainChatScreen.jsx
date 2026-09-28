@@ -61,24 +61,23 @@ export default function MainChatScreen({ messages, typing, userById, propertyLoo
                 key={message.id}
                 layout
                 {...bubbleMotion}
-                className={`vrbo-v2-chat__row vrbo-v2-chat__row--${user.side} vrbo-v2-chat__row--${user.role}`}
+                className={`vrbo-v2-chat__row vrbo-v2-chat__row--${user.side} vrbo-v2-chat__row--${user.role} ${
+                  message.kind === "property" ? "vrbo-v2-chat__row--card" : ""
+                }`}
               >
-                <Avatar user={user} />
-                <div className="vrbo-v2-chat__column">
-                  <span className="vrbo-v2-chat__author">{user.name}</span>
-                  {message.kind === "property" && entry ? (
-                    <div className="vrbo-v2-chat__card">
-                      <PropertyCard
-                        property={entry.property}
-                        variant="chat"
-                        matched={entry.matched ?? []}
-                        matchPercent={entry.matchPercent ?? null}
-                      />
+                {message.kind === "property" && entry ? (
+                  <div className="vrbo-v2-chat__card">
+                    <PropertyCard property={entry.property} variant="chat" />
+                  </div>
+                ) : (
+                  <>
+                    <Avatar user={user} />
+                    <div className="vrbo-v2-chat__column">
+                      <span className="vrbo-v2-chat__author">{user.name}</span>
+                      <p className="vrbo-v2-chat__bubble">{message.text}</p>
                     </div>
-                  ) : (
-                    <p className="vrbo-v2-chat__bubble">{message.text}</p>
-                  )}
-                </div>
+                  </>
+                )}
               </motion.div>
             );
           })}

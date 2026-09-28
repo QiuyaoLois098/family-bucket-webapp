@@ -9,9 +9,8 @@ import { rankProperties } from "../utils/rankProperties.js";
 
 export const STAGES = ["intro", "selecting", "summary", "results"];
 
-/** All four phones - planner + guests - pick preferences in v2. */
+/** All four phones pick preferences in v2. */
 export const guests = users;
-export const planner = users.find((user) => user.role === "coordinator") ?? users[0];
 
 const preferenceOrder = new Map(preferences.map((preference, index) => [preference.id, index]));
 const preferenceById = new Map(preferences.map((preference) => [preference.id, preference]));

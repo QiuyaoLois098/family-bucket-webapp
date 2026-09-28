@@ -5,10 +5,10 @@
     "initials": "J",
     "accent": "#3857e3",
     "onAccent": "#ffffff",
-    "role": "coordinator",
+    "role": "guest",
     "side": "left",
     "phoneLabel": "Jamie",
-    "statusLine": "Trip organizer"
+    "statusLine": "In the group chat"
   },
   {
     "id": "sarah",

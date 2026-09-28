@@ -4,8 +4,6 @@ import chatScript from "../../data/vrbo-v2/chatScript.json";
 import copy from "../../data/vrbo-v2/copy.json";
 import PreferenceCard from "./PreferenceCard.jsx";
 import PropertyCard from "./PropertyCard.jsx";
-import { SummaryPanel } from "./RankingScreen.jsx";
-import { StayPicker } from "./StayViews.jsx";
 
 const panelMotion = {
   initial: { opacity: 0, y: 16 },
@@ -21,13 +19,10 @@ function fill(template, values) {
   );
 }
 
-function PhoneBubble({ user, text, isPlanner }) {
+function PhoneBubble({ user, text }) {
   return (
-    <div className={`vrbo-v2-phone__bubble ${isPlanner ? "vrbo-v2-phone__bubble--planner" : ""}`}>
-      <p className="vrbo-v2-phone__bubble-author">
-        {user.name}
-        {isPlanner ? <span> · {copy.phone.plannerBadge}</span> : null}
-      </p>
+    <div className="vrbo-v2-phone__bubble">
+      <p className="vrbo-v2-phone__bubble-author">{user.name}</p>
       <p className="vrbo-v2-phone__bubble-text">{text}</p>
     </div>
   );
@@ -55,29 +50,12 @@ function MessageFeed({ messages, typing, userById, propertyLookup, live = false,
         if (message.kind === "property" && entry) {
           return (
             <div key={message.id} className="vrbo-v2-phone__property">
-              <p className="vrbo-v2-phone__bubble-author">
-                {author.name}
-                {author.role === "coordinator" ? (
-                  <span> · {copy.phone.plannerBadge}</span>
-                ) : null}
-              </p>
-              <PropertyCard
-                property={entry.property}
-                variant="chat"
-                matched={entry.matched ?? []}
-                matchPercent={entry.matchPercent ?? null}
-              />
+              <p className="vrbo-v2-phone__bubble-author">{author.name}</p>
+              <PropertyCard property={entry.property} variant="chat" />
             </div>
           );
         }
-        return (
-          <PhoneBubble
-            key={message.id}
-            user={author}
-            text={message.text}
-            isPlanner={author.role === "coordinator"}
-          />
-        );
+        return <PhoneBubble key={message.id} user={author} text={message.text} />;
       })}
       {typing?.length ? <p className="vrbo-v2-phone__typing">{copy.phone.idleSubtitle}</p> : null}
       {children}
@@ -113,10 +91,6 @@ export default function GuestPhone({
   locked,
   canJoin,
   stage,
-  summaryText,
-  results,
-  previewPropertyId,
-  selectedPropertyId,
   groupReady,
   messages,
   typing,
@@ -125,30 +99,20 @@ export default function GuestPhone({
   onJoin,
   onToggle,
   onSubmit,
-  onSearch,
-  onPreview,
-  onShare,
 }) {
   const max = copy.maxSelections;
-  const isPlanner = user.role === "coordinator";
   const groupFinished = stage === "summary" || stage === "results";
-  const phase =
-    stage === "summary" && isPlanner
-      ? "summary"
-      : stage === "results" && isPlanner && !selectedPropertyId
-        ? "results"
-        : (groupFinished && joined && !isPlanner) ||
-            (stage === "results" && isPlanner && selectedPropertyId)
-          ? "watch"
-          : !joined
-            ? canJoin
-              ? "join"
-              : "closed"
-            : locked
-              ? "idle"
-              : submitted
-                ? "done"
-                : "select";
+  const phase = groupFinished && joined
+    ? "watch"
+    : !joined
+      ? canJoin
+        ? "join"
+        : "closed"
+      : locked
+        ? "idle"
+        : submitted
+          ? "done"
+          : "select";
   const atLimit = selection.length >= max;
   const canSend = selection.length === max;
   const draftLines = selection
@@ -160,31 +124,18 @@ export default function GuestPhone({
       return { id, text };
     })
     .filter(Boolean);
-  const chromeOnly = phase === "summary" || phase === "results";
 
   return (
-    <div className={`vrbo-v2-phone ${isPlanner ? "vrbo-v2-phone--planner" : ""}`}>
+    <div className="vrbo-v2-phone">
       <div className="vrbo-v2-phone__frame">
-        <div
-          className={`vrbo-v2-phone__screen ${
-            phase === "summary" ? "is-summary" : ""
-          } ${phase === "results" ? "is-results" : ""}`}
-        >
-          {chromeOnly ? (
-            <div className="vrbo-v2-phone__chrome">
-              <span className="vrbo-v2-phone__notch" aria-hidden="true" />
-            </div>
-          ) : (
-            <>
-              <div className="vrbo-v2-phone__chrome">
-                <span className="vrbo-v2-phone__notch" aria-hidden="true" />
-              </div>
-              <header className="vrbo-v2-phone__trip">
-                <h3>{chatScript.groupTitle}</h3>
-                <p>{chatScript.groupSubtitle}</p>
-              </header>
-            </>
-          )}
+        <div className="vrbo-v2-phone__screen">
+          <div className="vrbo-v2-phone__chrome">
+            <span className="vrbo-v2-phone__notch" aria-hidden="true" />
+          </div>
+          <header className="vrbo-v2-phone__trip">
+            <h3>{chatScript.groupTitle}</h3>
+            <p>{chatScript.groupSubtitle}</p>
+          </header>
 
           <AnimatePresence mode="wait" initial={false}>
             {phase === "idle" ? (
@@ -273,25 +224,6 @@ export default function GuestPhone({
               </motion.div>
             ) : null}
 
-            {phase === "summary" ? (
-              <motion.div key="summary" className="vrbo-v2-phone__panel vrbo-v2-phone__panel--summary" {...panelMotion}>
-                <SummaryPanel summaryText={summaryText} onSearch={onSearch} compact />
-              </motion.div>
-            ) : null}
-
-            {phase === "results" ? (
-              <motion.div key="results" className="vrbo-v2-phone__panel vrbo-v2-phone__panel--results" {...panelMotion}>
-                <StayPicker
-                  results={results}
-                  previewPropertyId={previewPropertyId}
-                  selectedPropertyId={selectedPropertyId}
-                  onPreview={onPreview}
-                  onShare={onShare}
-                  compact
-                />
-              </motion.div>
-            ) : null}
-
             {phase === "watch" ? (
               <motion.div key="watch" className="vrbo-v2-phone__panel vrbo-v2-phone__panel--chat" {...panelMotion}>
                 <MessageFeed
@@ -339,7 +271,6 @@ export default function GuestPhone({
 
       <p className="vrbo-v2-phone__label">
         <span>{user.phoneLabel}</span>
-        {isPlanner ? <span className="vrbo-v2-phone__planner">{copy.phone.plannerBadge}</span> : null}
       </p>
     </div>
   );

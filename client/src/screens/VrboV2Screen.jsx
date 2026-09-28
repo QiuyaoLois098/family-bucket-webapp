@@ -107,21 +107,14 @@ function VrboDemo() {
                 locked={stage === "intro"}
                 canJoin={stage === "intro" || stage === "selecting"}
                 stage={stage}
-                summaryText={summaryText}
-                results={results}
-                previewPropertyId={previewPropertyId}
-                selectedPropertyId={selectedPropertyId}
                 groupReady={allSubmitted}
                 messages={messages}
                 typing={typing}
                 userById={userById}
+                propertyLookup={propertyLookup}
                 onJoin={actions.joinGuest}
                 onToggle={actions.togglePreference}
                 onSubmit={actions.submitGuest}
-                onSearch={actions.searchStays}
-                onPreview={actions.previewProperty}
-                onShare={actions.selectProperty}
-                propertyLookup={propertyLookup}
               />
             ))}
           </div>

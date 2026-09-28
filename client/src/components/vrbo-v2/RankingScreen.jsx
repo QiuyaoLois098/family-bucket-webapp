@@ -64,7 +64,7 @@ export function SummaryPanel({ summaryText, onSearch, compact = false }) {
   );
 }
 
-function ResultsPanel({ results, previewPropertyId, selectedPropertyId }) {
+function ResultsPanel({ results, previewPropertyId, selectedPropertyId, actions }) {
   return (
     <motion.div
       key="results"
@@ -75,6 +75,8 @@ function ResultsPanel({ results, previewPropertyId, selectedPropertyId }) {
         results={results}
         previewPropertyId={previewPropertyId}
         selectedPropertyId={selectedPropertyId}
+        onPreview={actions.previewProperty}
+        onShare={actions.selectProperty}
       />
     </motion.div>
   );
@@ -106,6 +108,7 @@ export default function RankingScreen({
             results={results}
             previewPropertyId={previewPropertyId}
             selectedPropertyId={selectedPropertyId}
+            actions={actions}
           />
         ) : null}
       </AnimatePresence>

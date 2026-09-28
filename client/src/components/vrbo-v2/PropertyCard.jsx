@@ -16,6 +16,11 @@ function PropertyImage({ property }) {
   );
 }
 
+function chatMetaLine(property) {
+  const highlights = (property.highlights ?? []).slice(0, 2);
+  return [property.bedrooms, property.sleeps, ...highlights].filter(Boolean).join(" · ");
+}
+
 export default function PropertyCard({
   property,
   variant = "result",
@@ -37,6 +42,19 @@ export default function PropertyCard({
   ]
     .filter(Boolean)
     .join(" ");
+
+  if (variant === "chat") {
+    return (
+      <div className={className}>
+        <p className="vrbo-v2-property__shared">{copy.chat.sharedCard}</p>
+        <PropertyImage property={property} />
+        <div className="vrbo-v2-property__body">
+          <h4 className="vrbo-v2-property__name">{property.name}</h4>
+          <p className="vrbo-v2-property__meta-line">{chatMetaLine(property)}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Tag
@@ -72,12 +90,10 @@ export default function PropertyCard({
             })}
           </ul>
         ) : null}
-        {variant === "result" ? (
-          <p className="vrbo-v2-property__meta">
-            <span>{property.nightly} / night</span>
-            <span>{property.sleeps}</span>
-          </p>
-        ) : null}
+        <p className="vrbo-v2-property__meta">
+          <span>{property.nightly} / night</span>
+          <span>{property.sleeps}</span>
+        </p>
       </div>
       {badge ? <span className="vrbo-v2-property__badge">{badge}</span> : null}
       {selected ? <span className="vrbo-v2-property__check" aria-hidden="true">✓</span> : null}

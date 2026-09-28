@@ -1,215 +1,114 @@
 import { useEffect, useState } from "react";
 import copy from "../../data/vrbo-v2/copy.json";
 
-function fill(template, values) {
-  return Object.entries(values).reduce(
-    (text, [key, value]) => text.replaceAll(`{${key}}`, value),
-    template,
-  );
-}
-
-function padIndex(index) {
-  return String(index + 1).padStart(2, "0");
-}
-
 function StayImage({ property, className }) {
   const [failed, setFailed] = useState(false);
   return (
     <div className={className} style={{ background: property.gradient }}>
       {failed ? null : (
-        <img src={property.image} alt={property.name} loading="lazy" onError={() => setFailed(true)} />
+        <img
+          src={property.image}
+          alt=""
+          loading="lazy"
+          draggable={false}
+          onError={() => setFailed(true)}
+        />
       )}
     </div>
   );
 }
 
-/** Display 2 - auto-cycles through recommended stays. */
-export function StayShowcase({ results, previewPropertyId, selectedPropertyId }) {
-  const lockedId = selectedPropertyId ?? null;
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  useEffect(() => {
-    if (!results.length) return undefined;
-    if (lockedId != null) {
-      const lockedIndex = results.findIndex((entry) => entry.property.id === lockedId);
-      if (lockedIndex >= 0) setActiveIndex(lockedIndex);
-      return undefined;
-    }
-    const previewIndex = results.findIndex((entry) => entry.property.id === previewPropertyId);
-    if (previewIndex >= 0) setActiveIndex(previewIndex);
-    return undefined;
-  }, [previewPropertyId, lockedId, results]);
-
-  useEffect(() => {
-    if (lockedId != null || results.length < 2) return undefined;
-    const id = setInterval(() => {
-      setActiveIndex((current) => (current + 1) % results.length);
-    }, 4200);
-    return () => clearInterval(id);
-  }, [lockedId, results.length]);
-
-  if (!results.length) return null;
-
-  const index = Math.min(activeIndex, results.length - 1);
-  const { property } = results[index];
-  const isJamiePick =
-    property.id === (selectedPropertyId ?? previewPropertyId);
-  const status = fill(
-    isJamiePick ? copy.ranking.resultsStatus : copy.ranking.resultsStatusIdle,
-    { index: padIndex(index), total: results.length },
-  );
-
-  return (
-    <div className="vrbo-v2-showcase">
-      <img
-        className="vrbo-v2-showcase__logo"
-        src="/logo/Vrbo_Logo_Blue_RGB.png"
-        alt="Vrbo"
-      />
-      <h2 className="vrbo-v2-showcase__title">{copy.ranking.resultsTitle}</h2>
-      <p className="vrbo-v2-showcase__lede">{copy.ranking.resultsSubtitle}</p>
-
-      <StayImage property={property} className="vrbo-v2-showcase__hero" />
-
-      <h3 className="vrbo-v2-showcase__name">
-        {padIndex(index)} {property.name}
-      </h3>
-      <p className="vrbo-v2-showcase__place">
-        {property.location} · {property.tagline}
-      </p>
-
-      <div className="vrbo-v2-showcase__cols">
-        <div>
-          <p className="vrbo-v2-showcase__label">{copy.ranking.aboutLabel}</p>
-          <p className="vrbo-v2-showcase__about">{property.about}</p>
-        </div>
-        <div>
-          <p className="vrbo-v2-showcase__label">{copy.ranking.highlightsLabel}</p>
-          <ul className="vrbo-v2-showcase__highlights">
-            {(property.highlights ?? []).map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      <p className="vrbo-v2-showcase__rating">
-        {fill(copy.ranking.ratingLine, {
-          rating: property.rating,
-          label: property.ratingLabel,
-        })}
-      </p>
-
-      <p className="vrbo-v2-showcase__stats">
-        <span>{property.bedrooms}</span>
-        <span>{property.sleeps}</span>
-        <span>{property.nightly} / night</span>
-      </p>
-
-      <p className="vrbo-v2-showcase__status">{status}</p>
-
-      <div className="vrbo-v2-showcase__thumbs" aria-hidden="true">
-        {results.map((entry, thumbIndex) => {
-          const active = thumbIndex === index;
-          return (
-            <div
-              key={entry.property.id}
-              className={`vrbo-v2-showcase__thumb ${active ? "is-active" : ""}`}
-            >
-              <StayImage property={entry.property} className="vrbo-v2-showcase__thumb-img" />
-              <span>
-                {padIndex(thumbIndex)} {entry.property.name}
-              </span>
-            </div>
-          );
-        })}
-      </div>
-
-      <p className="vrbo-v2-showcase__disclaimer">{copy.ranking.resultsDisclaimer}</p>
-    </div>
-  );
-}
-
-/** Jamie's phone - preview stays and share one to the trip. */
-export function StayPicker({
+/** Display 2 touchscreen - tap a stay to preview, then share. */
+export function StayShowcase({
   results,
   previewPropertyId,
   selectedPropertyId,
   onPreview,
   onShare,
-  compact = false,
 }) {
-  if (!results.length) return null;
-
   const shared = Boolean(selectedPropertyId);
   const activeId = selectedPropertyId ?? previewPropertyId ?? results[0]?.property.id;
-  const activeIndex = Math.max(
+  const index = Math.max(
     0,
     results.findIndex((entry) => entry.property.id === activeId),
   );
-  const { property } = results[activeIndex];
+  const { property } = results[index] ?? results[0];
+
+  useEffect(() => {
+    if (!results.length || previewPropertyId != null || selectedPropertyId != null) return;
+    onPreview?.(results[0].property.id);
+  }, [results, previewPropertyId, selectedPropertyId, onPreview]);
+
+  if (!results.length || !property) return null;
+
+  function handleThumb(propertyId) {
+    if (shared) return;
+    onPreview?.(propertyId);
+  }
 
   return (
-    <div className={`vrbo-v2-picker ${compact ? "vrbo-v2-picker--compact" : ""}`}>
-      <img
-        className="vrbo-v2-picker__logo"
-        src="/logo/Vrbo_Logo_Blue_RGB.png"
-        alt="Vrbo"
-      />
-      <p className="vrbo-v2-picker__meta">
-        {fill(copy.stayPicker.meta, { count: results.length })}
-      </p>
-      <h3 className="vrbo-v2-picker__prompt">{copy.stayPicker.prompt}</h3>
+    <div className="vrbo-v2-showcase">
+      <div className="vrbo-v2-showcase__top">
+        <img
+          className="vrbo-v2-showcase__logo"
+          src="/logo/Vrbo_Logo_Blue_RGB.png"
+          alt="Vrbo"
+          draggable={false}
+        />
+        <h2 className="vrbo-v2-showcase__title">{copy.ranking.resultsTitle}</h2>
+      </div>
 
-      <div className="vrbo-v2-picker__thumbs">
-        {results.map((entry, index) => {
-          const selected = entry.property.id === activeId;
+      <StayImage property={property} className="vrbo-v2-showcase__hero" />
+
+      <div className="vrbo-v2-showcase__info">
+        <h3 className="vrbo-v2-showcase__name">{property.name}</h3>
+        <p className="vrbo-v2-showcase__about">{property.about}</p>
+        <p className="vrbo-v2-showcase__rating">
+          {property.rating} {property.ratingLabel} · {property.location}
+        </p>
+        <p className="vrbo-v2-showcase__stats">
+          {property.bedrooms} · {property.sleeps} · {property.nightly} / night
+        </p>
+        <p className="vrbo-v2-showcase__highlights">
+          {(property.highlights ?? []).join(" · ")}
+        </p>
+      </div>
+
+      <div className="vrbo-v2-showcase__thumbs" role="listbox" aria-label="Stays">
+        {results.map((entry) => {
+          const active = entry.property.id === property.id;
           return (
             <button
               key={entry.property.id}
               type="button"
-              className={`vrbo-v2-picker__thumb ${selected ? "is-selected" : ""}`}
+              role="option"
+              className={`vrbo-v2-showcase__thumb ${active ? "is-active" : ""}`}
               disabled={shared}
-              onClick={() => onPreview?.(entry.property.id)}
+              aria-label={entry.property.name}
+              aria-selected={active}
+              onClick={() => handleThumb(entry.property.id)}
             >
-              <StayImage property={entry.property} className="vrbo-v2-picker__thumb-img" />
-              <span>
-                {selected
-                  ? fill(copy.stayPicker.selected, { index: padIndex(index) })
-                  : fill(copy.stayPicker.index, { index: padIndex(index) })}
-              </span>
+              <StayImage property={entry.property} className="vrbo-v2-showcase__thumb-img" />
             </button>
           );
         })}
       </div>
 
-      <StayImage property={property} className="vrbo-v2-picker__hero" />
-      <h4 className="vrbo-v2-picker__name">{property.name}</h4>
-      <p className="vrbo-v2-picker__about">{property.about}</p>
-      <p className="vrbo-v2-picker__rating">
-        {property.rating} {property.ratingLabel} · {property.location}
-      </p>
-      <p className="vrbo-v2-picker__stats">
-        {property.bedrooms} · {property.sleeps} · {property.nightly} / night
-      </p>
-      <p className="vrbo-v2-picker__highlights">
-        {(property.highlights ?? []).join(" · ")}
-      </p>
-
       <button
         type="button"
-        className="vrbo-v2-picker__share"
+        className="vrbo-v2-showcase__share"
         disabled={shared}
         onClick={() => onShare?.(property.id)}
       >
-        {shared ? copy.stayPicker.shared : copy.stayPicker.share}
+        {shared ? copy.ranking.shared : copy.ranking.share}
       </button>
 
-      <nav className="vrbo-v2-picker__nav" aria-label="App">
-        <span>{copy.stayPicker.navExplore}</span>
-        <span>{copy.stayPicker.navSaved}</span>
-        <span>{copy.stayPicker.navTrips}</span>
-      </nav>
+      <div className="vrbo-v2-showcase__foot">
+        <p className="vrbo-v2-showcase__hint">
+          {shared ? copy.ranking.resultsPickedSubtitle : copy.ranking.resultsHint}
+        </p>
+        <p className="vrbo-v2-showcase__disclaimer">{copy.ranking.resultsDisclaimer}</p>
+      </div>
     </div>
   );
 }
