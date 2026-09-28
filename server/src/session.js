@@ -115,12 +115,13 @@ export class ExperienceSession extends EventEmitter {
         {
           answers,
           currentQuestion: nextIndex,
-          phase: PHASES.REVEAL,
+          phase: PHASES.PLANNING,
           itineraryStatus: "generating",
         },
         "answer-final",
       );
       this.startItineraryGeneration();
+      this.scheduleRevealFromPlanning();
       return;
     }
 
@@ -193,7 +194,7 @@ export class ExperienceSession extends EventEmitter {
     const { destination, answers } = this.state;
     const result = await generateItinerary({ destination, answers });
     if (jobId !== this.itineraryJobId) return;
-    if (this.state.phase !== PHASES.REVEAL) return;
+    if (this.state.phase !== PHASES.PLANNING && this.state.phase !== PHASES.REVEAL) return;
 
     const itinerary = result.itinerary || getDestination(destination)?.fallbackItinerary || null;
 
@@ -204,6 +205,14 @@ export class ExperienceSession extends EventEmitter {
       },
       result.ok ? "itinerary-ready" : "itinerary-fallback",
     );
+  }
+
+  scheduleRevealFromPlanning(delayMs = 3800) {
+    clearTimeout(this.revealTimer);
+    this.revealTimer = setTimeout(() => {
+      if (this.state.phase !== PHASES.PLANNING) return;
+      this.set({ phase: PHASES.REVEAL }, "planning-complete");
+    }, delayMs);
   }
 
   shake() {
@@ -254,6 +263,12 @@ export class ExperienceSession extends EventEmitter {
     if (phase === PHASES.QUESTIONS) {
       const question = QUESTIONS[this.state.currentQuestion];
       this.answerQuestion(this.state.currentQuestion, question.options[0].id, true);
+      return;
+    }
+
+    if (phase === PHASES.PLANNING) {
+      clearTimeout(this.revealTimer);
+      this.set({ phase: PHASES.REVEAL }, "debug-skip-planning");
       return;
     }
 

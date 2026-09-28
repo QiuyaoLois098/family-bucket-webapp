@@ -2,6 +2,7 @@ import { getDestination } from "@shared/destinations.js";
 import { ScreenChrome } from "../components/ScreenChrome.jsx";
 import DestinationPicker from "../components/DestinationPicker.jsx";
 import QuestionStep from "../components/QuestionStep.jsx";
+import PlanningStep from "../components/PlanningStep.jsx";
 import ItinerarySchedule from "../components/ItinerarySchedule.jsx";
 
 export default function ControlScreen() {
@@ -16,22 +17,32 @@ export default function ControlScreen() {
               className={`panel ${phase === "destination" ? "is-active" : ""}`}
               inert={phase !== "destination" ? "" : undefined}
             >
-              <DestinationPicker
-                onSelect={actions.selectDestination}
-                offeredIds={state.offeredDestinations}
-              />
+              {phase === "destination" ? (
+                <DestinationPicker
+                  onSelect={actions.selectDestination}
+                  offeredIds={state.offeredDestinations}
+                />
+              ) : null}
             </section>
             <section
               className={`panel ${phase === "questions" ? "is-active" : ""}`}
               inert={phase !== "questions" ? "" : undefined}
             >
-              <QuestionStep
-                currentQuestion={state.currentQuestion}
-                answers={state.answers}
-                destinationId={state.destination}
-                onAnswer={actions.answer}
-                onBack={actions.goBack}
-              />
+              {phase === "questions" ? (
+                <QuestionStep
+                  currentQuestion={state.currentQuestion}
+                  answers={state.answers}
+                  destinationId={state.destination}
+                  onAnswer={actions.answer}
+                  onBack={actions.goBack}
+                />
+              ) : null}
+            </section>
+            <section
+              className={`panel ${phase === "planning" ? "is-active" : ""}`}
+              inert={phase !== "planning" ? "" : undefined}
+            >
+              {phase === "planning" ? <PlanningStep destinationId={state.destination} /> : null}
             </section>
             <section
               className={`panel ${phase === "reveal" || phase === "itinerary" ? "is-active" : ""}`}
@@ -45,13 +56,14 @@ export default function ControlScreen() {
                   </button>
                   <img className="shake-globe" src="/images/snow-globe.png" alt="" />
                 </div>
-              ) : (
+              ) : null}
+              {phase === "itinerary" ? (
                 <ItinerarySchedule
                   itinerary={state.itinerary}
                   destination={getDestination(state.destination)}
-                  onStartOver={phase === "itinerary" ? actions.reset : undefined}
+                  onStartOver={actions.reset}
                 />
-              )}
+              ) : null}
             </section>
           </main>
         );

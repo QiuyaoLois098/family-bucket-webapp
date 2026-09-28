@@ -6,7 +6,7 @@ export default function ImageReveal({ state }) {
   const destination = getDestination(state.destination);
   const url = state.imageUrl || destination?.image;
   const { shown, next, nextVisible } = useCrossfadeImage(url);
-  const done = state.phase === "reveal" || state.phase === "itinerary";
+  const done = state.phase === "planning" || state.phase === "reveal" || state.phase === "itinerary";
   const blur = done ? 0 : getBlurPx(state.answers.length);
   const scale = done ? 1 : getRevealScale(state.answers.length);
   const sharp = blur === 0;
@@ -34,6 +34,8 @@ export default function ImageReveal({ state }) {
         <div className="image-reveal__caption">
           {state.phase === "reveal" ? (
             <h2>Your family itinerary is ready</h2>
+          ) : state.phase === "planning" ? (
+            <h2>Bringing your family day together</h2>
           ) : (
             <>
               <p className="eyebrow">{destination.location}</p>

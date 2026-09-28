@@ -96,16 +96,25 @@ button {
   position: absolute;
   inset: 0;
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
   transform: translateY(12px);
-  transition: opacity 0.9s ease, transform 0.9s ease;
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s ease,
+    visibility 0s linear 0.9s;
   z-index: 1;
 }
 
 .panel.is-active {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
   transform: none;
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s ease,
+    visibility 0s linear 0s;
   z-index: 2;
 }
 

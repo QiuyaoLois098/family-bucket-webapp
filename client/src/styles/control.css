@@ -6,8 +6,9 @@
 }
 
 .screen--control.phase-destination,
-.screen--control.phase-questions {
-  background: #22263a;
+.screen--control.phase-questions,
+.screen--control.phase-planning {
+  background: #1b2036;
 }
 
 .idle-control,
@@ -283,6 +284,14 @@
   min-height: 0;
 }
 
+.question--photos .question__options--photos {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+}
+
 .question__brandbar {
   display: flex;
   align-items: center;
@@ -310,7 +319,7 @@
 
 .question__intro {
   flex: 0 0 auto;
-  margin-top: clamp(24px, 5.5vw, 64px);
+  margin-top: clamp(36px, 7.5vw, 88px);
 }
 
 .question__eyebrow {
@@ -356,7 +365,7 @@
 
 .question__options--photos {
   gap: clamp(12px, 2.2vw, 22px);
-  margin-top: clamp(28px, 5.5vw, 60px);
+  margin-top: clamp(40px, 6vw, 72px);
   flex: 0 0 auto;
 }
 
@@ -393,6 +402,28 @@
   outline-offset: 3px;
   transition: outline-color 0.25s ease, transform 0.25s ease, box-shadow 0.35s ease;
   animation: rise 0.55s ease both;
+}
+
+.question--count-3 .question__option--photo {
+  aspect-ratio: 2128 / 739;
+}
+
+.question--count-3 .question__intro {
+  margin-top: clamp(32px, 6.5vw, 76px);
+}
+
+.question--count-3 .question__intro h2 {
+  font-size: clamp(1.85rem, 5.6vw, 3.6rem);
+}
+
+.question--count-3 .question__options--photos {
+  gap: clamp(10px, 1.8vw, 18px);
+  margin-top: clamp(32px, 5vw, 64px);
+}
+
+.question--count-3 .question__option-label {
+  font-size: clamp(0.9rem, 2.3vw, 1.55rem);
+  bottom: clamp(10px, 1.5vw, 16px);
 }
 
 .question__option-image {
@@ -522,6 +553,138 @@
   opacity: 1;
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+.planning {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  padding: 5.2% 6.6% 4.2%;
+  background: #1b2036;
+  animation: rise 0.7s ease both;
+}
+
+.planning__brandbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex: 0 0 auto;
+}
+
+.planning__logo {
+  display: block;
+  height: clamp(28px, 4.1vw, 46px);
+  width: auto;
+  mix-blend-mode: screen;
+}
+
+.planning__product {
+  font-family: var(--sans);
+  font-size: clamp(0.8rem, 2.6vw, 1.75rem);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.planning__body {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: clamp(48px, 9vw, 108px);
+  width: 100%;
+  max-width: none;
+}
+
+.planning__eyebrow {
+  margin: 0 0 clamp(16px, 2.8vw, 30px);
+  font-family: var(--sans);
+  font-size: clamp(0.68rem, 1.55vw, 1.05rem);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: #c8b15a;
+}
+
+.planning__body h1 {
+  margin: 0;
+  max-width: 100%;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(2.8rem, 8.2vw, 5.6rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.planning__lede {
+  margin: clamp(18px, 3vw, 32px) 0 0;
+  max-width: 100%;
+  font-family: var(--sans);
+  font-size: clamp(1.05rem, 2.7vw, 1.85rem);
+  font-weight: 400;
+  line-height: 1.35;
+  color: #ffffff;
+  white-space: normal;
+}
+
+.planning__dots {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.8vw, 18px);
+  margin-top: clamp(32px, 5vw, 56px);
+}
+
+.planning__dots span {
+  width: clamp(11px, 1.35vw, 15px);
+  height: clamp(11px, 1.35vw, 15px);
+  border-radius: 50%;
+  background: #f3da59;
+  opacity: 1;
+  animation: planning-pulse 1.35s ease-in-out infinite;
+}
+
+.planning__dots span:nth-child(2) {
+  animation-delay: 0.18s;
+}
+
+.planning__dots span:nth-child(3) {
+  animation-delay: 0.36s;
+}
+
+.planning__footer {
+  flex: 0 0 auto;
+  margin-top: auto;
+  padding-top: clamp(18px, 2.8vw, 32px);
+  border-top: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.planning__footer p {
+  margin: clamp(14px, 2.2vw, 24px) 0 0;
+  font-family: var(--sans);
+  font-size: clamp(0.65rem, 1.7vw, 1.15rem);
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+@keyframes planning-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 .itinerary--waiting {

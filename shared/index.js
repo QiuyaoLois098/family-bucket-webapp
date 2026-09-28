@@ -7,6 +7,7 @@ export const PHASES = {
   IDLE: "idle",
   DESTINATION: "destination",
   QUESTIONS: "questions",
+  PLANNING: "planning",
   REVEAL: "reveal",
   ITINERARY: "itinerary",
 };

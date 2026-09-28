@@ -2,7 +2,6 @@ import { QUESTIONS } from "@shared/questions.js";
 import { getDestination } from "@shared/destinations.js";
 
 const TOTAL_STEPS = 5; // destination + 3 questions + reveal
-const VISIBLE_OPTIONS = 2;
 
 export default function QuestionStep({
   currentQuestion,
@@ -15,14 +14,17 @@ export default function QuestionStep({
   if (!question) return null;
 
   const destination = getDestination(destinationId);
-  const options = question.options.slice(0, VISIBLE_OPTIONS);
+  const options = question.options;
   const locked = Boolean(answers[currentQuestion]);
-  const hasPhotos = options.every((option) => option.image);
+  const hasPhotos = options.length > 0 && options.every((option) => option.image);
   const stepIndex = currentQuestion + 1; // 0 = destination
   const stepLabel = `${String(currentQuestion + 1).padStart(2, "0")} OF ${String(QUESTIONS.length).padStart(2, "0")}`;
 
   return (
-    <div className={`question ${hasPhotos ? "question--photos" : ""}`} key={question.id}>
+    <div
+      className={`question ${hasPhotos ? "question--photos" : ""} question--count-${options.length}`}
+      key={question.id}
+    >
       <header className="question__brandbar">
         <img
           className="question__logo"
