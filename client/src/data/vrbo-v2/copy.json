@@ -4,6 +4,7 @@
     "eyebrow": "Vrbo · Group Travel Installation",
     "title": "Find Our Stay",
     "restart": "Restart demo",
+    "cursorHighlight": "Cursor highlight",
     "landscapeTitle": "Rotate to landscape",
     "landscapeBody": "This demo is designed for a wide screen. Turn the display sideways, then we’ll reload."
   },

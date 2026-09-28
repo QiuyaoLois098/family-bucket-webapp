@@ -28,18 +28,17 @@ function PhoneBubble({ user, text }) {
   );
 }
 
-function MessageFeed({ messages, typing, userById, propertyLookup, live = false, children }) {
+function MessageFeed({ messages, typing, userById, propertyLookup, live = false }) {
   const feedRef = useRef(null);
   const visibleMessages = live
     ? messages ?? []
-    : (messages ?? []).filter((message) => message.kind !== "property").slice(-4);
+    : (messages ?? []).filter((message) => message.kind !== "property").slice(-6);
 
   useEffect(() => {
-    if (!live) return;
     const node = feedRef.current;
     if (!node) return;
     node.scrollTo({ top: node.scrollHeight, behavior: "smooth" });
-  }, [live, messages?.length, typing?.length]);
+  }, [messages?.length, typing?.length, live]);
 
   return (
     <div className={`vrbo-v2-phone__feed ${live ? "is-live" : ""}`} ref={feedRef}>
@@ -58,7 +57,6 @@ function MessageFeed({ messages, typing, userById, propertyLookup, live = false,
         return <PhoneBubble key={message.id} user={author} text={message.text} />;
       })}
       {typing?.length ? <p className="vrbo-v2-phone__typing">{copy.phone.idleSubtitle}</p> : null}
-      {children}
     </div>
   );
 }
@@ -163,27 +161,27 @@ export default function GuestPhone({
             ) : null}
 
             {phase === "select" ? (
-              <motion.div key="select" className="vrbo-v2-phone__panel vrbo-v2-phone__panel--chat" {...panelMotion}>
-                <MessageFeed messages={messages} typing={typing} userById={userById}>
-                  <div className="vrbo-v2-phone__prompt">
-                    <p className="vrbo-v2-phone__prompt-title">{copy.phone.promptTitle}</p>
-                    <div className="vrbo-v2-phone__chips">
-                      {preferences.map((preference) => {
-                        const selected = selection.includes(preference.id);
-                        return (
-                          <PreferenceCard
-                            key={preference.id}
-                            preference={preference}
-                            variant="chip"
-                            selected={selected}
-                            disabled={!selected && atLimit}
-                            onSelect={() => onToggle(user.id, preference.id)}
-                          />
-                        );
-                      })}
-                    </div>
+              <motion.div key="select" className="vrbo-v2-phone__panel vrbo-v2-phone__panel--select" {...panelMotion}>
+                <MessageFeed messages={messages} typing={typing} userById={userById} />
+
+                <div className="vrbo-v2-phone__prompt">
+                  <p className="vrbo-v2-phone__prompt-title">{copy.phone.promptTitle}</p>
+                  <div className="vrbo-v2-phone__chips">
+                    {preferences.map((preference) => {
+                      const selected = selection.includes(preference.id);
+                      return (
+                        <PreferenceCard
+                          key={preference.id}
+                          preference={preference}
+                          variant="chip"
+                          selected={selected}
+                          disabled={!selected && atLimit}
+                          onSelect={() => onToggle(user.id, preference.id)}
+                        />
+                      );
+                    })}
                   </div>
-                </MessageFeed>
+                </div>
 
                 <div className={`vrbo-v2-phone__composer ${draftLines.length ? "has-draft" : ""}`}>
                   <p className="vrbo-v2-phone__autofill">

@@ -60,14 +60,25 @@
   color: var(--mid-gray);
 }
 
-.vrbo-v2-stage__restart {
+.vrbo-v2-stage__controls {
   position: fixed;
   left: 28px;
   bottom: 24px;
   z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.vrbo-v2-stage__restart {
+  position: static;
+  left: auto;
+  bottom: auto;
+  z-index: auto;
   border: 0;
   border-radius: 0;
-  padding: 12px;
+  padding: 0;
   background: transparent;
   color: var(--mid-gray);
   font-size: 0.68rem;
@@ -84,6 +95,59 @@
   background: transparent;
   border-color: transparent;
   color: var(--charcoal);
+}
+
+.vrbo-v2-stage__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--mid-gray);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  cursor: pointer;
+  user-select: none;
+}
+
+.vrbo-v2-stage__toggle:hover,
+.vrbo-v2-stage__toggle:has(input:checked) {
+  opacity: 1;
+  color: var(--charcoal);
+}
+
+.vrbo-v2-stage__toggle input {
+  width: 14px;
+  height: 14px;
+  accent-color: #e6c84a;
+  cursor: pointer;
+}
+
+.vrbo-v2-stage.has-cursor-highlight {
+  cursor: none;
+}
+
+.vrbo-v2-stage.has-cursor-highlight button,
+.vrbo-v2-stage.has-cursor-highlight label,
+.vrbo-v2-stage.has-cursor-highlight input,
+.vrbo-v2-stage.has-cursor-highlight a {
+  cursor: none;
+}
+
+.vrbo-v2-cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  width: 72px;
+  height: 72px;
+  margin: -36px 0 0 -36px;
+  border-radius: 50%;
+  background: rgba(255, 220, 40, 0.42);
+  box-shadow: 0 0 28px 10px rgba(255, 220, 40, 0.28);
+  pointer-events: none;
+  will-change: transform;
 }
 
 /* Brand buttons: navy pill, Albra Sans, fixed heights (24 / 32 / 36 / 48 / 60). */
@@ -1740,6 +1804,10 @@
   gap: 0;
 }
 
+.vrbo-v2-phone__panel--select {
+  gap: 0;
+}
+
 .vrbo-v2-phone__feed {
   flex: 1;
   min-height: 0;
@@ -1749,6 +1817,10 @@
   gap: 1.6cqh;
   padding: 2cqh 4.5cqw 1.6cqh;
   scrollbar-width: none;
+}
+
+.vrbo-v2-phone__panel--select .vrbo-v2-phone__feed {
+  justify-content: flex-end;
 }
 
 .vrbo-v2-phone__feed.is-live {
@@ -1888,10 +1960,13 @@
 }
 
 .vrbo-v2-phone__prompt {
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   gap: 1.2cqh;
-  margin-top: 0.4cqh;
+  padding: 1cqh 4.5cqw 1.2cqh;
+  background: #ffffff;
+  border-top: 1px solid rgba(32, 32, 32, 0.04);
 }
 
 .vrbo-v2-phone__prompt-title {
@@ -1906,6 +1981,13 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1.2cqw 1.4cqw;
+  max-height: 22cqh;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.vrbo-v2-phone__chips::-webkit-scrollbar {
+  display: none;
 }
 
 .vrbo-v2-phone__counter {

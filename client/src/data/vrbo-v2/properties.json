@@ -43,7 +43,7 @@
     "sleeps": "Sleeps 10",
     "nightly": "$612",
     "highlights": ["Beach access", "Sunset views", "Plenty of bedrooms"],
-    "image": "https://images.unsplash.com/photo-1499793983690-e8b21beb4a2a?auto=format&fit=crop&w=1400&q=70",
+    "image": "/images/vrbo-v2/poipu-ocean-retreat.png",
     "gradient": "linear-gradient(140deg, #2f6076, #8ec5cd)",
     "features": ["beach-access", "sunset-views", "plenty-of-bedrooms", "outdoor-hangouts"]
   }

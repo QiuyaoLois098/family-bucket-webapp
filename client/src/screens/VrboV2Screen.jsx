@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import GuestPhone from "../components/vrbo-v2/GuestPhone.jsx";
 import MainChatScreen from "../components/vrbo-v2/MainChatScreen.jsx";
 import RankingScreen from "../components/vrbo-v2/RankingScreen.jsx";
@@ -29,8 +29,31 @@ function VrboLandscapeGate() {
   );
 }
 
+function CursorHighlight({ enabled }) {
+  const [pos, setPos] = useState({ x: -999, y: -999 });
+
+  useEffect(() => {
+    if (!enabled) return undefined;
+    function onMove(event) {
+      setPos({ x: event.clientX, y: event.clientY });
+    }
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onMove);
+  }, [enabled]);
+
+  if (!enabled) return null;
+
+  return (
+    <div
+      className="vrbo-v2-cursor-glow"
+      aria-hidden="true"
+      style={{ transform: `translate(${pos.x}px, ${pos.y}px)` }}
+    />
+  );
+}
+
 function VrboDemo() {
-  const { state, allSubmitted, joinedUsers, actions } = useVrboV2Experience();
+  const { state, allSubmitted, actions } = useVrboV2Experience();
   const {
     stage,
     messages,
@@ -44,6 +67,7 @@ function VrboDemo() {
     selectedPropertyId,
     celebrating,
   } = state;
+  const [cursorHighlight, setCursorHighlight] = useState(false);
 
   const propertyLookup = useMemo(() => {
     const byId = new Map(results.map((result) => [result.property.id, result]));
@@ -57,10 +81,22 @@ function VrboDemo() {
   }, [results]);
 
   return (
-    <div className="vrbo-v2-stage">
-      <button type="button" className="vrbo-v2-stage__restart" onClick={actions.reset}>
-        {copy.stage.restart}
-      </button>
+    <div className={`vrbo-v2-stage ${cursorHighlight ? "has-cursor-highlight" : ""}`}>
+      <CursorHighlight enabled={cursorHighlight} />
+
+      <div className="vrbo-v2-stage__controls">
+        <button type="button" className="vrbo-v2-stage__restart" onClick={actions.reset}>
+          {copy.stage.restart}
+        </button>
+        <label className="vrbo-v2-stage__toggle">
+          <input
+            type="checkbox"
+            checked={cursorHighlight}
+            onChange={(event) => setCursorHighlight(event.target.checked)}
+          />
+          <span>{copy.stage.cursorHighlight}</span>
+        </label>
+      </div>
 
       <div className="vrbo-v2-stage__board">
         <div className="vrbo-v2-stage__left">
