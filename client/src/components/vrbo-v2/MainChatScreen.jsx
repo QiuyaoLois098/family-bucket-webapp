@@ -11,9 +11,18 @@ const bubbleMotion = {
   transition: { type: "spring", stiffness: 420, damping: 32 },
 };
 
-function Avatar({ user }) {
+const GROUP_AVATAR = "/images/Vrbo-Images/Avatars/Group.jpg";
+
+function Avatar({ user, className = "vrbo-v2-chat__avatar" }) {
+  if (user?.avatar) {
+    return (
+      <span className={`${className} has-photo`} aria-hidden="true">
+        <img src={user.avatar} alt="" />
+      </span>
+    );
+  }
   return (
-    <span className="vrbo-v2-chat__avatar" style={{ background: user.accent, color: user.onAccent }}>
+    <span className={className} style={{ background: user.accent, color: user.onAccent }}>
       {user.initials}
     </span>
   );
@@ -21,6 +30,7 @@ function Avatar({ user }) {
 
 export default function MainChatScreen({ messages, typing, userById, propertyLookup, celebrating }) {
   const feedRef = useRef(null);
+  const members = Object.values(userById);
 
   useEffect(() => {
     const node = feedRef.current;
@@ -32,20 +42,19 @@ export default function MainChatScreen({ messages, typing, userById, propertyLoo
     <div className={`vrbo-v2-chat ${celebrating ? "is-celebrating" : ""}`}>
       <Celebration active={celebrating} />
       <header className="vrbo-v2-chat__header">
-        <div className="vrbo-v2-chat__stack">
-          {Object.values(userById).map((user) => (
-            <span
-              key={user.id}
-              className="vrbo-v2-chat__stack-dot"
-              style={{ background: user.accent, color: user.onAccent }}
-            >
-              {user.initials}
-            </span>
-          ))}
-        </div>
+        <span className="vrbo-v2-chat__group-avatar" aria-hidden="true">
+          <img src={GROUP_AVATAR} alt="" />
+        </span>
         <div>
           <h2>{chatScript.groupTitle}</h2>
-          <p>{chatScript.groupSubtitle}</p>
+          <div className="vrbo-v2-chat__members">
+            {members.map((user) => (
+              <span key={user.id} className="vrbo-v2-chat__member">
+                <Avatar user={user} className="vrbo-v2-chat__member-avatar" />
+                <em>{user.name}</em>
+              </span>
+            ))}
+          </div>
         </div>
       </header>
 

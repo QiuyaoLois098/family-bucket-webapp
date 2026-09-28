@@ -19,11 +19,33 @@ function fill(template, values) {
   );
 }
 
+function PhoneAvatar({ user }) {
+  if (user?.avatar) {
+    return (
+      <span className="vrbo-v2-phone__avatar has-photo" aria-hidden="true">
+        <img src={user.avatar} alt="" />
+      </span>
+    );
+  }
+  return (
+    <span
+      className="vrbo-v2-phone__avatar"
+      style={{ background: user.accent, color: user.onAccent }}
+      aria-hidden="true"
+    >
+      {user.initials}
+    </span>
+  );
+}
+
 function PhoneBubble({ user, text }) {
   return (
-    <div className="vrbo-v2-phone__bubble">
-      <p className="vrbo-v2-phone__bubble-author">{user.name}</p>
-      <p className="vrbo-v2-phone__bubble-text">{text}</p>
+    <div className="vrbo-v2-phone__msg">
+      <PhoneAvatar user={user} />
+      <div className="vrbo-v2-phone__bubble">
+        <p className="vrbo-v2-phone__bubble-author">{user.name}</p>
+        <p className="vrbo-v2-phone__bubble-text">{text}</p>
+      </div>
     </div>
   );
 }
@@ -49,7 +71,10 @@ function MessageFeed({ messages, typing, userById, propertyLookup, live = false 
         if (message.kind === "property" && entry) {
           return (
             <div key={message.id} className="vrbo-v2-phone__property">
-              <p className="vrbo-v2-phone__bubble-author">{author.name}</p>
+              <div className="vrbo-v2-phone__msg">
+                <PhoneAvatar user={author} />
+                <p className="vrbo-v2-phone__bubble-author">{author.name}</p>
+              </div>
               <PropertyCard property={entry.property} variant="chat" />
             </div>
           );
@@ -130,10 +155,15 @@ export default function GuestPhone({
           <div className="vrbo-v2-phone__chrome">
             <span className="vrbo-v2-phone__notch" aria-hidden="true" />
           </div>
-          <header className="vrbo-v2-phone__trip">
-            <h3>{chatScript.groupTitle}</h3>
-            <p>{chatScript.groupSubtitle}</p>
-          </header>
+              <header className="vrbo-v2-phone__trip">
+                <span className="vrbo-v2-phone__group-avatar" aria-hidden="true">
+                  <img src="/images/Vrbo-Images/Avatars/Group.jpg" alt="" />
+                </span>
+                <div>
+                  <h3>{chatScript.groupTitle}</h3>
+                  <p>{chatScript.groupSubtitle}</p>
+                </div>
+              </header>
 
           <AnimatePresence mode="wait" initial={false}>
             {phase === "idle" ? (
@@ -181,18 +211,20 @@ export default function GuestPhone({
                       );
                     })}
                   </div>
+                  {draftLines.length ? (
+                    <p className="vrbo-v2-phone__selected-hint">
+                      {fill(copy.phone.selectedReview, { count: draftLines.length })}
+                    </p>
+                  ) : null}
                 </div>
 
                 <div className={`vrbo-v2-phone__composer ${draftLines.length ? "has-draft" : ""}`}>
                   <p className="vrbo-v2-phone__autofill">
                     {draftLines.length
-                      ? fill(copy.phone.autofillLabel, { count: draftLines.length })
+                      ? fill(copy.phone.readyToSend, { count: draftLines.length })
                       : copy.phone.autofillEmpty}
                   </p>
                   <div className="vrbo-v2-phone__composer-row">
-                    <span className="vrbo-v2-phone__composer-add" aria-hidden="true">
-                      +
-                    </span>
                     <div
                       className={`vrbo-v2-phone__composer-field ${
                         draftLines.length ? "is-filled" : ""
@@ -218,6 +250,7 @@ export default function GuestPhone({
                       ↑
                     </button>
                   </div>
+                  <p className="vrbo-v2-phone__steps">{copy.phone.chooseReviewSend}</p>
                 </div>
               </motion.div>
             ) : null}

@@ -389,12 +389,54 @@
   font-size: clamp(1rem, 2.2vh, 1.6rem);
   font-weight: 600;
   letter-spacing: 0.01em;
+  color: var(--blue);
 }
 
-.vrbo-v2-chat__header p {
-  margin: 2px 0 0;
-  font-size: clamp(0.62rem, 1.1vh, 0.78rem);
+.vrbo-v2-chat__group-avatar {
+  display: block;
+  flex: 0 0 auto;
+  width: clamp(34px, 4.6vh, 46px);
+  height: clamp(34px, 4.6vh, 46px);
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--soft-gray);
+}
+
+.vrbo-v2-chat__group-avatar img,
+.vrbo-v2-chat__avatar img,
+.vrbo-v2-chat__member-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.vrbo-v2-chat__members {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin-top: 4px;
+}
+
+.vrbo-v2-chat__member {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.vrbo-v2-chat__member em {
+  font-style: normal;
+  font-size: clamp(0.58rem, 1.1vh, 0.74rem);
   color: var(--text-soft);
+}
+
+.vrbo-v2-chat__member-avatar {
+  display: block;
+  width: clamp(16px, 2.2vh, 20px);
+  height: clamp(16px, 2.2vh, 20px);
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--soft-gray);
 }
 
 .vrbo-v2-chat__stack {
@@ -411,6 +453,7 @@
   border: 2px solid var(--warm-white);
   font-size: clamp(0.58rem, 1.2vh, 0.78rem);
   font-weight: 600;
+  overflow: hidden;
 }
 
 .vrbo-v2-chat__feed {
@@ -465,6 +508,11 @@
   border-radius: 50%;
   font-size: clamp(0.56rem, 1.2vh, 0.74rem);
   font-weight: 600;
+  overflow: hidden;
+}
+
+.vrbo-v2-chat__avatar.has-photo {
+  background: var(--soft-gray);
 }
 
 .vrbo-v2-chat__column {
@@ -1369,42 +1417,72 @@
 }
 
 .vrbo-v2-pref--chip {
-  flex-direction: row;
-  width: auto;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  width: 100%;
   min-height: 0;
-  gap: 1.2cqw;
-  padding: 1.2cqh 3.2cqw;
-  border: 0;
-  border-radius: 999px;
-  background: #e8edf5;
-  color: var(--blue);
+  height: max(28px, 7.2cqh);
+  aspect-ratio: auto;
+  gap: 0;
+  padding: 0.8cqh 2cqw;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  background-color: #cfd8e6;
+  background-size: cover;
+  background-position: center;
+  color: #ffffff;
   box-shadow: none;
+  overflow: hidden;
+  text-align: left;
+}
+
+.vrbo-v2-pref--chip .vrbo-v2-pref__shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.02) 40%, rgba(0, 0, 0, 0.55) 100%);
+  pointer-events: none;
 }
 
 .vrbo-v2-pref--chip .vrbo-v2-pref__tick {
-  font-size: max(7px, 2cqh);
+  position: absolute;
+  top: 0.6cqh;
+  right: 1.2cqw;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: max(10px, 2.8cqh);
+  height: max(10px, 2.8cqh);
+  border-radius: 50%;
+  background: var(--blue);
+  color: #ffffff;
+  font-size: max(5px, 1.5cqh);
   font-weight: 700;
   line-height: 1;
 }
 
 .vrbo-v2-pref--chip .vrbo-v2-pref__label {
+  position: relative;
+  z-index: 1;
   font-family: var(--vrbo-v2-content);
-  font-size: max(7px, 2.1cqh);
-  font-weight: 500;
+  font-size: max(5px, 1.55cqh);
+  font-weight: 600;
   letter-spacing: 0;
-  line-height: 1.2;
-  white-space: nowrap;
+  line-height: 1.1;
+  white-space: normal;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
 }
 
 .vrbo-v2-pref--chip.is-selected {
-  background: var(--blue);
+  background-color: #cfd8e6;
+  border-color: var(--blue);
   color: #ffffff;
   transform: none;
   box-shadow: none;
 }
 
 .vrbo-v2-pref--chip.is-disabled {
-  opacity: 0.4;
+  opacity: 0.42;
 }
 
 /* Horizontal bar used in the ranked list. */
@@ -1746,10 +1824,31 @@
 
 .vrbo-v2-phone__trip {
   flex: 0 0 auto;
-  padding: 0.6cqh 5cqw 1.4cqh;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 2.4cqw;
+  padding: 0.8cqh 4cqw 1.2cqh;
+  text-align: left;
   border-bottom: 1px solid rgba(32, 32, 32, 0.06);
   background: #ffffff;
+}
+
+.vrbo-v2-phone__group-avatar {
+  display: block;
+  flex: 0 0 auto;
+  width: max(18px, 5.8cqh);
+  height: max(18px, 5.8cqh);
+  overflow: hidden;
+  border-radius: 50%;
+  background: #dfe5ef;
+}
+
+.vrbo-v2-phone__group-avatar img,
+.vrbo-v2-phone__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .vrbo-v2-phone__trip h3 {
@@ -1881,12 +1980,33 @@
 
 .vrbo-v2-phone__bubble {
   align-self: flex-start;
-  max-width: 92%;
-  padding: 1.6cqh 3.4cqw;
+  max-width: 100%;
+  min-width: 0;
+  padding: 1.4cqh 3cqw;
   border-radius: 14px;
   background: #ffffff;
   color: var(--charcoal);
   box-shadow: 0 1px 0 rgba(32, 32, 32, 0.04);
+}
+
+.vrbo-v2-phone__msg {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.6cqw;
+  max-width: 96%;
+}
+
+.vrbo-v2-phone__avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: max(12px, 3.8cqh);
+  height: max(12px, 3.8cqh);
+  overflow: hidden;
+  border-radius: 50%;
+  font-size: max(5px, 1.5cqh);
+  font-weight: 600;
+  background: #dfe5ef;
 }
 
 .vrbo-v2-phone__bubble--planner {
@@ -1963,8 +2083,8 @@
   flex: 0 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 1.2cqh;
-  padding: 1cqh 4.5cqw 1.2cqh;
+  gap: 0.8cqh;
+  padding: 0.8cqh 3.5cqw 0.6cqh;
   background: #ffffff;
   border-top: 1px solid rgba(32, 32, 32, 0.04);
 }
@@ -1972,22 +2092,111 @@
 .vrbo-v2-phone__prompt-title {
   margin: 0;
   font-family: var(--vrbo-v2-sans);
-  font-size: max(7px, 2.2cqh);
+  font-size: max(7px, 2cqh);
   font-weight: 600;
   color: var(--blue);
 }
 
 .vrbo-v2-phone__chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.2cqw 1.4cqw;
-  max-height: 22cqh;
-  overflow-y: auto;
-  scrollbar-width: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8cqh 1.2cqw;
+  max-height: none;
+  overflow: visible;
 }
 
-.vrbo-v2-phone__chips::-webkit-scrollbar {
+.vrbo-v2-phone__selected-hint {
+  margin: 0;
+  font-size: max(5px, 1.45cqh);
+  font-weight: 600;
+  color: var(--blue);
+}
+
+.vrbo-v2-phone__composer {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6cqh;
+  padding: 0.6cqh 3.5cqw 1.4cqh;
+  background: #ffffff;
+  border-top: 1px solid rgba(32, 32, 32, 0.06);
+}
+
+.vrbo-v2-phone__autofill {
+  margin: 0;
+  font-size: max(5px, 1.5cqh);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--blue);
+}
+
+.vrbo-v2-phone__composer-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.6cqw;
+}
+
+.vrbo-v2-phone__composer-add {
   display: none;
+}
+
+.vrbo-v2-phone__composer-field {
+  flex: 1;
+  min-width: 0;
+  min-height: max(22px, 7cqh);
+  max-height: 14cqh;
+  overflow-y: auto;
+  padding: 1.2cqh 2.8cqw;
+  border: 1px solid rgba(32, 32, 32, 0.12);
+  border-radius: 14px;
+  background: #f7f8fb;
+  color: rgba(32, 32, 32, 0.4);
+  font-size: max(5px, 1.55cqh);
+  line-height: 1.35;
+}
+
+.vrbo-v2-phone__composer-field.is-filled {
+  color: var(--charcoal);
+  background: #ffffff;
+}
+
+.vrbo-v2-phone__draft-line {
+  margin: 0 0 0.5cqh;
+}
+
+.vrbo-v2-phone__draft-line:last-child {
+  margin-bottom: 0;
+}
+
+.vrbo-v2-phone__composer-send {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: max(18px, 5.4cqh);
+  height: max(18px, 5.4cqh);
+  border: 0;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #ffffff;
+  font-size: max(8px, 2.4cqh);
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.vrbo-v2-phone__composer-send:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.vrbo-v2-phone__steps {
+  margin: 0;
+  text-align: center;
+  font-size: max(5px, 1.35cqh);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--blue);
 }
 
 .vrbo-v2-phone__counter {
@@ -1996,94 +2205,6 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: rgba(32, 32, 32, 0.45);
-}
-
-.vrbo-v2-phone__composer {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.8cqh;
-  padding: 1cqh 3.5cqw 2cqh;
-  background: #ffffff;
-  border-top: 1px solid rgba(32, 32, 32, 0.06);
-}
-
-.vrbo-v2-phone__autofill {
-  margin: 0;
-  font-size: max(5px, 1.6cqh);
-  letter-spacing: 0.04em;
-  color: rgba(32, 32, 32, 0.42);
-}
-
-.vrbo-v2-phone__composer-row {
-  display: flex;
-  align-items: flex-end;
-  gap: 2cqw;
-}
-
-.vrbo-v2-phone__composer-add {
-  display: grid;
-  place-items: center;
-  flex: 0 0 auto;
-  width: 5.5cqh;
-  height: 5.5cqh;
-  border-radius: 50%;
-  background: #e8e8ed;
-  color: #6b6b75;
-  font-size: max(10px, 3cqh);
-  font-weight: 500;
-  line-height: 1;
-}
-
-.vrbo-v2-phone__composer-field {
-  flex: 1;
-  min-width: 0;
-  min-height: 5.5cqh;
-  padding: 1.5cqh 3cqw;
-  border-radius: 16px;
-  background: #f1f1f4;
-  color: rgba(32, 32, 32, 0.4);
-  font-size: max(7px, 2.1cqh);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.6cqh;
-}
-
-.vrbo-v2-phone__composer-field.is-filled {
-  color: var(--charcoal);
-  background: #f7f8fb;
-  border: 1px solid rgba(56, 87, 227, 0.12);
-}
-
-.vrbo-v2-phone__draft-line {
-  margin: 0;
-  font-family: var(--vrbo-v2-content);
-  font-size: max(7px, 2.05cqh);
-  line-height: 1.3;
-  color: #1a2a55;
-}
-
-.vrbo-v2-phone__composer-send {
-  display: grid;
-  place-items: center;
-  flex: 0 0 auto;
-  width: 5.5cqh;
-  height: 5.5cqh;
-  border: 0;
-  border-radius: 50%;
-  background: var(--blue);
-  color: #ffffff;
-  font-size: max(10px, 2.8cqh);
-  font-weight: 600;
-  line-height: 1;
-  padding: 0;
-  transition: background 0.18s ease, opacity 0.18s ease;
-}
-
-.vrbo-v2-phone__composer-send:disabled {
-  background: #d0d0d6;
-  color: #ffffff;
 }
 
 .vrbo-v2-phone__done {

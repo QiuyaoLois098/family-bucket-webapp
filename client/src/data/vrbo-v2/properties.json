@@ -11,7 +11,7 @@
     "sleeps": "Sleeps 8",
     "nightly": "$485",
     "highlights": ["Private pool", "Pet-friendly", "Full kitchen"],
-    "image": "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1400&q=70",
+    "image": "/images/Vrbo-Images/Properties/Kailua-Palm-House.jpg",
     "gradient": "linear-gradient(140deg, #35566b, #9dc0cf)",
     "features": ["private-pool", "pet-friendly", "full-kitchen", "plenty-of-bedrooms"]
   },
@@ -27,7 +27,7 @@
     "sleeps": "Sleeps 6",
     "nightly": "$429",
     "highlights": ["Outdoor hangouts", "Full kitchen", "Walkable location"],
-    "image": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1400&q=70",
+    "image": "/images/Vrbo-Images/Properties/Kihei-Garden-Villa.jpg",
     "gradient": "linear-gradient(140deg, #3f5b4c, #8fa58a)",
     "features": ["outdoor-hangouts", "full-kitchen", "walkable-location", "pet-friendly"]
   },
@@ -43,7 +43,7 @@
     "sleeps": "Sleeps 10",
     "nightly": "$612",
     "highlights": ["Beach access", "Sunset views", "Plenty of bedrooms"],
-    "image": "/images/vrbo-v2/poipu-ocean-retreat.png",
+    "image": "/images/Vrbo-Images/Properties/Poipu-Ocean-Retreat.jpg",
     "gradient": "linear-gradient(140deg, #2f6076, #8ec5cd)",
     "features": ["beach-access", "sunset-views", "plenty-of-bedrooms", "outdoor-hangouts"]
   }

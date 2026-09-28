@@ -3,6 +3,7 @@
     "id": "private-pool",
     "label": "Private Pool",
     "icon": "🏊",
+    "image": "/images/Vrbo-Images/Preferences/Private-Pool.jpg",
     "chatLines": {
       "jamie": "A private pool would be great so we can all swim without heading out.",
       "sarah": "A private pool for morning swims is a must for me 🏊‍♀️",
@@ -14,6 +15,7 @@
     "id": "pet-friendly",
     "label": "Pet-Friendly",
     "icon": "🐾",
+    "image": "/images/Vrbo-Images/Preferences/Pet-Friendly.jpg",
     "chatLines": {
       "jamie": "We'll need a pet-friendly place - my dog's coming too.",
       "sarah": "My dog is part of the crew! Let's find somewhere pet-friendly 🐾",
@@ -25,6 +27,7 @@
     "id": "full-kitchen",
     "label": "Full Kitchen",
     "icon": "🍳",
+    "image": "/images/Vrbo-Images/Preferences/Full-Kitchen.jpg",
     "chatLines": {
       "jamie": "A full kitchen would make breakfast for the group much easier.",
       "sarah": "I'd love a full kitchen so we can make a big breakfast together 🍳",
@@ -36,6 +39,7 @@
     "id": "sunset-views",
     "label": "Sunset Views",
     "icon": "🌅",
+    "image": "/images/Vrbo-Images/Preferences/Sunset-Views.jpg",
     "chatLines": {
       "jamie": "Sunset views from the house would be a nice bonus for evenings in.",
       "sarah": "Imagine watching the sunset over the ocean from our place 🌅",
@@ -47,6 +51,7 @@
     "id": "beach-access",
     "label": "Beach Access",
     "icon": "🛶",
+    "image": "/images/Vrbo-Images/Preferences/Beach-Access.jpg",
     "chatLines": {
       "jamie": "Easy beach access would make it simpler to get everyone out kayaking.",
       "sarah": "Easy beach access is a must - I really want to go kayaking 🚣",
@@ -58,6 +63,7 @@
     "id": "outdoor-hangouts",
     "label": "Outdoor Hangouts",
     "icon": "✨",
+    "image": "/images/Vrbo-Images/Preferences/Outdoor-Hangouts.jpg",
     "chatLines": {
       "jamie": "We'd want an outdoor area with a grill and enough seating for everyone.",
       "sarah": "I'd love to cook dinner outside and spend the whole evening together ✨",
@@ -69,6 +75,7 @@
     "id": "walkable-location",
     "label": "Walkable Location",
     "icon": "🚶",
+    "image": "/images/Vrbo-Images/Preferences/Walkable-Location.jpg",
     "chatLines": {
       "jamie": "Being able to walk to shops and restaurants would make getting around easier.",
       "sarah": "I'd love to wander out for breakfast and explore the local shops 🚶‍♀️",
@@ -80,6 +87,7 @@
     "id": "plenty-of-bedrooms",
     "label": "Plenty of Bedrooms",
     "icon": "🛏️",
+    "image": "/images/Vrbo-Images/Preferences/Plenty-of-Bedrooms.jpg",
     "chatLines": {
       "jamie": "We need enough bedrooms for everyone to have their own space.",
       "sarah": "Enough bedrooms for everyone to settle in comfortably is a must 🛋️",
