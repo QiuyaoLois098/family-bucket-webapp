@@ -22,8 +22,16 @@ export default function IdleDisplay() {
       ))}
       <div className="idle-display__wash" />
       <div className="idle-display__copy">
-        <p className="eyebrow">The Family Bucket List</p>
-        <h1>Where will your family go next?</h1>
+        {DESTINATIONS.map((destination, index) => (
+          <div
+            key={destination.id}
+            className="idle-display__caption"
+            style={{ animationDelay: `${-index * SLOT_SECONDS}s` }}
+          >
+            <h1>{destination.shortTitle}</h1>
+            <p>{destination.invitation || "A moment made for all of you."}</p>
+          </div>
+        ))}
       </div>
     </div>
   );

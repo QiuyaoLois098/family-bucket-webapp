@@ -133,6 +133,42 @@ export class ExperienceSession extends EventEmitter {
     );
   }
 
+  goBack(force = false) {
+    this.touch();
+    if (!this.canAcceptInput(force)) return;
+    if (this.state.phase !== PHASES.QUESTIONS) return;
+
+    this.quiet();
+
+    if (this.state.currentQuestion <= 0) {
+      this.imageJobId += 1;
+      this.set(
+        {
+          phase: PHASES.DESTINATION,
+          destination: null,
+          answers: [],
+          currentQuestion: 0,
+          imageUrl: null,
+          imageReady: false,
+          imageSource: null,
+          itinerary: null,
+          imageStatus: "idle",
+          itineraryStatus: "idle",
+        },
+        "back-to-destination",
+      );
+      return;
+    }
+
+    this.set(
+      {
+        answers: this.state.answers.slice(0, -1),
+        currentQuestion: this.state.currentQuestion - 1,
+      },
+      "back-question",
+    );
+  }
+
   async startImageGeneration() {
     const jobId = ++this.imageJobId;
     const { destination, answers } = this.state;

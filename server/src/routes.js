@@ -65,6 +65,7 @@ export function registerSockets(io) {
     socket.on("experience:answer", (payload) => {
       session.answerQuestion(payload?.questionIndex, payload?.answerId);
     });
+    socket.on("experience:back", () => session.goBack());
     socket.on("experience:shake", () => session.shake());
     socket.on("experience:reset", () => session.reset("manual"));
 

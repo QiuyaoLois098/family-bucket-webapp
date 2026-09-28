@@ -36,6 +36,7 @@ export function useSession() {
         getSocket().emit("experience:selectDestination", { destinationId }),
       answer: (questionIndex, answerId) =>
         getSocket().emit("experience:answer", { questionIndex, answerId }),
+      goBack: () => getSocket().emit("experience:back"),
       shake: () => getSocket().emit("experience:shake"),
       reset: () => getSocket().emit("experience:reset"),
       debugSkip: () => getSocket().emit("debug:skip"),

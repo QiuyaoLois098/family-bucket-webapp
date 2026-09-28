@@ -54,17 +54,35 @@
   position: absolute;
   left: 8%;
   right: 8%;
-  bottom: 14%;
+  bottom: 12%;
   text-align: center;
+  pointer-events: none;
 }
 
-.idle-display__copy h1 {
+.idle-display__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  animation: ambient-caption 42s linear infinite;
+}
+
+.idle-display__caption h1 {
   margin: 0;
   font-family: var(--serif);
   font-weight: 400;
   font-style: italic;
   font-size: clamp(3.2rem, 9vw, 5.4rem);
   line-height: 1.08;
+}
+
+.idle-display__caption p {
+  margin: 0.7rem 0 0;
+  font-size: clamp(1rem, 2.2vw, 1.35rem);
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  opacity: 0.9;
 }
 
 .image-reveal__layer {
@@ -205,6 +223,17 @@
   100% {
     opacity: 0;
     transform: scale(1.14);
+  }
+}
+
+@keyframes ambient-caption {
+  0%,
+  12% {
+    opacity: 1;
+  }
+  16.66%,
+  100% {
+    opacity: 0;
   }
 }
 

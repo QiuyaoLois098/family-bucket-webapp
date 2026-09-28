@@ -1,13 +1,13 @@
 export const DESTINATIONS = [
-  {
+{
     id: "costa-rica",
     title: "Sunset by the beach in Costa Rica",
     shortTitle: "Costa Rica",
     location: "Pacific Coast",
     invitation: "Golden hour along a wild shoreline.",
-    image: "/images/destinations/costa-rica.jpg",
+    image: "/images/Expedia-images/destinations/costa-rica.png",
     gallery: [
-      "/images/destinations/costa-rica.jpg",
+      "/images/Expedia-images/destinations/costa-rica.png",
       "/images/memories/forest.png",
       "/images/memories/drive.png",
       "/images/memories/food.jpg",
@@ -50,15 +50,66 @@ export const DESTINATIONS = [
       ],
     },
   },
-  {
+{
+    id: "lake-tahoe",
+    title: "A lakeside afternoon at Lake Tahoe",
+    shortTitle: "Lake Tahoe",
+    location: "California / Nevada",
+    invitation: "A moment made for all of you.",
+    image: "/images/Expedia-images/destinations/lake-taho.png",
+    gallery: [
+      "/images/Expedia-images/destinations/lake-taho.png",
+      "/images/memories/drive.png",
+      "/images/memories/food.jpg",
+      "/images/memories/forest.png",
+    ],
+    crops: ["center 45%", "right 30%", "left 50%", "center 75%"],
+    palette: {
+      wash: "linear-gradient(180deg, #1e3a4c 0%, #6a8aa0 45%, #f0e2c8 100%)",
+      accent: "#c9a06c",
+    },
+    imagePromptBase:
+      "Cinematic premium travel photograph of Lake Tahoe: clear alpine water, pine forest, snow-capped peaks, rocky shoreline, bright mountain light. Editorial family travel campaign quality, no text, no logos.",
+    fallbackItinerary: {
+      title: "Your Family Escape to Lake Tahoe",
+      subtitle: "Clear water, mountain air, and a day made for everyone",
+      moments: [
+        {
+          time: "Morning",
+          title: "Shoreline Walk",
+          description:
+            "Start where the pines meet the water. The lake is cold and bright, and everyone finds their own pace along the rocks.",
+        },
+        {
+          time: "Afternoon",
+          title: "Picnic by the Water",
+          description:
+            "Find a flat stone or a quiet beach. Pack something simple and stay until the light turns warmer on the peaks.",
+        },
+        {
+          time: "Sunset",
+          title: "Mountain Gold",
+          description:
+            "Watch the summits catch the last light while the lake goes still. This is the hour the photos never quite capture.",
+        },
+        {
+          time: "Evening",
+          title: "Cabin Supper",
+          description:
+            "Come in for a long table dinner. Outside, the water keeps reflecting the night. Inside, no one is in a hurry.",
+        },
+      ],
+    },
+  },
+{
     id: "catskills",
     title: "Campfire stories in the Catskills",
     shortTitle: "The Catskills",
     location: "New York",
     invitation: "Woodsmoke, pines, and a sky full of quiet.",
-    image: "/images/destinations/catskills.jpg",
+    image: "/images/Expedia-images/destinations/catskills.png",
     gallery: [
-      "/images/destinations/catskills.jpg",
+      "/images/Expedia-images/destinations/catskills.png",
       "/images/memories/forest.png",
       "/images/memories/food.jpg",
       "/images/memories/drive.png",
@@ -101,168 +152,15 @@ export const DESTINATIONS = [
       ],
     },
   },
-  {
-    id: "kyoto",
-    title: "Cherry blossom season in Kyoto",
-    shortTitle: "Kyoto",
-    location: "Japan",
-    invitation: "Petals, temple gardens, and pale spring light.",
-    image: "/images/destinations/kyoto.jpg",
-    gallery: [
-      "/images/destinations/kyoto.jpg",
-      "/images/memories/sakura.png",
-      "/images/memories/sushi.png",
-      "/images/memories/drive.png",
-    ],
-    crops: ["center 25%", "center 60%", "right center", "left 20%"],
-    palette: {
-      wash: "linear-gradient(180deg, #4a3040 0%, #d9a7b0 48%, #f7e6d8 100%)",
-      accent: "#d9a7b0",
-    },
-    imagePromptBase:
-      "Cinematic premium travel photograph of Kyoto in cherry blossom season: a quiet temple garden path, pale pink petals over still water, wooden architecture, stone lanterns, morning mist. Editorial, serene, no prominent people, no text, no logos.",
-    fallbackItinerary: {
-      title: "Your Family Escape to Kyoto",
-      subtitle: "A pale-pink spring among gardens, rivers, and quiet streets",
-      moments: [
-        {
-          time: "Morning",
-          title: "Temple Garden",
-          description:
-            "Arrive before the lanes fill. Petals rest on moss and pond water. Walk slowly - Kyoto rewards the unhurried.",
-        },
-        {
-          time: "Afternoon",
-          title: "Philosopher’s Path",
-          description:
-            "Follow the canal under a vault of blossom. Stop for tea and a sweet; watch the current carry petals like small boats.",
-        },
-        {
-          time: "Sunset",
-          title: "Kamo River Light",
-          description:
-            "Sit on the riverbank as the sky turns the color of silk. The city softens. Spring feels briefly endless.",
-        },
-        {
-          time: "Evening",
-          title: "Lantern Streets",
-          description:
-            "Wander Gion or Ponto-cho as lanterns warm the wood facades. Dinner is seasonal, careful, and meant to be remembered.",
-        },
-      ],
-    },
-  },
-  {
-    id: "lake-como",
-    title: "A summer afternoon on Lake Como",
-    shortTitle: "Lake Como",
-    location: "Italy",
-    invitation: "Villas, still water, and a long Italian light.",
-    image: "/images/destinations/lake-como.jpg",
-    gallery: [
-      "/images/destinations/lake-como.jpg",
-      "/images/memories/drive.png",
-      "/images/memories/food.jpg",
-      "/images/memories/forest.png",
-    ],
-    crops: ["center 45%", "right 30%", "left 50%", "center 75%"],
-    palette: {
-      wash: "linear-gradient(180deg, #1e3a4c 0%, #6a8aa0 45%, #f0e2c8 100%)",
-      accent: "#c9a06c",
-    },
-    imagePromptBase:
-      "Cinematic premium travel photograph of Lake Como in summer: glassy alpine water, terracotta villas, cypress and oleander, a wooden boat dock, mountains fading into haze. Editorial Italian glamour, no people, no text, no logos.",
-    fallbackItinerary: {
-      title: "Your Family Escape to Lake Como",
-      subtitle: "A long, luminous afternoon on still alpine water",
-      moments: [
-        {
-          time: "Morning",
-          title: "Villa Gardens",
-          description:
-            "Wander terraces of lemon trees and statues before the heat arrives. The lake sits below like a sheet of metal.",
-        },
-        {
-          time: "Afternoon",
-          title: "Boat Across the Water",
-          description:
-            "A wooden boat traces the shoreline from village to village. Water slaps the hull. Time becomes the distance between bell towers.",
-        },
-        {
-          time: "Sunset",
-          title: "Promenade Gold",
-          description:
-            "Walk the lungolago as shutters open and the mountains go rose. Order something cold. Stay until the lights come on in the villas.",
-        },
-        {
-          time: "Evening",
-          title: "Supper on the Terrace",
-          description:
-            "Pasta, lake fish, and a bottle that does not need a label to be perfect. The night smells of jasmine and warm stone.",
-        },
-      ],
-    },
-  },
-  {
-    id: "desert",
-    title: "Stargazing in the desert",
-    shortTitle: "The Desert",
-    location: "Arizona",
-    invitation: "Red rock, wide sky, and a silence that goes on forever.",
-    image: "/images/destinations/desert.jpg",
-    gallery: [
-      "/images/destinations/desert.jpg",
-      "/images/memories/drive.png",
-      "/images/memories/food.jpg",
-      "/images/memories/forest.png",
-    ],
-    crops: ["center 20%", "center 70%", "left 40%", "right 25%"],
-    palette: {
-      wash: "linear-gradient(180deg, #2a1a12 0%, #9a4a28 48%, #e8c9a0 100%)",
-      accent: "#e0a35a",
-    },
-    imagePromptBase:
-      "Cinematic premium travel photograph of the Arizona desert: red sandstone mesas and buttes like Monument Valley, warm late-afternoon light, sparse scrub, immense blue sky turning gold at the horizon. Editorial Southwest travel campaign quality, no people, no text, no logos.",
-    fallbackItinerary: {
-      title: "Your Family Escape to the Desert",
-      subtitle: "Red earth by day, and a sky that rewrites the night",
-      moments: [
-        {
-          time: "Morning",
-          title: "First Light on the Rocks",
-          description:
-            "Wake for the hour when the mesas catch fire. The desert is cool, quiet, and briefly gentle.",
-        },
-        {
-          time: "Afternoon",
-          title: "Shade and Stillness",
-          description:
-            "Retreat to a casita or canyon wall when the sun is high. Cold drinks, a slow lunch, and the luxury of doing almost nothing.",
-        },
-        {
-          time: "Sunset",
-          title: "Dune Horizon",
-          description:
-            "Walk out as the temperature drops. Shadows lengthen into geometry. The first stars appear before the sky is fully dark.",
-        },
-        {
-          time: "Evening",
-          title: "The Whole Sky",
-          description:
-            "Blankets, a thermos, and no city glow. The Milky Way arrives as if someone opened a door. This is the memory you came for.",
-        },
-      ],
-    },
-  },
-  {
+{
     id: "alps",
     title: "A winter escape in the Alps",
     shortTitle: "The Alps",
     location: "Europe",
     invitation: "Snow light, timber rooms, and mountain quiet.",
-    image: "/images/destinations/alps.jpg",
+    image: "/images/Expedia-images/destinations/apls.png",
     gallery: [
-      "/images/destinations/alps.jpg",
+      "/images/Expedia-images/destinations/apls.png",
       "/images/memories/snow.png",
       "/images/memories/food.jpg",
       "/images/memories/drive.png",
@@ -305,6 +203,108 @@ export const DESTINATIONS = [
       ],
     },
   },
+{
+    id: "desert",
+    title: "Stargazing in the desert",
+    shortTitle: "The Desert",
+    location: "Arizona",
+    invitation: "Red rock, wide sky, and a silence that goes on forever.",
+    image: "/images/Expedia-images/destinations/the-desert.png",
+    gallery: [
+      "/images/Expedia-images/destinations/the-desert.png",
+      "/images/memories/drive.png",
+      "/images/memories/food.jpg",
+      "/images/memories/forest.png",
+    ],
+    crops: ["center 20%", "center 70%", "left 40%", "right 25%"],
+    palette: {
+      wash: "linear-gradient(180deg, #2a1a12 0%, #9a4a28 48%, #e8c9a0 100%)",
+      accent: "#e0a35a",
+    },
+    imagePromptBase:
+      "Cinematic premium travel photograph of the Arizona desert: red sandstone mesas and buttes like Monument Valley, warm late-afternoon light, sparse scrub, immense blue sky turning gold at the horizon. Editorial Southwest travel campaign quality, no people, no text, no logos.",
+    fallbackItinerary: {
+      title: "Your Family Escape to the Desert",
+      subtitle: "Red earth by day, and a sky that rewrites the night",
+      moments: [
+        {
+          time: "Morning",
+          title: "First Light on the Rocks",
+          description:
+            "Wake for the hour when the mesas catch fire. The desert is cool, quiet, and briefly gentle.",
+        },
+        {
+          time: "Afternoon",
+          title: "Shade and Stillness",
+          description:
+            "Retreat to a casita or canyon wall when the sun is high. Cold drinks, a slow lunch, and the luxury of doing almost nothing.",
+        },
+        {
+          time: "Sunset",
+          title: "Dune Horizon",
+          description:
+            "Walk out as the temperature drops. Shadows lengthen into geometry. The first stars appear before the sky is fully dark.",
+        },
+        {
+          time: "Evening",
+          title: "The Whole Sky",
+          description:
+            "Blankets, a thermos, and no city glow. The Milky Way arrives as if someone opened a door. This is the memory you came for.",
+        },
+      ],
+    },
+  },
+{
+    id: "kyoto",
+    title: "Cherry blossom season in Kyoto",
+    shortTitle: "Kyoto",
+    location: "Japan",
+    invitation: "Petals, temple gardens, and pale spring light.",
+    image: "/images/Expedia-images/destinations/kyoto.png",
+    gallery: [
+      "/images/Expedia-images/destinations/kyoto.png",
+      "/images/memories/sakura.png",
+      "/images/memories/sushi.png",
+      "/images/memories/drive.png",
+    ],
+    crops: ["center 25%", "center 60%", "right center", "left 20%"],
+    palette: {
+      wash: "linear-gradient(180deg, #4a3040 0%, #d9a7b0 48%, #f7e6d8 100%)",
+      accent: "#d9a7b0",
+    },
+    imagePromptBase:
+      "Cinematic premium travel photograph of Kyoto in cherry blossom season: a quiet temple garden path, pale pink petals over still water, wooden architecture, stone lanterns, morning mist. Editorial, serene, no prominent people, no text, no logos.",
+    fallbackItinerary: {
+      title: "Your Family Escape to Kyoto",
+      subtitle: "A pale-pink spring among gardens, rivers, and quiet streets",
+      moments: [
+        {
+          time: "Morning",
+          title: "Temple Garden",
+          description:
+            "Arrive before the lanes fill. Petals rest on moss and pond water. Walk slowly - Kyoto rewards the unhurried.",
+        },
+        {
+          time: "Afternoon",
+          title: "Philosopher’s Path",
+          description:
+            "Follow the canal under a vault of blossom. Stop for tea and a sweet; watch the current carry petals like small boats.",
+        },
+        {
+          time: "Sunset",
+          title: "Kamo River Light",
+          description:
+            "Sit on the riverbank as the sky turns the color of silk. The city softens. Spring feels briefly endless.",
+        },
+        {
+          time: "Evening",
+          title: "Lantern Streets",
+          description:
+            "Wander Gion or Ponto-cho as lanterns warm the wood facades. Dinner is seasonal, careful, and meant to be remembered.",
+        },
+      ],
+    },
+  }
 ];
 
 export function getDestination(id) {

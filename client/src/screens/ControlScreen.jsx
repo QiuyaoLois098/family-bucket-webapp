@@ -28,7 +28,9 @@ export default function ControlScreen() {
               <QuestionStep
                 currentQuestion={state.currentQuestion}
                 answers={state.answers}
+                destinationId={state.destination}
                 onAnswer={actions.answer}
+                onBack={actions.goBack}
               />
             </section>
             <section

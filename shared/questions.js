@@ -1,22 +1,21 @@
 export const QUESTIONS = [
   {
     id: "activity",
-    prompt: "What would you want to do first?",
+    prompt: "What would you like to do?",
     options: [
       {
-        id: "explore",
-        label: "Explore somewhere unexpected",
-        promptHint: "an unexpected discovery just off the usual path, a sense of wandering into somewhere new",
+        id: "adventurous",
+        label: "Try something adventurous",
+        image: "/images/Expedia-images/options/q1_1.png",
+        promptHint:
+          "an adventurous family moment, suspension bridge or rainforest trail, sense of discovery and energy",
       },
       {
-        id: "eat",
-        label: "Find something amazing to eat",
-        promptHint: "a memorable meal, local ingredients, a beautiful table or market, atmosphere of hospitality",
-      },
-      {
-        id: "view",
-        label: "Slow down and take in the view",
-        promptHint: "a cinematic overlook, open sky, still water or distant mountains, a place to pause",
+        id: "slow",
+        label: "Take it slow",
+        image: "/images/Expedia-images/options/q1_2.png",
+        promptHint:
+          "a slow beach afternoon together, soft light, calm water, unhurried family time",
       },
     ],
   },

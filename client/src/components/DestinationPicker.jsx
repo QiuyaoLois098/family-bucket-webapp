@@ -1,39 +1,60 @@
 import { DESTINATIONS, getDestination } from "@shared/destinations.js";
 
+const ORDER = new Map(DESTINATIONS.map((item, index) => [item.id, index]));
+
 export default function DestinationPicker({ onSelect, offeredIds }) {
   const destinations = (offeredIds?.length ? offeredIds : DESTINATIONS.map((item) => item.id))
     .map((id) => getDestination(id))
-    .filter(Boolean);
+    .filter(Boolean)
+    .sort((a, b) => (ORDER.get(a.id) ?? 0) - (ORDER.get(b.id) ?? 0));
 
   return (
     <div className="destinations">
-      <header className="destinations__header">
-        <h2>Where will you go?</h2>
-        <p className="destinations__hint">Tap a destination to begin</p>
+      <header className="destinations__brandbar">
+        <img
+          className="destinations__logo"
+          src="/images/Expedia-images/expedia-logo.png"
+          alt="Expedia"
+        />
+        <span className="destinations__product">AI Activity Planner</span>
       </header>
-      <div className={`destinations__grid destinations__grid--${destinations.length}`}>
+
+      <div className="destinations__intro">
+        <p className="destinations__eyebrow">Future Family Memories</p>
+        <h2>
+          Where will your
+          <br />
+          family go next?
+        </h2>
+        <p className="destinations__lede">
+          Find things to do, places to eat,
+          <br />
+          and moments to share.
+        </p>
+      </div>
+
+      <div className="destinations__grid">
         {destinations.map((destination, index) => (
           <button
             key={destination.id}
             type="button"
             className="destination-card"
             onClick={() => onSelect(destination.id)}
+            style={{ animationDelay: `${index * 0.05}s` }}
           >
             <span
-              className="destination-card__frame"
-              style={{ animationDelay: `${index * 0.09}s` }}
-            >
-              <span
-                className="destination-card__image"
-                style={{ backgroundImage: `url(${destination.image})` }}
-              />
-            </span>
-            <span className="destination-card__copy">
-              <strong>{destination.title}</strong>
-            </span>
+              className="destination-card__image"
+              style={{ backgroundImage: `url(${destination.image})` }}
+            />
+            <span className="destination-card__veil" />
+            <span className="destination-card__label">{destination.shortTitle}</span>
           </button>
         ))}
       </div>
+
+      <footer className="destinations__footer">
+        <p>Tap a destination to begin</p>
+      </footer>
     </div>
   );
 }
