@@ -116,6 +116,12 @@ function reducer(state, action) {
         ? state
         : { ...state, typing: [...state.typing, action.userId] };
 
+    case "CLEAR_TYPING":
+      return {
+        ...state,
+        typing: withoutTyping(state.typing, action.userId),
+      };
+
     case "ADD_MESSAGE":
       return {
         ...state,
@@ -237,8 +243,22 @@ export default function useVrboV2Experience() {
       );
     });
 
-    offset += chatScript.handoffPause ?? 0;
-    ids.push(schedule(() => dispatch({ type: "SET_STAGE", stage: "selecting" }), offset));
+    // Reference beat: Jamie's message lands, then guests show as typing.
+    const guestTypers = guests.slice(0, 2).map((user) => user.id);
+    offset += 350;
+    guestTypers.forEach((userId, index) => {
+      ids.push(
+        schedule(() => dispatch({ type: "SET_TYPING", userId }), offset + index * 120),
+      );
+    });
+
+    offset += Math.max(chatScript.handoffPause ?? 900, 2200);
+    ids.push(
+      schedule(() => {
+        guestTypers.forEach((userId) => dispatch({ type: "CLEAR_TYPING", userId }));
+        dispatch({ type: "SET_STAGE", stage: "selecting" });
+      }, offset),
+    );
 
     return () => ids.forEach(clearTimeout);
   }, [state.runId, schedule]);

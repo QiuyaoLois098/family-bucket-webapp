@@ -13,28 +13,32 @@ function WaitingPanel({ ready }) {
   return (
     <motion.div
       key={ready ? "loading" : "waiting"}
-      className={`vrbo-v2-rank__panel vrbo-v2-rank__panel--blue vrbo-v2-rank__panel--brand ${
-        ready ? "is-loading" : ""
-      }`}
+      className={`vrbo-v2-rank__panel vrbo-v2-rank__panel--hero ${ready ? "is-loading" : ""}`}
       {...panelMotion}
     >
       {ready ? (
-        <div className="vrbo-v2-rank__brand-copy">
+        <div className="vrbo-v2-rank__hero-loading">
           <span className="vrbo-v2-rank__spinner" aria-hidden="true" />
           <h2>{copy.ranking.loadingTitle}</h2>
           <p className="vrbo-v2-rank__lede">{copy.ranking.loadingSubtitle}</p>
           <p className="vrbo-v2-rank__hint">{copy.ranking.loadingHint}</p>
         </div>
       ) : (
-        <div className="vrbo-v2-rank__brand-copy">
-          <img
-            className="vrbo-v2-rank__brand-logo"
-            src="/logo/Vrbo_Logo_Sail_RGB.png"
-            alt="Vrbo"
-          />
-          <h2>{copy.ranking.waitingTitle}</h2>
-          <p className="vrbo-v2-rank__lede">{copy.ranking.waitingSubtitle}</p>
-        </div>
+        <>
+          <header className="vrbo-v2-rank__hero-top">
+            <img
+              className="vrbo-v2-rank__brand-logo"
+              src="/logo/Vrbo_Logo_Sail_RGB.png"
+              alt="Vrbo"
+            />
+          </header>
+          <div className="vrbo-v2-rank__hero-mid">
+            <h2>{copy.ranking.waitingTitle}</h2>
+          </div>
+          <div className="vrbo-v2-rank__hero-photo" aria-hidden="true">
+            <img src={copy.ranking.waitingHero} alt="" />
+          </div>
+        </>
       )}
     </motion.div>
   );

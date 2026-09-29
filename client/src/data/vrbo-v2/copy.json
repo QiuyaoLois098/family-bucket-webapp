@@ -14,11 +14,14 @@
   },
   "chat": {
     "typingLabel": "typing",
-    "sharedCard": "Shared from touchscreen · Vrbo"
+    "sharedCard": "Shared from touchscreen · Vrbo",
+    "prompt": "Plan your Hawaii getaway together.",
+    "footer": "Your group is planning..."
   },
   "ranking": {
     "waitingTitle": "Great trips start with a conversation.",
     "waitingSubtitle": "Your group is planning...",
+    "waitingHero": "/images/Vrbo-Images/waiting-hero.png",
     "loadingTitle": "Pulling it all together",
     "loadingSubtitle": "Everyone's in - writing your group summary...",
     "loadingHint": "Hang tight for a moment",

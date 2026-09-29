@@ -2,8 +2,12 @@
   "groupTitle": "Hawaii Trip 2027",
   "groupSubtitle": "Jamie, Sarah, Alex, Chris",
   "intro": [
-    { "authorId": "jamie", "text": "We need to lock in a place today", "pause": 1100, "typing": 900 },
-    { "authorId": "jamie", "text": "What does everyone want??", "pause": 700, "typing": 900 }
+    {
+      "authorId": "jamie",
+      "text": "We need to lock in a place today. What does everyone want?",
+      "pause": 900,
+      "typing": 1100
+    }
   ],
   "handoffPause": 900,
   "preference": {

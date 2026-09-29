@@ -11,8 +11,6 @@ const bubbleMotion = {
   transition: { type: "spring", stiffness: 420, damping: 32 },
 };
 
-const GROUP_AVATAR = "/images/Vrbo-Images/Avatars/Group.jpg";
-
 function Avatar({ user, className = "vrbo-v2-chat__avatar" }) {
   if (user?.avatar) {
     return (
@@ -31,6 +29,7 @@ function Avatar({ user, className = "vrbo-v2-chat__avatar" }) {
 export default function MainChatScreen({ messages, typing, userById, propertyLookup, celebrating }) {
   const feedRef = useRef(null);
   const members = Object.values(userById);
+  const typingUsers = typing.map((id) => userById[id]).filter(Boolean);
 
   useEffect(() => {
     const node = feedRef.current;
@@ -41,82 +40,82 @@ export default function MainChatScreen({ messages, typing, userById, propertyLoo
   return (
     <div className={`vrbo-v2-chat ${celebrating ? "is-celebrating" : ""}`}>
       <Celebration active={celebrating} />
-      <header className="vrbo-v2-chat__header">
-        <span className="vrbo-v2-chat__group-avatar" aria-hidden="true">
-          <img src={GROUP_AVATAR} alt="" />
-        </span>
-        <div>
-          <h2>{chatScript.groupTitle}</h2>
-          <div className="vrbo-v2-chat__members">
-            {members.map((user) => (
-              <span key={user.id} className="vrbo-v2-chat__member">
-                <Avatar user={user} className="vrbo-v2-chat__member-avatar" />
-                <em>{user.name}</em>
-              </span>
-            ))}
-          </div>
-        </div>
+
+      <header className="vrbo-v2-chat__masthead">
+        <img
+          className="vrbo-v2-chat__brand"
+          src="/logo/Vrbo_Logo_Sail_RGB.png"
+          alt="Vrbo"
+        />
+        <h2 className="vrbo-v2-chat__trip">{chatScript.groupTitle}</h2>
+        <p className="vrbo-v2-chat__people">
+          {members
+            .filter((user) => user.id !== "chris")
+            .map((user) => user.name)
+            .join(", ")}
+        </p>
       </header>
 
-      <div className="vrbo-v2-chat__feed" ref={feedRef}>
-        <AnimatePresence initial={false}>
-          {messages.map((message) => {
-            const user = userById[message.authorId];
-            if (!user) return null;
-            const entry = propertyLookup?.(message.propertyId);
+      <div className="vrbo-v2-chat__body">
+        <p className="vrbo-v2-chat__prompt">{copy.chat.prompt}</p>
 
-            return (
-              <motion.div
-                key={message.id}
-                layout
-                {...bubbleMotion}
-                className={`vrbo-v2-chat__row vrbo-v2-chat__row--${user.side} vrbo-v2-chat__row--${user.role} ${
-                  message.kind === "property" ? "vrbo-v2-chat__row--card" : ""
-                }`}
-              >
-                {message.kind === "property" && entry ? (
-                  <div className="vrbo-v2-chat__card">
-                    <PropertyCard property={entry.property} variant="chat" />
-                  </div>
-                ) : (
-                  <>
-                    <Avatar user={user} />
-                    <div className="vrbo-v2-chat__column">
-                      <span className="vrbo-v2-chat__author">{user.name}</span>
-                      <p className="vrbo-v2-chat__bubble">{message.text}</p>
+        <div className="vrbo-v2-chat__feed" ref={feedRef}>
+          <AnimatePresence initial={false}>
+            {messages.map((message) => {
+              const user = userById[message.authorId];
+              if (!user) return null;
+              const entry = propertyLookup?.(message.propertyId);
+
+              return (
+                <motion.div
+                  key={message.id}
+                  layout
+                  {...bubbleMotion}
+                  className={`vrbo-v2-chat__row vrbo-v2-chat__row--${user.side} vrbo-v2-chat__row--${user.role} ${
+                    message.kind === "property" ? "vrbo-v2-chat__row--card" : ""
+                  }`}
+                >
+                  {message.kind === "property" && entry ? (
+                    <div className="vrbo-v2-chat__card">
+                      <PropertyCard property={entry.property} variant="chat" />
                     </div>
-                  </>
-                )}
-              </motion.div>
-            );
-          })}
+                  ) : (
+                    <>
+                      <Avatar user={user} />
+                      <div className="vrbo-v2-chat__column">
+                        <span className="vrbo-v2-chat__author">{user.name}</span>
+                        <p className="vrbo-v2-chat__bubble">{message.text}</p>
+                      </div>
+                    </>
+                  )}
+                </motion.div>
+              );
+            })}
 
-          {typing.map((userId) => {
-            const user = userById[userId];
-            if (!user) return null;
-            return (
+            {typingUsers.length ? (
               <motion.div
-                key={`typing-${userId}`}
+                key={`typing-${typingUsers.map((u) => u.id).join("-")}`}
                 layout
                 {...bubbleMotion}
                 exit={{ opacity: 0, scale: 0.9 }}
-                className={`vrbo-v2-chat__row vrbo-v2-chat__row--${user.side} vrbo-v2-chat__row--${user.role}`}
+                className="vrbo-v2-chat__typing"
               >
-                <Avatar user={user} />
-                <div className="vrbo-v2-chat__column">
-                  <span className="vrbo-v2-chat__author">
-                    {user.name} {copy.chat.typingLabel}
-                  </span>
-                  <p className="vrbo-v2-chat__bubble vrbo-v2-chat__bubble--typing" aria-hidden="true">
-                    <i />
-                    <i />
-                    <i />
-                  </p>
+                <div className="vrbo-v2-chat__typing-avatars" aria-hidden="true">
+                  {typingUsers.slice(0, 3).map((user) => (
+                    <Avatar key={user.id} user={user} className="vrbo-v2-chat__typing-avatar" />
+                  ))}
                 </div>
+                <p className="vrbo-v2-chat__bubble vrbo-v2-chat__bubble--typing" aria-hidden="true">
+                  <i />
+                  <i />
+                  <i />
+                </p>
               </motion.div>
-            );
-          })}
-        </AnimatePresence>
+            ) : null}
+          </AnimatePresence>
+        </div>
+
+        <p className="vrbo-v2-chat__footer">{copy.chat.footer}</p>
       </div>
     </div>
   );
