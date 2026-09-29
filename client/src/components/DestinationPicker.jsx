@@ -43,7 +43,7 @@ export default function DestinationPicker({ onSelect, offeredIds }) {
             style={{ animationDelay: `${index * 0.05}s` }}
           >
             <span
-              className="destination-card__image"
+              className={`destination-card__image destination-card__image--${destination.id}`}
               style={{ backgroundImage: `url(${destination.image})` }}
             />
             <span className="destination-card__veil" />

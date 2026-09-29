@@ -1,4 +1,3 @@
-import { getDestination } from "@shared/destinations.js";
 import { ScreenChrome } from "../components/ScreenChrome.jsx";
 import DestinationPicker from "../components/DestinationPicker.jsx";
 import QuestionStep from "../components/QuestionStep.jsx";
@@ -45,10 +44,7 @@ export default function ControlScreen() {
             >
               {phase === "reveal" ? <RevealStep onReveal={actions.shake} /> : null}
               {phase === "itinerary" ? (
-                <ItinerarySchedule
-                  destination={getDestination(state.destination)}
-                  onStartOver={actions.reset}
-                />
+                <ItinerarySchedule onStartOver={actions.reset} />
               ) : null}
             </section>
           </main>

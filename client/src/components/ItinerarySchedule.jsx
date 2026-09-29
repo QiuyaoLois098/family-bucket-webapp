@@ -33,13 +33,15 @@ const FIXED_HEADLINE = "Big adventures, little explorers.";
 const FIXED_LOCATION = "Costa Rica / Manuel Antonio";
 const FIXED_FOOTER = "Adventure / Kids lead / Local favorites";
 
-function getThumb(destination, index) {
-  const gallery = destination?.gallery?.filter(Boolean) || [];
-  if (gallery.length) return gallery[index % gallery.length];
-  return destination?.image || "";
-}
+const FIXED_THUMBS = [
+  "/images/Expedia-images/03-itinerary/it1.png",
+  "/images/Expedia-images/03-itinerary/it2.png",
+  "/images/Expedia-images/03-itinerary/it3.png",
+  "/images/Expedia-images/03-itinerary/it4.png",
+  "/images/Expedia-images/03-itinerary/it5.png",
+];
 
-export default function ItinerarySchedule({ destination, onStartOver }) {
+export default function ItinerarySchedule({ onStartOver }) {
   return (
     <div className="schedule">
       <header className="schedule__brandbar">
@@ -61,7 +63,7 @@ export default function ItinerarySchedule({ destination, onStartOver }) {
           <li key={`day-${index + 1}`} className="schedule__card">
             <div
               className="schedule__thumb"
-              style={{ backgroundImage: `url(${getThumb(destination, index)})` }}
+              style={{ backgroundImage: `url(${FIXED_THUMBS[index]})` }}
               role="img"
               aria-hidden="true"
             />
