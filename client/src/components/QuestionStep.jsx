@@ -5,14 +5,16 @@ import { getDestination } from "@shared/destinations.js";
 
 const AI_LOGO = "/images/Expedia-images/expedia-samll.png";
 
-const FLASH_MS = 420;
+const FLASH_MS = 360;
+const CARD_FADE_MS = 380;
+const YOU_PAUSE_MS = 260;
 const TYPING_MS = 1100;
 const LAST_HOLD_MS = 2800;
 const REPLY_SETTLE_MS = 280;
 const SHIFT_MS = 720;
 
 const EASE = [0.22, 1, 0.36, 1];
-const BUBBLE_LAYOUT = { layout: { duration: 0.48, ease: EASE } };
+const BUBBLE_LAYOUT = { layout: { duration: 0.96, ease: EASE } };
 
 function makePrompt(index) {
   return {
@@ -38,7 +40,7 @@ export default function QuestionStep({
   const [activeIndex, setActiveIndex] = useState(0);
   const [messages, setMessages] = useState(() => [makePrompt(0)]);
   const [pendingId, setPendingId] = useState(null);
-  const [phase, setPhase] = useState("pick"); // pick | flash | typing | done | rising
+  const [phase, setPhase] = useState("pick"); // pick | flash | rolling | you | typing | done | rising
   const [shiftY, setShiftY] = useState(0);
   const [viewportH, setViewportH] = useState(null);
 
@@ -113,7 +115,7 @@ export default function QuestionStep({
       fitViewportToPrompt();
       return;
     }
-    if (phase === "typing" || phase === "done") {
+    if (phase === "you" || phase === "typing" || phase === "done") {
       fitViewportToLiveThread();
       // Remeasure after typing→reply bubble expands.
       const t1 = window.setTimeout(() => fitViewportToLiveThread(), 60);
@@ -127,7 +129,7 @@ export default function QuestionStep({
 
   // Watch live bubble size so expand animations don't get clipped.
   useEffect(() => {
-    if (phase !== "typing" && phase !== "done") return;
+    if (phase !== "you" && phase !== "typing" && phase !== "done") return;
     const inner = trackRef.current;
     if (!inner || typeof ResizeObserver === "undefined") return;
 
@@ -193,43 +195,55 @@ export default function QuestionStep({
     setPhase("flash");
 
     later(() => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `you-${index}-${optionId}`,
-          role: "you",
-          kind: "you",
-          questionIndex: index,
-          text: option.youSay,
-        },
-        {
-          id: `reply-${index}`,
-          role: "ai",
-          kind: "typing",
-          questionIndex: index,
-          text: option.aiSay,
-        },
-      ]);
-      setPhase("typing");
+      // Cards roll up first — You bubble waits until they're gone.
+      setPhase("rolling");
 
       later(() => {
-        setMessages((prev) =>
-          prev.map((message) =>
-            message.id === `reply-${index}`
-              ? { ...message, kind: "reply", text: option.aiSay }
-              : message,
-          ),
-        );
-        setPhase("done");
-        onAnswer(index, optionId, { advance: false });
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `you-${index}-${optionId}`,
+            role: "you",
+            kind: "you",
+            questionIndex: index,
+            text: option.youSay,
+          },
+        ]);
+        setPhase("you");
 
-        if (index >= QUESTIONS.length - 1) {
-          later(() => onAnswer(index, optionId, { advance: true }), LAST_HOLD_MS);
-          return;
-        }
+        later(() => {
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: `reply-${index}`,
+              role: "ai",
+              kind: "typing",
+              questionIndex: index,
+              text: option.aiSay,
+            },
+          ]);
+          setPhase("typing");
 
-        later(() => continueToNext(index, optionId), REPLY_SETTLE_MS);
-      }, TYPING_MS);
+          later(() => {
+            setMessages((prev) =>
+              prev.map((message) =>
+                message.id === `reply-${index}`
+                  ? { ...message, kind: "reply", text: option.aiSay }
+                  : message,
+              ),
+            );
+            setPhase("done");
+            onAnswer(index, optionId, { advance: false });
+
+            if (index >= QUESTIONS.length - 1) {
+              later(() => onAnswer(index, optionId, { advance: true }), LAST_HOLD_MS);
+              return;
+            }
+
+            later(() => continueToNext(index, optionId), REPLY_SETTLE_MS);
+          }, TYPING_MS);
+        }, YOU_PAUSE_MS);
+      }, CARD_FADE_MS);
     }, FLASH_MS);
   };
 
@@ -257,7 +271,10 @@ export default function QuestionStep({
         "question--continuous",
         `question--count-${options.length}`,
         showCards ? "question--picking" : "question--chatting",
-      ].join(" ")}
+        phase === "rolling" ? "question--rolling" : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
     >
       <header className="question__brandbar">
         <img
@@ -301,7 +318,7 @@ export default function QuestionStep({
                     className="question__chat-row question__chat-row--you"
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.32, ease: EASE }}
+                    transition={{ duration: 0.64, ease: EASE }}
                   >
                     <div className="question__bubble question__bubble--you">
                       <p className="question__bubble-label">You</p>
@@ -329,7 +346,7 @@ export default function QuestionStep({
                     animate={{ opacity: 1 }}
                     transition={
                       isNewPrompt
-                        ? { duration: 0.35, ease: EASE }
+                        ? { duration: 0.7, ease: EASE }
                         : BUBBLE_LAYOUT
                     }
                   >
@@ -352,7 +369,7 @@ export default function QuestionStep({
                           className="question__bubble-body"
                           initial={message.kind === "reply" ? { opacity: 0 } : false}
                           animate={{ opacity: 1 }}
-                          transition={{ duration: 0.24, delay: 0.05, ease: "easeOut" }}
+                          transition={{ duration: 0.48, delay: 0.1, ease: "easeOut" }}
                         >
                           <p className="question__bubble-label">AI Activity Planner</p>
                           <p className="question__bubble-text">{message.text}</p>
@@ -385,14 +402,17 @@ export default function QuestionStep({
       ) : null}
 
       <div className="question__cards-slot">
-        <AnimatePresence initial={false}>
+        <AnimatePresence initial={false} mode="sync">
           {showCards ? (
             <motion.div
               key={`options-${activeIndex}`}
               className="question__options question__options--photos"
               initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 8, transition: { duration: 0.16 } }}
+              animate={{ opacity: 1, y: 0, scaleY: 1 }}
+              exit={{
+                opacity: 0,
+                transition: { duration: 0.38, ease: "easeOut" },
+              }}
               transition={{ duration: 0.4, ease: EASE }}
             >
               {options.map((option, index) => (

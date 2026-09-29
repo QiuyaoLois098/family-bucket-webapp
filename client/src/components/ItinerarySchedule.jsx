@@ -1,35 +1,37 @@
-import { QUESTIONS } from "@shared/questions.js";
-
 const CARD_COUNT = 5;
 
-const FOOTER_LABEL = {
-  adventurous: "Adventure",
-  slow: "Take it slow",
-  kids: "Kids lead",
-  grownups: "Grown-ups unwind",
-  everyone: "Everyone's moment",
-  local: "Local favorites",
-  fresh: "Fresh & healthy",
-};
+/** Fixed finale card copy — do not invent or replace. */
+const FIXED_CARDS = [
+  {
+    title: "Beach discovery",
+    description:
+      "Explore Espadilla Norte after check-in; spot shorebirds together. Dinner at Soda Mar Azul, known for Costa Rican home cooking by Espadilla.",
+  },
+  {
+    title: "Spot wild wonders",
+    description:
+      "A guided Manuel Antonio park walk, with kids choosing what to look for. Lunch at Sendero Tico, a local-style soda near the park entrance.",
+  },
+  {
+    title: "Catch a first wave",
+    description:
+      "A private family surf lesson at Espadilla. Back to the hotel to rest. Lunch at La Olla Tica, a casual spot for local flavors near Espadilla.",
+  },
+  {
+    title: "Paddle & discover",
+    description:
+      "Explore Damas mangroves by guided kayak, with an adult paddling alongside. Dinner at Casa Quereña in Quepos, a welcoming spot for traditional Costa Rican cooking.",
+  },
+  {
+    title: "One last seaside stop",
+    description:
+      "After breakfast in Quepos, let the kids pick one last waterfront stop before your transfer. Breakfast at Café del Malecón, a traditional Costa Rican café by Quepos' waterfront.",
+  },
+];
 
-function getHeadline(answers = []) {
-  const hero = answers[1];
-  if (hero === "kids") return "Big adventures, little explorers.";
-  if (hero === "grownups") return "Quiet hours, shared together.";
-  if (hero === "everyone") return "Something for every age.";
-  if (answers[0] === "slow") return "Slow days, soft light.";
-  return "Your family adventure awaits.";
-}
-
-function getFooterLabels(answers = []) {
-  return answers
-    .map((answerId, index) => {
-      if (FOOTER_LABEL[answerId]) return FOOTER_LABEL[answerId];
-      const option = QUESTIONS[index]?.options.find((item) => item.id === answerId);
-      return option?.label || "";
-    })
-    .filter(Boolean);
-}
+const FIXED_HEADLINE = "Big adventures, little explorers.";
+const FIXED_LOCATION = "Costa Rica / Manuel Antonio";
+const FIXED_FOOTER = "Adventure / Kids lead / Local favorites";
 
 function getThumb(destination, index) {
   const gallery = destination?.gallery?.filter(Boolean) || [];
@@ -37,39 +39,7 @@ function getThumb(destination, index) {
   return destination?.image || "";
 }
 
-function buildCards(moments = []) {
-  return Array.from({ length: CARD_COUNT }, (_, index) => {
-    const moment = moments[index];
-    return {
-      title: moment?.title || "Coming up",
-      description: moment?.description || "Your family day is taking shape.",
-      image: null,
-      index,
-    };
-  });
-}
-
-export default function ItinerarySchedule({
-  itinerary,
-  destination,
-  answers = [],
-  onStartOver,
-}) {
-  if (!itinerary) {
-    return (
-      <div className="itinerary itinerary--waiting">
-        <p className="eyebrow">Composing your journey</p>
-        <h2>A few more seconds.</h2>
-      </div>
-    );
-  }
-
-  const cards = buildCards(itinerary.moments);
-  const place = destination?.shortTitle || itinerary.title || "Your trip";
-  const location = destination?.location || "";
-  const headline = itinerary.headline || getHeadline(answers);
-  const footerLabels = getFooterLabels(answers);
-
+export default function ItinerarySchedule({ destination, onStartOver }) {
   return (
     <div className="schedule">
       <header className="schedule__brandbar">
@@ -82,29 +52,21 @@ export default function ItinerarySchedule({
       </header>
 
       <div className="schedule__intro">
-        <p className="schedule__location">
-          {place}
-          {location ? (
-            <>
-              <span aria-hidden="true"> / </span>
-              {location}
-            </>
-          ) : null}
-        </p>
-        <h1 className="schedule__headline">{headline}</h1>
+        <p className="schedule__location">{FIXED_LOCATION}</p>
+        <h1 className="schedule__headline">{FIXED_HEADLINE}</h1>
       </div>
 
       <ol className="schedule__list">
-        {cards.map((card) => (
-          <li key={`day-${card.index}`} className="schedule__card">
+        {FIXED_CARDS.map((card, index) => (
+          <li key={`day-${index + 1}`} className="schedule__card">
             <div
               className="schedule__thumb"
-              style={{ backgroundImage: `url(${getThumb(destination, card.index)})` }}
+              style={{ backgroundImage: `url(${getThumb(destination, index)})` }}
               role="img"
               aria-hidden="true"
             />
             <div className="schedule__body">
-              <p className="schedule__day">Day {card.index + 1}</p>
+              <p className="schedule__day">Day {index + 1}</p>
               <h3 className="schedule__title">{card.title}</h3>
               <p className="schedule__copy">{card.description}</p>
             </div>
@@ -113,11 +75,7 @@ export default function ItinerarySchedule({
       </ol>
 
       <footer className="schedule__footer">
-        {footerLabels.length ? (
-          <p className="schedule__chips">{footerLabels.join(" / ")}</p>
-        ) : (
-          <p className="schedule__chips">Made for your family</p>
-        )}
+        <p className="schedule__chips">{FIXED_FOOTER}</p>
         {onStartOver ? (
           <button type="button" className="schedule__restart" onClick={onStartOver}>
             Start over

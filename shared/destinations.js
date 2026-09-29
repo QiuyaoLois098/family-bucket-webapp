@@ -28,27 +28,32 @@ export const DESTINATIONS = [
         {
           time: "Day 1",
           title: "Beach discovery",
-          description: "Explore Espadilla Norte beach and tide pools.",
+          description:
+            "Explore Espadilla Norte after check-in; spot shorebirds together. Dinner at Soda Mar Azul, known for Costa Rican home cooking by Espadilla.",
         },
         {
           time: "Day 2",
-          title: "Wildlife watch",
-          description: "Look for monkeys and sloths along quiet trails.",
+          title: "Spot wild wonders",
+          description:
+            "A guided Manuel Antonio park walk, with kids choosing what to look for. Lunch at Sendero Tico, a local-style soda near the park entrance.",
         },
         {
           time: "Day 3",
-          title: "Easy waterfall stop",
-          description: "A short walk to cool water and a splash break.",
+          title: "Catch a first wave",
+          description:
+            "A private family surf lesson at Espadilla. Back to the hotel to rest. Lunch at La Olla Tica, a casual spot for local flavors near Espadilla.",
         },
         {
           time: "Day 4",
-          title: "Jungle canopy walk",
-          description: "Cross high walkways above the green canopy.",
+          title: "Paddle & discover",
+          description:
+            "Explore Damas mangroves by guided kayak, with an adult paddling alongside. Dinner at Casa Quereña in Quepos, a welcoming spot for traditional Costa Rican cooking.",
         },
         {
           time: "Day 5",
-          title: "Sunset picnic",
-          description: "Share a simple picnic as the sky turns gold.",
+          title: "One last seaside stop",
+          description:
+            "After breakfast in Quepos, let the kids pick one last waterfront stop before your transfer. Breakfast at Café del Malecón, a traditional Costa Rican café by Quepos' waterfront.",
         },
       ],
     },

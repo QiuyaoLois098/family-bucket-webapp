@@ -275,7 +275,7 @@
   margin: 0;
   font-family: var(--serif);
   font-weight: 400;
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(3.2rem, 9vw, 5.4rem);
   line-height: 1.08;
 }

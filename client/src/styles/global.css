@@ -41,10 +41,11 @@
   --display: var(--navy);
   --cream: var(--white);
 
-  /* Hierarchy: Headline → RTB → Product */
+  /* Hierarchy: titles/highlights → Reckless; long text → Travel Sans */
   --serif: "Reckless XPD", "Times New Roman", serif;
-  --sans: "Centra No2", "Helvetica Neue", sans-serif;
+  --sans: "Travel Sans", "Helvetica Neue", sans-serif;
   --product: "Travel Sans", "Helvetica Neue", sans-serif;
+  --ui: "Centra No2", "Helvetica Neue", sans-serif;
   --hand: "Caveat", "Segoe Script", cursive;
 }
 
