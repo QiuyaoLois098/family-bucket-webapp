@@ -3,6 +3,7 @@ import { ScreenChrome } from "../components/ScreenChrome.jsx";
 import DestinationPicker from "../components/DestinationPicker.jsx";
 import QuestionStep from "../components/QuestionStep.jsx";
 import PlanningStep from "../components/PlanningStep.jsx";
+import RevealStep from "../components/RevealStep.jsx";
 import ItinerarySchedule from "../components/ItinerarySchedule.jsx";
 
 export default function ControlScreen() {
@@ -48,15 +49,7 @@ export default function ControlScreen() {
               className={`panel ${phase === "reveal" || phase === "itinerary" ? "is-active" : ""}`}
               inert={phase !== "reveal" && phase !== "itinerary" ? "" : undefined}
             >
-              {phase === "reveal" ? (
-                <div className="itinerary itinerary--waiting">
-                  <h2>Pick up the snow globe and shake it to see the itinerary</h2>
-                  <button type="button" className="shake-button" onClick={actions.shake}>
-                    Shake
-                  </button>
-                  <img className="shake-globe" src="/images/snow-globe.png" alt="" />
-                </div>
-              ) : null}
+              {phase === "reveal" ? <RevealStep onReveal={actions.shake} /> : null}
               {phase === "itinerary" ? (
                 <ItinerarySchedule
                   itinerary={state.itinerary}

@@ -51,7 +51,7 @@ export default function ProjectMenu() {
           <nav className="project-menu__drawer" aria-label="Projects">
             <p className="project-menu__eyebrow">Projects</p>
             <ul>
-              {PROJECTS.map((project) => {
+              {PROJECTS.filter((project) => !project.hidden).map((project) => {
                 const active = project.id === current.id;
                 return (
                   <li key={project.id}>

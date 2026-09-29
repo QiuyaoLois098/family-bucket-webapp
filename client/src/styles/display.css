@@ -9,6 +9,7 @@
 
 .idle-display,
 .image-reveal,
+.flight-reveal,
 .memory-sequence {
   position: absolute;
   inset: 0;
@@ -16,6 +17,208 @@
 
 .image-reveal {
   overflow: hidden;
+}
+
+.flight-reveal {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  padding: 5.2% 6.6% 4.2%;
+  background: var(--navy);
+  color: var(--white);
+  animation: rise 0.7s ease both;
+  container-type: size;
+  container-name: flight;
+}
+
+.flight-reveal__brandbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex: 0 0 auto;
+}
+
+.flight-reveal__logo {
+  display: block;
+  height: clamp(28px, 4.2cqi, 48px);
+  width: auto;
+  mix-blend-mode: screen;
+}
+
+.flight-reveal__product {
+  font-family: var(--sans);
+  font-size: clamp(0.85rem, 2.8cqi, 1.85rem);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  color: var(--white);
+  white-space: nowrap;
+}
+
+.flight-reveal__title {
+  flex: 0 0 auto;
+  margin: clamp(22px, 4.5cqh, 64px) 0 0;
+  width: 100%;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(2.4rem, 8.4cqi, 5.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  text-align: left;
+}
+
+.flight-card {
+  position: relative;
+  flex: 0 1 auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-height: 50%;
+  margin: clamp(20px, 3.6cqh, 48px) auto 0;
+  min-height: 0;
+  border-radius: clamp(22px, 3.4cqi, 40px);
+  background: var(--white);
+  overflow: visible;
+  box-shadow: 0 24px 40px rgba(25, 30, 59, 0.32);
+  container-type: inline-size;
+  container-name: ticket;
+}
+
+.flight-card__media {
+  position: relative;
+  flex: 1.58 1 0;
+  min-height: 0;
+  border-radius: clamp(22px, 3.4cqi, 40px) clamp(22px, 3.4cqi, 40px) 0 0;
+  overflow: hidden;
+  background: var(--sky);
+}
+
+.flight-card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.flight-card__body {
+  position: relative;
+  flex: 1 1 0;
+  display: grid;
+  grid-template-rows: 56% 44%;
+  min-height: 0;
+  padding: 0;
+  border-radius: 0 0 clamp(22px, 3.8cqi, 40px) clamp(22px, 3.8cqi, 40px);
+  color: var(--navy);
+  background: var(--white);
+}
+
+.flight-card__top {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 0;
+  padding: 5.8cqi 6.2cqi 0;
+}
+
+.flight-card__bottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 0;
+  padding: 0 6.2cqi 5.4cqi;
+}
+
+.flight-card__headline {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 7.4cqi;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--navy);
+}
+
+.flight-card__perforation {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.flight-card__rule {
+  flex: 1 1 auto;
+  height: 1px;
+  background: rgba(25, 30, 59, 0.18);
+}
+
+.flight-card__notch {
+  position: absolute;
+  top: 50%;
+  width: 3.7cqi;
+  height: 3.7cqi;
+  border-radius: 50%;
+  background: var(--navy);
+  transform: translateY(-50%);
+}
+
+.flight-card__notch--left {
+  left: calc(-3.7cqi / 2 - 6.4cqi);
+}
+
+.flight-card__notch--right {
+  right: calc(-3.7cqi / 2 - 6.4cqi);
+}
+
+.flight-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 2.4cqi;
+}
+
+.flight-card__plane {
+  display: block;
+  width: 4.4cqi;
+  height: auto;
+  flex: 0 0 auto;
+  mix-blend-mode: multiply;
+}
+
+.flight-card__meta p {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 2.55cqi;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: var(--navy);
+}
+
+.flight-reveal__footer {
+  flex: 0 0 auto;
+  margin-top: auto;
+  padding-top: clamp(18px, 2.8cqh, 36px);
+  border-top: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.flight-reveal__footer p {
+  margin: clamp(12px, 2cqh, 24px) 0 0;
+  font-family: var(--sans);
+  font-size: clamp(0.62rem, 1.7cqi, 1.15rem);
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.screen--display.phase-reveal {
+  background: var(--navy);
 }
 
 .idle-display {
@@ -46,8 +249,8 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(27, 31, 58, 0.35) 0%, rgba(27, 31, 58, 0.55) 45%, rgba(27, 31, 58, 0.82) 100%),
-    radial-gradient(circle at 50% 20%, rgba(243, 218, 89, 0.2), transparent 42%);
+    linear-gradient(180deg, rgba(25, 30, 59, 0.35) 0%, rgba(25, 30, 59, 0.55) 45%, rgba(25, 30, 59, 0.82) 100%),
+    radial-gradient(circle at 50% 20%, rgba(253, 219, 50, 0.2), transparent 42%);
 }
 
 .idle-display__copy {
@@ -105,7 +308,7 @@
 .image-reveal__grade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(27, 31, 58, 0.18) 0%, rgba(27, 31, 58, 0.12) 40%, rgba(27, 31, 58, 0.62) 100%);
+  background: linear-gradient(180deg, rgba(25, 30, 59, 0.18) 0%, rgba(25, 30, 59, 0.12) 40%, rgba(25, 30, 59, 0.62) 100%);
 }
 
 .image-reveal__caption {
@@ -136,6 +339,21 @@
 .panel--memories {
   z-index: 3;
   transition: opacity 1.8s ease, transform 1.8s ease;
+}
+
+.finale-art {
+  position: absolute;
+  inset: 0;
+  background: var(--navy);
+  animation: rise 0.8s ease both;
+}
+
+.finale-art__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 .memory-sequence {
@@ -171,7 +389,7 @@
 .memory-slide__veil {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(27, 31, 58, 0.12) 0%, rgba(27, 31, 58, 0.2) 42%, rgba(27, 31, 58, 0.82) 100%);
+  background: linear-gradient(180deg, rgba(25, 30, 59, 0.12) 0%, rgba(25, 30, 59, 0.2) 42%, rgba(25, 30, 59, 0.82) 100%);
 }
 
 .memory-slide figcaption {

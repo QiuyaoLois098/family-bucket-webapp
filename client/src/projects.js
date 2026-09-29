@@ -12,6 +12,7 @@ export const PROJECTS = [
     title: "NYC Hotel Map",
     subtitle: "Backlit Manhattan · five hotels",
     path: "/map",
+    hidden: true,
     match: (pathname) => pathname.startsWith("/map"),
   },
   {
@@ -19,6 +20,7 @@ export const PROJECTS = [
     title: "Vrbo Group Trip",
     subtitle: "Five-screen group booking flow",
     path: "/vrbo",
+    hidden: true,
     match: (pathname) => pathname === "/vrbo" || pathname.startsWith("/vrbo/"),
   },
   {

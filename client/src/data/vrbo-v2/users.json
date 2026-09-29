@@ -6,10 +6,10 @@
     "avatar": "/images/Vrbo-Images/Avatars/Jamie.png",
     "accent": "#3857e3",
     "onAccent": "#ffffff",
-    "role": "guest",
+    "role": "coordinator",
     "side": "left",
     "phoneLabel": "Jamie",
-    "statusLine": "In the group chat"
+    "statusLine": "Trip organizer"
   },
   {
     "id": "sarah",

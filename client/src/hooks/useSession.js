@@ -34,8 +34,8 @@ export function useSession() {
       begin: () => getSocket().emit("experience:begin"),
       selectDestination: (destinationId) =>
         getSocket().emit("experience:selectDestination", { destinationId }),
-      answer: (questionIndex, answerId) =>
-        getSocket().emit("experience:answer", { questionIndex, answerId }),
+      answer: (questionIndex, answerId, { advance = true } = {}) =>
+        getSocket().emit("experience:answer", { questionIndex, answerId, advance }),
       goBack: () => getSocket().emit("experience:back"),
       shake: () => getSocket().emit("experience:shake"),
       reset: () => getSocket().emit("experience:reset"),

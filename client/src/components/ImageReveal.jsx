@@ -30,20 +30,18 @@ export default function ImageReveal({ state }) {
         />
       ) : null}
       <div className="image-reveal__grade" />
-      {destination && state.phase !== "itinerary" ? (
-        <div className="image-reveal__caption">
-          {state.phase === "reveal" ? (
-            <h2>Your family itinerary is ready</h2>
-          ) : state.phase === "planning" ? (
-            <h2>Bringing your family day together</h2>
-          ) : (
-            <>
-              <p className="eyebrow">{destination.location}</p>
-              <h2>{destination.shortTitle}</h2>
-            </>
-          )}
-        </div>
-      ) : null}
+          {destination && state.phase !== "itinerary" && state.phase !== "reveal" ? (
+            <div className="image-reveal__caption">
+              {state.phase === "planning" ? (
+                <h2>Bringing your family day together</h2>
+              ) : (
+                <>
+                  <p className="eyebrow">{destination.location}</p>
+                  <h2>{destination.shortTitle}</h2>
+                </>
+              )}
+            </div>
+          ) : null}
     </div>
   );
 }

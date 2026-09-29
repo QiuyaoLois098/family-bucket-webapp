@@ -52,10 +52,8 @@ export function registerRoutes(app) {
 
 export function registerSockets(io) {
   io.on("connection", (socket) => {
-    socket.emit("session:state", session.snapshot());
-
     socket.on("session:join", () => {
-      socket.emit("session:state", session.snapshot());
+      session.reset("page-load");
     });
 
     socket.on("experience:begin", () => session.begin());
@@ -63,7 +61,9 @@ export function registerSockets(io) {
       session.selectDestination(payload?.destinationId);
     });
     socket.on("experience:answer", (payload) => {
-      session.answerQuestion(payload?.questionIndex, payload?.answerId);
+      session.answerQuestion(payload?.questionIndex, payload?.answerId, false, {
+        advance: payload?.advance !== false,
+      });
     });
     socket.on("experience:back", () => session.goBack());
     socket.on("experience:shake", () => session.shake());

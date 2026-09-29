@@ -23,20 +23,23 @@
 }
 
 :root {
-  /* Expedia brand trio */
-  --navy: #1b1f3a;
-  --yellow: #f3da59;
+  /* Family Bucket List — brand palette only */
+  --yellow: #fddb32;
+  --navy: #191e3b;
+  --sky: #4a7aa0;
   --white: #ffffff;
+  --page-bg: #000000;
 
-  --bg-deep: #141828;
-  --bg: #1b1f3a;
-  --surface: #252a4a;
-  --text: #ffffff;
-  --text-soft: rgba(255, 255, 255, 0.72);
-  --gold: #f3da59;
-  --gold-bright: #f7e48a;
-  --line: rgba(255, 255, 255, 0.18);
-  --display: #1b1f3a;
+  --bg-deep: var(--navy);
+  --bg: var(--navy);
+  --surface: var(--navy);
+  --text: var(--white);
+  --text-soft: color-mix(in srgb, var(--white) 72%, transparent);
+  --gold: var(--yellow);
+  --gold-bright: var(--yellow);
+  --line: color-mix(in srgb, var(--white) 22%, transparent);
+  --display: var(--navy);
+  --cream: var(--white);
 
   /* Hierarchy: Headline → RTB → Product */
   --serif: "Reckless XPD", "Times New Roman", serif;
@@ -59,7 +62,7 @@ body,
 body {
   font-family: var(--sans);
   color: var(--text);
-  background: var(--navy);
+  background: var(--page-bg);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -155,7 +158,7 @@ button {
   height: 100dvh;
   min-height: 100dvh;
   overflow: hidden;
-  background: var(--navy);
+  background: var(--page-bg);
   color: var(--white);
   padding: 24px 36px;
 }
@@ -199,5 +202,5 @@ button {
   background: var(--navy);
   transform: scale(var(--scale, 0.35));
   transform-origin: top left;
-  box-shadow: 0 30px 80px rgba(27, 31, 58, 0.55);
+  box-shadow: 0 30px 80px rgba(25, 30, 59, 0.55);
 }

@@ -80,6 +80,29 @@ function VrboDemo() {
     };
   }, [results]);
 
+  const renderPhone = (user) => (
+    <GuestPhone
+      key={user.id}
+      user={user}
+      preferences={preferences}
+      preferenceById={preferenceById}
+      selection={selections[user.id] ?? []}
+      submitted={submitted[user.id]}
+      joined={Boolean(joined[user.id])}
+      locked={stage === "intro"}
+      canJoin={stage === "intro" || stage === "selecting"}
+      stage={stage}
+      groupReady={allSubmitted}
+      messages={messages}
+      typing={typing}
+      userById={userById}
+      propertyLookup={propertyLookup}
+      onJoin={actions.joinGuest}
+      onToggle={actions.togglePreference}
+      onSubmit={actions.submitGuest}
+    />
+  );
+
   return (
     <div className={`vrbo-v2-stage ${cursorHighlight ? "has-cursor-highlight" : ""}`}>
       <CursorHighlight enabled={cursorHighlight} />
@@ -130,29 +153,11 @@ function VrboDemo() {
         </div>
 
         <div className="vrbo-v2-stage__right">
-          <div className="vrbo-v2-stage__phones">
-            {guests.map((user) => (
-              <GuestPhone
-                key={user.id}
-                user={user}
-                preferences={preferences}
-                preferenceById={preferenceById}
-                selection={selections[user.id] ?? []}
-                submitted={submitted[user.id]}
-                joined={Boolean(joined[user.id])}
-                locked={stage === "intro"}
-                canJoin={stage === "intro" || stage === "selecting"}
-                stage={stage}
-                groupReady={allSubmitted}
-                messages={messages}
-                typing={typing}
-                userById={userById}
-                propertyLookup={propertyLookup}
-                onJoin={actions.joinGuest}
-                onToggle={actions.togglePreference}
-                onSubmit={actions.submitGuest}
-              />
-            ))}
+          <div className="vrbo-v2-stage__phones-top">
+            {guests.slice(0, 2).map(renderPhone)}
+          </div>
+          <div className="vrbo-v2-stage__phones-bottom">
+            {guests.slice(2).map(renderPhone)}
           </div>
         </div>
       </div>

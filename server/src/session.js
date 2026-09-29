@@ -95,7 +95,7 @@ export class ExperienceSession extends EventEmitter {
     this.startImageGeneration();
   }
 
-  answerQuestion(questionIndex, answerId, force = false) {
+  answerQuestion(questionIndex, answerId, force = false, { advance = true } = {}) {
     this.touch();
     if (!this.canAcceptInput(force)) return;
     if (this.state.phase !== PHASES.QUESTIONS) return;
@@ -104,10 +104,20 @@ export class ExperienceSession extends EventEmitter {
     const question = QUESTIONS[questionIndex];
     if (!question) return;
     if (!question.options.some((option) => option.id === answerId)) return;
-    if (this.state.answers[questionIndex]) return;
+
+    const lockedId = this.state.answers[questionIndex];
+    if (lockedId && lockedId !== answerId) return;
 
     this.quiet();
-    const answers = [...this.state.answers, answerId];
+    const answers = lockedId ? this.state.answers : [...this.state.answers, answerId];
+
+    if (!advance) {
+      if (!lockedId) {
+        this.set({ answers }, `answer-lock-${questionIndex}`);
+      }
+      return;
+    }
+
     const nextIndex = questionIndex + 1;
 
     if (nextIndex >= QUESTIONS.length) {
@@ -140,6 +150,17 @@ export class ExperienceSession extends EventEmitter {
     if (this.state.phase !== PHASES.QUESTIONS) return;
 
     this.quiet();
+
+    // Answer locked for current question but not advanced yet — unlock only.
+    if (this.state.answers.length > this.state.currentQuestion) {
+      this.set(
+        {
+          answers: this.state.answers.slice(0, this.state.currentQuestion),
+        },
+        "unlock-answer",
+      );
+      return;
+    }
 
     if (this.state.currentQuestion <= 0) {
       this.imageJobId += 1;

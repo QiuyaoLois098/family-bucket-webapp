@@ -14,8 +14,8 @@ export const DESTINATIONS = [
     ],
     crops: ["center 40%", "center 70%", "left center", "right 30%"],
     palette: {
-      wash: "linear-gradient(180deg, #1b3a4a 0%, #c47a3a 55%, #f2c98a 100%)",
-      accent: "#e8b56a",
+      wash: "linear-gradient(180deg, #191e3b 0%, #4a7aa0 55%, #ffffff 100%)",
+      accent: "#fddb32",
     },
     imagePromptBase:
       "Cinematic premium travel photograph of a Costa Rican Pacific coastline at sunset: palm silhouettes, wet sand reflecting molten sky, turquoise water turning gold, distant rainforest meeting the shore. Editorial Expedia campaign quality, large-format photography, no people, no text, no logos.",
@@ -65,8 +65,8 @@ export const DESTINATIONS = [
     ],
     crops: ["center 45%", "right 30%", "left 50%", "center 75%"],
     palette: {
-      wash: "linear-gradient(180deg, #1e3a4c 0%, #6a8aa0 45%, #f0e2c8 100%)",
-      accent: "#c9a06c",
+      wash: "linear-gradient(180deg, #191e3b 0%, #4a7aa0 45%, #fddb32 100%)",
+      accent: "#4a7aa0",
     },
     imagePromptBase:
       "Cinematic premium travel photograph of Lake Tahoe: clear alpine water, pine forest, snow-capped peaks, rocky shoreline, bright mountain light. Editorial family travel campaign quality, no text, no logos.",
@@ -116,8 +116,8 @@ export const DESTINATIONS = [
     ],
     crops: ["center 30%", "center center", "left 40%", "center 80%"],
     palette: {
-      wash: "linear-gradient(180deg, #1c2418 0%, #5c3a22 50%, #c4a574 100%)",
-      accent: "#c4a574",
+      wash: "linear-gradient(180deg, #191e3b 0%, #4a7aa0 50%, #ffffff 100%)",
+      accent: "#fddb32",
     },
     imagePromptBase:
       "Cinematic premium travel photograph of a Catskills mountain evening: a stone fire ring with glowing embers, Adirondack chairs, pine forest, cedar cabin porch light, autumn-toned woods, star-faint sky. Editorial, intimate, no people, no text, no logos.",
@@ -167,8 +167,8 @@ export const DESTINATIONS = [
     ],
     crops: ["center 30%", "center 60%", "left 20%", "right 40%"],
     palette: {
-      wash: "linear-gradient(180deg, #1a2838 0%, #6b7c8c 50%, #f2efe9 100%)",
-      accent: "#c5d4e0",
+      wash: "linear-gradient(180deg, #191e3b 0%, #4a7aa0 48%, #fddb32 100%)",
+      accent: "#4a7aa0",
     },
     imagePromptBase:
       "Cinematic premium travel photograph of a snow-covered Alpine village at dusk: timber chalets, warm window light, pine forest, mountains, freshly fallen snow, blue-hour sky. Editorial luxury winter travel, no prominent people, no text, no logos.",
@@ -218,8 +218,8 @@ export const DESTINATIONS = [
     ],
     crops: ["center 20%", "center 70%", "left 40%", "right 25%"],
     palette: {
-      wash: "linear-gradient(180deg, #2a1a12 0%, #9a4a28 48%, #e8c9a0 100%)",
-      accent: "#e0a35a",
+      wash: "linear-gradient(180deg, #191e3b 0%, #4a7aa0 48%, #ffffff 100%)",
+      accent: "#fddb32",
     },
     imagePromptBase:
       "Cinematic premium travel photograph of the Arizona desert: red sandstone mesas and buttes like Monument Valley, warm late-afternoon light, sparse scrub, immense blue sky turning gold at the horizon. Editorial Southwest travel campaign quality, no people, no text, no logos.",
@@ -269,8 +269,8 @@ export const DESTINATIONS = [
     ],
     crops: ["center 25%", "center 60%", "right center", "left 20%"],
     palette: {
-      wash: "linear-gradient(180deg, #4a3040 0%, #d9a7b0 48%, #f7e6d8 100%)",
-      accent: "#d9a7b0",
+      wash: "linear-gradient(180deg, #191e3b 0%, #4a7aa0 48%, #fddb32 100%)",
+      accent: "#4a7aa0",
     },
     imagePromptBase:
       "Cinematic premium travel photograph of Kyoto in cherry blossom season: a quiet temple garden path, pale pink petals over still water, wooden architecture, stone lanterns, morning mist. Editorial, serene, no prominent people, no text, no logos.",

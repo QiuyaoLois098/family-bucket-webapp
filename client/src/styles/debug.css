@@ -5,8 +5,8 @@
   z-index: 50;
   width: min(360px, calc(100vw - 32px));
   padding: 14px 16px 16px;
-  background: rgba(12, 12, 12, 0.88);
-  color: #f3efe6;
+  background: rgba(25, 30, 59, 0.92);
+  color: var(--white);
   font-size: 12px;
   line-height: 1.35;
   backdrop-filter: blur(16px);
@@ -59,9 +59,9 @@
 }
 
 .is-on {
-  color: #b6d39a;
+  color: var(--yellow);
 }
 
 .is-off {
-  color: #e0a3a3;
+  color: var(--sky);
 }
