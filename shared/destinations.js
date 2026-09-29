@@ -3,16 +3,17 @@ export const DESTINATIONS = [
     id: "costa-rica",
     title: "Sunset by the beach in Costa Rica",
     shortTitle: "Costa Rica",
-    location: "Pacific Coast",
+    location: "Manuel Antonio",
     invitation: "Golden hour along a wild shoreline.",
     image: "/images/Expedia-images/destinations/costa-rica.png",
     gallery: [
       "/images/Expedia-images/destinations/costa-rica.png",
-      "/images/memories/forest.png",
-      "/images/memories/drive.png",
-      "/images/memories/food.jpg",
+      "/images/Expedia-images/options/q1_2.png",
+      "/images/Expedia-images/options/q2-1.png",
+      "/images/Expedia-images/options/q1_1.png",
+      "/images/Expedia-images/options/q3-1.png",
     ],
-    crops: ["center 40%", "center 70%", "left center", "right 30%"],
+    crops: ["center 40%", "center 70%", "left center", "right 30%", "center 50%"],
     palette: {
       wash: "linear-gradient(180deg, #191e3b 0%, #4a7aa0 55%, #ffffff 100%)",
       accent: "#fddb32",
@@ -22,30 +23,32 @@ export const DESTINATIONS = [
     fallbackItinerary: {
       title: "Your Family Escape to Costa Rica",
       subtitle: "A warm, slow journey along the Pacific coast",
+      headline: "Big adventures, little explorers.",
       moments: [
         {
-          time: "Morning",
-          title: "Rainforest Walk",
-          description:
-            "Begin under a canopy still wet with night rain. Howler monkeys call from somewhere above, and the path opens onto a hidden lookout over the Pacific.",
+          time: "Day 1",
+          title: "Beach discovery",
+          description: "Explore Espadilla Norte beach and tide pools.",
         },
         {
-          time: "Afternoon",
-          title: "Hidden Beach",
-          description:
-            "A crescent of dark sand that only appears at low tide. Pack a simple lunch, find a palm for shade, and let the afternoon unspool.",
+          time: "Day 2",
+          title: "Wildlife watch",
+          description: "Look for monkeys and sloths along quiet trails.",
         },
         {
-          time: "Sunset",
-          title: "Pacific Lookout",
-          description:
-            "Climb to a bluff as the sky turns copper. The tide draws long mirrors across the sand, and the day becomes a photograph you will keep.",
+          time: "Day 3",
+          title: "Easy waterfall stop",
+          description: "A short walk to cool water and a splash break.",
         },
         {
-          time: "Evening",
-          title: "Dinner by the Water",
-          description:
-            "Grilled catch, lime, and something cold as the last light leaves the water. The night is warm enough to linger.",
+          time: "Day 4",
+          title: "Jungle canopy walk",
+          description: "Cross high walkways above the green canopy.",
+        },
+        {
+          time: "Day 5",
+          title: "Sunset picnic",
+          description: "Share a simple picnic as the sky turns gold.",
         },
       ],
     },

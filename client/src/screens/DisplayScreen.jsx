@@ -28,7 +28,7 @@ export default function DisplayScreen() {
               ) : null}
             </section>
             <section className={`panel panel--memories ${state.phase === "itinerary" ? "is-active" : ""}`}>
-              {state.phase === "itinerary" ? <ItineraryView /> : null}
+              {state.phase === "itinerary" ? <ItineraryView destination={destination} /> : null}
             </section>
           </main>
         );

@@ -33,7 +33,7 @@ export default function ImageReveal({ state }) {
           {destination && state.phase !== "itinerary" && state.phase !== "reveal" ? (
             <div className="image-reveal__caption">
               {state.phase === "planning" ? (
-                <h2>Bringing your family day together</h2>
+                <h2>Your family adventure is ready.</h2>
               ) : (
                 <>
                   <p className="eyebrow">{destination.location}</p>

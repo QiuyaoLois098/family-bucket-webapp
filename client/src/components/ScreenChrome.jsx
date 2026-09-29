@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useSession } from "../hooks/useSession.js";
 import DebugPanel from "./DebugPanel.jsx";
-import ResetControl from "./ResetControl.jsx";
 
 export function useDebugMode() {
   const [params] = useSearchParams();
@@ -24,7 +23,6 @@ export function ScreenChrome({ role, children }) {
   return (
     <>
       {content}
-      <ResetControl onReset={actions.reset} />
       {debug ? (
         <DebugPanel role={role} state={state} connected={connected} actions={actions} />
       ) : null}

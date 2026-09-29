@@ -1,7 +1,11 @@
 import { QUESTIONS } from "../../shared/questions.js";
 import { getDestination } from "../../shared/destinations.js";
 
-const MOMENT_TIMES = ["Morning", "Afternoon", "Sunset", "Evening"];
+const DEFAULT_DAY_COUNT = 5;
+
+function dayLabel(index) {
+  return `Day ${index + 1}`;
+}
 
 export function validateItinerary(raw, destination) {
   if (!raw || typeof raw !== "object") return null;
@@ -12,28 +16,32 @@ export function validateItinerary(raw, destination) {
       : destination?.fallbackItinerary?.title;
   const subtitle =
     typeof raw.subtitle === "string" ? raw.subtitle.trim() : destination?.fallbackItinerary?.subtitle || "";
+  const headline =
+    typeof raw.headline === "string" && raw.headline.trim()
+      ? raw.headline.trim()
+      : destination?.fallbackItinerary?.headline || "";
 
   if (!title) return null;
 
   const incoming = Array.isArray(raw.moments) ? raw.moments : [];
   const fallbackMoments = destination?.fallbackItinerary?.moments || [];
+  const count = Math.max(fallbackMoments.length || DEFAULT_DAY_COUNT, Math.min(incoming.length || 0, 5) || DEFAULT_DAY_COUNT);
+  const dayCount = Math.min(Math.max(count, 4), 5);
 
-  const moments = MOMENT_TIMES.map((time, index) => {
+  const moments = Array.from({ length: dayCount }, (_, index) => {
     const fromModel = incoming[index] && typeof incoming[index] === "object" ? incoming[index] : {};
-    const fromFallback = fallbackMoments[index] || {};
+    const fromFallback = fallbackMoments[index] || fallbackMoments[fallbackMoments.length - 1] || {};
     const momentTitle =
       (typeof fromModel.title === "string" && fromModel.title.trim()) ||
       fromFallback.title ||
-      time;
+      dayLabel(index);
     const description =
       (typeof fromModel.description === "string" && fromModel.description.trim()) ||
       fromFallback.description ||
       "";
-    const momentTime =
-      (typeof fromModel.time === "string" && fromModel.time.trim()) || fromFallback.time || time;
 
     return {
-      time: momentTime,
+      time: dayLabel(index),
       title: momentTitle,
       description,
     };
@@ -41,7 +49,7 @@ export function validateItinerary(raw, destination) {
 
   if (moments.some((moment) => !moment.title || !moment.description)) return null;
 
-  return { title, subtitle, moments };
+  return { title, subtitle, headline, moments };
 }
 
 export function buildImagePrompt({ destination, answers }) {
@@ -92,17 +100,20 @@ Return JSON with this exact shape:
 {
   "title": "Your Family Escape to ...",
   "subtitle": "one lyrical sentence",
+  "headline": "short serif headline for the itinerary screen, 4-7 words, warm and specific to the answers",
   "moments": [
-    { "time": "Morning", "title": "short title", "description": "2 sentences, sensory, specific, no people described physically" },
-    { "time": "Afternoon", "title": "...", "description": "..." },
-    { "time": "Sunset", "title": "...", "description": "..." },
-    { "time": "Evening", "title": "...", "description": "..." }
+    { "title": "short title", "description": "2 sentences, sensory, specific, family-friendly pace" },
+    { "title": "...", "description": "..." },
+    { "title": "...", "description": "..." },
+    { "title": "...", "description": "..." },
+    { "title": "...", "description": "..." }
   ]
 }
 
 Rules:
-- Exactly 4 moments with those times.
+- Exactly 5 day moments in order (Day 1 through Day 5).
 - Warm, editorial travel writing. No marketing clichés like "hidden gem" overuse.
 - Do not describe what the family looks like.
-- Keep titles to 2-5 words.`;
+- Keep titles to 2-4 words.
+- Descriptions should be one short sentence, about 8-14 words.`;
 }

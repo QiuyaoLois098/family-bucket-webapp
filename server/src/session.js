@@ -60,6 +60,8 @@ export class ExperienceSession extends EventEmitter {
   checkInactivity() {
     if (this.state.phase === PHASES.DESTINATION && !this.state.destination) return;
     if (this.state.phase === PHASES.IDLE) return;
+    // Stay on the finale until the guest starts over manually.
+    if (this.state.phase === PHASES.ITINERARY) return;
     if (Date.now() - this.lastInteractionAt < config.inactivityTimeoutMs) return;
     this.reset("inactivity");
   }
@@ -108,16 +110,17 @@ export class ExperienceSession extends EventEmitter {
     const lockedId = this.state.answers[questionIndex];
     if (lockedId && lockedId !== answerId) return;
 
-    this.quiet();
     const answers = lockedId ? this.state.answers : [...this.state.answers, answerId];
 
     if (!advance) {
       if (!lockedId) {
+        this.touch();
         this.set({ answers }, `answer-lock-${questionIndex}`);
       }
       return;
     }
 
+    this.quiet();
     const nextIndex = questionIndex + 1;
 
     if (nextIndex >= QUESTIONS.length) {
@@ -125,13 +128,12 @@ export class ExperienceSession extends EventEmitter {
         {
           answers,
           currentQuestion: nextIndex,
-          phase: PHASES.PLANNING,
+          phase: PHASES.REVEAL,
           itineraryStatus: "generating",
         },
         "answer-final",
       );
       this.startItineraryGeneration();
-      this.scheduleRevealFromPlanning();
       return;
     }
 
