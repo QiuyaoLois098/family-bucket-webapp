@@ -207,8 +207,15 @@ function reducer(state, action) {
   }
 }
 
-export default function useVrboV2Experience() {
-  const [state, dispatch] = useReducer(reducer, 0, createInitialState);
+export default function useVrboV2Experience({ skipIntro = false } = {}) {
+  const [state, dispatch] = useReducer(
+    reducer,
+    0,
+    () => {
+      const initial = createInitialState(0);
+      return skipIntro ? { ...initial, stage: "selecting" } : initial;
+    },
+  );
   const timers = useRef([]);
   const stateRef = useRef(state);
   stateRef.current = state;
@@ -228,6 +235,18 @@ export default function useVrboV2Experience() {
 
   // Stage 1 - scripted intro conversation, then hand off to the phones.
   useEffect(() => {
+    if (skipIntro) {
+      // Solo phone demos still start with Jamie's opener in the group chat.
+      const line = chatScript.intro[0];
+      if (line) {
+        dispatch({
+          type: "ADD_MESSAGE",
+          message: makeMessage({ authorId: line.authorId, text: line.text }),
+        });
+      }
+      return undefined;
+    }
+
     let offset = 0;
     const ids = [];
 
@@ -247,7 +266,7 @@ export default function useVrboV2Experience() {
     ids.push(schedule(() => dispatch({ type: "SET_STAGE", stage: "selecting" }), offset));
 
     return () => ids.forEach(clearTimeout);
-  }, [state.runId, schedule]);
+  }, [state.runId, schedule, skipIntro]);
 
   const joinedUsers = useMemo(
     () => guests.filter((user) => Boolean(state.joined[user.id])),

@@ -154,6 +154,7 @@ export default function GuestPhone({
   onJoin,
   onToggle,
   onSubmit,
+  bare = false,
 }) {
   const max = copy.maxSelections;
   const groupFinished = stage === "summary" || stage === "results";
@@ -188,11 +189,10 @@ export default function GuestPhone({
     ? fill(copy.phone.groupCount, { count: chipMembers.length })
     : chatScript.groupSubtitle;
 
-  return (
-    <div className="vrbo-v2-phone">
-      <div className="vrbo-v2-phone__frame">
+  const screen = (
         <div className="vrbo-v2-phone__screen">
           <div className="vrbo-v2-phone__chrome">
+            <span className="vrbo-v2-phone__time">9:41</span>
             <span className="vrbo-v2-phone__notch" aria-hidden="true" />
           </div>
           <header className="vrbo-v2-phone__trip">
@@ -265,7 +265,9 @@ export default function GuestPhone({
 
                 <div className={`vrbo-v2-phone__composer ${draftLines.length ? "has-draft" : ""}`}>
                   <p className="vrbo-v2-phone__draft-label">
-                    {fill(copy.phone.draftLabel, { name: user.name })}
+                    <strong>{user.name} · You</strong>
+                    <span> / </span>
+                    <strong>{copy.phone.draftStatus}</strong>
                   </p>
                   <div className="vrbo-v2-phone__composer-row">
                     <div
@@ -313,8 +315,15 @@ export default function GuestPhone({
             ) : null}
           </AnimatePresence>
         </div>
-      </div>
+  );
 
+  if (bare) {
+    return <div className="vrbo-v2-phone vrbo-v2-phone--bare">{screen}</div>;
+  }
+
+  return (
+    <div className="vrbo-v2-phone">
+      <div className="vrbo-v2-phone__frame">{screen}</div>
       <p className="vrbo-v2-phone__label">
         <span>{user.phoneLabel}</span>
       </p>

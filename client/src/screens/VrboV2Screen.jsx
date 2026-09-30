@@ -188,6 +188,58 @@ function VrboDemo() {
   );
 }
 
+export function SarahPhonePage() {
+  const { state, actions } = useVrboV2Experience({ skipIntro: true });
+  const {
+    stage,
+    messages,
+    typing,
+    joined,
+    selections,
+    submitted,
+    results,
+  } = state;
+  const sarah = guests.find((user) => user.id === "sarah");
+
+  const propertyLookup = useMemo(() => {
+    const byId = new Map(results.map((result) => [result.property.id, result]));
+    return (propertyId) => {
+      if (propertyId == null) return null;
+      const scored = byId.get(propertyId);
+      if (scored) return scored;
+      const property = propertyById.get(propertyId);
+      return property ? { property, matched: [] } : null;
+    };
+  }, [results]);
+
+  if (!sarah) return null;
+
+  return (
+    <div className="vrbo-v2-sarah">
+      <GuestPhone
+        user={sarah}
+        preferences={preferences}
+        preferenceById={preferenceById}
+        selection={selections[sarah.id] ?? []}
+        submitted={submitted[sarah.id]}
+        joined={Boolean(joined[sarah.id])}
+        joinedMap={joined}
+        locked={false}
+        canJoin
+        stage={stage}
+        messages={messages}
+        typing={typing}
+        userById={userById}
+        propertyLookup={propertyLookup}
+        onJoin={actions.joinGuest}
+        onToggle={actions.togglePreference}
+        onSubmit={actions.submitGuest}
+        bare
+      />
+    </div>
+  );
+}
+
 export default function VrboV2Screen() {
   const landscapeReady = useLandscapeGate();
   if (!landscapeReady) return <VrboLandscapeGate />;

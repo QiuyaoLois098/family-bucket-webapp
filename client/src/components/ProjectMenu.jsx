@@ -30,7 +30,7 @@ export default function ProjectMenu() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  if (inFrame) return null;
+  if (inFrame || location.pathname === "/sarah") return null;
 
   return (
     <div className={`project-menu ${open ? "is-open" : ""}`}>

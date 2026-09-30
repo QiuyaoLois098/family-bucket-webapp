@@ -28,7 +28,7 @@ export const PROJECTS = [
     title: "Vrbo Group Trip v2",
     subtitle: "Five-screen group booking flow · v2",
     path: "/vrbo-v2",
-    match: (pathname) => pathname.startsWith("/vrbo-v2"),
+    match: (pathname) => pathname.startsWith("/vrbo-v2") || pathname === "/sarah",
   },
 ];
 
