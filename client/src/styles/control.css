@@ -640,6 +640,7 @@
 
 .question__chat-row--ai {
   justify-content: flex-start;
+  align-items: flex-end;
 }
 
 .question__bubble {
@@ -676,10 +677,6 @@
     padding 1.04s cubic-bezier(0.22, 1, 0.36, 1),
     min-height 1.04s cubic-bezier(0.22, 1, 0.36, 1),
     border-radius 1.04s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.question__chat-row--ai:has(.is-typing) {
-  align-items: center;
 }
 
 .question__bubble--ai.is-typing,
@@ -784,6 +781,7 @@
   border-radius: clamp(10px, 1.4vw, 14px);
   object-fit: contain;
   background: transparent;
+  will-change: transform;
 }
 
 .question--chatting .question__options--photos {

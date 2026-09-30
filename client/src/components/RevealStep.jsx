@@ -54,7 +54,7 @@ export default function RevealStep({ onReveal }) {
           aria-label="Pull up the suitcase handle to reveal your itinerary"
         >
           <img
-            src="/images/Expedia-images/Suitcase%20Guide.png"
+            src="/images/Expedia-images/suitcase-guide.png"
             alt=""
             draggable="false"
           />

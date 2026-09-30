@@ -346,24 +346,38 @@ export default function QuestionStep({
 
               const typing = message.kind === "typing";
               const isNewPrompt = message.kind === "prompt" && message.questionIndex > 0;
+              const logoLayout = phase !== "rising";
 
               return (
-                <div
+                <motion.div
                   key={message.id}
                   data-msg-id={message.id}
                   className="question__chat-row question__chat-row--ai"
+                  layout={logoLayout ? "position" : false}
+                  transition={BUBBLE_LAYOUT}
                 >
-                  <img className="question__chat-logo" src={AI_LOGO} alt="" />
+                  <motion.img
+                    layout={logoLayout ? "position" : false}
+                    className="question__chat-logo"
+                    src={AI_LOGO}
+                    alt=""
+                    transition={{
+                      layout: { duration: 1.04, ease: EASE },
+                    }}
+                  />
                   <motion.div
-                    layout={phase !== "rising"}
+                    layout={logoLayout}
                     className={`question__bubble question__bubble--ai${typing ? " is-typing" : ""}`}
-                    style={{ transformOrigin: "left center" }}
+                    style={{ transformOrigin: "left bottom" }}
                     initial={isNewPrompt ? { opacity: 0 } : false}
                     animate={{ opacity: 1 }}
                     transition={
                       isNewPrompt
                         ? { duration: 0.7, ease: EASE }
-                        : BUBBLE_LAYOUT
+                        : {
+                            ...BUBBLE_LAYOUT,
+                            layout: { duration: 1.04, ease: EASE },
+                          }
                     }
                   >
                     <AnimatePresence mode="popLayout" initial={false}>
@@ -393,7 +407,7 @@ export default function QuestionStep({
                       )}
                     </AnimatePresence>
                   </motion.div>
-                </div>
+                </motion.div>
               );
             })}
           </div>
