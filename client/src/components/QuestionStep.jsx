@@ -10,7 +10,7 @@ const CARD_FADE_MS = 380;
 const YOU_PAUSE_MS = 260;
 const TYPING_MS = 3000;
 const LAST_HOLD_MS = 2800;
-const REPLY_SETTLE_MS = 280;
+const REPLY_SETTLE_MS = 3000;
 const SHIFT_MS = 720;
 
 const EASE = [0.22, 1, 0.36, 1];

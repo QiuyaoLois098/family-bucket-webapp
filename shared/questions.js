@@ -1,7 +1,7 @@
 export const QUESTIONS = [
   {
     id: "activity",
-    prompt: "What would you like to do?",
+    prompt: "What do you have in mind for your trip?",
     options: [
       {
         id: "adventurous",
