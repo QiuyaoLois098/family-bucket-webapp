@@ -243,22 +243,8 @@ export default function useVrboV2Experience() {
       );
     });
 
-    // Reference beat: Jamie's message lands, then guests show as typing.
-    const guestTypers = guests.slice(0, 2).map((user) => user.id);
-    offset += 350;
-    guestTypers.forEach((userId, index) => {
-      ids.push(
-        schedule(() => dispatch({ type: "SET_TYPING", userId }), offset + index * 120),
-      );
-    });
-
     offset += Math.max(chatScript.handoffPause ?? 900, 2200);
-    ids.push(
-      schedule(() => {
-        guestTypers.forEach((userId) => dispatch({ type: "CLEAR_TYPING", userId }));
-        dispatch({ type: "SET_STAGE", stage: "selecting" });
-      }, offset),
-    );
+    ids.push(schedule(() => dispatch({ type: "SET_STAGE", stage: "selecting" }), offset));
 
     return () => ids.forEach(clearTimeout);
   }, [state.runId, schedule]);
@@ -372,7 +358,17 @@ export default function useVrboV2Experience() {
         });
       }, offset);
 
+      const joinedNow = current.joined;
+      const isActiveAuthor = (authorId) => {
+        const person = users.find((user) => user.id === authorId);
+        if (!person) return false;
+        // Coordinator (Jamie) is always in the chat; guests only if they joined.
+        if (person.role === "coordinator") return true;
+        return Boolean(joinedNow[authorId]);
+      };
+
       (finale.reactions ?? []).forEach((line) => {
+        if (!isActiveAuthor(line.authorId)) return;
         offset += line.pause ?? 700;
         schedule(() => dispatch({ type: "SET_TYPING", userId: line.authorId }), offset);
         offset += line.typing ?? 700;

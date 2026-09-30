@@ -26,15 +26,38 @@ function Avatar({ user, className = "vrbo-v2-chat__avatar" }) {
   );
 }
 
-export default function MainChatScreen({ messages, typing, userById, propertyLookup, celebrating }) {
+export default function MainChatScreen({
+  messages,
+  typing,
+  userById,
+  propertyLookup,
+  celebrating,
+  joined = {},
+}) {
   const feedRef = useRef(null);
-  const members = Object.values(userById);
+  // Blue header starts with Jamie; guests appear only after they Join.
+  const members = Object.values(userById).filter(
+    (user) => user.role === "coordinator" || Boolean(joined[user.id]),
+  );
   const typingUsers = typing.map((id) => userById[id]).filter(Boolean);
 
   useEffect(() => {
     const node = feedRef.current;
-    if (!node) return;
-    node.scrollTo({ top: node.scrollHeight, behavior: "smooth" });
+    if (!node) return undefined;
+
+    const scrollToBottom = () => {
+      node.scrollTop = node.scrollHeight;
+    };
+
+    // Wait a frame so new bubbles have laid out; avoid ResizeObserver — it
+    // fights framer-motion layout and can leave the feed visually empty.
+    const raf = requestAnimationFrame(scrollToBottom);
+    const timer = window.setTimeout(scrollToBottom, 280);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(timer);
+    };
   }, [messages.length, typing.length]);
 
   return (
@@ -49,10 +72,7 @@ export default function MainChatScreen({ messages, typing, userById, propertyLoo
         />
         <h2 className="vrbo-v2-chat__trip">{chatScript.groupTitle}</h2>
         <p className="vrbo-v2-chat__people">
-          {members
-            .filter((user) => user.id !== "chris")
-            .map((user) => user.name)
-            .join(", ")}
+          {members.map((user) => user.name).join(", ")}
         </p>
       </header>
 
@@ -69,9 +89,8 @@ export default function MainChatScreen({ messages, typing, userById, propertyLoo
               return (
                 <motion.div
                   key={message.id}
-                  layout
                   {...bubbleMotion}
-                  className={`vrbo-v2-chat__row vrbo-v2-chat__row--${user.side} vrbo-v2-chat__row--${user.role} ${
+                  className={`vrbo-v2-chat__row vrbo-v2-chat__row--${user.role} ${
                     message.kind === "property" ? "vrbo-v2-chat__row--card" : ""
                   }`}
                 >
@@ -95,7 +114,6 @@ export default function MainChatScreen({ messages, typing, userById, propertyLoo
             {typingUsers.length ? (
               <motion.div
                 key={`typing-${typingUsers.map((u) => u.id).join("-")}`}
-                layout
                 {...bubbleMotion}
                 exit={{ opacity: 0, scale: 0.9 }}
                 className="vrbo-v2-chat__typing"

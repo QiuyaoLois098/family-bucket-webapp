@@ -335,6 +335,52 @@
   max-width: 100%;
 }
 
+/* Fullscreen phones-only: three devices side by side. */
+.vrbo-v2-stage.is-phones-only {
+  padding: 18px 28px 18px 88px;
+}
+
+.vrbo-v2-stage.is-phones-only .vrbo-v2-stage__board {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.vrbo-v2-stage.is-phones-only .vrbo-v2-stage__right {
+  display: block;
+  min-height: 0;
+  height: 100%;
+}
+
+.vrbo-v2-stage__phones-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 2.4vw, 36px);
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  align-items: stretch;
+  justify-items: stretch;
+}
+
+.vrbo-v2-stage__phones-row > .vrbo-v2-phone {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.vrbo-v2-stage.is-phones-only .vrbo-v2-phone__frame {
+  border-radius: 34px;
+  padding: 7px;
+}
+
+.vrbo-v2-stage.is-phones-only .vrbo-v2-phone__screen {
+  border-radius: 28px;
+}
+
+.vrbo-v2-stage.is-phones-only .vrbo-v2-phone__label {
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+}
+
 /* ---------- display frames ---------- */
 
 .vrbo-v2-display {
@@ -372,7 +418,7 @@
   color: var(--charcoal);
 }
 
-﻿/* ---------- display 1 · group chat ---------- */
+/* ---------- display 1 · group chat ---------- */
 
 .vrbo-v2-chat {
   position: relative;
@@ -428,6 +474,7 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   padding: clamp(18px, 2.4vh, 30px) clamp(16px, 1.8vw, 30px) clamp(16px, 2.2vh, 26px);
   background: var(--cream);
 }
@@ -443,7 +490,7 @@
 
 .vrbo-v2-chat__footer {
   flex: 0 0 auto;
-  margin-top: auto;
+  margin-top: 0;
   padding-top: clamp(12px, 1.6vh, 20px);
   font-family: var(--vrbo-v2-content);
   font-size: clamp(0.8rem, 1.55vh, 1.02rem);
@@ -452,7 +499,7 @@
 }
 
 .vrbo-v2-chat__feed {
-  flex: 0 1 auto;
+  flex: 1;
   min-height: 0;
   overflow-y: auto;
   display: flex;
@@ -463,8 +510,10 @@
   scrollbar-color: var(--soft-gray) transparent;
 }
 
+/* Spacer pins short threads to the bottom; shrinks away when overflowing. */
 .vrbo-v2-chat__feed::before {
-  content: none;
+  content: "";
+  margin-top: auto;
 }
 
 .vrbo-v2-chat__feed::-webkit-scrollbar {
@@ -478,18 +527,10 @@
 
 .vrbo-v2-chat__row {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: 10px;
-  max-width: 88%;
-}
-
-.vrbo-v2-chat__row--left {
   align-self: flex-start;
-}
-
-.vrbo-v2-chat__row--right {
-  align-self: flex-end;
-  flex-direction: row-reverse;
+  max-width: 92%;
 }
 
 .vrbo-v2-chat__avatar {
@@ -498,6 +539,7 @@
   flex: 0 0 auto;
   width: clamp(28px, 3.6vh, 36px);
   height: clamp(28px, 3.6vh, 36px);
+  margin-top: 2px;
   border-radius: 50%;
   font-size: clamp(0.56rem, 1.2vh, 0.74rem);
   font-weight: 600;
@@ -523,10 +565,6 @@
   min-width: 0;
 }
 
-.vrbo-v2-chat__row--right .vrbo-v2-chat__column {
-  align-items: flex-end;
-}
-
 .vrbo-v2-chat__author {
   padding: 0 4px;
   font-family: var(--vrbo-v2-content);
@@ -541,6 +579,7 @@
   margin: 0;
   padding: clamp(12px, 1.5vh, 18px) clamp(14px, 1.4vw, 22px);
   border-radius: 18px;
+  border-bottom-left-radius: 6px;
   background: #ffffff;
   color: var(--charcoal);
   font-size: clamp(0.86rem, 1.8vh, 1.1rem);
@@ -548,14 +587,6 @@
   white-space: pre-line;
   border: 0;
   box-shadow: 0 8px 24px rgba(32, 32, 32, 0.06);
-}
-
-.vrbo-v2-chat__row--left .vrbo-v2-chat__bubble {
-  border-bottom-left-radius: 6px;
-}
-
-.vrbo-v2-chat__row--right .vrbo-v2-chat__bubble {
-  border-bottom-right-radius: 6px;
 }
 
 .vrbo-v2-chat__row--coordinator .vrbo-v2-chat__bubble {
@@ -1544,12 +1575,12 @@
   justify-content: flex-end;
   width: 100%;
   min-height: 0;
-  height: max(28px, 7.2cqh);
+  height: max(36px, 9.2cqh);
   aspect-ratio: auto;
   gap: 0;
-  padding: 0.8cqh 2cqw;
-  border: 2px solid transparent;
-  border-radius: 10px;
+  padding: 0.9cqh 2.2cqw;
+  border: 2.5px solid transparent;
+  border-radius: 12px;
   background-color: #cfd8e6;
   background-size: cover;
   background-position: center;
@@ -1568,17 +1599,17 @@
 
 .vrbo-v2-pref--chip .vrbo-v2-pref__tick {
   position: absolute;
-  top: 0.6cqh;
-  right: 1.2cqw;
+  top: 0.7cqh;
+  right: 1.4cqw;
   z-index: 1;
   display: grid;
   place-items: center;
-  width: max(10px, 2.8cqh);
-  height: max(10px, 2.8cqh);
+  width: max(12px, 3.2cqh);
+  height: max(12px, 3.2cqh);
   border-radius: 50%;
   background: var(--blue);
   color: #ffffff;
-  font-size: max(5px, 1.5cqh);
+  font-size: max(6px, 1.7cqh);
   font-weight: 700;
   line-height: 1;
 }
@@ -1587,7 +1618,7 @@
   position: relative;
   z-index: 1;
   font-family: var(--vrbo-v2-content);
-  font-size: max(5px, 1.55cqh);
+  font-size: max(6px, 1.7cqh);
   font-weight: 600;
   letter-spacing: 0;
   line-height: 1.1;
@@ -1911,9 +1942,9 @@
   border-radius: 26px;
   background: var(--charcoal);
   box-shadow: 0 12px 30px rgba(32, 32, 32, 0.2);
-  aspect-ratio: 9 / 16;
-  width: min(100cqi, calc((100cqb - 22px) * 9 / 16));
-  height: min(calc(100cqb - 22px), calc(100cqi * 16 / 9));
+  aspect-ratio: 9 / 19.5;
+  width: min(100cqi, calc((100cqb - 22px) * 9 / 19.5));
+  height: min(calc(100cqb - 22px), calc(100cqi * 19.5 / 9));
   max-width: 100%;
   max-height: calc(100% - 22px);
 }
@@ -1988,6 +2019,67 @@
   color: rgba(32, 32, 32, 0.55);
 }
 
+.vrbo-v2-phone__members {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1.2cqw;
+  overflow-x: auto;
+  padding: 0.7cqh 3.5cqw 1cqh;
+  border-bottom: 1px solid rgba(32, 32, 32, 0.06);
+  background: #ffffff;
+  scrollbar-width: none;
+}
+
+.vrbo-v2-phone__members::-webkit-scrollbar {
+  display: none;
+}
+
+.vrbo-v2-phone__member-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.6cqw;
+  flex: 0 0 auto;
+  max-width: 48cqw;
+  padding: 0.55cqh 2.8cqw 0.55cqh 1.4cqw;
+  border-radius: 999px;
+  background: #eef1f6;
+  color: var(--charcoal);
+}
+
+.vrbo-v2-phone__member-chip.is-you {
+  background: color-mix(in srgb, var(--blue) 14%, #ffffff);
+  color: var(--blue);
+}
+
+.vrbo-v2-phone__member-avatar {
+  display: block;
+  flex: 0 0 auto;
+  width: max(14px, 3.8cqh);
+  height: max(14px, 3.8cqh);
+  overflow: hidden;
+  border-radius: 50%;
+  background: #dfe5ef;
+}
+
+.vrbo-v2-phone__member-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.vrbo-v2-phone__member-chip em {
+  font-style: normal;
+  font-family: var(--vrbo-v2-content);
+  font-size: max(6px, 1.7cqh);
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .vrbo-v2-phone__label {
   display: inline-flex;
   align-items: center;
@@ -2027,6 +2119,187 @@
 
 .vrbo-v2-phone__panel--select {
   gap: 0;
+  background: #ffffff;
+}
+
+.vrbo-v2-phone__panel--select .vrbo-v2-phone__prompt {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0 3.2cqw;
+  padding: 1.4cqh 3cqw 1.2cqh;
+  border: 0;
+  border-radius: 16px;
+  background: #f3eee6;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.vrbo-v2-phone__panel--select .vrbo-v2-phone__prompt::-webkit-scrollbar {
+  display: none;
+}
+
+.vrbo-v2-phone__prompt {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1cqh;
+  padding: 0.8cqh 3.5cqw 0.6cqh;
+  background: #ffffff;
+  border-top: 1px solid rgba(32, 32, 32, 0.04);
+}
+
+.vrbo-v2-phone__prompt-title {
+  margin: 0;
+  font-family: var(--vrbo-v2-sans);
+  font-size: max(8px, 2.35cqh);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #1a2a55;
+}
+
+.vrbo-v2-phone__chips {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1cqh 1.6cqw;
+  max-height: none;
+  overflow: visible;
+}
+
+.vrbo-v2-phone__selected-hint {
+  margin: 0.2cqh 0 0;
+  font-size: max(6px, 1.65cqh);
+  font-weight: 600;
+  color: var(--blue);
+}
+
+.vrbo-v2-phone__composer {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5cqh;
+  padding: 1.2cqh 3.5cqw 1.6cqh;
+  background: #ffffff;
+}
+
+.vrbo-v2-phone__draft-label {
+  margin: 0;
+  font-size: max(6px, 1.6cqh);
+  font-weight: 600;
+  color: var(--blue);
+}
+
+.vrbo-v2-phone__composer-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+
+.vrbo-v2-phone__composer-add {
+  display: none;
+}
+
+.vrbo-v2-phone__composer.is-readonly {
+  opacity: 0.7;
+  pointer-events: none;
+  border-top: 1px solid rgba(32, 32, 32, 0.06);
+}
+
+.vrbo-v2-phone__composer.is-readonly .vrbo-v2-phone__composer-add {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: max(16px, 4.6cqh);
+  height: max(16px, 4.6cqh);
+  border-radius: 50%;
+  background: #e8ebf0;
+  color: rgba(32, 32, 32, 0.45);
+  font-size: max(10px, 2.8cqh);
+  line-height: 1;
+}
+
+.vrbo-v2-phone__composer.is-readonly .vrbo-v2-phone__composer-row {
+  align-items: center;
+  gap: 1.6cqw;
+}
+
+.vrbo-v2-phone__composer.is-readonly .vrbo-v2-phone__composer-field {
+  min-height: max(18px, 5.2cqh);
+  max-height: none;
+  padding: 1cqh 2.8cqw;
+  border-radius: 999px;
+  background: #f3f5f8;
+}
+
+.vrbo-v2-phone__composer-field {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  min-height: max(28px, 9cqh);
+  max-height: 18cqh;
+  overflow-y: auto;
+  padding: 1.4cqh 3cqw;
+  border: 1px solid rgba(32, 32, 32, 0.1);
+  border-radius: 16px;
+  background: #ffffff;
+  color: rgba(32, 32, 32, 0.4);
+  font-size: max(6px, 1.7cqh);
+  line-height: 1.35;
+}
+
+.vrbo-v2-phone__panel--select .vrbo-v2-phone__composer-field {
+  padding-bottom: 5.2cqh;
+}
+
+.vrbo-v2-phone__composer-field.is-filled {
+  color: var(--charcoal);
+  background: #ffffff;
+}
+
+.vrbo-v2-phone__draft-line {
+  margin: 0 0 0.55cqh;
+}
+
+.vrbo-v2-phone__draft-line:last-child {
+  margin-bottom: 0;
+}
+
+.vrbo-v2-phone__composer-send {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: max(20px, 5.8cqh);
+  height: max(20px, 5.8cqh);
+  border: 0;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #ffffff;
+  font-size: max(9px, 2.4cqh);
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.vrbo-v2-phone__panel--select .vrbo-v2-phone__composer-send {
+  position: absolute;
+  right: 1.6cqw;
+  bottom: 1.2cqh;
+}
+
+.vrbo-v2-phone__composer-send:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.vrbo-v2-phone__continue {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0.6cqh 4.5cqw 1cqh;
+  font-family: var(--vrbo-v2-content);
+  font-size: max(6px, 1.75cqh);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--blue);
+  text-align: center;
 }
 
 .vrbo-v2-phone__feed {
@@ -2087,35 +2360,45 @@
   line-height: 1.3;
 }
 
-.vrbo-v2-phone__composer.is-readonly {
-  opacity: 0.55;
-  pointer-events: none;
-}
-
-.vrbo-v2-phone__composer.is-readonly .vrbo-v2-phone__autofill {
-  display: none;
-}
-
 .vrbo-v2-phone__feed::-webkit-scrollbar {
   display: none;
 }
 
 .vrbo-v2-phone__bubble {
-  align-self: flex-start;
+  align-self: stretch;
   max-width: 100%;
   min-width: 0;
   padding: 1.4cqh 3cqw;
   border-radius: 14px;
+  border-bottom-left-radius: 5px;
   background: #ffffff;
   color: var(--charcoal);
   box-shadow: 0 1px 0 rgba(32, 32, 32, 0.04);
 }
 
+.vrbo-v2-phone__bubble.is-self {
+  border-radius: 14px;
+  border-bottom-right-radius: 5px;
+  background: var(--blue);
+  color: #ffffff;
+  box-shadow: none;
+}
+
 .vrbo-v2-phone__msg {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: 1.6cqw;
+  align-self: flex-start;
   max-width: 96%;
+}
+
+.vrbo-v2-phone__msg.is-self {
+  align-self: flex-end;
+  flex-direction: row;
+}
+
+.vrbo-v2-phone__property.is-self {
+  align-items: flex-end;
 }
 
 .vrbo-v2-phone__avatar {
@@ -2124,6 +2407,7 @@
   flex: 0 0 auto;
   width: max(12px, 3.8cqh);
   height: max(12px, 3.8cqh);
+  margin-top: 0.2cqh;
   overflow: hidden;
   border-radius: 50%;
   font-size: max(5px, 1.5cqh);
@@ -2144,6 +2428,11 @@
   letter-spacing: 0.02em;
 }
 
+.vrbo-v2-phone__bubble.is-self .vrbo-v2-phone__bubble-author,
+.vrbo-v2-phone__bubble-author.is-self {
+  color: rgba(255, 255, 255, 0.88);
+}
+
 .vrbo-v2-phone__bubble-author span {
   font-weight: 700;
   text-transform: uppercase;
@@ -2157,6 +2446,10 @@
   line-height: 1.35;
   white-space: pre-line;
   color: #1a2a55;
+}
+
+.vrbo-v2-phone__bubble.is-self .vrbo-v2-phone__bubble-text {
+  color: #ffffff;
 }
 
 .vrbo-v2-phone__typing {
@@ -2199,126 +2492,6 @@
 .vrbo-v2-phone__join-cta {
   min-width: 42cqw;
   margin-top: 0.6cqh;
-}
-
-.vrbo-v2-phone__prompt {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.8cqh;
-  padding: 0.8cqh 3.5cqw 0.6cqh;
-  background: #ffffff;
-  border-top: 1px solid rgba(32, 32, 32, 0.04);
-}
-
-.vrbo-v2-phone__prompt-title {
-  margin: 0;
-  font-family: var(--vrbo-v2-sans);
-  font-size: max(7px, 2cqh);
-  font-weight: 600;
-  color: var(--blue);
-}
-
-.vrbo-v2-phone__chips {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.8cqh 1.2cqw;
-  max-height: none;
-  overflow: visible;
-}
-
-.vrbo-v2-phone__selected-hint {
-  margin: 0;
-  font-size: max(5px, 1.45cqh);
-  font-weight: 600;
-  color: var(--blue);
-}
-
-.vrbo-v2-phone__composer {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6cqh;
-  padding: 0.6cqh 3.5cqw 1.4cqh;
-  background: #ffffff;
-  border-top: 1px solid rgba(32, 32, 32, 0.06);
-}
-
-.vrbo-v2-phone__autofill {
-  margin: 0;
-  font-size: max(5px, 1.5cqh);
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: var(--blue);
-}
-
-.vrbo-v2-phone__composer-row {
-  display: flex;
-  align-items: flex-end;
-  gap: 1.6cqw;
-}
-
-.vrbo-v2-phone__composer-add {
-  display: none;
-}
-
-.vrbo-v2-phone__composer-field {
-  flex: 1;
-  min-width: 0;
-  min-height: max(22px, 7cqh);
-  max-height: 14cqh;
-  overflow-y: auto;
-  padding: 1.2cqh 2.8cqw;
-  border: 1px solid rgba(32, 32, 32, 0.12);
-  border-radius: 14px;
-  background: #f7f8fb;
-  color: rgba(32, 32, 32, 0.4);
-  font-size: max(5px, 1.55cqh);
-  line-height: 1.35;
-}
-
-.vrbo-v2-phone__composer-field.is-filled {
-  color: var(--charcoal);
-  background: #ffffff;
-}
-
-.vrbo-v2-phone__draft-line {
-  margin: 0 0 0.5cqh;
-}
-
-.vrbo-v2-phone__draft-line:last-child {
-  margin-bottom: 0;
-}
-
-.vrbo-v2-phone__composer-send {
-  flex: 0 0 auto;
-  display: grid;
-  place-items: center;
-  width: max(18px, 5.4cqh);
-  height: max(18px, 5.4cqh);
-  border: 0;
-  border-radius: 50%;
-  background: var(--blue);
-  color: #ffffff;
-  font-size: max(8px, 2.4cqh);
-  font-weight: 700;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.vrbo-v2-phone__composer-send:disabled {
-  opacity: 0.35;
-  cursor: default;
-}
-
-.vrbo-v2-phone__steps {
-  margin: 0;
-  text-align: center;
-  font-size: max(5px, 1.35cqh);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--blue);
 }
 
 .vrbo-v2-phone__counter {

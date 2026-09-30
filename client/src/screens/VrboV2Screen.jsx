@@ -68,6 +68,7 @@ function VrboDemo() {
     celebrating,
   } = state;
   const [cursorHighlight, setCursorHighlight] = useState(false);
+  const [phonesOnly, setPhonesOnly] = useState(false);
 
   const propertyLookup = useMemo(() => {
     const byId = new Map(results.map((result) => [result.property.id, result]));
@@ -89,6 +90,7 @@ function VrboDemo() {
       selection={selections[user.id] ?? []}
       submitted={submitted[user.id]}
       joined={Boolean(joined[user.id])}
+      joinedMap={joined}
       locked={stage === "intro"}
       canJoin={stage === "intro" || stage === "selecting"}
       stage={stage}
@@ -104,7 +106,11 @@ function VrboDemo() {
   );
 
   return (
-    <div className={`vrbo-v2-stage ${cursorHighlight ? "has-cursor-highlight" : ""}`}>
+    <div
+      className={`vrbo-v2-stage ${cursorHighlight ? "has-cursor-highlight" : ""} ${
+        phonesOnly ? "is-phones-only" : ""
+      }`}
+    >
       <CursorHighlight enabled={cursorHighlight} />
 
       <div className="vrbo-v2-stage__controls">
@@ -119,46 +125,63 @@ function VrboDemo() {
           />
           <span>{copy.stage.cursorHighlight}</span>
         </label>
+        <label className="vrbo-v2-stage__toggle">
+          <input
+            type="checkbox"
+            checked={phonesOnly}
+            onChange={(event) => setPhonesOnly(event.target.checked)}
+          />
+          <span>{copy.stage.phonesOnly}</span>
+        </label>
       </div>
 
       <div className="vrbo-v2-stage__board">
-        <div className="vrbo-v2-stage__left">
-          <section className="vrbo-v2-display vrbo-v2-display--chat">
-            <p className="vrbo-v2-display__label">{copy.screenLabels.chat}</p>
-            <div className="vrbo-v2-display__body">
-              <MainChatScreen
-                messages={messages}
-                typing={typing}
-                userById={userById}
-                propertyLookup={propertyLookup}
-                celebrating={celebrating}
-              />
-            </div>
-          </section>
+        {!phonesOnly ? (
+          <div className="vrbo-v2-stage__left">
+            <section className="vrbo-v2-display vrbo-v2-display--chat">
+              <p className="vrbo-v2-display__label">{copy.screenLabels.chat}</p>
+              <div className="vrbo-v2-display__body">
+                <MainChatScreen
+                  messages={messages}
+                  typing={typing}
+                  userById={userById}
+                  propertyLookup={propertyLookup}
+                  celebrating={celebrating}
+                  joined={joined}
+                />
+              </div>
+            </section>
 
-          <section className="vrbo-v2-display vrbo-v2-display--rank">
-            <p className="vrbo-v2-display__label">{copy.screenLabels.ranking}</p>
-            <div className="vrbo-v2-display__body">
-              <RankingScreen
-                stage={stage}
-                summaryText={summaryText}
-                results={results}
-                allSubmitted={allSubmitted}
-                previewPropertyId={previewPropertyId}
-                selectedPropertyId={selectedPropertyId}
-                actions={actions}
-              />
-            </div>
-          </section>
-        </div>
+            <section className="vrbo-v2-display vrbo-v2-display--rank">
+              <p className="vrbo-v2-display__label">{copy.screenLabels.ranking}</p>
+              <div className="vrbo-v2-display__body">
+                <RankingScreen
+                  stage={stage}
+                  summaryText={summaryText}
+                  results={results}
+                  allSubmitted={allSubmitted}
+                  previewPropertyId={previewPropertyId}
+                  selectedPropertyId={selectedPropertyId}
+                  actions={actions}
+                />
+              </div>
+            </section>
+          </div>
+        ) : null}
 
         <div className="vrbo-v2-stage__right">
-          <div className="vrbo-v2-stage__phones-top">
-            {guests.slice(0, 2).map(renderPhone)}
-          </div>
-          <div className="vrbo-v2-stage__phones-bottom">
-            {guests.slice(2).map(renderPhone)}
-          </div>
+          {phonesOnly ? (
+            <div className="vrbo-v2-stage__phones-row">{guests.map(renderPhone)}</div>
+          ) : (
+            <>
+              <div className="vrbo-v2-stage__phones-top">
+                {guests.slice(0, 2).map(renderPhone)}
+              </div>
+              <div className="vrbo-v2-stage__phones-bottom">
+                {guests.slice(2).map(renderPhone)}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

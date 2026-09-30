@@ -1,10 +1,11 @@
 {
-  "maxSelections": 2,
+  "maxSelections": 3,
   "stage": {
     "eyebrow": "Vrbo · Group Travel Installation",
     "title": "Find Our Stay",
     "restart": "Restart demo",
     "cursorHighlight": "Cursor highlight",
+    "phonesOnly": "Phones only",
     "landscapeTitle": "Rotate to landscape",
     "landscapeBody": "This demo is designed for a wide screen. Turn the display sideways, then we’ll reload."
   },
@@ -28,7 +29,7 @@
     "resultsTitle": "Hawaii stays for your whole crew - dog included.",
     "resultsSubtitle": "Three picks for pool mornings and time together.",
     "resultsHint": "Tap a stay to preview. Anyone can select and share.",
-    "resultsPickedSubtitle": "Shared to the group - watch Display 1",
+    "resultsPickedSubtitle": "Shared to the trip - watch Display 1",
     "resultsDisclaimer": "Fictional demo listings · Illustrative prices and ratings.",
     "share": "Share to Hawaii Trip 2027",
     "shared": "Shared to the trip",
@@ -68,20 +69,14 @@
     "joinBody": "Tap Join when you're ready to share what you need.",
     "joinCta": "Join",
     "joinClosed": "Planning already started",
-    "promptTitle": "What matters to you? Choose two.",
-    "selectedReview": "{count} selected · Review your messages below",
-    "readyToSend": "Ready to send · {count} messages",
+    "groupCount": "Your group · {count} people",
+    "promptTitle": "What matters to you? Choose three.",
+    "selectedReview": "{count} of {max} selected · Review your messages below",
+    "draftLabel": "{name} · You / Draft · not sent",
     "composerPlaceholder": "Tap chips to draft your messages",
-    "autofillLabel": "Auto-filled - {count} messages",
-    "autofillEmpty": "Tap chips to draft your messages",
-    "chooseReviewSend": "Choose · Review · Send",
-    "counter": "{count} of {max}",
     "submit": "Send",
-    "submitLocked": "Choose two",
-    "doneTitle": "You're all set",
-    "doneSubtitle": "Sent to the group",
-    "doneWaiting": "Waiting for the others...",
-    "doneReady": "Waiting for Search on Display 2",
-    "watchPlaceholder": "Viewing group chat"
+    "submitLocked": "Choose three",
+    "watchPlaceholder": "iMessage",
+    "continueCta": "Continue together on the touchscreen →"
   }
 }
