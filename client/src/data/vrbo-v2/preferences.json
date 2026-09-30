@@ -5,10 +5,9 @@
     "icon": "🏊",
     "image": "/images/Vrbo-Images/Preferences/Private-Pool.jpg",
     "chatLines": {
-      "jamie": "A private pool would be great so we can all swim without heading out.",
-      "sarah": "A private pool for morning swims is a must for me 🏊‍♀️",
-      "alex": "Morning dip, then coffee. A private pool gets my vote.",
-      "chris": "Private pool would be ideal - fewer logistics, more hang time."
+      "chris": "A private pool would save us packing up for every swim.",
+      "sarah": "Morning swims in our own pool would be amazing 🏊",
+      "alex": "I want a private pool. My vacation schedule is mostly floating."
     }
   },
   {
@@ -17,10 +16,9 @@
     "icon": "🐾",
     "image": "/images/Vrbo-Images/Preferences/Pet-Friendly.jpg",
     "chatLines": {
-      "jamie": "We'll need a pet-friendly place - my dog's coming too.",
-      "sarah": "My dog is part of the crew! Let's find somewhere pet-friendly 🐾",
-      "alex": "Somewhere that welcomes dogs. Obviously we're bringing our favorite travel buddy.",
-      "chris": "Pet-friendly is non-negotiable if the dog's coming."
+      "chris": "We’ll need a pet-friendly place. My dog’s coming too.",
+      "sarah": "I’d love a pet-friendly stay so my dog can join the trip 🐾",
+      "alex": "Pet-friendly, please. My dog needs a vacation."
     }
   },
   {
@@ -29,10 +27,9 @@
     "icon": "🍳",
     "image": "/images/Vrbo-Images/Preferences/Full-Kitchen.jpg",
     "chatLines": {
-      "jamie": "A full kitchen would make breakfast for the group much easier.",
-      "sarah": "I'd love a full kitchen so we can make a big breakfast together 🍳",
-      "alex": "A proper kitchen would be nice. I can handle the coffee, at least.",
-      "chris": "Full kitchen helps - feeding this group out every meal gets expensive."
+      "chris": "A full kitchen would make breakfast at home much easier.",
+      "sarah": "Vacation pancakes are happening! A full kitchen is on my list.",
+      "alex": "I want a full kitchen. Vacation breakfast is serious business."
     }
   },
   {
@@ -41,10 +38,9 @@
     "icon": "🌅",
     "image": "/images/Vrbo-Images/Preferences/Sunset-Views.jpg",
     "chatLines": {
-      "jamie": "Sunset views from the house would be a nice bonus for evenings in.",
-      "sarah": "Imagine watching the sunset over the ocean from our place 🌅",
-      "alex": "Somewhere with sunset views. I'm happy to do absolutely nothing and watch.",
-      "chris": "Sunset views would be a win for low-effort evenings."
+      "chris": "I’d like sunset views from the house. Easy plan for the evening.",
+      "sarah": "Sunsets from our own place? That would be lovely. 🌅",
+      "alex": "A sunset view, please. Watching the sky counts as plans."
     }
   },
   {
@@ -53,10 +49,9 @@
     "icon": "🛶",
     "image": "/images/Vrbo-Images/Preferences/Beach-Access.jpg",
     "chatLines": {
-      "jamie": "Easy beach access would make it simpler to get everyone out kayaking.",
-      "sarah": "Easy beach access is a must - I really want to go kayaking 🚣",
-      "alex": "Let's stay somewhere we can grab a kayak and get straight to the beach.",
-      "chris": "Beach access nearby would keep the kayaking plans simple."
+      "chris": "Easy beach access means less gear to load into the car.",
+      "sarah": "I want easy beach access. Beach time is a daily plan!",
+      "alex": "Easy beach access is on my list. Less travel, more towel time."
     }
   },
   {
@@ -65,10 +60,9 @@
     "icon": "✨",
     "image": "/images/Vrbo-Images/Preferences/Outdoor-Hangouts.jpg",
     "chatLines": {
-      "jamie": "We'd want an outdoor area with a grill and enough seating for everyone.",
-      "sarah": "I'd love to cook dinner outside and spend the whole evening together ✨",
-      "alex": "A grill and somewhere to hang out outside? That's our evening sorted.",
-      "chris": "Outdoor hangout space with a grill would be perfect for dinners."
+      "chris": "A grill and outdoor seats for everyone would be handy.",
+      "sarah": "A grill and a big outdoor table would be perfect for dinner under the stars!",
+      "alex": "I’m after a grill and outdoor seating. That’s my evening sorted."
     }
   },
   {
@@ -77,10 +71,9 @@
     "icon": "🚶",
     "image": "/images/Vrbo-Images/Preferences/Walkable-Location.jpg",
     "chatLines": {
-      "jamie": "Being able to walk to shops and restaurants would make getting around easier.",
-      "sarah": "I'd love to wander out for breakfast and explore the local shops 🚶‍♀️",
-      "alex": "Somewhere walkable, please. I'd rather explore than look for parking.",
-      "chris": "Walkable location would save us from constant car coordination."
+      "chris": "I’d like shops and food within walking distance. Fewer car trips.",
+      "sarah": "Coffee and little shops within walking distance would be so nice.",
+      "alex": "Somewhere walkable, please. Parking isn’t a hobby."
     }
   },
   {
@@ -89,10 +82,9 @@
     "icon": "🛏️",
     "image": "/images/Vrbo-Images/Preferences/Plenty-of-Bedrooms.jpg",
     "chatLines": {
-      "jamie": "We need enough bedrooms for everyone to have their own space.",
-      "sarah": "Enough bedrooms for everyone to settle in comfortably is a must 🛋️",
-      "alex": "Plenty of bedrooms, please. I'd like to avoid drawing straws for the sofa.",
-      "chris": "Plenty of bedrooms - nobody should be stuck on the couch."
+      "chris": "Enough bedrooms for everyone to spread out would be great.",
+      "sarah": "I’d love plenty of bedrooms. A little space to recharge sounds lovely.",
+      "alex": "Plenty of bedrooms, please. I’m not built for the vacation sofa."
     }
   }
 ]
