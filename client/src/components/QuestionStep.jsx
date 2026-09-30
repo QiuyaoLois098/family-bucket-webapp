@@ -8,7 +8,7 @@ const AI_LOGO = "/images/Expedia-images/expedia-samll.png";
 const FLASH_MS = 360;
 const CARD_FADE_MS = 380;
 const YOU_PAUSE_MS = 260;
-const TYPING_MS = 1100;
+const TYPING_MS = 3000;
 const LAST_HOLD_MS = 2800;
 const REPLY_SETTLE_MS = 280;
 const SHIFT_MS = 720;
@@ -210,6 +210,10 @@ export default function QuestionStep({
     setPendingId(optionId);
     setPhase("flash");
 
+    // Second option on each question: yellow typing dots linger 8× as long.
+    const optionIndex = current.options.findIndex((item) => item.id === optionId);
+    const typingMs = optionIndex === 1 ? TYPING_MS * 2 : TYPING_MS;
+
     later(() => {
       // Cards roll up first — You bubble waits until they're gone.
       setPhase("rolling");
@@ -257,7 +261,7 @@ export default function QuestionStep({
             }
 
             later(() => continueToNext(index, optionId), REPLY_SETTLE_MS);
-          }, TYPING_MS);
+          }, typingMs);
         }, YOU_PAUSE_MS);
       }, CARD_FADE_MS);
     }, FLASH_MS);
