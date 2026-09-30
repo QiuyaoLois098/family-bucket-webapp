@@ -65,16 +65,21 @@ export default function QuestionStep({
 
   const fitViewportToPrompt = (index = activeIndexRef.current) => {
     const prompt = trackRef.current?.querySelector(`[data-msg-id="prompt-${index}"]`);
-    if (prompt) setViewportH(prompt.offsetHeight + 2);
+    if (!prompt) return;
+    // overflow:hidden clips the bubble — leave room for the bottom radius.
+    const height = Math.ceil(prompt.getBoundingClientRect().height);
+    setViewportH(height + 24);
   };
 
   const fitViewportToLiveThread = (index = activeIndexRef.current) => {
     const prompt = trackRef.current?.querySelector(`[data-msg-id="prompt-${index}"]`);
     const last = trackRef.current?.lastElementChild;
     if (!prompt || !last) return;
-    // Absolute track is clipped by thread height — keep a little slack so
+    // Absolute track is clipped by thread height — keep slack so
     // the reply bubble's bottom radius / logo aren't cut off.
-    setViewportH(last.offsetTop + last.offsetHeight - prompt.offsetTop + 8);
+    const top = prompt.offsetTop;
+    const bottom = last.offsetTop + last.offsetHeight;
+    setViewportH(Math.ceil(bottom - top) + 24);
   };
 
   useEffect(() => () => clearTimers(), []);
@@ -113,7 +118,13 @@ export default function QuestionStep({
     if (scrollingRef.current || phase === "rising") return;
     if (phase === "pick" || phase === "flash") {
       fitViewportToPrompt();
-      return;
+      // Fonts / layout can settle after first paint and grow the bubble.
+      const t1 = window.setTimeout(() => fitViewportToPrompt(), 50);
+      const t2 = window.setTimeout(() => fitViewportToPrompt(), 320);
+      return () => {
+        window.clearTimeout(t1);
+        window.clearTimeout(t2);
+      };
     }
     if (phase === "you" || phase === "typing" || phase === "done") {
       fitViewportToLiveThread();
@@ -127,14 +138,16 @@ export default function QuestionStep({
     }
   }, [phase, activeIndex, messages]);
 
-  // Watch live bubble size so expand animations don't get clipped.
+  // Watch live bubble size so expand animations / font reflow don't get clipped.
   useEffect(() => {
-    if (phase !== "you" && phase !== "typing" && phase !== "done") return;
+    if (phase === "rising") return;
     const inner = trackRef.current;
     if (!inner || typeof ResizeObserver === "undefined") return;
 
     const ro = new ResizeObserver(() => {
-      if (!scrollingRef.current) fitViewportToLiveThread();
+      if (scrollingRef.current) return;
+      if (phase === "pick" || phase === "flash") fitViewportToPrompt();
+      else if (phase === "you" || phase === "typing" || phase === "done") fitViewportToLiveThread();
     });
     ro.observe(inner);
     return () => ro.disconnect();
@@ -178,6 +191,9 @@ export default function QuestionStep({
           fitViewportToPrompt(nextIndex);
           scrollingRef.current = false;
           setPhase("pick");
+          // Remeasure after the scroll settles — font/layout may still be catching up.
+          later(() => fitViewportToPrompt(nextIndex), 80);
+          later(() => fitViewportToPrompt(nextIndex), 360);
         }, SHIFT_MS);
       });
     });
