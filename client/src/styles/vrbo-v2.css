@@ -17,7 +17,7 @@
 }
 
 .vrbo-v2-stage,
-.vrbo-v2-sarah {
+.vrbo-v2-device {
   /* Neutrals */
   --cream: #faf6f1;
   --warm-white: #faf6f1;
@@ -1952,13 +1952,20 @@
   max-height: calc(100% - 22px);
 }
 
-html:has(.vrbo-v2-sarah),
-body:has(.vrbo-v2-sarah),
-#root:has(.vrbo-v2-sarah) {
+html:has(.vrbo-v2-device--phone),
+body:has(.vrbo-v2-device--phone),
+#root:has(.vrbo-v2-device--phone) {
   background: #ffffff;
 }
 
-.vrbo-v2-sarah {
+html:has(.vrbo-v2-device--display),
+body:has(.vrbo-v2-device--display),
+#root:has(.vrbo-v2-device--display) {
+  background: var(--cream, #faf6f1);
+}
+
+.vrbo-v2-device {
+  position: relative;
   width: 100%;
   height: 100dvh;
   margin: 0;
@@ -1966,13 +1973,39 @@ body:has(.vrbo-v2-sarah),
   overflow: hidden;
   font-family: var(--vrbo-v2-content);
   color: var(--charcoal);
-  background: #ffffff;
   user-select: none;
   touch-action: manipulation;
 }
 
-.vrbo-v2-sarah > .vrbo-v2-phone,
-.vrbo-v2-sarah > .vrbo-v2-phone--bare {
+.vrbo-v2-device--phone {
+  background: #ffffff;
+}
+
+.vrbo-v2-device--display {
+  background: var(--cream);
+}
+
+.vrbo-v2-device--display .vrbo-v2-stage__controls {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  z-index: 5;
+}
+
+.vrbo-v2-device__canvas {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.vrbo-v2-device__canvas > .vrbo-v2-chat,
+.vrbo-v2-device__canvas > .vrbo-v2-rank {
+  width: 100%;
+  height: 100%;
+}
+
+.vrbo-v2-device--phone > .vrbo-v2-phone,
+.vrbo-v2-device--phone > .vrbo-v2-phone--bare {
   width: 100%;
   height: 100%;
   max-width: none;
@@ -1980,14 +2013,14 @@ body:has(.vrbo-v2-sarah),
   background: #ffffff;
 }
 
-.vrbo-v2-sarah .vrbo-v2-phone__screen {
+.vrbo-v2-device--phone .vrbo-v2-phone__screen {
   width: 100%;
   height: 100%;
   border-radius: 0;
   background: #ffffff;
 }
 
-.vrbo-v2-sarah .vrbo-v2-phone__label {
+.vrbo-v2-device--phone .vrbo-v2-phone__label {
   display: none;
 }
 

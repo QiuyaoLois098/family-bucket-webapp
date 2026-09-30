@@ -2,12 +2,19 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { PROJECTS, projectFromPath } from "../projects.js";
 
-export default function ProjectMenu() {
+export default function ProjectMenu({ hideOnPaths } = {}) {
   const location = useLocation();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [inFrame, setInFrame] = useState(true);
   const current = projectFromPath(location.pathname);
+  const hidden =
+    inFrame ||
+    (hideOnPaths instanceof Set
+      ? hideOnPaths.has(location.pathname)
+      : Array.isArray(hideOnPaths)
+        ? hideOnPaths.includes(location.pathname)
+        : location.pathname === "/sarah");
 
   useEffect(() => {
     setInFrame(window.self !== window.top);
@@ -30,7 +37,7 @@ export default function ProjectMenu() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  if (inFrame || location.pathname === "/sarah") return null;
+  if (hidden) return null;
 
   return (
     <div className={`project-menu ${open ? "is-open" : ""}`}>

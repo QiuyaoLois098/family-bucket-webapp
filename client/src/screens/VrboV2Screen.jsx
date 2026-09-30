@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import GuestPhone from "../components/vrbo-v2/GuestPhone.jsx";
 import MainChatScreen from "../components/vrbo-v2/MainChatScreen.jsx";
 import RankingScreen from "../components/vrbo-v2/RankingScreen.jsx";
@@ -7,11 +7,24 @@ import preferences from "../data/vrbo-v2/preferences.json";
 import properties from "../data/vrbo-v2/properties.json";
 import users from "../data/vrbo-v2/users.json";
 import useLandscapeGate from "../hooks/useLandscapeGate.js";
-import useVrboV2Experience, { guests } from "../hooks/useVrboV2Experience.js";
+import useVrboV2Session, { guests } from "../hooks/useVrboV2Session.js";
 
 const userById = Object.fromEntries(users.map((user) => [user.id, user]));
 const preferenceById = new Map(preferences.map((preference) => [preference.id, preference]));
 const propertyById = new Map(properties.map((property) => [property.id, property]));
+
+function usePropertyLookup(results) {
+  return useMemo(() => {
+    const byId = new Map((results ?? []).map((result) => [result.property.id, result]));
+    return (propertyId) => {
+      if (propertyId == null) return null;
+      const scored = byId.get(propertyId);
+      if (scored) return scored;
+      const property = propertyById.get(propertyId);
+      return property ? { property, matched: [] } : null;
+    };
+  }, [results]);
+}
 
 function VrboLandscapeGate() {
   return (
@@ -52,8 +65,18 @@ function CursorHighlight({ enabled }) {
   );
 }
 
+function RestartControl({ onReset }) {
+  return (
+    <div className="vrbo-v2-stage__controls">
+      <button type="button" className="vrbo-v2-stage__restart" onClick={onReset}>
+        {copy.stage.restart}
+      </button>
+    </div>
+  );
+}
+
 function VrboDemo() {
-  const { state, allSubmitted, actions } = useVrboV2Experience();
+  const { state, allSubmitted, actions } = useVrboV2Session();
   const {
     stage,
     messages,
@@ -69,17 +92,7 @@ function VrboDemo() {
   } = state;
   const [cursorHighlight, setCursorHighlight] = useState(false);
   const [phonesOnly, setPhonesOnly] = useState(false);
-
-  const propertyLookup = useMemo(() => {
-    const byId = new Map(results.map((result) => [result.property.id, result]));
-    return (propertyId) => {
-      if (propertyId == null) return null;
-      const scored = byId.get(propertyId);
-      if (scored) return scored;
-      const property = propertyById.get(propertyId);
-      return property ? { property, matched: [] } : null;
-    };
-  }, [results]);
+  const propertyLookup = usePropertyLookup(results);
 
   const renderPhone = (user) => (
     <GuestPhone
@@ -188,8 +201,53 @@ function VrboDemo() {
   );
 }
 
-export function SarahPhonePage() {
-  const { state, actions } = useVrboV2Experience({ skipIntro: true });
+/** Display 1 · Group Chat — full viewport for a dedicated screen. */
+export function VrboLeftPage() {
+  const { state, actions } = useVrboV2Session();
+  const propertyLookup = usePropertyLookup(state.results);
+
+  return (
+    <div className="vrbo-v2-device vrbo-v2-device--display">
+      <RestartControl onReset={actions.reset} />
+      <div className="vrbo-v2-device__canvas">
+        <MainChatScreen
+          messages={state.messages}
+          typing={state.typing}
+          userById={userById}
+          propertyLookup={propertyLookup}
+          celebrating={state.celebrating}
+          joined={state.joined}
+        />
+      </div>
+    </div>
+  );
+}
+
+/** Display 2 · Group Search — full viewport for a dedicated screen. */
+export function VrboRightPage() {
+  const { state, allSubmitted, actions } = useVrboV2Session();
+
+  return (
+    <div className="vrbo-v2-device vrbo-v2-device--display">
+      <RestartControl onReset={actions.reset} />
+      <div className="vrbo-v2-device__canvas">
+        <RankingScreen
+          stage={state.stage}
+          summaryText={state.summaryText}
+          results={state.results}
+          allSubmitted={allSubmitted}
+          previewPropertyId={state.previewPropertyId}
+          selectedPropertyId={state.selectedPropertyId}
+          actions={actions}
+        />
+      </div>
+    </div>
+  );
+}
+
+/** Bare guest phone — Sarah / Alex / Chris on their own device. */
+export function GuestPhonePage({ guestId }) {
+  const { state, actions } = useVrboV2Session();
   const {
     stage,
     messages,
@@ -199,33 +257,23 @@ export function SarahPhonePage() {
     submitted,
     results,
   } = state;
-  const sarah = guests.find((user) => user.id === "sarah");
+  const guest = guests.find((user) => user.id === guestId);
+  const propertyLookup = usePropertyLookup(results);
 
-  const propertyLookup = useMemo(() => {
-    const byId = new Map(results.map((result) => [result.property.id, result]));
-    return (propertyId) => {
-      if (propertyId == null) return null;
-      const scored = byId.get(propertyId);
-      if (scored) return scored;
-      const property = propertyById.get(propertyId);
-      return property ? { property, matched: [] } : null;
-    };
-  }, [results]);
-
-  if (!sarah) return null;
+  if (!guest) return null;
 
   return (
-    <div className="vrbo-v2-sarah">
+    <div className="vrbo-v2-device vrbo-v2-device--phone">
       <GuestPhone
-        user={sarah}
+        user={guest}
         preferences={preferences}
         preferenceById={preferenceById}
-        selection={selections[sarah.id] ?? []}
-        submitted={submitted[sarah.id]}
-        joined={Boolean(joined[sarah.id])}
+        selection={selections[guest.id] ?? []}
+        submitted={submitted[guest.id]}
+        joined={Boolean(joined[guest.id])}
         joinedMap={joined}
-        locked={false}
-        canJoin
+        locked={stage === "intro"}
+        canJoin={stage === "intro" || stage === "selecting"}
         stage={stage}
         messages={messages}
         typing={typing}
@@ -238,6 +286,11 @@ export function SarahPhonePage() {
       />
     </div>
   );
+}
+
+/** @deprecated use GuestPhonePage({ guestId: "sarah" }) */
+export function SarahPhonePage() {
+  return <GuestPhonePage guestId="sarah" />;
 }
 
 export default function VrboV2Screen() {

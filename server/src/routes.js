@@ -1,4 +1,5 @@
 import { session } from "./session.js";
+import { vrboV2Session } from "./vrboV2Session.js";
 import { generateDestinationImage, generateItinerary } from "./openaiService.js";
 import { config } from "./config.js";
 import { DESTINATIONS } from "../../shared/destinations.js";
@@ -73,9 +74,34 @@ export function registerSockets(io) {
     socket.on("debug:simulateImage", () => session.debugSimulateImage());
     socket.on("debug:simulateItinerary", () => session.debugSimulateItinerary());
     socket.on("debug:reset", () => session.reset("debug"));
+
+    socket.on("vrbo-v2:join", () => {
+      socket.emit("vrbo-v2:state", vrboV2Session.snapshot());
+    });
+    socket.on("vrbo-v2:joinGuest", (payload) => {
+      vrboV2Session.joinGuest(payload?.userId);
+    });
+    socket.on("vrbo-v2:togglePreference", (payload) => {
+      vrboV2Session.togglePreference(payload?.userId, payload?.preferenceId);
+    });
+    socket.on("vrbo-v2:submitGuest", (payload) => {
+      vrboV2Session.submitGuest(payload?.userId);
+    });
+    socket.on("vrbo-v2:searchStays", () => vrboV2Session.searchStays());
+    socket.on("vrbo-v2:previewProperty", (payload) => {
+      vrboV2Session.previewProperty(payload?.propertyId);
+    });
+    socket.on("vrbo-v2:selectProperty", (payload) => {
+      vrboV2Session.selectProperty(payload?.propertyId);
+    });
+    socket.on("vrbo-v2:reset", () => vrboV2Session.reset());
   });
 
   session.on("state", (state) => {
     io.emit("session:state", state);
+  });
+
+  vrboV2Session.on("state", (state) => {
+    io.emit("vrbo-v2:state", state);
   });
 }
