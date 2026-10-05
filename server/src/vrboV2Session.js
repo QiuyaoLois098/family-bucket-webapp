@@ -103,6 +103,7 @@ function createInitialState(runId = 0) {
     messages: [],
     typing: [],
     joined: emptyMap(() => false),
+    displayNames: emptyMap(() => null),
     selections: emptyMap(() => []),
     submitted: emptyMap(() => null),
     priorities: [],
@@ -188,13 +189,17 @@ export class VrboV2Session extends EventEmitter {
     }, offset);
   }
 
-  joinGuest(userId) {
+  joinGuest(userId, displayName) {
     if ((this.state.stage !== "intro" && this.state.stage !== "selecting") || this.state.joined[userId]) {
       return;
     }
-    if (!guests.some((user) => user.id === userId)) return;
+    const guest = guests.find((user) => user.id === userId);
+    if (!guest) return;
+    const trimmed = String(displayName ?? "").trim();
+    const name = trimmed || guest.name;
     this.patch({
       joined: { ...this.state.joined, [userId]: true },
+      displayNames: { ...this.state.displayNames, [userId]: name },
     });
   }
 

@@ -56,6 +56,9 @@ export function registerSockets(io) {
     socket.on("session:join", () => {
       session.reset("page-load");
     });
+    socket.on("session:subscribe", () => {
+      socket.emit("session:state", session.snapshot());
+    });
 
     socket.on("experience:begin", () => session.begin());
     socket.on("experience:selectDestination", (payload) => {
@@ -79,7 +82,7 @@ export function registerSockets(io) {
       socket.emit("vrbo-v2:state", vrboV2Session.snapshot());
     });
     socket.on("vrbo-v2:joinGuest", (payload) => {
-      vrboV2Session.joinGuest(payload?.userId);
+      vrboV2Session.joinGuest(payload?.userId, payload?.displayName);
     });
     socket.on("vrbo-v2:togglePreference", (payload) => {
       vrboV2Session.togglePreference(payload?.userId, payload?.preferenceId);

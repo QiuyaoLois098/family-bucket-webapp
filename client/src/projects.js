@@ -5,7 +5,10 @@ export const PROJECTS = [
     subtitle: "Two-screen travel installation",
     path: "/",
     match: (pathname) =>
-      pathname === "/" || pathname.startsWith("/control") || pathname.startsWith("/display"),
+      pathname === "/" ||
+      pathname.startsWith("/control") ||
+      pathname.startsWith("/display") ||
+      pathname === "/expedia-ba",
   },
   {
     id: "nyc-hotel-map",

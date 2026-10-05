@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { INITIAL_STATE } from "@shared/index.js";
 import { getSocket } from "../socket.js";
 
-export function useSession() {
+export function useSession({ syncOnly = false } = {}) {
   const [state, setState] = useState(INITIAL_STATE);
   const [connected, setConnected] = useState(false);
 
@@ -12,7 +12,7 @@ export function useSession() {
     const onState = (next) => setState(next);
     const onConnect = () => {
       setConnected(true);
-      socket.emit("session:join");
+      socket.emit(syncOnly ? "session:subscribe" : "session:join");
     };
     const onDisconnect = () => setConnected(false);
 
@@ -27,7 +27,7 @@ export function useSession() {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
     };
-  }, []);
+  }, [syncOnly]);
 
   const actions = useMemo(
     () => ({

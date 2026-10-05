@@ -1678,3 +1678,53 @@
     -webkit-line-clamp: 4;
   }
 }
+
+/* BA remote ? /expedia-ba */
+.expedia-ba {
+  min-height: 100dvh;
+  margin: 0;
+  padding: 48px 28px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 28px;
+  background: var(--navy);
+}
+
+.expedia-ba__btn {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 28px 24px;
+  border: 2px solid transparent;
+  border-radius: 18px;
+  font-family: var(--ui, "Helvetica Neue", Helvetica, Arial, sans-serif);
+  font-size: clamp(28px, 6vw, 44px);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.expedia-ba__btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.expedia-ba__btn--reveal {
+  background: var(--yellow);
+  border-color: var(--yellow);
+  color: var(--navy);
+}
+
+.expedia-ba__btn--restart {
+  background: var(--white);
+  border-color: var(--white);
+  color: var(--navy);
+}
+
+.expedia-ba__btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}

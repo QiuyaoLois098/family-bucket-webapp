@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import GuestPhone from "../components/vrbo-v2/GuestPhone.jsx";
 import MainChatScreen from "../components/vrbo-v2/MainChatScreen.jsx";
 import RankingScreen from "../components/vrbo-v2/RankingScreen.jsx";
@@ -89,6 +90,7 @@ function VrboDemo() {
     previewPropertyId,
     selectedPropertyId,
     celebrating,
+    displayNames = {},
   } = state;
   const [cursorHighlight, setCursorHighlight] = useState(false);
   const [phonesOnly, setPhonesOnly] = useState(false);
@@ -104,6 +106,7 @@ function VrboDemo() {
       submitted={submitted[user.id]}
       joined={Boolean(joined[user.id])}
       joinedMap={joined}
+      displayNames={displayNames}
       locked={stage === "intro"}
       canJoin={stage === "intro" || stage === "selecting"}
       stage={stage}
@@ -161,6 +164,7 @@ function VrboDemo() {
                   propertyLookup={propertyLookup}
                   celebrating={celebrating}
                   joined={joined}
+                  displayNames={displayNames}
                 />
               </div>
             </section>
@@ -217,6 +221,7 @@ export function VrboLeftPage() {
           propertyLookup={propertyLookup}
           celebrating={state.celebrating}
           joined={state.joined}
+          displayNames={state.displayNames ?? {}}
         />
       </div>
     </div>
@@ -245,8 +250,10 @@ export function VrboRightPage() {
   );
 }
 
-/** Bare guest phone — Sarah / Alex / Chris on their own device. */
+/** Guest phone page — full bleed by default; `?frame=1` nests UI in iPhone 15 ratio. */
 export function GuestPhonePage({ guestId }) {
+  const [params, setParams] = useSearchParams();
+  const framed = params.get("frame") === "1" || params.get("iphone") === "1";
   const { state, actions } = useVrboV2Session();
   const {
     stage,
@@ -256,34 +263,73 @@ export function GuestPhonePage({ guestId }) {
     selections,
     submitted,
     results,
+    displayNames = {},
   } = state;
   const guest = guests.find((user) => user.id === guestId);
   const propertyLookup = usePropertyLookup(results);
 
   if (!guest) return null;
 
+  const phone = (
+    <GuestPhone
+      user={guest}
+      preferences={preferences}
+      preferenceById={preferenceById}
+      selection={selections[guest.id] ?? []}
+      submitted={submitted[guest.id]}
+      joined={Boolean(joined[guest.id])}
+      joinedMap={joined}
+      displayNames={displayNames}
+      locked={stage === "intro"}
+      canJoin={stage === "intro" || stage === "selecting"}
+      stage={stage}
+      messages={messages}
+      typing={typing}
+      userById={userById}
+      propertyLookup={propertyLookup}
+      onJoin={actions.joinGuest}
+      onToggle={actions.togglePreference}
+      onSubmit={actions.submitGuest}
+      bare
+    />
+  );
+
+  const toggleFrame = () => {
+    const next = new URLSearchParams(params);
+    if (framed) {
+      next.delete("frame");
+      next.delete("iphone");
+    } else {
+      next.set("frame", "1");
+    }
+    setParams(next, { replace: true });
+  };
+
   return (
-    <div className="vrbo-v2-device vrbo-v2-device--phone">
-      <GuestPhone
-        user={guest}
-        preferences={preferences}
-        preferenceById={preferenceById}
-        selection={selections[guest.id] ?? []}
-        submitted={submitted[guest.id]}
-        joined={Boolean(joined[guest.id])}
-        joinedMap={joined}
-        locked={stage === "intro"}
-        canJoin={stage === "intro" || stage === "selecting"}
-        stage={stage}
-        messages={messages}
-        typing={typing}
-        userById={userById}
-        propertyLookup={propertyLookup}
-        onJoin={actions.joinGuest}
-        onToggle={actions.togglePreference}
-        onSubmit={actions.submitGuest}
-        bare
-      />
+    <div
+      className={`vrbo-v2-device vrbo-v2-device--phone${framed ? " is-framed" : ""}`}
+    >
+      <button
+        type="button"
+        className="vrbo-v2-device__frame-toggle"
+        onClick={toggleFrame}
+        aria-pressed={framed}
+      >
+        {framed ? "Full screen" : "iPhone 15 frame"}
+      </button>
+
+      {framed ? (
+        <div className="vrbo-v2-device__stage">
+          <div className="vrbo-v2-iphone15" aria-label="iPhone 15 preview">
+            <div className="vrbo-v2-iphone15__bezel">
+              <div className="vrbo-v2-iphone15__screen">{phone}</div>
+            </div>
+            <p className="vrbo-v2-iphone15__caption">iPhone 15 · 19.5∶9</p>
+          </div>
+        </div>
+      ) : (
+        phone
+      )}
     </div>
   );
 }

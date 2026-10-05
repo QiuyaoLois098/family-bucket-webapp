@@ -33,13 +33,20 @@ export default function MainChatScreen({
   propertyLookup,
   celebrating,
   joined = {},
+  displayNames = {},
 }) {
   const feedRef = useRef(null);
+  const namedUserById = Object.fromEntries(
+    Object.entries(userById).map(([id, user]) => {
+      const custom = displayNames[id];
+      return [id, custom ? { ...user, name: custom } : user];
+    }),
+  );
   // Blue header starts with Jamie; guests appear only after they Join.
-  const members = Object.values(userById).filter(
+  const members = Object.values(namedUserById).filter(
     (user) => user.role === "coordinator" || Boolean(joined[user.id]),
   );
-  const typingUsers = typing.map((id) => userById[id]).filter(Boolean);
+  const typingUsers = typing.map((id) => namedUserById[id]).filter(Boolean);
 
   useEffect(() => {
     const node = feedRef.current;
@@ -82,7 +89,7 @@ export default function MainChatScreen({
         <div className="vrbo-v2-chat__feed" ref={feedRef}>
           <AnimatePresence initial={false}>
             {messages.map((message) => {
-              const user = userById[message.authorId];
+              const user = namedUserById[message.authorId];
               if (!user) return null;
               const entry = propertyLookup?.(message.propertyId);
 

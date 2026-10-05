@@ -10,6 +10,7 @@ const EMPTY_STATE = {
   messages: [],
   typing: [],
   joined: Object.fromEntries(guests.map((user) => [user.id, false])),
+  displayNames: Object.fromEntries(guests.map((user) => [user.id, null])),
   selections: Object.fromEntries(guests.map((user) => [user.id, []])),
   submitted: Object.fromEntries(guests.map((user) => [user.id, null])),
   priorities: [],
@@ -61,7 +62,8 @@ export default function useVrboV2Session() {
 
   const actions = useMemo(
     () => ({
-      joinGuest: (userId) => getSocket().emit("vrbo-v2:joinGuest", { userId }),
+      joinGuest: (userId, displayName) =>
+        getSocket().emit("vrbo-v2:joinGuest", { userId, displayName }),
       togglePreference: (userId, preferenceId) =>
         getSocket().emit("vrbo-v2:togglePreference", { userId, preferenceId }),
       submitGuest: (userId) => getSocket().emit("vrbo-v2:submitGuest", { userId }),

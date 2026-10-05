@@ -1,7 +1,8 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import chatScript from "../../data/vrbo-v2/chatScript.json";
 import copy from "../../data/vrbo-v2/copy.json";
+import users from "../../data/vrbo-v2/users.json";
 import PreferenceCard from "./PreferenceCard.jsx";
 import PropertyCard from "./PropertyCard.jsx";
 
@@ -12,11 +13,20 @@ const panelMotion = {
   transition: { duration: 0.32, ease: "easeOut" },
 };
 
+const guests = users.filter((user) => user.role === "guest");
+
 function fill(template, values) {
   return Object.entries(values).reduce(
     (text, [key, value]) => text.replaceAll(`{${key}}`, value),
     template,
   );
+}
+
+function resolveUser(user, displayNames = {}) {
+  if (!user) return user;
+  const custom = displayNames[user.id];
+  if (custom == null || custom === "") return user;
+  return { ...user, name: custom };
 }
 
 function PhoneAvatar({ user, className = "vrbo-v2-phone__avatar" }) {
@@ -51,6 +61,28 @@ function MemberChips({ members, selfId }) {
           >
             <PhoneAvatar user={member} className="vrbo-v2-phone__member-avatar" />
             <em>{isYou ? `${member.name} · You` : member.name}</em>
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+
+function WaitingPills({ guestList, joinedMap, displayNames }) {
+  return (
+    <div className="vrbo-v2-phone__waiting" aria-label="Guests joining">
+      {guestList.map((guest) => {
+        const joined = Boolean(joinedMap[guest.id]);
+        const label = joined
+          ? displayNames[guest.id] || guest.name
+          : copy.phone.joinWaiting;
+        return (
+          <span
+            key={guest.id}
+            className={`vrbo-v2-phone__waiting-pill${joined ? " is-joined" : ""}`}
+          >
+            <span className="vrbo-v2-phone__waiting-dot" aria-hidden="true" />
+            {label}
           </span>
         );
       })}
@@ -144,6 +176,7 @@ export default function GuestPhone({
   submitted,
   joined,
   joinedMap = {},
+  displayNames = {},
   locked,
   canJoin,
   stage,
@@ -156,9 +189,9 @@ export default function GuestPhone({
   onSubmit,
   bare = false,
 }) {
+  const [draftName, setDraftName] = useState("");
   const max = copy.maxSelections;
   const groupFinished = stage === "summary" || stage === "results";
-  // After sending picks, jump straight into the phone group chat (skip "all set").
   const phase = !joined
     ? canJoin
       ? "join"
@@ -180,31 +213,66 @@ export default function GuestPhone({
     })
     .filter(Boolean);
 
-  // Jamie is always in the trip; guests appear on chips after they Join.
-  const chipMembers = Object.values(userById || {}).filter(
+  const namedUserById = useMemo(
+    () =>
+      Object.fromEntries(
+        Object.entries(userById || {}).map(([id, person]) => [id, resolveUser(person, displayNames)]),
+      ),
+    [userById, displayNames],
+  );
+  const selfUser = resolveUser(user, displayNames);
+
+  const chipMembers = Object.values(namedUserById).filter(
     (member) => member.role === "coordinator" || Boolean(joinedMap[member.id]),
   );
   const showMemberChips = phase === "select" || phase === "watch";
   const tripSubtitle = showMemberChips
     ? fill(copy.phone.groupCount, { count: chipMembers.length })
     : chatScript.groupSubtitle;
+  const joinMeta = fill(copy.phone.joinHeaderMeta, { count: guests.length });
+
+  const handleContinue = () => {
+    onJoin(user.id, draftName.trim());
+  };
 
   const screen = (
-        <div className="vrbo-v2-phone__screen">
+        <div className={`vrbo-v2-phone__screen${phase === "join" || phase === "closed" ? " is-joining" : ""}`}>
           <div className="vrbo-v2-phone__chrome">
             <span className="vrbo-v2-phone__time">9:41</span>
             <span className="vrbo-v2-phone__notch" aria-hidden="true" />
           </div>
-          <header className="vrbo-v2-phone__trip">
-            <span className="vrbo-v2-phone__group-avatar" aria-hidden="true">
-              <img src="/images/Vrbo-Images/Avatars/Group.jpg" alt="" />
-            </span>
-            <div>
-              <h3>{chatScript.groupTitle}</h3>
-              <p>{tripSubtitle}</p>
-            </div>
-          </header>
-          {showMemberChips ? <MemberChips members={chipMembers} selfId={user.id} /> : null}
+
+          {phase === "join" || phase === "closed" ? (
+            <header className="vrbo-v2-phone__join-head">
+              <div className="vrbo-v2-phone__join-head-row">
+                <span className="vrbo-v2-phone__group-avatar" aria-hidden="true">
+                  <img src="/images/Vrbo-Images/Avatars/Group.jpg" alt="" />
+                </span>
+                <div>
+                  <h3>{chatScript.groupTitle}</h3>
+                  <p>{joinMeta}</p>
+                </div>
+              </div>
+              <WaitingPills
+                guestList={guests}
+                joinedMap={joinedMap}
+                displayNames={displayNames}
+              />
+            </header>
+          ) : (
+            <>
+              <header className="vrbo-v2-phone__trip">
+                <span className="vrbo-v2-phone__group-avatar" aria-hidden="true">
+                  <img src="/images/Vrbo-Images/Avatars/Group.jpg" alt="" />
+                </span>
+                <div>
+                  <h3>{chatScript.groupTitle}</h3>
+                  <p>{tripSubtitle}</p>
+                </div>
+              </header>
+              {showMemberChips ? <MemberChips members={chipMembers} selfId={user.id} /> : null}
+            </>
+          )}
 
           <AnimatePresence mode="wait" initial={false}>
             {phase === "idle" ? (
@@ -212,7 +280,7 @@ export default function GuestPhone({
                 <MessageFeed
                   messages={messages}
                   typing={typing}
-                  userById={userById}
+                  userById={namedUserById}
                   selfId={user.id}
                 />
               </motion.div>
@@ -221,16 +289,36 @@ export default function GuestPhone({
             {phase === "join" || phase === "closed" ? (
               <motion.div key="join" className="vrbo-v2-phone__panel vrbo-v2-phone__panel--join" {...panelMotion}>
                 <div className="vrbo-v2-phone__join">
+                  <div className="vrbo-v2-phone__join-avatar-wrap">
+                    <PhoneAvatar user={user} className="vrbo-v2-phone__join-avatar" />
+                    <span className="vrbo-v2-phone__join-avatar-label">{copy.phone.joinAvatarLabel}</span>
+                  </div>
                   <h4>{copy.phone.joinTitle}</h4>
                   <p>{phase === "closed" ? copy.phone.joinClosed : copy.phone.joinBody}</p>
                   {phase === "join" ? (
-                    <button
-                      type="button"
-                      className="vrbo-v2-btn vrbo-v2-btn--md vrbo-v2-phone__join-cta"
-                      onClick={() => onJoin(user.id)}
-                    >
-                      {copy.phone.joinCta}
-                    </button>
+                    <>
+                      <label className="vrbo-v2-phone__join-field">
+                        <span className="visually-hidden">{copy.phone.joinPlaceholder}</span>
+                        <input
+                          type="text"
+                          value={draftName}
+                          placeholder={copy.phone.joinPlaceholder}
+                          autoComplete="nickname"
+                          maxLength={24}
+                          onChange={(event) => setDraftName(event.target.value)}
+                          onKeyDown={(event) => {
+                            if (event.key === "Enter") handleContinue();
+                          }}
+                        />
+                      </label>
+                      <button
+                        type="button"
+                        className="vrbo-v2-btn vrbo-v2-btn--md vrbo-v2-phone__join-cta"
+                        onClick={handleContinue}
+                      >
+                        {copy.phone.joinCta}
+                      </button>
+                    </>
                   ) : null}
                 </div>
               </motion.div>
@@ -265,7 +353,7 @@ export default function GuestPhone({
 
                 <div className={`vrbo-v2-phone__composer ${draftLines.length ? "has-draft" : ""}`}>
                   <p className="vrbo-v2-phone__draft-label">
-                    <strong>{user.name} · You</strong>
+                    <strong>{selfUser.name} · You</strong>
                     <span> / </span>
                     <strong>{copy.phone.draftStatus}</strong>
                   </p>
@@ -304,7 +392,7 @@ export default function GuestPhone({
                 <MessageFeed
                   messages={messages}
                   typing={typing}
-                  userById={userById}
+                  userById={namedUserById}
                   propertyLookup={propertyLookup}
                   selfId={user.id}
                   live
