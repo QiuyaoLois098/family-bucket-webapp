@@ -6,6 +6,7 @@ import cors from "cors";
 import { Server } from "socket.io";
 import { config } from "./config.js";
 import { registerRoutes, registerSockets } from "./routes.js";
+import { startUdpBridge } from "./udpBridge.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -20,6 +21,7 @@ app.use("/images", express.static(path.join(config.rootDir, "client/public/image
 
 registerRoutes(app);
 registerSockets(io);
+startUdpBridge(io, { port: Number(process.env.UDP_PORT || 41234) });
 
 if (fs.existsSync(config.clientDist)) {
   app.use(express.static(config.clientDist));
@@ -42,6 +44,7 @@ server.listen(config.port, () => {
   console.log(`Vrbo Sarah:          http://localhost:${config.port}/sarah`);
   console.log(`Vrbo Alex:           http://localhost:${config.port}/alex`);
   console.log(`Vrbo Chris:          http://localhost:${config.port}/chris`);
+  console.log(`UDP monitor:         http://localhost:${config.port}/udp`);
   if (!config.openaiApiKey) {
     console.warn("OPENAI_API_KEY is not set - using local fallback images and itineraries.");
   }
