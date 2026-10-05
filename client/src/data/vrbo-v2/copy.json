@@ -26,8 +26,8 @@
     "loadingTitle": "Pulling it all together",
     "loadingSubtitle": "Everyone's in - writing your group summary...",
     "loadingHint": "Hang tight for a moment",
-    "resultsTitle": "Hawaii stays for your whole crew - dog included.",
-    "resultsSubtitle": "Three picks for pool mornings and time together.",
+    "resultsTitle": "Hawaii stays for your whole crew.",
+    "resultsSubtitle": "Top picks matched to what your group asked for.",
     "resultsHint": "Tap a stay to preview. Anyone can select and share.",
     "resultsPickedSubtitle": "Shared to the trip - watch Display 1",
     "resultsDisclaimer": "Fictional demo listings · Illustrative prices and ratings.",
@@ -43,13 +43,13 @@
     "destination": "Hawaii",
     "phrases": {
       "private-pool": "a private pool",
-      "pet-friendly": "a dog-friendly welcome",
-      "full-kitchen": "a full kitchen for breakfast",
-      "sunset-views": "sunset views",
-      "beach-access": "easy beach access",
-      "outdoor-hangouts": "outdoor hangouts with a grill",
-      "walkable-location": "a walkable location",
-      "plenty-of-bedrooms": "room for the whole crew"
+      "outdoor-dining": "an outdoor dining space",
+      "near-beach": "a spot near the beach",
+      "wifi": "reliable wifi",
+      "fire-pit": "a fire pit for evenings",
+      "hot-tub": "a hot tub",
+      "air-conditioning": "air conditioning",
+      "big-kitchen": "a big kitchen for breakfast"
     }
   },
   "stayPicker": {

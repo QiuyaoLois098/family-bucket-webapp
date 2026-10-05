@@ -1,7 +1,7 @@
 [
   {
     "id": "private-pool",
-    "label": "Private Pool",
+    "label": "Private pool",
     "icon": "🏊",
     "image": "/images/Vrbo-Images/Preferences/Private-Pool.jpg",
     "chatLines": {
@@ -11,80 +11,80 @@
     }
   },
   {
-    "id": "pet-friendly",
-    "label": "Pet-Friendly",
-    "icon": "🐾",
-    "image": "/images/Vrbo-Images/Preferences/Pet-Friendly.jpg",
+    "id": "outdoor-dining",
+    "label": "Outdoor dining space",
+    "icon": "🍽️",
+    "image": "/images/Vrbo-Images/Preferences/Outdoor-Hangouts.jpg",
     "chatLines": {
-      "chris": "We’ll need a pet-friendly place. My dog’s coming too.",
-      "sarah": "I’d love a pet-friendly stay so my dog can join the trip 🐾",
-      "alex": "Pet-friendly, please. My dog needs a vacation."
+      "chris": "An outdoor dining space would make group dinners much easier.",
+      "sarah": "Dinner outside under the stars? I’d love an outdoor dining space ✨",
+      "alex": "Outdoor dining, please. Eating indoors feels like homework."
     }
   },
   {
-    "id": "full-kitchen",
-    "label": "Full Kitchen",
+    "id": "near-beach",
+    "label": "Near the beach",
+    "icon": "🏖️",
+    "image": "/images/Vrbo-Images/Preferences/Beach-Access.jpg",
+    "chatLines": {
+      "chris": "Being near the beach means less gear to haul in the car.",
+      "sarah": "I want to be near the beach. Sand between my toes, every day!",
+      "alex": "Near the beach, please. Less travel, more towel time."
+    }
+  },
+  {
+    "id": "wifi",
+    "label": "Wifi",
+    "icon": "📶",
+    "image": "/images/Vrbo-Images/Preferences/Walkable-Location.jpg",
+    "chatLines": {
+      "chris": "Solid wifi would help if anyone needs to check in from home.",
+      "sarah": "Good wifi would be lovely for photo dumps and quick calls 📱",
+      "alex": "Wifi, please. Even paradise needs a loading bar sometimes."
+    }
+  },
+  {
+    "id": "fire-pit",
+    "label": "Fire pit",
+    "icon": "🔥",
+    "image": "/images/Vrbo-Images/Preferences/Sunset-Views.jpg",
+    "chatLines": {
+      "chris": "A fire pit would be a simple plan for cooler evenings.",
+      "sarah": "S’mores by a fire pit would feel so cozy 🔥",
+      "alex": "A fire pit, please. Staring at flames counts as plans."
+    }
+  },
+  {
+    "id": "hot-tub",
+    "label": "Hot tub",
+    "icon": "♨️",
+    "image": "/images/Vrbo-Images/Preferences/Private-Pool.jpg",
+    "chatLines": {
+      "chris": "A hot tub would be a nice unwind after long beach days.",
+      "sarah": "A hot tub after sunset sounds absolutely dreamy ♨️",
+      "alex": "Hot tub, please. My shoulders already filed the request."
+    }
+  },
+  {
+    "id": "air-conditioning",
+    "label": "Air conditioning",
+    "icon": "❄️",
+    "image": "/images/Vrbo-Images/Preferences/Plenty-of-Bedrooms.jpg",
+    "chatLines": {
+      "chris": "Air conditioning would keep everyone comfortable after hot days.",
+      "sarah": "AC is a must for me — cool rooms make better sleep ❄️",
+      "alex": "Air conditioning, please. I’m on vacation, not a sauna tour."
+    }
+  },
+  {
+    "id": "big-kitchen",
+    "label": "Big kitchen",
     "icon": "🍳",
     "image": "/images/Vrbo-Images/Preferences/Full-Kitchen.jpg",
     "chatLines": {
-      "chris": "A full kitchen would make breakfast at home much easier.",
-      "sarah": "Vacation pancakes are happening! A full kitchen is on my list.",
-      "alex": "I want a full kitchen. Vacation breakfast is serious business."
-    }
-  },
-  {
-    "id": "sunset-views",
-    "label": "Sunset Views",
-    "icon": "🌅",
-    "image": "/images/Vrbo-Images/Preferences/Sunset-Views.jpg",
-    "chatLines": {
-      "chris": "I’d like sunset views from the house. Easy plan for the evening.",
-      "sarah": "Sunsets from our own place? That would be lovely. 🌅",
-      "alex": "A sunset view, please. Watching the sky counts as plans."
-    }
-  },
-  {
-    "id": "beach-access",
-    "label": "Beach Access",
-    "icon": "🛶",
-    "image": "/images/Vrbo-Images/Preferences/Beach-Access.jpg",
-    "chatLines": {
-      "chris": "Easy beach access means less gear to load into the car.",
-      "sarah": "I want easy beach access. Beach time is a daily plan!",
-      "alex": "Easy beach access is on my list. Less travel, more towel time."
-    }
-  },
-  {
-    "id": "outdoor-hangouts",
-    "label": "Outdoor Hangouts",
-    "icon": "✨",
-    "image": "/images/Vrbo-Images/Preferences/Outdoor-Hangouts.jpg",
-    "chatLines": {
-      "chris": "A grill and outdoor seats for everyone would be handy.",
-      "sarah": "A grill and a big outdoor table would be perfect for dinner under the stars!",
-      "alex": "I’m after a grill and outdoor seating. That’s my evening sorted."
-    }
-  },
-  {
-    "id": "walkable-location",
-    "label": "Walkable Location",
-    "icon": "🚶",
-    "image": "/images/Vrbo-Images/Preferences/Walkable-Location.jpg",
-    "chatLines": {
-      "chris": "I’d like shops and food within walking distance. Fewer car trips.",
-      "sarah": "Coffee and little shops within walking distance would be so nice.",
-      "alex": "Somewhere walkable, please. Parking isn’t a hobby."
-    }
-  },
-  {
-    "id": "plenty-of-bedrooms",
-    "label": "Plenty of Bedrooms",
-    "icon": "🛏️",
-    "image": "/images/Vrbo-Images/Preferences/Plenty-of-Bedrooms.jpg",
-    "chatLines": {
-      "chris": "Enough bedrooms for everyone to spread out would be great.",
-      "sarah": "I’d love plenty of bedrooms. A little space to recharge sounds lovely.",
-      "alex": "Plenty of bedrooms, please. I’m not built for the vacation sofa."
+      "chris": "A big kitchen would make breakfast at home much easier.",
+      "sarah": "Vacation pancakes need a big kitchen — it’s on my list!",
+      "alex": "A big kitchen, please. Vacation breakfast is serious business."
     }
   }
 ]
