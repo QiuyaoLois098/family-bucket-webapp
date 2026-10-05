@@ -18,7 +18,27 @@ function StayImage({ property, className }) {
   );
 }
 
-/** Display 2 touchscreen - tap a stay to preview, then share. */
+function GuestRatingBadge({ rating, label }) {
+  return (
+    <div className="vrbo-v2-showcase__badge" aria-label={`${rating} ${label}`}>
+      <span className="vrbo-v2-showcase__badge-ring" aria-hidden="true">
+        {Array.from({ length: 12 }, (_, i) => (
+          <i key={i} style={{ "--i": i }}>
+            ♥
+          </i>
+        ))}
+      </span>
+      <strong>{rating}</strong>
+      <em>{label}</em>
+    </div>
+  );
+}
+
+function padIndex(index) {
+  return String(index + 1).padStart(2, "0");
+}
+
+/** Display 2 — pick among the 3 recommended stays, then share to the group. */
 export function StayShowcase({
   results,
   previewPropertyId,
@@ -32,7 +52,8 @@ export function StayShowcase({
     0,
     results.findIndex((entry) => entry.property.id === activeId),
   );
-  const { property } = results[index] ?? results[0];
+  const entry = results[index] ?? results[0];
+  const property = entry?.property;
 
   useEffect(() => {
     if (!results.length || previewPropertyId != null || selectedPropertyId != null) return;
@@ -46,69 +67,103 @@ export function StayShowcase({
     onPreview?.(propertyId);
   }
 
+  const eyebrow = `${padIndex(index)} / ${property.tagline}`;
+  const stats = [property.bedrooms, property.sleeps, `${property.nightly} / night`]
+    .filter(Boolean)
+    .join(" · ");
+
   return (
-    <div className="vrbo-v2-showcase">
-      <div className="vrbo-v2-showcase__top">
+    <div className={`vrbo-v2-showcase${shared ? " is-shared" : ""}`}>
+      <header className="vrbo-v2-showcase__masthead">
         <img
           className="vrbo-v2-showcase__logo"
-          src="/logo/Vrbo_Logo_Blue_RGB.png"
+          src="/logo/Vrbo_Logo_Sail_RGB.png"
           alt="Vrbo"
           draggable={false}
         />
-        <h2 className="vrbo-v2-showcase__title">{copy.ranking.resultsTitle}</h2>
-      </div>
+        <p className="vrbo-v2-showcase__headline">{copy.ranking.resultsTitle}</p>
+      </header>
 
       <StayImage property={property} className="vrbo-v2-showcase__hero" />
 
-      <div className="vrbo-v2-showcase__info">
-        <h3 className="vrbo-v2-showcase__name">{property.name}</h3>
-        <p className="vrbo-v2-showcase__about">{property.about}</p>
-        <p className="vrbo-v2-showcase__rating">
-          {property.rating} {property.ratingLabel} · {property.location}
-        </p>
-        <p className="vrbo-v2-showcase__stats">
-          {property.bedrooms} · {property.sleeps} · {property.nightly} / night
-        </p>
-        <p className="vrbo-v2-showcase__highlights">
-          {(property.highlights ?? []).join(" · ")}
-        </p>
+      <div className="vrbo-v2-showcase__body">
+        <div className="vrbo-v2-showcase__title-row">
+          <div className="vrbo-v2-showcase__title-block">
+            <p className="vrbo-v2-showcase__eyebrow">{eyebrow}</p>
+            <h3 className="vrbo-v2-showcase__name">{property.name}</h3>
+            <p className="vrbo-v2-showcase__location">{property.location}</p>
+            <p className="vrbo-v2-showcase__stats">{stats}</p>
+          </div>
+          <GuestRatingBadge
+            rating={property.rating}
+            label={property.ratingLabel || copy.ranking.guestRatingLabel}
+          />
+        </div>
+
+        <section className="vrbo-v2-showcase__section">
+          <h4>{copy.ranking.highlightsLabel}</h4>
+          <p className="vrbo-v2-showcase__highlights-text">
+            {property.highlightsText || (property.highlights ?? []).join(", ")}
+          </p>
+        </section>
+
+        <section className="vrbo-v2-showcase__section vrbo-v2-showcase__section--about">
+          <h4>{copy.ranking.aboutLabel}</h4>
+          <p className="vrbo-v2-showcase__about-text">{property.about}</p>
+        </section>
+
+        {property.worthKnowing ? (
+          <aside className="vrbo-v2-showcase__note">
+            <h4>{copy.ranking.worthKnowingLabel}</h4>
+            <p>{property.worthKnowing}</p>
+          </aside>
+        ) : null}
       </div>
 
       <div className="vrbo-v2-showcase__thumbs" role="listbox" aria-label="Stays">
-        {results.map((entry) => {
-          const active = entry.property.id === property.id;
+        {results.map((item, thumbIndex) => {
+          const active = item.property.id === property.id;
+          const thumb = item.property;
           return (
             <button
-              key={entry.property.id}
+              key={thumb.id}
               type="button"
               role="option"
-              className={`vrbo-v2-showcase__thumb ${active ? "is-active" : ""}`}
+              className={`vrbo-v2-showcase__thumb${active ? " is-active" : ""}`}
               disabled={shared}
-              aria-label={entry.property.name}
+              aria-label={thumb.name}
               aria-selected={active}
-              onClick={() => handleThumb(entry.property.id)}
+              onClick={() => handleThumb(thumb.id)}
             >
-              <StayImage property={entry.property} className="vrbo-v2-showcase__thumb-img" />
+              <StayImage property={thumb} className="vrbo-v2-showcase__thumb-img" />
+              <span className="vrbo-v2-showcase__thumb-badge">{padIndex(thumbIndex)}</span>
+              <span className="vrbo-v2-showcase__thumb-meta">
+                <strong>{thumb.name}</strong>
+                <em>
+                  Guest rating {thumb.thumbRating ?? thumb.rating}
+                  {thumb.thumbReviews ? ` · ${thumb.thumbReviews}` : ""}
+                </em>
+              </span>
             </button>
           );
         })}
       </div>
 
-      <button
-        type="button"
-        className="vrbo-v2-showcase__share"
-        disabled={shared}
-        onClick={() => onShare?.(property.id)}
-      >
-        {shared ? copy.ranking.shared : copy.ranking.share}
-      </button>
-
-      <div className="vrbo-v2-showcase__foot">
-        <p className="vrbo-v2-showcase__hint">
-          {shared ? copy.ranking.resultsPickedSubtitle : copy.ranking.resultsHint}
-        </p>
-        <p className="vrbo-v2-showcase__disclaimer">{copy.ranking.resultsDisclaimer}</p>
+      <div className="vrbo-v2-showcase__actions">
+        <button type="button" className="vrbo-v2-showcase__compare" disabled={shared}>
+          {copy.ranking.compare}
+        </button>
+        <button
+          type="button"
+          className="vrbo-v2-showcase__share"
+          disabled={shared}
+          onClick={() => onShare?.(property.id)}
+        >
+          {shared ? copy.ranking.shared : copy.ranking.share}
+        </button>
       </div>
+
+      <p className="vrbo-v2-showcase__disclaimer">{copy.ranking.resultsDisclaimer}</p>
     </div>
   );
 }
