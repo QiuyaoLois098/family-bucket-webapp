@@ -188,8 +188,19 @@ export default function GuestPhone({
   onToggle,
   onSubmit,
   bare = false,
+  runId = 0,
 }) {
   const [draftName, setDraftName] = useState("");
+
+  useEffect(() => {
+    setDraftName("");
+  }, [runId, user.id]);
+
+  // Restart / leave clears join — drop any leftover typed name.
+  useEffect(() => {
+    if (!joined) setDraftName("");
+  }, [joined]);
+
   const max = copy.maxSelections;
   const groupFinished = stage === "summary" || stage === "results";
   const phase = !joined
@@ -298,11 +309,11 @@ export default function GuestPhone({
                   {phase === "join" ? (
                     <>
                       <label className="vrbo-v2-phone__join-field">
-                        <span className="visually-hidden">{copy.phone.joinPlaceholder}</span>
+                        <span className="visually-hidden">{user.name}</span>
                         <input
                           type="text"
                           value={draftName}
-                          placeholder={copy.phone.joinPlaceholder}
+                          placeholder={user.name}
                           autoComplete="nickname"
                           maxLength={24}
                           onChange={(event) => setDraftName(event.target.value)}

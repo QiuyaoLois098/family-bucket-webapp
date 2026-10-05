@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 import { readFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { rankProperties } from "./vrboV2Rank.js";
+import { recommendPropertySet } from "../../shared/vrboRecommendPropertySet.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.resolve(__dirname, "../../client/src/data/vrbo-v2");
@@ -288,7 +288,15 @@ export class VrboV2Session extends EventEmitter {
 
   searchStays() {
     if (this.state.stage !== "summary") return;
-    const results = rankProperties(properties, this.state.priorities, rankingWeights);
+
+    const guestSelections = guests
+      .filter((user) => Boolean(this.state.joined[user.id]) && this.state.submitted[user.id])
+      .map((user) => this.state.submitted[user.id] ?? []);
+
+    const results = recommendPropertySet(properties, guestSelections, {
+      resultBadges: rankingWeights.resultBadges,
+    });
+
     this.patch({
       stage: "results",
       results,

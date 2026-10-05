@@ -5,7 +5,7 @@ import preferences from "../data/vrbo-v2/preferences.json";
 import properties from "../data/vrbo-v2/properties.json";
 import rankingWeights from "../data/vrbo-v2/rankingWeights.json";
 import users from "../data/vrbo-v2/users.json";
-import { rankProperties } from "../utils/rankProperties.js";
+import { recommendPropertySet } from "@shared/vrboRecommendPropertySet.js";
 
 export const STAGES = ["intro", "selecting", "summary", "results"];
 
@@ -171,7 +171,12 @@ function reducer(state, action) {
     }
 
     case "SHOW_RESULTS": {
-      const results = rankProperties(properties, state.priorities, rankingWeights);
+      const guestSelections = guests
+        .filter((user) => Boolean(state.joined[user.id]) && state.submitted[user.id])
+        .map((user) => state.submitted[user.id] ?? []);
+      const results = recommendPropertySet(properties, guestSelections, {
+        resultBadges: rankingWeights.resultBadges,
+      });
       return {
         ...state,
         stage: "results",

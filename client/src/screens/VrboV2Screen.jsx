@@ -91,6 +91,7 @@ function VrboDemo() {
     selectedPropertyId,
     celebrating,
     displayNames = {},
+    runId = 0,
   } = state;
   const [cursorHighlight, setCursorHighlight] = useState(false);
   const [phonesOnly, setPhonesOnly] = useState(false);
@@ -98,7 +99,7 @@ function VrboDemo() {
 
   const renderPhone = (user) => (
     <GuestPhone
-      key={user.id}
+      key={`${user.id}-${runId}`}
       user={user}
       preferences={preferences}
       preferenceById={preferenceById}
@@ -118,6 +119,7 @@ function VrboDemo() {
       onJoin={actions.joinGuest}
       onToggle={actions.togglePreference}
       onSubmit={actions.submitGuest}
+      runId={runId}
     />
   );
 
@@ -264,6 +266,7 @@ export function GuestPhonePage({ guestId }) {
     submitted,
     results,
     displayNames = {},
+    runId = 0,
   } = state;
   const guest = guests.find((user) => user.id === guestId);
   const propertyLookup = usePropertyLookup(results);
@@ -272,6 +275,7 @@ export function GuestPhonePage({ guestId }) {
 
   const phone = (
     <GuestPhone
+      key={`${guest.id}-${runId}`}
       user={guest}
       preferences={preferences}
       preferenceById={preferenceById}
@@ -291,6 +295,7 @@ export function GuestPhonePage({ guestId }) {
       onToggle={actions.togglePreference}
       onSubmit={actions.submitGuest}
       bare
+      runId={runId}
     />
   );
 
