@@ -26,19 +26,29 @@
     "loadingTitle": "Pulling it all together",
     "loadingSubtitle": "Everyone's in - writing your group summary...",
     "loadingHint": "Hang tight for a moment",
-    "resultsTitle": "Hawaii stays for pool days, beach time, and dinners outside.",
+    "resultsTitle": "Hawaii stays for {feature}.",
+    "resultsTitleFallback": "pool days",
     "resultsSubtitle": "Top picks matched to what your group asked for.",
     "resultsHint": "Tap a stay to preview. Anyone can select and share.",
     "resultsPickedSubtitle": "Shared to the trip - watch Display 1",
     "resultsDisclaimer": "Fictional demo stays. Illustrative prices and ratings.",
     "share": "Share this stay to the group",
     "shared": "Shared to the group",
-    "compare": "Compare all three",
     "highlightsLabel": "Highlights",
     "aboutLabel": "About this stay",
     "worthKnowingLabel": "Worth knowing",
     "guestRatingLabel": "Guest Rating",
-    "matchLabel": "match"
+    "matchLabel": "match",
+    "headlinePhrases": {
+      "private-pool": "pool days",
+      "outdoor-dining": "dinners outside",
+      "near-beach": "beach time",
+      "wifi": "easy wifi",
+      "fire-pit": "fire pit nights",
+      "hot-tub": "hot tub evenings",
+      "air-conditioning": "cool rooms",
+      "big-kitchen": "big kitchen mornings"
+    }
   },
   "summary": {
     "brand": "Vrbo",

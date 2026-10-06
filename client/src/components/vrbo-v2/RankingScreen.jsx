@@ -68,7 +68,13 @@ export function SummaryPanel({ summaryText, onSearch, compact = false }) {
   );
 }
 
-function ResultsPanel({ results, previewPropertyId, selectedPropertyId, actions }) {
+function ResultsPanel({
+  results,
+  priorities,
+  previewPropertyId,
+  selectedPropertyId,
+  actions,
+}) {
   return (
     <motion.div
       key="results"
@@ -77,6 +83,7 @@ function ResultsPanel({ results, previewPropertyId, selectedPropertyId, actions 
     >
       <StayShowcase
         results={results}
+        priorities={priorities}
         previewPropertyId={previewPropertyId}
         selectedPropertyId={selectedPropertyId}
         onPreview={actions.previewProperty}
@@ -90,6 +97,7 @@ export default function RankingScreen({
   stage,
   summaryText,
   results,
+  priorities,
   allSubmitted,
   previewPropertyId,
   selectedPropertyId,
@@ -110,6 +118,7 @@ export default function RankingScreen({
           <ResultsPanel
             key="results"
             results={results}
+            priorities={priorities}
             previewPropertyId={previewPropertyId}
             selectedPropertyId={selectedPropertyId}
             actions={actions}

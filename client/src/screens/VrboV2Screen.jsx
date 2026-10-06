@@ -87,6 +87,7 @@ function VrboDemo() {
     submitted,
     summaryText,
     results,
+    priorities,
     previewPropertyId,
     selectedPropertyId,
     celebrating,
@@ -178,6 +179,7 @@ function VrboDemo() {
                   stage={stage}
                   summaryText={summaryText}
                   results={results}
+                  priorities={priorities}
                   allSubmitted={allSubmitted}
                   previewPropertyId={previewPropertyId}
                   selectedPropertyId={selectedPropertyId}
@@ -242,6 +244,7 @@ export function VrboRightPage() {
           stage={state.stage}
           summaryText={state.summaryText}
           results={state.results}
+          priorities={state.priorities}
           allSubmitted={allSubmitted}
           previewPropertyId={state.previewPropertyId}
           selectedPropertyId={state.selectedPropertyId}

@@ -21,13 +21,13 @@ function StayImage({ property, className }) {
 function GuestRatingBadge({ rating, label }) {
   return (
     <div className="vrbo-v2-showcase__badge" aria-label={`${rating} ${label}`}>
-      <span className="vrbo-v2-showcase__badge-ring" aria-hidden="true">
-        {Array.from({ length: 12 }, (_, i) => (
-          <i key={i} style={{ "--i": i }}>
-            ♥
-          </i>
-        ))}
-      </span>
+      <img
+        className="vrbo-v2-showcase__badge-ring"
+        src="/images/Vrbo-Images/score.png"
+        alt=""
+        draggable={false}
+        aria-hidden="true"
+      />
       <strong>{rating}</strong>
       <em>{label}</em>
     </div>
@@ -38,9 +38,21 @@ function padIndex(index) {
   return String(index + 1).padStart(2, "0");
 }
 
+function buildResultsHeadline(priorities = []) {
+  const phrases = copy.ranking.headlinePhrases ?? {};
+  const firstId = priorities[0];
+  const feature =
+    (firstId && phrases[firstId]) || copy.ranking.resultsTitleFallback || "pool days";
+  return String(copy.ranking.resultsTitle ?? "Hawaii stays for {feature}.").replaceAll(
+    "{feature}",
+    feature,
+  );
+}
+
 /** Display 2 — pick among the 3 recommended stays, then share to the group. */
 export function StayShowcase({
   results,
+  priorities = [],
   previewPropertyId,
   selectedPropertyId,
   onPreview,
@@ -81,7 +93,7 @@ export function StayShowcase({
           alt="Vrbo"
           draggable={false}
         />
-        <p className="vrbo-v2-showcase__headline">{copy.ranking.resultsTitle}</p>
+        <p className="vrbo-v2-showcase__headline">{buildResultsHeadline(priorities)}</p>
       </header>
 
       <StayImage property={property} className="vrbo-v2-showcase__hero" />
@@ -111,13 +123,6 @@ export function StayShowcase({
           <h4>{copy.ranking.aboutLabel}</h4>
           <p className="vrbo-v2-showcase__about-text">{property.about}</p>
         </section>
-
-        {property.worthKnowing ? (
-          <aside className="vrbo-v2-showcase__note">
-            <h4>{copy.ranking.worthKnowingLabel}</h4>
-            <p>{property.worthKnowing}</p>
-          </aside>
-        ) : null}
       </div>
 
       <div className="vrbo-v2-showcase__thumbs" role="listbox" aria-label="Stays">
@@ -141,7 +146,7 @@ export function StayShowcase({
                 <strong>{thumb.name}</strong>
                 <em>
                   Guest rating {thumb.thumbRating ?? thumb.rating}
-                  {thumb.thumbReviews ? ` · ${thumb.thumbReviews}` : ""}
+                  {thumb.thumbReviews ? ` - ${thumb.thumbReviews}` : ""}
                 </em>
               </span>
             </button>
@@ -150,9 +155,6 @@ export function StayShowcase({
       </div>
 
       <div className="vrbo-v2-showcase__actions">
-        <button type="button" className="vrbo-v2-showcase__compare" disabled={shared}>
-          {copy.ranking.compare}
-        </button>
         <button
           type="button"
           className="vrbo-v2-showcase__share"
