@@ -209,7 +209,7 @@ function VrboDemo() {
   );
 }
 
-/** Display 1 · Group Chat — full viewport for a dedicated screen. */
+/** Display 1 · Group Chat — scales in a locked 1080×1920 (9∶16) stage. */
 export function VrboLeftPage() {
   const { state, actions } = useVrboV2Session();
   const propertyLookup = usePropertyLookup(state.results);
@@ -217,39 +217,47 @@ export function VrboLeftPage() {
   return (
     <div className="vrbo-v2-device vrbo-v2-device--display">
       <RestartControl onReset={actions.reset} />
-      <div className="vrbo-v2-device__canvas">
-        <MainChatScreen
-          messages={state.messages}
-          typing={state.typing}
-          userById={userById}
-          propertyLookup={propertyLookup}
-          celebrating={state.celebrating}
-          joined={state.joined}
-          displayNames={state.displayNames ?? {}}
-        />
+      <div className="vrbo-v2-device__stage vrbo-v2-device__stage--display">
+        <div className="vrbo-v2-displayHd" aria-label="Display 1080×1920">
+          <div className="vrbo-v2-displayHd__panel">
+            <MainChatScreen
+              messages={state.messages}
+              typing={state.typing}
+              userById={userById}
+              propertyLookup={propertyLookup}
+              celebrating={state.celebrating}
+              joined={state.joined}
+              displayNames={state.displayNames ?? {}}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-/** Display 2 · Group Search — full viewport for a dedicated screen. */
+/** Display 2 · Group Search — scales in a locked 1080×1920 (9∶16) stage. */
 export function VrboRightPage() {
   const { state, allSubmitted, actions } = useVrboV2Session();
 
   return (
     <div className="vrbo-v2-device vrbo-v2-device--display">
       <RestartControl onReset={actions.reset} />
-      <div className="vrbo-v2-device__canvas">
-        <RankingScreen
-          stage={state.stage}
-          summaryText={state.summaryText}
-          results={state.results}
-          priorities={state.priorities}
-          allSubmitted={allSubmitted}
-          previewPropertyId={state.previewPropertyId}
-          selectedPropertyId={state.selectedPropertyId}
-          actions={actions}
-        />
+      <div className="vrbo-v2-device__stage vrbo-v2-device__stage--display">
+        <div className="vrbo-v2-displayHd" aria-label="Display 1080×1920">
+          <div className="vrbo-v2-displayHd__panel">
+            <RankingScreen
+              stage={state.stage}
+              summaryText={state.summaryText}
+              results={state.results}
+              priorities={state.priorities}
+              allSubmitted={allSubmitted}
+              previewPropertyId={state.previewPropertyId}
+              selectedPropertyId={state.selectedPropertyId}
+              actions={actions}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -344,7 +352,7 @@ export function GuestPhonePage({ guestId }) {
             <div className="vrbo-v2-iphone15__bezel">
               <div className="vrbo-v2-iphone15__screen">{phone}</div>
             </div>
-            <p className="vrbo-v2-iphone15__caption">Sarah · 393×852</p>
+            <p className="vrbo-v2-iphone15__caption">Sarah · iPhone 15</p>
           </div>
 
           {showReference ? (
@@ -357,7 +365,7 @@ export function GuestPhonePage({ guestId }) {
                   draggable={false}
                 />
               </div>
-              <p className="vrbo-v2-iphone15__caption">Reference · 393×852</p>
+              <p className="vrbo-v2-iphone15__caption">Reference · iPhone 15</p>
             </div>
           ) : null}
         </div>
