@@ -2316,14 +2316,18 @@ body:has(.vrbo-v2-device--phone.is-framed),
 
 /*
  * iPhone 15 frame scales with available space while locking 393∶852.
+ * Corner radii use cqi (width-based) — plain % makes elliptical “capsule” corners
+ * because horizontal % uses width and vertical % uses height.
  * Inner UI uses cqw/cqh against .vrbo-v2-iphone15__screen (container-type: size).
  */
 .vrbo-v2-iphone15 {
+  /* ~55pt corners on 393pt logical width */
   --iphone15-ar: 393 / 852;
   --iphone15-bezel: 2.9%;
-  --iphone15-radius: 13.2%;
-  --iphone15-screen-radius: 11.2%;
+  --iphone15-radius: 14cqi;
+  --iphone15-screen-radius: 11.5cqi;
 
+  container-type: inline-size;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2348,6 +2352,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
     0 0 0 1px rgba(255, 255, 255, 0.08) inset,
     0 24px 60px rgba(15, 23, 42, 0.28);
   flex: 0 0 auto;
+  overflow: hidden;
 }
 
 .vrbo-v2-iphone15__bezel--reference {
@@ -2372,6 +2377,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
 .vrbo-v2-iphone15__screen {
   width: 100%;
   height: 100%;
+  min-height: 0;
   overflow: hidden;
   border-radius: var(--iphone15-screen-radius);
   background: #ffffff;
