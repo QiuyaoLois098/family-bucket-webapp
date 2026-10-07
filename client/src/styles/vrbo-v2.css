@@ -46,8 +46,8 @@
   --button-text: #ffffff;
   --vrbo-v2-sans: "Albra Sans", "Helvetica Neue", sans-serif;
   --vrbo-v2-content: "Albra Grotesk", "Helvetica Neue", sans-serif;
-  /* Design canvas 1080×1920 — sizes use cqw/cqh against display containers. */
-  --display-masthead-min: 18cqh;
+  /* Design canvas 1080×1920 — shared blue header height on Display 1 / 2. */
+  --display-masthead-height: 26cqh;
 }
 
 .vrbo-v2-stage {
@@ -460,17 +460,20 @@
 }
 
 .vrbo-v2-chat__masthead {
-  flex: 0 0 auto;
+  flex: 0 0 var(--display-masthead-height);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
   gap: 0.7cqh;
-  min-height: var(--display-masthead-min);
+  height: var(--display-masthead-height);
+  min-height: var(--display-masthead-height);
+  max-height: var(--display-masthead-height);
   padding: 3.4cqh 1.8cqw 4.5cqh;
   background: var(--blue-screen);
   color: #ffffff;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .vrbo-v2-chat__brand {
@@ -537,12 +540,6 @@
   padding: 0;
   scrollbar-width: thin;
   scrollbar-color: var(--soft-gray) transparent;
-}
-
-/* Spacer pins short threads to the bottom; shrinks away when overflowing. */
-.vrbo-v2-chat__feed::before {
-  content: "";
-  margin-top: auto;
 }
 
 .vrbo-v2-chat__feed::-webkit-scrollbar {
@@ -880,7 +877,7 @@
 
 .vrbo-v2-rank__panel--hero {
   display: grid;
-  grid-template-rows: var(--display-masthead-min) minmax(16%, 0.38fr) minmax(0, 1.2fr);
+  grid-template-rows: var(--display-masthead-height) minmax(16%, 0.38fr) minmax(0, 1.2fr);
   gap: 0;
   padding: 0;
   background: var(--cream);
@@ -900,7 +897,8 @@
   flex: 0 0 auto;
   display: flex;
   align-items: flex-start;
-  min-height: var(--display-masthead-min);
+  height: 100%;
+  min-height: 0;
   padding: 3.4cqh 4.6cqw 4.5cqh;
   background: var(--blue-screen);
   box-sizing: border-box;
@@ -1121,10 +1119,16 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: flex-start;
   gap: 1.15cqb;
-  padding: 3.8cqb var(--sc-pad) 4cqb;
+  height: var(--display-masthead-height);
+  min-height: var(--display-masthead-height);
+  max-height: var(--display-masthead-height);
+  padding: 3.4cqh var(--sc-pad) 4.5cqh;
   background: var(--sc-blue);
   color: #ffffff;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .vrbo-v2-showcase__logo {
