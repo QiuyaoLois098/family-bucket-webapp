@@ -255,10 +255,15 @@ export function VrboRightPage() {
   );
 }
 
-/** Guest phone page — full bleed by default; `?frame=1` nests UI in iPhone 15 ratio. */
+/** Guest phone page — full bleed by default; `?frame=1` nests UI in iPhone 15 ratio.
+ *  Sarah also shows a same-size reference UI beside the live phone when framed.
+ */
 export function GuestPhonePage({ guestId }) {
   const [params, setParams] = useSearchParams();
-  const framed = params.get("frame") === "1" || params.get("iphone") === "1";
+  const frameParam = params.get("frame") ?? params.get("iphone");
+  const framed =
+    frameParam === "1" ||
+    (guestId === "sarah" && frameParam !== "0");
   const { state, actions } = useVrboV2Session();
   const {
     stage,
@@ -304,14 +309,19 @@ export function GuestPhonePage({ guestId }) {
 
   const toggleFrame = () => {
     const next = new URLSearchParams(params);
+    next.delete("iphone");
     if (framed) {
-      next.delete("frame");
-      next.delete("iphone");
+      if (guestId === "sarah") next.set("frame", "0");
+      else {
+        next.delete("frame");
+      }
     } else {
       next.set("frame", "1");
     }
     setParams(next, { replace: true });
   };
+
+  const showReference = framed && guestId === "sarah";
 
   return (
     <div
@@ -327,13 +337,29 @@ export function GuestPhonePage({ guestId }) {
       </button>
 
       {framed ? (
-        <div className="vrbo-v2-device__stage">
+        <div
+          className={`vrbo-v2-device__stage${showReference ? " vrbo-v2-device__stage--compare" : ""}`}
+        >
           <div className="vrbo-v2-iphone15" aria-label="iPhone 15 preview">
             <div className="vrbo-v2-iphone15__bezel">
               <div className="vrbo-v2-iphone15__screen">{phone}</div>
             </div>
-            <p className="vrbo-v2-iphone15__caption">iPhone 15 · 19.5∶9</p>
+            <p className="vrbo-v2-iphone15__caption">Sarah · live</p>
           </div>
+
+          {showReference ? (
+            <div className="vrbo-v2-iphone15" aria-label="Reference UI">
+              <div className="vrbo-v2-iphone15__bezel vrbo-v2-iphone15__bezel--reference">
+                <img
+                  className="vrbo-v2-iphone15__reference"
+                  src="/images/Vrbo-Images/example/avatar.png"
+                  alt="Reference UI"
+                  draggable={false}
+                />
+              </div>
+              <p className="vrbo-v2-iphone15__caption">Reference UI</p>
+            </div>
+          ) : null}
         </div>
       ) : (
         phone

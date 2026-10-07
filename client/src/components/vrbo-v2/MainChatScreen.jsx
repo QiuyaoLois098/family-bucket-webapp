@@ -47,6 +47,28 @@ export default function MainChatScreen({
     (user) => user.role === "coordinator" || Boolean(joined[user.id]),
   );
   const typingUsers = typing.map((id) => namedUserById[id]).filter(Boolean);
+  const guestTotal = Object.values(namedUserById).filter((user) => user.role === "guest").length;
+  const guestsJoined = Object.values(namedUserById).filter(
+    (user) => user.role === "guest" && Boolean(joined[user.id]),
+  ).length;
+  const guestsWaiting = Math.max(0, guestTotal - guestsJoined);
+  const plannerLabel = copy.chat.groupPlannerLabel || "Group planner";
+  const jamie = members.find((user) => user.role === "coordinator");
+  const peopleLine =
+    guestsWaiting > 0 && jamie
+      ? `${jamie.name} · ${plannerLabel} · ${String(copy.chat.waitingGuests).replaceAll("{count}", String(guestsWaiting))}`
+      : members
+          .map((user) =>
+            user.role === "coordinator" ? `${user.name} · ${plannerLabel}` : user.name,
+          )
+          .join(", ");
+
+  function authorLabel(user) {
+    if (user.role === "coordinator") {
+      return `${user.name} · ${user.roleLabel || plannerLabel}`;
+    }
+    return user.name;
+  }
 
   useEffect(() => {
     const node = feedRef.current;
@@ -78,9 +100,7 @@ export default function MainChatScreen({
           alt="Vrbo"
         />
         <h2 className="vrbo-v2-chat__trip">{chatScript.groupTitle}</h2>
-        <p className="vrbo-v2-chat__people">
-          {members.map((user) => user.name).join(", ")}
-        </p>
+        <p className="vrbo-v2-chat__people">{peopleLine}</p>
       </header>
 
       <div className="vrbo-v2-chat__body">
@@ -109,7 +129,7 @@ export default function MainChatScreen({
                     <>
                       <Avatar user={user} />
                       <div className="vrbo-v2-chat__column">
-                        <span className="vrbo-v2-chat__author">{user.name}</span>
+                        <span className="vrbo-v2-chat__author">{authorLabel(user)}</span>
                         <p className="vrbo-v2-chat__bubble">{message.text}</p>
                       </div>
                     </>
@@ -140,7 +160,9 @@ export default function MainChatScreen({
           </AnimatePresence>
         </div>
 
-        <p className="vrbo-v2-chat__footer">{copy.chat.footer}</p>
+        <p className="vrbo-v2-chat__footer">
+          {guestsWaiting > 0 ? copy.chat.footer : copy.chat.footerPlanning || copy.chat.footer}
+        </p>
       </div>
     </div>
   );

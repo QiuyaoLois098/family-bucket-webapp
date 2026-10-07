@@ -90,14 +90,20 @@ function WaitingPills({ guestList, joinedMap, displayNames }) {
   );
 }
 
+function authorLabel(user, { isSelf = false } = {}) {
+  if (isSelf) return `${user.name} · You`;
+  if (user.role === "coordinator") {
+    return `${user.name} · ${user.roleLabel || copy.chat.groupPlannerLabel || "Group planner"}`;
+  }
+  return user.name;
+}
+
 function PhoneBubble({ user, text, isSelf = false }) {
   return (
     <div className={`vrbo-v2-phone__msg${isSelf ? " is-self" : ""}`}>
       {!isSelf ? <PhoneAvatar user={user} /> : null}
       <div className={`vrbo-v2-phone__bubble${isSelf ? " is-self" : ""}`}>
-        <p className="vrbo-v2-phone__bubble-author">
-          {isSelf ? `${user.name} · You` : user.name}
-        </p>
+        <p className="vrbo-v2-phone__bubble-author">{authorLabel(user, { isSelf })}</p>
         <p className="vrbo-v2-phone__bubble-text">{text}</p>
       </div>
       {isSelf ? <PhoneAvatar user={user} /> : null}
@@ -133,7 +139,7 @@ function MessageFeed({ messages, typing, userById, propertyLookup, live = false,
               <div className={`vrbo-v2-phone__msg${isSelf ? " is-self" : ""}`}>
                 {!isSelf ? <PhoneAvatar user={author} /> : null}
                 <p className={`vrbo-v2-phone__bubble-author${isSelf ? " is-self" : ""}`}>
-                  {isSelf ? `${author.name} · You` : author.name}
+                  {authorLabel(author, { isSelf })}
                 </p>
                 {isSelf ? <PhoneAvatar user={author} /> : null}
               </div>
@@ -257,7 +263,10 @@ export default function GuestPhone({
             <header className="vrbo-v2-phone__join-head">
               <div className="vrbo-v2-phone__join-head-row">
                 <span className="vrbo-v2-phone__group-avatar" aria-hidden="true">
-                  <img src="/images/Vrbo-Images/Avatars/Group.jpg" alt="" />
+                  <img
+                    src="/images/Vrbo-Images/Properties/ohana-beach-house.jpg"
+                    alt=""
+                  />
                 </span>
                 <div>
                   <h3>{chatScript.groupTitle}</h3>
@@ -274,7 +283,7 @@ export default function GuestPhone({
             <>
               <header className="vrbo-v2-phone__trip">
                 <span className="vrbo-v2-phone__group-avatar" aria-hidden="true">
-                  <img src="/images/Vrbo-Images/Avatars/Group.jpg" alt="" />
+                  <img src="/images/Vrbo-Images/Avatars/jamie.png" alt="" />
                 </span>
                 <div>
                   <h3>{chatScript.groupTitle}</h3>
@@ -313,7 +322,7 @@ export default function GuestPhone({
                         <input
                           type="text"
                           value={draftName}
-                          placeholder={user.name}
+                          placeholder={copy.phone.joinPlaceholder}
                           autoComplete="nickname"
                           maxLength={24}
                           onChange={(event) => setDraftName(event.target.value)}
@@ -324,7 +333,7 @@ export default function GuestPhone({
                       </label>
                       <button
                         type="button"
-                        className="vrbo-v2-btn vrbo-v2-btn--md vrbo-v2-phone__join-cta"
+                        className="vrbo-v2-btn vrbo-v2-phone__join-cta"
                         onClick={handleContinue}
                       >
                         {copy.phone.joinCta}
