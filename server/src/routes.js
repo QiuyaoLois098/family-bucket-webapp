@@ -79,7 +79,8 @@ export function registerSockets(io) {
     socket.on("debug:reset", () => session.reset("debug"));
 
     socket.on("vrbo-v2:join", () => {
-      socket.emit("vrbo-v2:state", vrboV2Session.snapshot());
+      // Page load / refresh restarts the shared experience (same as Family Bucket).
+      vrboV2Session.reset();
     });
     socket.on("vrbo-v2:joinGuest", (payload) => {
       vrboV2Session.joinGuest(payload?.userId, payload?.displayName);
