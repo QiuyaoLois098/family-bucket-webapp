@@ -344,7 +344,7 @@ export function GuestPhonePage({ guestId }) {
             <div className="vrbo-v2-iphone15__bezel">
               <div className="vrbo-v2-iphone15__screen">{phone}</div>
             </div>
-            <p className="vrbo-v2-iphone15__caption">Sarah · live</p>
+            <p className="vrbo-v2-iphone15__caption">Sarah · 393×852</p>
           </div>
 
           {showReference ? (
@@ -357,7 +357,7 @@ export function GuestPhonePage({ guestId }) {
                   draggable={false}
                 />
               </div>
-              <p className="vrbo-v2-iphone15__caption">Reference UI</p>
+              <p className="vrbo-v2-iphone15__caption">Reference · 393×852</p>
             </div>
           ) : null}
         </div>
