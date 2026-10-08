@@ -5,6 +5,8 @@ const HEARTBEAT_MS = 90_000;
 
 /** Paths that should emit Hyperion heartbeats while open. */
 export const HYPERION_HEARTBEAT_PATHS = new Set([
+  "/expedia-left",
+  "/expedia-right",
   "/vrbo-left",
   "/vrbo-right",
   "/vrbo-ip1",

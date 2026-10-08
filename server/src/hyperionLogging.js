@@ -17,6 +17,11 @@ const BASE_URL = `https://hyperion.de-yan.com/api/v2/${EVENT_SLUG}`;
  * Device value is sent as applicationMetrics.device.
  */
 export const HYPERION_DEVICES_BY_PATH = Object.freeze({
+  // Family Bucket List
+  "/expedia-left": { id: "expedia-oct26-fbl-interactive", label: "interactive" },
+  "/expedia-right": { id: "expedia-oct26-fbl-output", label: "output" },
+
+  // Vrbo Group Trip
   "/vrbo-left": { id: "expedia-oct26-vgc-organizer", label: "output" },
   "/vrbo-right": { id: "expedia-oct26-vgc-output", label: "organizer" },
   "/vrbo-ip1": { id: "expedia-oct26-vgc-phone-1", label: "phone-1" },
