@@ -4,7 +4,7 @@ import { generateDestinationImage, generateItinerary } from "./openaiService.js"
 import { config } from "./config.js";
 import { DESTINATIONS } from "../../shared/destinations.js";
 import { QUESTIONS } from "../../shared/questions.js";
-import { forwardHeartbeatForPath, resolveHyperionDevice } from "./hyperionLogging.js";
+import { forwardHeartbeatForPath, resolveHyperionDevice } from "./hyperionHeartbeat.js";
 
 export function registerRoutes(app) {
   app.get("/api/health", (_req, res) => {

@@ -5,7 +5,7 @@ import express from "express";
 import cors from "cors";
 import { Server } from "socket.io";
 import { config } from "./config.js";
-import { bindHyperionIo } from "./hyperionLogging.js";
+import { bindHyperionIo } from "./hyperionHeartbeat.js";
 import { registerRoutes, registerSockets } from "./routes.js";
 import { startUdpBridge } from "./udpBridge.js";
 

@@ -1,8 +1,9 @@
 /**
- * Hyperion logging — shared by Family Bucket List and Vrbo.
+ * Hyperion heartbeat — shared by Family Bucket List and Vrbo.
  * Client screens POST /api/hyperion/heartbeat; this module forwards to Hyperion.
  *
  * Device map is specified here (not in .env). Token: HYPERION_API.
+ * Custom events live in hyperionEvents.js.
  */
 
 import { config } from "./config.js";
