@@ -5,6 +5,7 @@ import express from "express";
 import cors from "cors";
 import { Server } from "socket.io";
 import { config } from "./config.js";
+import { bindHyperionActivityIo } from "./hyperionActivity.js";
 import { bindHyperionIo } from "./hyperionHeartbeat.js";
 import { registerRoutes, registerSockets } from "./routes.js";
 import { startUdpBridge } from "./udpBridge.js";
@@ -52,6 +53,7 @@ server.listen(config.port, () => {
     console.warn("OPENAI_API_KEY is not set - using local fallback images and itineraries.");
   }
   bindHyperionIo(io);
+  bindHyperionActivityIo(io);
   if (!config.hyperionApi) {
     console.warn("[hyperion] HYPERION_API not set — screen heartbeats will fail until set");
   } else {

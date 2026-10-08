@@ -32,6 +32,7 @@ export function useSession({ syncOnly = false } = {}) {
   const actions = useMemo(
     () => ({
       begin: () => getSocket().emit("experience:begin"),
+      startSession: () => getSocket().emit("experience:sessionStart"),
       selectDestination: (destinationId) =>
         getSocket().emit("experience:selectDestination", { destinationId }),
       answer: (questionIndex, answerId, { advance = true } = {}) =>

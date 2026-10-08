@@ -7,7 +7,7 @@ import ItineraryView from "../components/ItineraryView.jsx";
 
 export default function DisplayScreen() {
   return (
-    <ScreenChrome role="display">
+    <ScreenChrome role="display" syncOnly>
       {({ state }) => {
         const destination = getDestination(state.destination);
         const showFlightCard = state.phase === "reveal";

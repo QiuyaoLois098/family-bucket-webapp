@@ -24,6 +24,8 @@ export const INITIAL_STATE = {
   itinerary: null,
   imageStatus: "idle",
   itineraryStatus: "idle",
+  /** Hyperion FBL session id — set on first interactive click; cleared on reset */
+  hyperionSessionId: null,
   lastEvent: "init",
   updatedAt: 0,
 };

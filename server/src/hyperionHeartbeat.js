@@ -6,6 +6,7 @@
  * Custom events live in hyperionEvents.js.
  */
 
+import { recordHyperionActivity } from "./hyperionActivity.js";
 import { config } from "./config.js";
 import { session } from "./session.js";
 import { vrboV2Session } from "./vrboV2Session.js";
@@ -201,9 +202,32 @@ export async function sendHeartbeat(device, { healthStatus, applicationMetrics }
 export async function forwardHeartbeatForPath(path) {
   const device = resolveHyperionDevice(path);
   if (!device) {
-    return { ok: false, skipped: true, status: null, error: `no Hyperion device for path ${path}` };
+    const result = {
+      ok: false,
+      skipped: true,
+      status: null,
+      error: `no Hyperion device for path ${path}`,
+    };
+    recordHyperionActivity({
+      kind: "heartbeat",
+      ...result,
+      path,
+    });
+    return result;
   }
-  return sendHeartbeat(device);
+
+  const result = await sendHeartbeat(device);
+  recordHyperionActivity({
+    kind: "heartbeat",
+    ok: result.ok,
+    status: result.status,
+    error: result.error ?? null,
+    skipped: Boolean(result.skipped),
+    path,
+    sourceId: result.deviceId ?? device.id,
+    deviceLabel: result.deviceLabel ?? device.label,
+  });
+  return result;
 }
 
 export { HEALTH as HYPERION_HEALTH };

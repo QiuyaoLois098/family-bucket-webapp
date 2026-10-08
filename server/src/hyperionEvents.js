@@ -4,11 +4,12 @@
  * POST .../custom-events/events
  * Token: HYPERION_API from .env
  *
- * Build / send helpers only — nothing calls this yet.
+ * Used by FBL / Vrbo experience code to POST catalogue events.
  */
 
 import { randomUUID } from "crypto";
 import { config } from "./config.js";
+import { recordHyperionActivity } from "./hyperionActivity.js";
 
 const PROJECT_SLUG = "expedia-october-2026-event";
 const EVENTS_URL = `https://hyperion.de-yan.com/api/v2/${PROJECT_SLUG}/custom-events/events`;
@@ -81,15 +82,47 @@ export function buildHyperionEventPayload(input) {
 export async function sendHyperionEvent(input) {
   const token = config.hyperionApi;
   if (!token) {
-    return { ok: false, skipped: true, status: null, error: "HYPERION_API not set" };
+    const result = { ok: false, skipped: true, status: null, error: "HYPERION_API not set" };
+    recordHyperionActivity({
+      kind: "event",
+      ...result,
+      slug: input?.slug,
+      sessionId: input?.sessionId,
+      sourceId: input?.sourceId,
+      deviceLabel: input?.fieldData?.device,
+    });
+    return result;
   }
 
   let payload;
   try {
     payload = buildHyperionEventPayload(input);
   } catch (error) {
-    return { ok: false, skipped: true, status: null, error: error?.message || String(error) };
+    const result = {
+      ok: false,
+      skipped: true,
+      status: null,
+      error: error?.message || String(error),
+    };
+    recordHyperionActivity({
+      kind: "event",
+      ...result,
+      slug: input?.slug,
+      sessionId: input?.sessionId,
+      sourceId: input?.sourceId,
+      deviceLabel: input?.fieldData?.device,
+    });
+    return result;
   }
+
+  const activityBase = {
+    kind: "event",
+    slug: /** @type {string} */ (payload.slug),
+    sessionId: /** @type {string|undefined} */ (payload.sessionId) ?? null,
+    eventKey: /** @type {string} */ (payload.eventKey),
+    sourceId: /** @type {string} */ (payload.sourceId),
+    deviceLabel: /** @type {any} */ (payload.fieldData)?.device ?? null,
+  };
 
   try {
     const response = await fetch(EVENTS_URL, {
@@ -103,30 +136,46 @@ export async function sendHyperionEvent(input) {
     });
 
     if (response.ok) {
-      return {
+      const result = {
         ok: true,
         status: response.status,
         eventKey: /** @type {string} */ (payload.eventKey),
         payload,
       };
+      recordHyperionActivity({ ...activityBase, ok: true, status: response.status });
+      return result;
     }
 
     const text = await response.text().catch(() => "");
-    return {
+    const result = {
       ok: false,
       status: response.status,
       error: `HTTP ${response.status}${text ? `: ${text.slice(0, 180)}` : ""}`,
       eventKey: /** @type {string} */ (payload.eventKey),
       payload,
     };
+    recordHyperionActivity({
+      ...activityBase,
+      ok: false,
+      status: response.status,
+      error: result.error,
+    });
+    return result;
   } catch (error) {
-    return {
+    const result = {
       ok: false,
       status: null,
       error: error?.message || String(error),
       eventKey: /** @type {string} */ (payload.eventKey),
       payload,
     };
+    recordHyperionActivity({
+      ...activityBase,
+      ok: false,
+      status: null,
+      error: result.error,
+    });
+    return result;
   }
 }
 

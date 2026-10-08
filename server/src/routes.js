@@ -4,6 +4,7 @@ import { generateDestinationImage, generateItinerary } from "./openaiService.js"
 import { config } from "./config.js";
 import { DESTINATIONS } from "../../shared/destinations.js";
 import { QUESTIONS } from "../../shared/questions.js";
+import { getHyperionActivity } from "./hyperionActivity.js";
 import { forwardHeartbeatForPath, resolveHyperionDevice } from "./hyperionHeartbeat.js";
 
 export function registerRoutes(app) {
@@ -85,6 +86,10 @@ export function registerRoutes(app) {
 
 export function registerSockets(io) {
   io.on("connection", (socket) => {
+    socket.on("hyperion:subscribe", () => {
+      socket.emit("hyperion:activity:list", getHyperionActivity());
+    });
+
     socket.on("session:join", () => {
       session.reset("page-load");
     });
@@ -93,6 +98,7 @@ export function registerSockets(io) {
     });
 
     socket.on("experience:begin", () => session.begin());
+    socket.on("experience:sessionStart", () => session.startHyperionSession());
     socket.on("experience:selectDestination", (payload) => {
       session.selectDestination(payload?.destinationId);
     });

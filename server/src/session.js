@@ -1,9 +1,19 @@
+import { randomUUID } from "crypto";
 import { EventEmitter } from "events";
 import { INITIAL_STATE, PHASES, pickRandomDestinations } from "../../shared/index.js";
 import { DESTINATIONS, getDestination } from "../../shared/destinations.js";
 import { QUESTIONS } from "../../shared/questions.js";
 import { config } from "./config.js";
+import {
+  HYPERION_STATIONS,
+  sendHyperionEvent,
+} from "./hyperionEvents.js";
 import { generateDestinationImage, generateItinerary } from "./openaiService.js";
+
+const FBL_INTERACTIVE = {
+  id: "expedia-oct26-fbl-interactive",
+  label: "interactive",
+};
 
 function cloneState(state) {
   return JSON.parse(JSON.stringify(state));
@@ -27,6 +37,8 @@ export class ExperienceSession extends EventEmitter {
     this.revealTimer = null;
     this.lastInteractionAt = Date.now();
     this.inputQuietUntil = 0;
+    /** Wall-clock start for Hyperion duration_seconds (cleared on session end). */
+    this.hyperionSessionStartedAt = null;
 
     setInterval(() => this.checkInactivity(), 1000);
   }
@@ -60,14 +72,108 @@ export class ExperienceSession extends EventEmitter {
   checkInactivity() {
     if (this.state.phase === PHASES.DESTINATION && !this.state.destination) return;
     if (this.state.phase === PHASES.IDLE) return;
-    // Stay on the finale until the guest starts over manually.
-    if (this.state.phase === PHASES.ITINERARY) return;
     if (Date.now() - this.lastInteractionAt < config.inactivityTimeoutMs) return;
     this.reset("inactivity");
   }
 
   begin() {
     this.reset("begin");
+  }
+
+  /**
+   * First pointer interaction on the interactive display starts a Hyperion FBL session.
+   * Idempotent — later clicks reuse the same sessionId and do not re-send.
+   */
+  startHyperionSession() {
+    this.touch();
+    if (this.state.hyperionSessionId) {
+      return this.state.hyperionSessionId;
+    }
+
+    const sessionId = randomUUID();
+    this.hyperionSessionStartedAt = Date.now();
+    this.set({ hyperionSessionId: sessionId }, "hyperion-fbl-session-start");
+
+    sendHyperionEvent({
+      slug: "fbl_session_start",
+      stationId: HYPERION_STATIONS.FAMILY_BUCKET_LIST,
+      sessionId,
+      sourceId: FBL_INTERACTIVE.id,
+      fieldData: {
+        device: FBL_INTERACTIVE.label,
+      },
+    })
+      .then((result) => {
+        if (result.ok) {
+          console.log(`[hyperion] fbl_session_start ok · ${sessionId}`);
+        } else if (!result.skipped) {
+          console.warn(`[hyperion] fbl_session_start failed: ${result.error}`);
+        } else {
+          console.warn(`[hyperion] fbl_session_start skipped: ${result.error}`);
+        }
+      })
+      .catch((error) => {
+        console.warn("[hyperion] fbl_session_start error:", error?.message || error);
+      });
+
+    return sessionId;
+  }
+
+  /**
+   * End an active Hyperion FBL session (idempotent if none).
+   * @param {"completed"|"abandoned"|"timeout"|"reset"} reason
+   */
+  endHyperionSession(reason) {
+    const sessionId = this.state.hyperionSessionId;
+    if (!sessionId) {
+      this.hyperionSessionStartedAt = null;
+      return;
+    }
+
+    const startedAt = this.hyperionSessionStartedAt;
+    const durationSeconds = startedAt
+      ? Math.max(0, Math.round((Date.now() - startedAt) / 1000))
+      : 0;
+
+    this.hyperionSessionStartedAt = null;
+
+    sendHyperionEvent({
+      slug: "fbl_session_end",
+      stationId: HYPERION_STATIONS.FAMILY_BUCKET_LIST,
+      sessionId,
+      sourceId: FBL_INTERACTIVE.id,
+      fieldData: {
+        device: FBL_INTERACTIVE.label,
+        reason,
+        duration_seconds: durationSeconds,
+      },
+    })
+      .then((result) => {
+        if (result.ok) {
+          console.log(
+            `[hyperion] fbl_session_end ok · ${reason} · ${durationSeconds}s · ${sessionId}`,
+          );
+        } else if (!result.skipped) {
+          console.warn(`[hyperion] fbl_session_end failed: ${result.error}`);
+        } else {
+          console.warn(`[hyperion] fbl_session_end skipped: ${result.error}`);
+        }
+      })
+      .catch((error) => {
+        console.warn("[hyperion] fbl_session_end error:", error?.message || error);
+      });
+  }
+
+  /** Map reset trigger + current phase → Hyperion fbl_session_end reason. */
+  resolveSessionEndReason(resetReason) {
+    const onItinerary = this.state.phase === PHASES.ITINERARY;
+    if (resetReason === "inactivity") {
+      return onItinerary ? "timeout" : "abandoned";
+    }
+    if (resetReason === "manual") {
+      return onItinerary ? "completed" : "abandoned";
+    }
+    return "reset";
   }
 
   selectDestination(destinationId, force = false) {
@@ -97,6 +203,51 @@ export class ExperienceSession extends EventEmitter {
     this.startImageGeneration();
   }
 
+  /**
+   * Hyperion fbl_choice_made — once per newly locked answer.
+   * step / question_id = 1..3; choice_id = "1-a", "1-b", …
+   */
+  emitChoiceMade(questionIndex, answerId) {
+    const question = QUESTIONS[questionIndex];
+    const optionIndex = question?.options.findIndex((option) => option.id === answerId);
+    const option = optionIndex >= 0 ? question.options[optionIndex] : null;
+    if (!question || !option) return;
+
+    const step = questionIndex + 1;
+    const choiceLetter = String.fromCharCode(97 + optionIndex); // a, b, c…
+    const sessionId = this.state.hyperionSessionId || this.startHyperionSession();
+
+    sendHyperionEvent({
+      slug: "fbl_choice_made",
+      stationId: HYPERION_STATIONS.FAMILY_BUCKET_LIST,
+      sessionId,
+      sourceId: FBL_INTERACTIVE.id,
+      fieldData: {
+        device: FBL_INTERACTIVE.label,
+        step,
+        question_id: step,
+        question_label: question.prompt,
+        choice_id: `${step}-${choiceLetter}`,
+        choice_label: option.label,
+        screen: `question ${step}`,
+      },
+    })
+      .then((result) => {
+        if (result.ok) {
+          console.log(
+            `[hyperion] fbl_choice_made ok · q${step} ${step}-${choiceLetter} · ${sessionId}`,
+          );
+        } else if (!result.skipped) {
+          console.warn(`[hyperion] fbl_choice_made failed: ${result.error}`);
+        } else {
+          console.warn(`[hyperion] fbl_choice_made skipped: ${result.error}`);
+        }
+      })
+      .catch((error) => {
+        console.warn("[hyperion] fbl_choice_made error:", error?.message || error);
+      });
+  }
+
   answerQuestion(questionIndex, answerId, force = false, { advance = true } = {}) {
     this.touch();
     if (!this.canAcceptInput(force)) return;
@@ -110,7 +261,12 @@ export class ExperienceSession extends EventEmitter {
     const lockedId = this.state.answers[questionIndex];
     if (lockedId && lockedId !== answerId) return;
 
+    const isNewChoice = !lockedId;
     const answers = lockedId ? this.state.answers : [...this.state.answers, answerId];
+
+    if (isNewChoice) {
+      this.emitChoiceMade(questionIndex, answerId);
+    }
 
     if (!advance) {
       if (!lockedId) {
@@ -263,6 +419,7 @@ export class ExperienceSession extends EventEmitter {
     this.imageJobId += 1;
     this.itineraryJobId += 1;
     clearTimeout(this.revealTimer);
+    this.endHyperionSession(this.resolveSessionEndReason(reason));
     const previous = this.state.offeredDestinations;
     this.set(homeState(previous), `reset:${reason}`);
   }
