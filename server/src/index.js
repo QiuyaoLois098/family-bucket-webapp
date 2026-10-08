@@ -5,6 +5,7 @@ import express from "express";
 import cors from "cors";
 import { Server } from "socket.io";
 import { config } from "./config.js";
+import { startHyperionHeartbeat } from "./hyperionLogging.js";
 import { registerRoutes, registerSockets } from "./routes.js";
 import { startUdpBridge } from "./udpBridge.js";
 
@@ -41,11 +42,12 @@ server.listen(config.port, () => {
   console.log(`Vrbo v2 combined:    http://localhost:${config.port}/vrbo-v2`);
   console.log(`Vrbo left (chat):    http://localhost:${config.port}/vrbo-left`);
   console.log(`Vrbo right (search): http://localhost:${config.port}/vrbo-right`);
-  console.log(`Vrbo Sarah:          http://localhost:${config.port}/sarah`);
-  console.log(`Vrbo Alex:           http://localhost:${config.port}/alex`);
-  console.log(`Vrbo Chris:          http://localhost:${config.port}/chris`);
+  console.log(`Vrbo iPhone 1:       http://localhost:${config.port}/vrbo-ip1`);
+  console.log(`Vrbo iPhone 2:       http://localhost:${config.port}/vrbo-ip2`);
+  console.log(`Vrbo iPhone 3:       http://localhost:${config.port}/vrbo-ip3`);
   console.log(`UDP monitor:         http://localhost:${config.port}/udp`);
   if (!config.openaiApiKey) {
     console.warn("OPENAI_API_KEY is not set - using local fallback images and itineraries.");
   }
+  startHyperionHeartbeat({ io });
 });

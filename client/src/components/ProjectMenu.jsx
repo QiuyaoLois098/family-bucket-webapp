@@ -14,7 +14,7 @@ export default function ProjectMenu({ hideOnPaths } = {}) {
       ? hideOnPaths.has(location.pathname)
       : Array.isArray(hideOnPaths)
         ? hideOnPaths.includes(location.pathname)
-        : location.pathname === "/sarah");
+        : location.pathname === "/vrbo-ip1");
 
   useEffect(() => {
     setInFrame(window.self !== window.top);

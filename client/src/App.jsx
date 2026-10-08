@@ -15,9 +15,9 @@ import VrboV2Screen, {
 const DEVICE_PATHS = new Set([
   "/vrbo-left",
   "/vrbo-right",
-  "/sarah",
-  "/alex",
-  "/chris",
+  "/vrbo-ip1",
+  "/vrbo-ip2",
+  "/vrbo-ip3",
   "/vrbo-ba",
   "/expedia-ba",
   "/udp",
@@ -32,10 +32,13 @@ export default function App() {
         <Route path="/vrbo-v2" element={<VrboV2Screen />} />
         <Route path="/vrbo-left" element={<VrboLeftPage />} />
         <Route path="/vrbo-right" element={<VrboRightPage />} />
-        <Route path="/sarah" element={<GuestPhonePage guestId="sarah" />} />
-        <Route path="/alex" element={<GuestPhonePage guestId="alex" />} />
-        <Route path="/chris" element={<GuestPhonePage guestId="chris" />} />
-        <Route path="/vrbo-v2/sarah" element={<Navigate to="/sarah" replace />} />
+        <Route path="/vrbo-ip1" element={<GuestPhonePage guestId="sarah" />} />
+        <Route path="/vrbo-ip2" element={<GuestPhonePage guestId="alex" />} />
+        <Route path="/vrbo-ip3" element={<GuestPhonePage guestId="chris" />} />
+        <Route path="/sarah" element={<Navigate to="/vrbo-ip1" replace />} />
+        <Route path="/alex" element={<Navigate to="/vrbo-ip2" replace />} />
+        <Route path="/chris" element={<Navigate to="/vrbo-ip3" replace />} />
+        <Route path="/vrbo-v2/sarah" element={<Navigate to="/vrbo-ip1" replace />} />
         <Route path="/vrbo-ba" element={<VrboBaScreen />} />
         <Route path="/expedia-ba" element={<ExpediaBaScreen />} />
         <Route path="/udp" element={<UdpScreen />} />

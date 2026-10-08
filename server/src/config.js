@@ -21,4 +21,7 @@ export const config = {
   revealHoldMs: Number(process.env.REVEAL_HOLD_MS || 4000),
   openaiTimeoutMs: Number(process.env.OPENAI_TIMEOUT_MS || 45000),
   memorySlideMs: Number(process.env.MEMORY_SLIDE_MS || 7000),
+
+  // Hyperion token only — devices / interval / event slug live in hyperionLogging.js
+  hyperionApi: process.env.HYPERION_API || "",
 };

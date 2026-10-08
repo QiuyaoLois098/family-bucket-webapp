@@ -120,9 +120,9 @@ Five-screen installation (or one combined preview). Shared state syncs over Sock
 http://localhost:5188/vrbo-v2          # combined preview
 http://localhost:5188/vrbo-left        # Display 1 · group chat
 http://localhost:5188/vrbo-right       # Display 2 · group search
-http://localhost:5188/sarah            # guest phone
-http://localhost:5188/alex
-http://localhost:5188/chris
+http://localhost:5188/vrbo-ip1         # guest phone (Sarah)
+http://localhost:5188/vrbo-ip2         # guest phone (Alex)
+http://localhost:5188/vrbo-ip3         # guest phone (Chris)
 http://localhost:5188/vrbo-ba          # BA remote · Restart
 ```
 
