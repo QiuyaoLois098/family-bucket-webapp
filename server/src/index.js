@@ -39,6 +39,8 @@ server.listen(config.port, () => {
   console.log(`Family Bucket List server listening on http://localhost:${config.port}`);
   console.log(`Screen A (control):  http://localhost:${config.port}/control`);
   console.log(`Screen B (display):  http://localhost:${config.port}/display`);
+  console.log(`Expedia left:        http://localhost:${config.port}/expedia-left`);
+  console.log(`Expedia right:       http://localhost:${config.port}/expedia-right`);
   console.log(`Vrbo v2 combined:    http://localhost:${config.port}/vrbo-v2`);
   console.log(`Vrbo left (chat):    http://localhost:${config.port}/vrbo-left`);
   console.log(`Vrbo right (search): http://localhost:${config.port}/vrbo-right`);

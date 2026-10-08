@@ -8,6 +8,8 @@ export const PROJECTS = [
       pathname === "/" ||
       pathname.startsWith("/control") ||
       pathname.startsWith("/display") ||
+      pathname === "/expedia-left" ||
+      pathname === "/expedia-right" ||
       pathname === "/expedia-ba",
   },
   {

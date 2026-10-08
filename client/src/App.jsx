@@ -4,6 +4,10 @@ import ProjectMenu from "./components/ProjectMenu.jsx";
 import ControlScreen from "./screens/ControlScreen.jsx";
 import DisplayScreen from "./screens/DisplayScreen.jsx";
 import ExpediaBaScreen from "./screens/ExpediaBaScreen.jsx";
+import {
+  ExpediaLeftPage,
+  ExpediaRightPage,
+} from "./screens/ExpediaPortraitScreens.jsx";
 import PreviewScreen from "./screens/PreviewScreen.jsx";
 import UdpScreen from "./screens/UdpScreen.jsx";
 import VrboBaScreen from "./screens/VrboBaScreen.jsx";
@@ -15,6 +19,8 @@ import VrboV2Screen, {
 } from "./screens/VrboV2Screen.jsx";
 
 const DEVICE_PATHS = new Set([
+  "/expedia-left",
+  "/expedia-right",
   "/vrbo-left",
   "/vrbo-right",
   "/vrbo-ip1",
@@ -34,6 +40,8 @@ export default function App() {
       <HyperionDevOverlay heartbeat={heartbeat} />
       <Routes>
         <Route path="/" element={<PreviewScreen />} />
+        <Route path="/expedia-left" element={<ExpediaLeftPage />} />
+        <Route path="/expedia-right" element={<ExpediaRightPage />} />
         <Route path="/vrbo-v2" element={<VrboV2Screen />} />
         <Route path="/vrbo-left" element={<VrboLeftPage />} />
         <Route path="/vrbo-right" element={<VrboRightPage />} />

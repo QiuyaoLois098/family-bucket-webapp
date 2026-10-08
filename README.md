@@ -62,12 +62,14 @@ This starts:
 
 ```
 http://localhost:5188/control
+http://localhost:5188/expedia-left   # same UI, locked 1080×1920 letterbox
 ```
 
 ## 5. Open Screen B (visual)
 
 ```
 http://localhost:5188/display
+http://localhost:5188/expedia-right  # same UI, locked 1080×1920 letterbox
 ```
 
 ## 6. Test both screens side-by-side
