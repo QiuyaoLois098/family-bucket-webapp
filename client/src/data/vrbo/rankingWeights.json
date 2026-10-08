@@ -1,8 +1,0 @@
-{
-  "weightMode": "linear",
-  "explicitWeights": [3, 2, 1],
-  "minimumWeight": 1,
-  "unmatchedWeight": 0,
-  "resultCount": 2,
-  "resultBadges": ["Best match", "Runner up"]
-}

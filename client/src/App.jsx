@@ -3,11 +3,9 @@ import ProjectMenu from "./components/ProjectMenu.jsx";
 import ControlScreen from "./screens/ControlScreen.jsx";
 import DisplayScreen from "./screens/DisplayScreen.jsx";
 import ExpediaBaScreen from "./screens/ExpediaBaScreen.jsx";
-import NycMapScreen from "./screens/NycMapScreen.jsx";
 import PreviewScreen from "./screens/PreviewScreen.jsx";
 import UdpScreen from "./screens/UdpScreen.jsx";
 import VrboBaScreen from "./screens/VrboBaScreen.jsx";
-import VrboScreen from "./screens/VrboScreen.jsx";
 import VrboV2Screen, {
   GuestPhonePage,
   VrboLeftPage,
@@ -31,8 +29,6 @@ export default function App() {
       <ProjectMenu hideOnPaths={DEVICE_PATHS} />
       <Routes>
         <Route path="/" element={<PreviewScreen />} />
-        <Route path="/map" element={<NycMapScreen />} />
-        <Route path="/vrbo" element={<VrboScreen />} />
         <Route path="/vrbo-v2" element={<VrboV2Screen />} />
         <Route path="/vrbo-left" element={<VrboLeftPage />} />
         <Route path="/vrbo-right" element={<VrboRightPage />} />
