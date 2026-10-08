@@ -1,8 +1,8 @@
 /**
- * Hyperion logging client — shared by Family Bucket List and Vrbo.
- * Heartbeat: POST .../hardware/<DEVICE_ID>/heartbeat
+ * Hyperion logging — shared by Family Bucket List and Vrbo.
+ * Client screens POST /api/hyperion/heartbeat; this module forwards to Hyperion.
  *
- * Device IDs and related options are specified here (not in .env).
+ * Device map is specified here (not in .env). Token: HYPERION_API.
  */
 
 import { config } from "./config.js";
@@ -11,16 +11,22 @@ import { vrboV2Session } from "./vrboV2Session.js";
 
 const EVENT_SLUG = "expedia-october-2026-event";
 const BASE_URL = `https://hyperion.de-yan.com/api/v2/${EVENT_SLUG}`;
-const HEARTBEAT_MS = 30_000;
 
 /**
- * Hardware table DEVICE_IDs — fill in when ready.
- * @type {{ id: string, label: string }[]}
+ * URL path → Hyperion hardware device (from event hardware table).
+ * Device value is sent as applicationMetrics.device.
  */
-const DEVICES = [
-  // { id: "<DEVICE_ID>", label: "phone-1" },
-  // { id: "<DEVICE_ID>", label: "display-1" },
-];
+export const HYPERION_DEVICES_BY_PATH = Object.freeze({
+  "/vrbo-left": { id: "expedia-oct26-vgc-organizer", label: "output" },
+  "/vrbo-right": { id: "expedia-oct26-vgc-output", label: "organizer" },
+  "/vrbo-ip1": { id: "expedia-oct26-vgc-phone-1", label: "phone-1" },
+  "/vrbo-ip2": { id: "expedia-oct26-vgc-phone-2", label: "phone-2" },
+  "/vrbo-ip3": { id: "expedia-oct26-vgc-phone-3", label: "phone-3" },
+  // Legacy phone paths (redirected on client, still accepted here)
+  "/sarah": { id: "expedia-oct26-vgc-phone-1", label: "phone-1" },
+  "/alex": { id: "expedia-oct26-vgc-phone-2", label: "phone-2" },
+  "/chris": { id: "expedia-oct26-vgc-phone-3", label: "phone-3" },
+});
 
 const HEALTH = Object.freeze({
   HEALTHY: "HEALTHY",
@@ -29,7 +35,6 @@ const HEALTH = Object.freeze({
 });
 
 let overrideHealth = null;
-let timer = null;
 let startedAt = Date.now();
 let consecutiveFailures = 0;
 let lastOkAt = null;
@@ -42,6 +47,17 @@ export function setHyperionHealth(status) {
     throw new Error(`Invalid Hyperion healthStatus: ${status}`);
   }
   overrideHealth = status;
+}
+
+export function bindHyperionIo(io) {
+  ioRef = io ?? null;
+  startedAt = Date.now();
+}
+
+export function resolveHyperionDevice(path) {
+  if (!path || typeof path !== "string") return null;
+  const normalized = path.startsWith("/") ? path : `/${path}`;
+  return HYPERION_DEVICES_BY_PATH[normalized] ?? null;
 }
 
 function familyInSession(fb) {
@@ -103,21 +119,16 @@ export function collectApplicationMetrics(deviceLabel) {
       selectedPropertyId: vrbo.selectedPropertyId ?? null,
       inSession: vrboInSession(vrbo),
     },
-    hyperion: {
-      consecutiveFailures,
-      lastOkAt,
-      lastError,
-    },
   };
 }
 
 export async function sendHeartbeat(device, { healthStatus, applicationMetrics } = {}) {
   const token = config.hyperionApi;
   if (!token) {
-    return { ok: false, skipped: true, error: "HYPERION_API not set" };
+    return { ok: false, skipped: true, status: null, error: "HYPERION_API not set" };
   }
   if (!device?.id) {
-    return { ok: false, skipped: true, error: "missing device id" };
+    return { ok: false, skipped: true, status: null, error: "missing device id" };
   }
 
   const family = session.snapshot();
@@ -146,74 +157,47 @@ export async function sendHeartbeat(device, { healthStatus, applicationMetrics }
       consecutiveFailures = 0;
       lastOkAt = Date.now();
       lastError = null;
-      return { ok: true, status: response.status, deviceId: device.id };
+      return {
+        ok: true,
+        status: response.status,
+        deviceId: device.id,
+        deviceLabel: device.label,
+        healthStatus: status,
+      };
     }
 
     const text = await response.text().catch(() => "");
     consecutiveFailures += 1;
     lastError = `HTTP ${response.status}${text ? `: ${text.slice(0, 180)}` : ""}`;
-    return { ok: false, status: response.status, error: lastError, deviceId: device.id };
+    return {
+      ok: false,
+      status: response.status,
+      error: lastError,
+      deviceId: device.id,
+      deviceLabel: device.label,
+      healthStatus: status,
+    };
   } catch (error) {
     consecutiveFailures += 1;
     lastError = error?.message || String(error);
-    return { ok: false, error: lastError, deviceId: device.id };
+    return {
+      ok: false,
+      status: null,
+      error: lastError,
+      deviceId: device.id,
+      deviceLabel: device.label,
+      healthStatus: status,
+    };
   }
 }
 
-async function tick() {
-  if (!DEVICES.length) return;
-
-  for (const device of DEVICES) {
-    const result = await sendHeartbeat(device);
-    if (result.skipped) continue;
-    if (result.ok) {
-      console.log(`[hyperion] heartbeat ok · ${device.label} (${device.id})`);
-    } else {
-      console.warn(`[hyperion] heartbeat failed · ${device.label}: ${result.error}`);
-    }
+/** Resolve path → device and forward one heartbeat to Hyperion. */
+export async function forwardHeartbeatForPath(path) {
+  const device = resolveHyperionDevice(path);
+  if (!device) {
+    return { ok: false, skipped: true, status: null, error: `no Hyperion device for path ${path}` };
   }
-}
-
-/**
- * Start the shared Hyperion heartbeat loop (Family Bucket + Vrbo).
- * @param {{ io?: import("socket.io").Server }} [options]
- */
-export function startHyperionHeartbeat({ io } = {}) {
-  if (timer) return;
-
-  ioRef = io ?? null;
-  startedAt = Date.now();
-
-  if (!config.hyperionApi) {
-    console.warn("[hyperion] HYPERION_API not set — heartbeat disabled");
-    return;
-  }
-
-  if (!DEVICES.length) {
-    console.warn("[hyperion] no devices in DEVICES — edit server/src/hyperionLogging.js");
-    return;
-  }
-
-  console.log(
-    `[hyperion] heartbeat every ${HEARTBEAT_MS}ms for ${DEVICES.map((d) => `${d.label}:${d.id}`).join(", ")}`,
-  );
-
-  setTimeout(() => {
-    tick().catch((error) => console.warn("[hyperion] tick error:", error?.message || error));
-  }, 1500);
-
-  timer = setInterval(() => {
-    tick().catch((error) => console.warn("[hyperion] tick error:", error?.message || error));
-  }, HEARTBEAT_MS);
-
-  if (typeof timer.unref === "function") timer.unref();
-}
-
-export function stopHyperionHeartbeat() {
-  if (timer) {
-    clearInterval(timer);
-    timer = null;
-  }
+  return sendHeartbeat(device);
 }
 
 export { HEALTH as HYPERION_HEALTH };

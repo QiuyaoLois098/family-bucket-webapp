@@ -65,3 +65,63 @@
 .is-off {
   color: var(--sky);
 }
+
+/* Hyperion heartbeat debug — enable with ?dev=1 */
+.hyperion-dev {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 9999;
+  min-width: 168px;
+  max-width: min(280px, calc(100vw - 20px));
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.88);
+  color: #f8fafc;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  line-height: 1.35;
+  pointer-events: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+}
+
+.hyperion-dev__title {
+  margin: 0 0 6px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.hyperion-dev p {
+  margin: 2px 0;
+  word-break: break-word;
+}
+
+.hyperion-dev p span {
+  display: inline-block;
+  min-width: 52px;
+  opacity: 0.55;
+}
+
+.hyperion-dev__error {
+  margin-top: 6px !important;
+  color: #fecaca;
+}
+
+.hyperion-dev.is-ok {
+  outline: 1px solid rgba(74, 222, 128, 0.55);
+}
+
+.hyperion-dev.is-bad {
+  outline: 1px solid rgba(248, 113, 113, 0.65);
+}
+
+.hyperion-dev.is-pending {
+  outline: 1px solid rgba(250, 204, 21, 0.55);
+}
+
+.hyperion-dev.is-muted {
+  outline: 1px solid rgba(148, 163, 184, 0.35);
+  opacity: 0.85;
+}

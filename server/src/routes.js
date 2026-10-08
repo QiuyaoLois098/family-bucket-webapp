@@ -4,6 +4,7 @@ import { generateDestinationImage, generateItinerary } from "./openaiService.js"
 import { config } from "./config.js";
 import { DESTINATIONS } from "../../shared/destinations.js";
 import { QUESTIONS } from "../../shared/questions.js";
+import { forwardHeartbeatForPath, resolveHyperionDevice } from "./hyperionLogging.js";
 
 export function registerRoutes(app) {
   app.get("/api/health", (_req, res) => {
@@ -12,6 +13,37 @@ export function registerRoutes(app) {
       hasOpenAiKey: Boolean(config.openaiApiKey),
       textModel: config.textModel,
       imageModel: config.imageModel,
+    });
+  });
+
+  /** Client screen heartbeat → Hyperion hardware DEVICE_ID */
+  app.post("/api/hyperion/heartbeat", async (req, res) => {
+    const path = req.body?.path;
+    if (!path || typeof path !== "string") {
+      res.status(400).json({ ok: false, error: "path is required" });
+      return;
+    }
+
+    const device = resolveHyperionDevice(path);
+    if (!device) {
+      res.status(404).json({ ok: false, error: `no Hyperion device for path ${path}`, path });
+      return;
+    }
+
+    const result = await forwardHeartbeatForPath(path);
+    if (result.skipped && result.error === "HYPERION_API not set") {
+      res.status(503).json({ ...result, path });
+      return;
+    }
+
+    res.status(200).json({
+      ok: Boolean(result.ok),
+      status: result.status,
+      error: result.error ?? null,
+      path,
+      deviceId: result.deviceId ?? device.id,
+      deviceLabel: result.deviceLabel ?? device.label,
+      healthStatus: result.healthStatus ?? null,
     });
   });
 

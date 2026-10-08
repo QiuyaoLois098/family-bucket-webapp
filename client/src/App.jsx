@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import HyperionDevOverlay from "./components/HyperionDevOverlay.jsx";
 import ProjectMenu from "./components/ProjectMenu.jsx";
 import ControlScreen from "./screens/ControlScreen.jsx";
 import DisplayScreen from "./screens/DisplayScreen.jsx";
@@ -6,6 +7,7 @@ import ExpediaBaScreen from "./screens/ExpediaBaScreen.jsx";
 import PreviewScreen from "./screens/PreviewScreen.jsx";
 import UdpScreen from "./screens/UdpScreen.jsx";
 import VrboBaScreen from "./screens/VrboBaScreen.jsx";
+import useHyperionHeartbeat from "./hooks/useHyperionHeartbeat.js";
 import VrboV2Screen, {
   GuestPhonePage,
   VrboLeftPage,
@@ -24,9 +26,12 @@ const DEVICE_PATHS = new Set([
 ]);
 
 export default function App() {
+  const heartbeat = useHyperionHeartbeat();
+
   return (
     <>
       <ProjectMenu hideOnPaths={DEVICE_PATHS} />
+      <HyperionDevOverlay heartbeat={heartbeat} />
       <Routes>
         <Route path="/" element={<PreviewScreen />} />
         <Route path="/vrbo-v2" element={<VrboV2Screen />} />
