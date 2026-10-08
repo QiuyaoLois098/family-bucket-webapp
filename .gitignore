@@ -1,6 +1,5 @@
 node_modules
 dist
-.env
 server/generated/*
 !server/generated/.gitkeep
 .DS_Store
