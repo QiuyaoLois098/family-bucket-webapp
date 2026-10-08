@@ -79,6 +79,14 @@ export function buildHyperionEventPayload(input) {
  * @param {HyperionEventInput} input
  * @returns {Promise<{ ok: boolean, status: number|null, skipped?: boolean, error?: string, eventKey?: string, payload?: object }>}
  */
+function eventRequestLog(payloadOrInput) {
+  return {
+    method: "POST",
+    url: EVENTS_URL,
+    body: payloadOrInput ?? null,
+  };
+}
+
 export async function sendHyperionEvent(input) {
   const token = config.hyperionApi;
   if (!token) {
@@ -90,6 +98,13 @@ export async function sendHyperionEvent(input) {
       sessionId: input?.sessionId,
       sourceId: input?.sourceId,
       deviceLabel: input?.fieldData?.device,
+      request: eventRequestLog({
+        slug: input?.slug,
+        stationId: input?.stationId,
+        sourceId: input?.sourceId,
+        sessionId: input?.sessionId,
+        fieldData: input?.fieldData,
+      }),
     });
     return result;
   }
@@ -111,10 +126,18 @@ export async function sendHyperionEvent(input) {
       sessionId: input?.sessionId,
       sourceId: input?.sourceId,
       deviceLabel: input?.fieldData?.device,
+      request: eventRequestLog({
+        slug: input?.slug,
+        stationId: input?.stationId,
+        sourceId: input?.sourceId,
+        sessionId: input?.sessionId,
+        fieldData: input?.fieldData,
+      }),
     });
     return result;
   }
 
+  const request = eventRequestLog(payload);
   const activityBase = {
     kind: "event",
     slug: /** @type {string} */ (payload.slug),
@@ -122,6 +145,7 @@ export async function sendHyperionEvent(input) {
     eventKey: /** @type {string} */ (payload.eventKey),
     sourceId: /** @type {string} */ (payload.sourceId),
     deviceLabel: /** @type {any} */ (payload.fieldData)?.device ?? null,
+    request,
   };
 
   try {

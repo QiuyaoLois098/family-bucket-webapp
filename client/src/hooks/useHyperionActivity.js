@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getSocket } from "../socket.js";
 
-const MAX = 24;
+const MAX = 5;
 
 /**
- * Live Hyperion request log (heartbeats + custom events) when ?dev=1.
+ * Latest Hyperion custom-event logs when ?dev=1.
  * Server broadcasts via Socket.IO.
  */
 export default function useHyperionActivity() {
@@ -26,12 +26,17 @@ export default function useHyperionActivity() {
 
     const socket = getSocket();
 
+    const onlyEvents = (list) =>
+      (Array.isArray(list) ? list : [])
+        .filter((item) => item?.kind === "event")
+        .slice(0, MAX);
+
     const onList = (list) => {
-      setEntries(Array.isArray(list) ? list.slice(0, MAX) : []);
+      setEntries(onlyEvents(list));
     };
 
     const onItem = (item) => {
-      if (!item?.id) return;
+      if (!item?.id || item.kind !== "event") return;
       setEntries((prev) => {
         if (prev.some((e) => e.id === item.id)) return prev;
         return [item, ...prev].slice(0, MAX);

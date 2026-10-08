@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import useHyperionActivity from "../hooks/useHyperionActivity.js";
 
@@ -12,31 +12,57 @@ function shortId(value) {
   return value.length > 12 ? `${value.slice(0, 8)}…` : value;
 }
 
-function EntryRow({ entry }) {
+function formatRequest(entry) {
+  const request = entry.request ?? {
+    slug: entry.slug,
+    sessionId: entry.sessionId,
+    eventKey: entry.eventKey,
+    sourceId: entry.sourceId,
+    device: entry.deviceLabel,
+    error: entry.error,
+  };
+  try {
+    return JSON.stringify(request, null, 2);
+  } catch {
+    return String(request);
+  }
+}
+
+function EntryRow({ entry, expanded, onToggle }) {
   const tone = entry.skipped
     ? "is-muted"
     : entry.ok
       ? "is-ok"
       : "is-bad";
-  const label =
-    entry.kind === "heartbeat"
-      ? `♥ ${entry.deviceLabel || entry.path || "heartbeat"}`
-      : entry.slug || "event";
 
   return (
-    <li className={`hyperion-dev__row ${tone}`}>
-      <div className="hyperion-dev__row-top">
-        <strong>{label}</strong>
-        <span>{entry.status == null ? (entry.skipped ? "skip" : "—") : entry.status}</span>
-      </div>
-      <div className="hyperion-dev__row-meta">
-        {formatTime(entry.at)}
-        {entry.kind === "event" && entry.sessionId ? (
-          <> · sess {shortId(entry.sessionId)}</>
-        ) : null}
-        {entry.kind === "heartbeat" && entry.path ? <> · {entry.path}</> : null}
-      </div>
-      {entry.error ? <div className="hyperion-dev__row-error">{entry.error}</div> : null}
+    <li className={`hyperion-dev__row ${tone} ${expanded ? "is-open" : ""}`}>
+      <button
+        type="button"
+        className="hyperion-dev__row-btn"
+        onClick={onToggle}
+        aria-expanded={expanded}
+      >
+        <div className="hyperion-dev__row-top">
+          <strong>
+            <span className="hyperion-dev__chevron" aria-hidden>
+              {expanded ? "▾" : "▸"}
+            </span>
+            {entry.slug || "event"}
+          </strong>
+          <span>{entry.status == null ? (entry.skipped ? "skip" : "—") : entry.status}</span>
+        </div>
+        <div className="hyperion-dev__row-meta">
+          {formatTime(entry.at)}
+          {entry.sessionId ? <> · sess {shortId(entry.sessionId)}</> : null}
+        </div>
+      </button>
+      {expanded ? (
+        <pre className="hyperion-dev__request">{formatRequest(entry)}</pre>
+      ) : null}
+      {!expanded && entry.error ? (
+        <div className="hyperion-dev__row-error">{entry.error}</div>
+      ) : null}
     </li>
   );
 }
@@ -49,7 +75,8 @@ export default function HyperionDevOverlay({ heartbeat }) {
     return flag === "1" || flag === "true";
   }, [params]);
 
-  const activity = useHyperionActivity();
+  const events = useHyperionActivity();
+  const [openId, setOpenId] = useState(null);
 
   if (!visible) return null;
 
@@ -67,9 +94,6 @@ export default function HyperionDevOverlay({ heartbeat }) {
       : heartbeat.ok
         ? "is-ok"
         : "is-bad";
-
-  const events = activity.filter((e) => e.kind === "event");
-  const recent = activity.slice(0, 12);
 
   return (
     <aside className={`hyperion-dev ${tone}`} aria-live="polite">
@@ -110,16 +134,21 @@ export default function HyperionDevOverlay({ heartbeat }) {
         </div>
       ) : null}
 
-      <div className="hyperion-dev__section">
-        <p className="hyperion-dev__section-title">
-          requests · {events.length ? `${events.length} event` : "live"}
-        </p>
-        {recent.length === 0 ? (
-          <p className="hyperion-dev__empty">No Hyperion requests yet</p>
+      <div className="hyperion-dev__section hyperion-dev__section--events">
+        <p className="hyperion-dev__section-title">events · latest 5</p>
+        {events.length === 0 ? (
+          <p className="hyperion-dev__empty">No events yet</p>
         ) : (
           <ul className="hyperion-dev__list">
-            {recent.map((entry) => (
-              <EntryRow key={entry.id} entry={entry} />
+            {events.map((entry) => (
+              <EntryRow
+                key={entry.id}
+                entry={entry}
+                expanded={openId === entry.id}
+                onToggle={() =>
+                  setOpenId((current) => (current === entry.id ? null : entry.id))
+                }
+              />
             ))}
           </ul>
         )}

@@ -72,9 +72,9 @@
   top: 10px;
   left: 10px;
   z-index: 9999;
-  min-width: 200px;
-  max-width: min(320px, calc(100vw - 20px));
-  max-height: min(70vh, 520px);
+  min-width: 220px;
+  max-width: min(360px, calc(100vw - 20px));
+  max-height: min(75vh, 560px);
   overflow: auto;
   padding: 10px 12px;
   border-radius: 10px;
@@ -85,6 +85,10 @@
   line-height: 1.35;
   pointer-events: none;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+}
+
+.hyperion-dev__section--events {
+  pointer-events: auto;
 }
 
 .hyperion-dev__title {
@@ -146,10 +150,10 @@
 }
 
 .hyperion-dev__row {
-  padding: 5px 6px;
   border-radius: 6px;
   background: rgba(255, 255, 255, 0.04);
   border-left: 2px solid rgba(148, 163, 184, 0.45);
+  overflow: hidden;
 }
 
 .hyperion-dev__row.is-ok {
@@ -163,6 +167,29 @@
 .hyperion-dev__row.is-muted {
   border-left-color: rgba(148, 163, 184, 0.45);
   opacity: 0.75;
+}
+
+.hyperion-dev__row-btn {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 5px 6px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.hyperion-dev__row-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.hyperion-dev__chevron {
+  display: inline-block;
+  width: 1em;
+  opacity: 0.6;
 }
 
 .hyperion-dev__row-top {
@@ -183,9 +210,24 @@
 }
 
 .hyperion-dev__row-error {
-  margin-top: 3px;
+  padding: 0 6px 5px;
   color: #fecaca;
   font-size: 10px;
+  word-break: break-word;
+}
+
+.hyperion-dev__request {
+  margin: 0;
+  padding: 6px 8px 8px;
+  max-height: 220px;
+  overflow: auto;
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(0, 0, 0, 0.28);
+  color: #e2e8f0;
+  font: inherit;
+  font-size: 10px;
+  line-height: 1.4;
+  white-space: pre-wrap;
   word-break: break-word;
 }
 

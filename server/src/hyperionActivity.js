@@ -5,7 +5,7 @@
 
 import { randomUUID } from "crypto";
 
-const MAX_ENTRIES = 24;
+const MAX_ENTRIES = 40;
 
 /** @type {import("socket.io").Server | null} */
 let ioRef = null;
@@ -33,6 +33,7 @@ export function getHyperionActivity() {
  * @param {string} [entry.deviceLabel]
  * @param {string} [entry.path]
  * @param {boolean} [entry.skipped]
+ * @param {object} [entry.request] Full outbound request for expand view
  */
 export function recordHyperionActivity(entry) {
   const item = {
@@ -49,6 +50,7 @@ export function recordHyperionActivity(entry) {
     sourceId: entry.sourceId ?? null,
     deviceLabel: entry.deviceLabel ?? null,
     path: entry.path ?? null,
+    request: entry.request ?? null,
   };
 
   entries = [item, ...entries].slice(0, MAX_ENTRIES);
