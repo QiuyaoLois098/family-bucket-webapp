@@ -299,7 +299,7 @@ export class ExperienceSession extends EventEmitter {
         question_label: "where will your family go next",
         choice_id: choiceId,
         choice_label: choiceLabel,
-        screen: "interactive",
+        screen: "start",
       },
     })
       .then((result) => {
@@ -347,7 +347,7 @@ export class ExperienceSession extends EventEmitter {
         question_label: question.prompt,
         choice_id: `${step}-${choiceLetter}`,
         choice_label: option.label,
-        screen: `question ${step}`,
+        screen: `question${step}`,
       },
     })
       .then((result) => {
