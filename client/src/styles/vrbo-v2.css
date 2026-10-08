@@ -2175,6 +2175,10 @@ body:has(.vrbo-v2-device--display),
   position: absolute;
   top: 12px;
   right: 16px;
+  /* Base .vrbo-v2-stage__controls sets left/bottom — clear them or this
+     box stretches across the display and blocks Search / CTAs. */
+  left: auto;
+  bottom: auto;
   z-index: 5;
 }
 
