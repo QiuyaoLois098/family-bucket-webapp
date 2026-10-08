@@ -15,6 +15,33 @@ const FBL_INTERACTIVE = {
   label: "interactive",
 };
 
+const FBL_OUTPUT = {
+  id: "expedia-oct26-fbl-output",
+  label: "output",
+};
+
+/** Output display screen names for fbl_output_screen_changed. */
+function resolveOutputScreen(state) {
+  if (
+    !state.destination ||
+    state.phase === PHASES.DESTINATION ||
+    state.phase === PHASES.IDLE
+  ) {
+    return "start";
+  }
+  if (state.phase === PHASES.QUESTIONS) {
+    const step = Math.min(Math.max(state.currentQuestion ?? 0, 0), 2) + 1;
+    return `question${step}`;
+  }
+  if (state.phase === PHASES.PLANNING || state.phase === PHASES.REVEAL) {
+    return "luggage";
+  }
+  if (state.phase === PHASES.ITINERARY) {
+    return "itinerary";
+  }
+  return "start";
+}
+
 function cloneState(state) {
   return JSON.parse(JSON.stringify(state));
 }
@@ -39,6 +66,8 @@ export class ExperienceSession extends EventEmitter {
     this.inputQuietUntil = 0;
     /** Wall-clock start for Hyperion duration_seconds (cleared on session end). */
     this.hyperionSessionStartedAt = null;
+    /** Last output-display screen name (start | question1… | luggage | itinerary). */
+    this.outputScreen = resolveOutputScreen(this.state);
 
     setInterval(() => this.checkInactivity(), 1000);
   }
@@ -67,6 +96,44 @@ export class ExperienceSession extends EventEmitter {
       updatedAt: Date.now(),
     };
     this.emit("state", this.snapshot());
+    this.emitOutputScreenChangedIfNeeded();
+  }
+
+  emitOutputScreenChangedIfNeeded() {
+    const screen = resolveOutputScreen(this.state);
+    const previous = this.outputScreen;
+    if (previous === screen) return;
+    this.outputScreen = screen;
+
+    const sessionId = this.state.hyperionSessionId || undefined;
+    sendHyperionEvent({
+      slug: "fbl_output_screen_changed",
+      stationId: HYPERION_STATIONS.FAMILY_BUCKET_LIST,
+      sessionId,
+      sourceId: FBL_OUTPUT.id,
+      fieldData: {
+        device: FBL_OUTPUT.label,
+        screen,
+        previous_screen: previous,
+      },
+    })
+      .then((result) => {
+        if (result.ok) {
+          console.log(
+            `[hyperion] fbl_output_screen_changed ok · ${previous} → ${screen}`,
+          );
+        } else if (!result.skipped) {
+          console.warn(`[hyperion] fbl_output_screen_changed failed: ${result.error}`);
+        } else {
+          console.warn(`[hyperion] fbl_output_screen_changed skipped: ${result.error}`);
+        }
+      })
+      .catch((error) => {
+        console.warn(
+          "[hyperion] fbl_output_screen_changed error:",
+          error?.message || error,
+        );
+      });
   }
 
   checkInactivity() {
