@@ -6,6 +6,7 @@ import ExpediaBaScreen from "./screens/ExpediaBaScreen.jsx";
 import NycMapScreen from "./screens/NycMapScreen.jsx";
 import PreviewScreen from "./screens/PreviewScreen.jsx";
 import UdpScreen from "./screens/UdpScreen.jsx";
+import VrboBaScreen from "./screens/VrboBaScreen.jsx";
 import VrboScreen from "./screens/VrboScreen.jsx";
 import VrboV2Screen, {
   GuestPhonePage,
@@ -19,6 +20,7 @@ const DEVICE_PATHS = new Set([
   "/sarah",
   "/alex",
   "/chris",
+  "/vrbo-ba",
   "/expedia-ba",
   "/udp",
 ]);
@@ -38,6 +40,7 @@ export default function App() {
         <Route path="/alex" element={<GuestPhonePage guestId="alex" />} />
         <Route path="/chris" element={<GuestPhonePage guestId="chris" />} />
         <Route path="/vrbo-v2/sarah" element={<Navigate to="/sarah" replace />} />
+        <Route path="/vrbo-ba" element={<VrboBaScreen />} />
         <Route path="/expedia-ba" element={<ExpediaBaScreen />} />
         <Route path="/udp" element={<UdpScreen />} />
         <Route path="/control" element={<ControlScreen />} />

@@ -82,6 +82,10 @@ export function registerSockets(io) {
       // Page load / refresh restarts the shared experience (same as Family Bucket).
       vrboV2Session.reset();
     });
+    socket.on("vrbo-v2:subscribe", () => {
+      // BA / remote clients: sync state without restarting.
+      socket.emit("vrbo-v2:state", vrboV2Session.snapshot());
+    });
     socket.on("vrbo-v2:joinGuest", (payload) => {
       vrboV2Session.joinGuest(payload?.userId, payload?.displayName);
     });

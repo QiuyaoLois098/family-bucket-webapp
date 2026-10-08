@@ -37,7 +37,8 @@ export const PROJECTS = [
       pathname === "/vrbo-right" ||
       pathname === "/sarah" ||
       pathname === "/alex" ||
-      pathname === "/chris",
+      pathname === "/chris" ||
+      pathname === "/vrbo-ba",
   },
 ];
 

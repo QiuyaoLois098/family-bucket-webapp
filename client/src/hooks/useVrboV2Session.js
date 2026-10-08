@@ -21,7 +21,7 @@ const EMPTY_STATE = {
   celebrating: false,
 };
 
-export default function useVrboV2Session() {
+export default function useVrboV2Session({ syncOnly = false } = {}) {
   const [state, setState] = useState(EMPTY_STATE);
   const [connected, setConnected] = useState(false);
 
@@ -31,7 +31,7 @@ export default function useVrboV2Session() {
     const onState = (next) => setState(next);
     const onConnect = () => {
       setConnected(true);
-      socket.emit("vrbo-v2:join");
+      socket.emit(syncOnly ? "vrbo-v2:subscribe" : "vrbo-v2:join");
     };
     const onDisconnect = () => setConnected(false);
 
@@ -46,7 +46,7 @@ export default function useVrboV2Session() {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
     };
-  }, []);
+  }, [syncOnly]);
 
   const joinedUsers = useMemo(
     () => guests.filter((user) => Boolean(state.joined?.[user.id])),
