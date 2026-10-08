@@ -250,6 +250,8 @@ export class ExperienceSession extends EventEmitter {
     const dest = getDestination(destinationId);
     if (!dest) return;
 
+    this.emitDestinationChoiceMade(dest);
+
     this.quiet();
     this.set(
       {
@@ -268,6 +270,55 @@ export class ExperienceSession extends EventEmitter {
     );
 
     this.startImageGeneration();
+  }
+
+  /**
+   * Hyperion fbl_choice_made for start-screen destination pick.
+   * step / question_id = 0; choice_id = 1..6 from offered grid order.
+   */
+  emitDestinationChoiceMade(dest) {
+    const offered = this.state.offeredDestinations || [];
+    const index = offered.indexOf(dest.id);
+    const choiceId = index >= 0 ? index + 1 : null;
+    if (choiceId == null) return;
+
+    const sessionId = this.state.hyperionSessionId || this.startHyperionSession();
+    const choiceLabel = dest.location
+      ? `${dest.shortTitle}, ${dest.location}`
+      : dest.shortTitle || dest.title;
+
+    sendHyperionEvent({
+      slug: "fbl_choice_made",
+      stationId: HYPERION_STATIONS.FAMILY_BUCKET_LIST,
+      sessionId,
+      sourceId: FBL_INTERACTIVE.id,
+      fieldData: {
+        device: FBL_INTERACTIVE.label,
+        step: 0,
+        question_id: 0,
+        question_label: "where will your family go next",
+        choice_id: choiceId,
+        choice_label: choiceLabel,
+        screen: "interactive",
+      },
+    })
+      .then((result) => {
+        if (result.ok) {
+          console.log(
+            `[hyperion] fbl_choice_made ok · destination #${choiceId} · ${sessionId}`,
+          );
+        } else if (!result.skipped) {
+          console.warn(`[hyperion] fbl_choice_made (destination) failed: ${result.error}`);
+        } else {
+          console.warn(`[hyperion] fbl_choice_made (destination) skipped: ${result.error}`);
+        }
+      })
+      .catch((error) => {
+        console.warn(
+          "[hyperion] fbl_choice_made (destination) error:",
+          error?.message || error,
+        );
+      });
   }
 
   /**
