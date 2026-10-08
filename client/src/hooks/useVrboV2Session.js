@@ -19,6 +19,7 @@ const EMPTY_STATE = {
   previewPropertyId: null,
   selectedPropertyId: null,
   celebrating: false,
+  hyperionSessionId: null,
 };
 
 export default function useVrboV2Session({ syncOnly = false } = {}) {
@@ -62,6 +63,7 @@ export default function useVrboV2Session({ syncOnly = false } = {}) {
 
   const actions = useMemo(
     () => ({
+      startSession: () => getSocket().emit("vrbo-v2:sessionStart"),
       joinGuest: (userId, displayName) =>
         getSocket().emit("vrbo-v2:joinGuest", { userId, displayName }),
       togglePreference: (userId, preferenceId) =>

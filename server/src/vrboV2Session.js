@@ -1,8 +1,19 @@
+import { randomUUID } from "crypto";
 import { EventEmitter } from "events";
 import { readFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { recommendPropertySet } from "../../shared/vrboRecommendPropertySet.js";
+import { config } from "./config.js";
+import {
+  HYPERION_STATIONS,
+  sendHyperionEvent,
+} from "./hyperionEvents.js";
+
+const VGC_ORGANIZER = {
+  id: "expedia-oct26-vgc-organizer",
+  label: "organizer",
+};
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.resolve(__dirname, "../../client/src/data/vrbo-v2");
@@ -112,6 +123,8 @@ function createInitialState(runId = 0) {
     previewPropertyId: null,
     selectedPropertyId: null,
     celebrating: false,
+    /** Hyperion VGC session id — set on first interactive/phone activity */
+    hyperionSessionId: null,
     updatedAt: Date.now(),
   };
 }
@@ -121,12 +134,133 @@ export class VrboV2Session extends EventEmitter {
     super();
     this.messageCounter = 0;
     this.timers = [];
+    /** Wall-clock start for Hyperion duration_seconds (cleared on session end). */
+    this.hyperionSessionStartedAt = null;
+    this.lastInteractionAt = Date.now();
     this.state = createInitialState(0);
     this.startIntro();
+    setInterval(() => this.checkCelebrationTimeout(), 1000);
   }
 
   snapshot() {
     return clone(this.state);
+  }
+
+  touch() {
+    this.lastInteractionAt = Date.now();
+  }
+
+  /** Guest/organizer activity: bump idle clock and start Hyperion session if needed. */
+  noteActivity() {
+    this.touch();
+    return this.startHyperionSession();
+  }
+
+  devicesJoinedCount() {
+    return guests.filter((user) => Boolean(this.state.joined[user.id])).length;
+  }
+
+  /**
+   * First click/typing on organizer interactive or any guest phone starts a VGC session.
+   * Idempotent — broadcasts sessionId via state to output + phones.
+   * Starts the session duration timer.
+   */
+  startHyperionSession() {
+    if (this.state.hyperionSessionId) {
+      return this.state.hyperionSessionId;
+    }
+
+    const sessionId = randomUUID();
+    this.hyperionSessionStartedAt = Date.now();
+    this.touch();
+    this.patch({ hyperionSessionId: sessionId });
+
+    sendHyperionEvent({
+      slug: "vgc_session_start",
+      stationId: HYPERION_STATIONS.VRBO_GROUP_CHAT,
+      sessionId,
+      sourceId: VGC_ORGANIZER.id,
+      fieldData: {
+        device: VGC_ORGANIZER.label,
+      },
+    })
+      .then((result) => {
+        if (result.ok) {
+          console.log(`[hyperion] vgc_session_start ok · ${sessionId}`);
+        } else if (!result.skipped) {
+          console.warn(`[hyperion] vgc_session_start failed: ${result.error}`);
+        } else {
+          console.warn(`[hyperion] vgc_session_start skipped: ${result.error}`);
+        }
+      })
+      .catch((error) => {
+        console.warn("[hyperion] vgc_session_start error:", error?.message || error);
+      });
+
+    return sessionId;
+  }
+
+  /**
+   * End an active Hyperion VGC session (idempotent if none).
+   * interactions_count omitted until wired.
+   * @param {"completed"|"abandoned"|"timeout"} reason
+   */
+  endHyperionSession(reason) {
+    const sessionId = this.state.hyperionSessionId;
+    if (!sessionId) {
+      this.hyperionSessionStartedAt = null;
+      return;
+    }
+
+    const startedAt = this.hyperionSessionStartedAt;
+    const durationSeconds = startedAt
+      ? Math.max(0, Math.round((Date.now() - startedAt) / 1000))
+      : 0;
+    const devicesJoined = this.devicesJoinedCount();
+
+    this.hyperionSessionStartedAt = null;
+
+    sendHyperionEvent({
+      slug: "vgc_session_end",
+      stationId: HYPERION_STATIONS.VRBO_GROUP_CHAT,
+      sessionId,
+      sourceId: VGC_ORGANIZER.id,
+      fieldData: {
+        device: VGC_ORGANIZER.label,
+        reason,
+        duration_seconds: durationSeconds,
+        devices_joined: devicesJoined,
+      },
+    })
+      .then((result) => {
+        if (result.ok) {
+          console.log(
+            `[hyperion] vgc_session_end ok · ${reason} · ${durationSeconds}s · joined ${devicesJoined} · ${sessionId}`,
+          );
+        } else if (!result.skipped) {
+          console.warn(`[hyperion] vgc_session_end failed: ${result.error}`);
+        } else {
+          console.warn(`[hyperion] vgc_session_end skipped: ${result.error}`);
+        }
+      })
+      .catch((error) => {
+        console.warn("[hyperion] vgc_session_end error:", error?.message || error);
+      });
+  }
+
+  /** Map reset trigger + celebration state → vgc_session_end reason. */
+  resolveSessionEndReason(resetReason) {
+    if (resetReason === "inactivity") return "timeout";
+    if (resetReason === "manual" && this.state.celebrating) return "completed";
+    return "abandoned";
+  }
+
+  /** Final celebration page: 30s with no interaction → auto restart. */
+  checkCelebrationTimeout() {
+    if (!this.state.celebrating) return;
+    if (!this.state.hyperionSessionId) return;
+    if (Date.now() - this.lastInteractionAt < config.vrboCelebrationTimeoutMs) return;
+    this.reset("inactivity");
   }
 
   makeMessage(message) {
@@ -195,6 +329,7 @@ export class VrboV2Session extends EventEmitter {
     }
     const guest = guests.find((user) => user.id === userId);
     if (!guest) return;
+    this.noteActivity();
     const trimmed = String(displayName ?? "").trim();
     const name = trimmed || guest.name;
     this.patch({
@@ -205,6 +340,7 @@ export class VrboV2Session extends EventEmitter {
 
   togglePreference(userId, preferenceId) {
     if (!this.state.joined[userId] || this.state.submitted[userId]) return;
+    this.noteActivity();
     const current = this.state.selections[userId] ?? [];
     const has = current.includes(preferenceId);
     if (!has && current.length >= copy.maxSelections) return;
@@ -221,6 +357,7 @@ export class VrboV2Session extends EventEmitter {
     const picks = this.state.selections[userId] ?? [];
     if (picks.length !== copy.maxSelections) return;
 
+    this.noteActivity();
     this.patch({
       submitted: { ...this.state.submitted, [userId]: picks },
     });
@@ -288,6 +425,7 @@ export class VrboV2Session extends EventEmitter {
 
   searchStays() {
     if (this.state.stage !== "summary") return;
+    this.noteActivity();
 
     const guestSelections = guests
       .filter((user) => Boolean(this.state.joined[user.id]) && this.state.submitted[user.id])
@@ -309,6 +447,7 @@ export class VrboV2Session extends EventEmitter {
   previewProperty(propertyId) {
     if (this.state.stage !== "results" || this.state.selectedPropertyId) return;
     if (!this.state.results.some((result) => result.property.id === propertyId)) return;
+    this.noteActivity();
     this.patch({ previewPropertyId: propertyId });
   }
 
@@ -317,6 +456,7 @@ export class VrboV2Session extends EventEmitter {
     const result = this.state.results.find((entry) => entry.property.id === propertyId);
     if (!result) return;
 
+    this.noteActivity();
     this.patch({
       previewPropertyId: propertyId,
       selectedPropertyId: propertyId,
@@ -400,13 +540,21 @@ export class VrboV2Session extends EventEmitter {
 
     offset += finale.celebrationPause ?? 400;
     this.schedule(() => {
+      // Start the 30s celebration idle clock when the finale lands.
+      this.touch();
       this.patch({ celebrating: true });
     }, offset);
   }
 
-  reset() {
+  /**
+   * @param {"manual"|"inactivity"|"page-load"} [reason]
+   */
+  reset(reason = "manual") {
+    this.endHyperionSession(this.resolveSessionEndReason(reason));
     this.clearTimers();
     this.messageCounter = 0;
+    this.hyperionSessionStartedAt = null;
+    this.lastInteractionAt = Date.now();
     this.state = createInitialState(this.state.runId + 1);
     this.emit("state", this.snapshot());
     this.startIntro();

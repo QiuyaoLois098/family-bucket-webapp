@@ -8,6 +8,7 @@ import preferences from "../data/vrbo-v2/preferences.json";
 import properties from "../data/vrbo-v2/properties.json";
 import users from "../data/vrbo-v2/users.json";
 import useLandscapeGate from "../hooks/useLandscapeGate.js";
+import useVrboSessionStartOnActivity from "../hooks/useVrboSessionStartOnActivity.js";
 import useVrboV2Session, { guests } from "../hooks/useVrboV2Session.js";
 
 const userById = Object.fromEntries(users.map((user) => [user.id, user]));
@@ -97,6 +98,8 @@ function VrboDemo() {
   const [cursorHighlight, setCursorHighlight] = useState(false);
   const [phonesOnly, setPhonesOnly] = useState(false);
   const propertyLookup = usePropertyLookup(results);
+  // Demo stage includes interactive + phones — any activity starts VGC session.
+  useVrboSessionStartOnActivity(actions.startSession);
 
   const renderPhone = (user) => (
     <GuestPhone
@@ -209,10 +212,11 @@ function VrboDemo() {
   );
 }
 
-/** Display 1 · Group Chat — scales in a locked 1080×1920 (9∶16) stage. */
+/** Display 1 · Organizer / interactive chat — scales in a locked 1080×1920 stage. */
 export function VrboLeftPage() {
-  const { state, actions } = useVrboV2Session();
+  const { state, actions } = useVrboV2Session({ syncOnly: true });
   const propertyLookup = usePropertyLookup(state.results);
+  useVrboSessionStartOnActivity(actions.startSession);
 
   return (
     <div className="vrbo-v2-device vrbo-v2-device--display">
@@ -236,9 +240,9 @@ export function VrboLeftPage() {
   );
 }
 
-/** Display 2 · Group Search — scales in a locked 1080×1920 (9∶16) stage. */
+/** Display 2 · Output / search — receives sessionId; does not start the session. */
 export function VrboRightPage() {
-  const { state, allSubmitted, actions } = useVrboV2Session();
+  const { state, allSubmitted, actions } = useVrboV2Session({ syncOnly: true });
 
   return (
     <div className="vrbo-v2-device vrbo-v2-device--display">
@@ -272,7 +276,7 @@ export function GuestPhonePage({ guestId }) {
   const framed =
     frameParam === "1" ||
     (guestId === "sarah" && frameParam !== "0");
-  const { state, actions } = useVrboV2Session();
+  const { state, actions } = useVrboV2Session({ syncOnly: true });
   const {
     stage,
     messages,
@@ -286,6 +290,7 @@ export function GuestPhonePage({ guestId }) {
   } = state;
   const guest = guests.find((user) => user.id === guestId);
   const propertyLookup = usePropertyLookup(results);
+  useVrboSessionStartOnActivity(actions.startSession);
 
   if (!guest) return null;
 

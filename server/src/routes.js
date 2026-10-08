@@ -118,12 +118,13 @@ export function registerSockets(io) {
 
     socket.on("vrbo-v2:join", () => {
       // Page load / refresh restarts the shared experience (same as Family Bucket).
-      vrboV2Session.reset();
+      vrboV2Session.reset("page-load");
     });
     socket.on("vrbo-v2:subscribe", () => {
       // BA / remote clients: sync state without restarting.
       socket.emit("vrbo-v2:state", vrboV2Session.snapshot());
     });
+    socket.on("vrbo-v2:sessionStart", () => vrboV2Session.noteActivity());
     socket.on("vrbo-v2:joinGuest", (payload) => {
       vrboV2Session.joinGuest(payload?.userId, payload?.displayName);
     });
@@ -140,7 +141,7 @@ export function registerSockets(io) {
     socket.on("vrbo-v2:selectProperty", (payload) => {
       vrboV2Session.selectProperty(payload?.propertyId);
     });
-    socket.on("vrbo-v2:reset", () => vrboV2Session.reset());
+    socket.on("vrbo-v2:reset", () => vrboV2Session.reset("manual"));
   });
 
   session.on("state", (state) => {

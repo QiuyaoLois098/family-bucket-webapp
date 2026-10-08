@@ -24,8 +24,8 @@ export const HYPERION_DEVICES_BY_PATH = Object.freeze({
   "/expedia-right": { id: "expedia-oct26-fbl-output", label: "output" },
 
   // Vrbo Group Trip
-  "/vrbo-left": { id: "expedia-oct26-vgc-organizer", label: "output" },
-  "/vrbo-right": { id: "expedia-oct26-vgc-output", label: "organizer" },
+  "/vrbo-left": { id: "expedia-oct26-vgc-organizer", label: "organizer" },
+  "/vrbo-right": { id: "expedia-oct26-vgc-output", label: "output" },
   "/vrbo-ip1": { id: "expedia-oct26-vgc-phone-1", label: "phone-1" },
   "/vrbo-ip2": { id: "expedia-oct26-vgc-phone-2", label: "phone-2" },
   "/vrbo-ip3": { id: "expedia-oct26-vgc-phone-3", label: "phone-3" },
