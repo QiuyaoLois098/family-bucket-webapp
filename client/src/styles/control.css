@@ -30,8 +30,8 @@
   justify-content: flex-start;
   gap: 0;
   min-height: 0;
-  /* Tuned to Figma mock at 1080x1920 (source 453x806) */
-  padding: 5.2% 6.6% 4.2%;
+  /* Match reference header inset (~80px on 1080 canvas) */
+  padding: 80px 80px 4.2%;
   background: #ffffff;
   color: #191e3b;
 }
@@ -118,31 +118,6 @@
   font-size: 1rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-}
-
-.destinations__brandbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex: 0 0 auto;
-  min-height: 2.4vw;
-}
-
-.destinations__logo {
-  display: block;
-  height: clamp(28px, 4.1vw, 46px);
-  width: auto;
-}
-
-.destinations__product {
-  font-family: var(--sans);
-  font-size: clamp(0.8rem, 2.6vw, 1.75rem);
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  line-height: 1;
-  color: #5c6478;
-  white-space: nowrap;
 }
 
 .destinations__intro {
@@ -281,52 +256,10 @@
   color: #5c6478;
 }
 
-/* Shared light Expedia header */
-.expedia-brandbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex: 0 0 auto;
-}
-
-.expedia-brandbar__brand {
-  display: inline-flex;
-  align-items: center;
-  gap: clamp(8px, 1.4vw, 12px);
-  min-width: 0;
-}
-
-.expedia-brandbar__mark {
-  display: block;
-  width: clamp(28px, 4vw, 40px);
-  height: clamp(28px, 4vw, 40px);
-  border-radius: clamp(6px, 0.9vw, 10px);
-  object-fit: cover;
-}
-
-.expedia-brandbar__name {
-  font-family: var(--sans);
-  font-size: clamp(1.15rem, 3vw, 1.7rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1;
-  color: #191e3b;
-}
-
-.expedia-brandbar__product {
-  font-family: var(--sans);
-  font-size: clamp(0.95rem, 2.4vw, 1.35rem);
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  line-height: 1;
-  color: #191e3b;
-  white-space: nowrap;
-}
-
 /*
  * Question page — tuned to expedia-question.png reference (1080×1920).
  * Uses cqi/cqh against this panel.
+ * Header: ExpediaBrandBar (+ expedia-brandbar.css) — do not restyle here.
  */
 .question,
 .question--planner {
@@ -339,32 +272,12 @@
   justify-content: flex-start;
   height: 100%;
   min-height: 0;
-  padding: 4cqh 5.6cqi 5cqh;
+  /* Match reference header inset (~80px on 1080 canvas) */
+  padding: 80px 80px 5cqh;
   background: #ffffff;
   color: var(--q-ink);
   animation: rise 0.55s ease both;
   container-type: size;
-}
-
-.question--planner .expedia-brandbar__mark {
-  width: 3.7cqi;
-  height: 3.7cqi;
-  border-radius: 0.85cqi;
-}
-
-.question--planner .expedia-brandbar__brand {
-  gap: 1.2cqi;
-}
-
-.question--planner .expedia-brandbar__name {
-  font-size: 3.15cqi;
-  font-weight: 700;
-}
-
-.question--planner .expedia-brandbar__product {
-  font-size: 2.55cqi;
-  font-weight: 500;
-  color: var(--q-ink);
 }
 
 .question__trip {
@@ -525,34 +438,10 @@
   flex-direction: column;
   height: 100%;
   min-height: 0;
-  padding: 5.2% 6.6% 4.2%;
+  padding: 80px 80px 4.2%;
   background: #ffffff;
   color: #191e3b;
   animation: rise 0.7s ease both;
-}
-
-.planning__brandbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex: 0 0 auto;
-}
-
-.planning__logo {
-  display: block;
-  height: clamp(28px, 4.1vw, 46px);
-  width: auto;
-}
-
-.planning__product {
-  font-family: var(--sans);
-  font-size: clamp(0.8rem, 2.6vw, 1.75rem);
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  line-height: 1;
-  color: #5c6478;
-  white-space: nowrap;
 }
 
 .planning__body {
@@ -657,34 +546,10 @@
   flex-direction: column;
   height: 100%;
   min-height: 0;
-  padding: 5.2% 6.6% 4.2%;
+  padding: 80px 80px 4.2%;
   background: #ffffff;
   color: #191e3b;
   animation: rise 0.7s ease both;
-}
-
-.reveal-step__brandbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex: 0 0 auto;
-}
-
-.reveal-step__logo {
-  display: block;
-  height: clamp(28px, 4.1vw, 46px);
-  width: auto;
-}
-
-.reveal-step__product {
-  font-family: var(--sans);
-  font-size: clamp(0.8rem, 2.6vw, 1.75rem);
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  line-height: 1;
-  color: #5c6478;
-  white-space: nowrap;
 }
 
 .reveal-step__title {
@@ -847,7 +712,7 @@
   box-sizing: border-box;
   height: 100%;
   min-height: 0;
-  padding: 4.8cqh 6.2cqi 3.2cqh;
+  padding: 80px 80px 3.2cqh;
   color: #191e3b;
   overflow: hidden;
   animation: rise 0.7s ease both;
@@ -857,30 +722,6 @@
   background: #ffffff;
   container-type: size;
   container-name: schedule;
-}
-
-.schedule__brandbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex: 0 0 auto;
-}
-
-.schedule__logo {
-  display: block;
-  height: clamp(28px, 4cqh, 48px);
-  width: auto;
-}
-
-.schedule__product {
-  font-family: var(--sans);
-  font-size: clamp(0.8rem, 2cqh, 1.35rem);
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  line-height: 1;
-  color: #5c6478;
-  white-space: nowrap;
 }
 
 .schedule__intro {

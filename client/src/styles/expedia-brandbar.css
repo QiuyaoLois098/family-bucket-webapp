@@ -1,0 +1,35 @@
+/**
+ * Shared Expedia header — imported only by ExpediaBrandBar.jsx.
+ * Logo: /images/Expedia-images/expedia-logo.png on the 1080×1920 canvas.
+ */
+
+.expedia-brandbar {
+  --brand-ink: #191e3b;
+  --brand-logo-h: 41px;
+  --brand-product: 25px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex: 0 0 auto;
+  width: 100%;
+  min-height: var(--brand-logo-h);
+}
+
+.expedia-brandbar__logo {
+  display: block;
+  height: var(--brand-logo-h);
+  width: auto;
+  flex: 0 0 auto;
+}
+
+.expedia-brandbar__product {
+  font-family: var(--sans, "Travel Sans", "Helvetica Neue", sans-serif);
+  font-size: var(--brand-product);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  color: var(--brand-ink);
+  white-space: nowrap;
+}

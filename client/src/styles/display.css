@@ -24,36 +24,12 @@
   flex-direction: column;
   height: 100%;
   min-height: 0;
-  padding: 5.2% 6.6% 4.2%;
+  padding: 80px 80px 4.2%;
   background: #ffffff;
   color: #191e3b;
   animation: rise 0.7s ease both;
   container-type: size;
   container-name: flight;
-}
-
-.flight-reveal__brandbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex: 0 0 auto;
-}
-
-.flight-reveal__logo {
-  display: block;
-  height: clamp(28px, 4.2cqi, 48px);
-  width: auto;
-}
-
-.flight-reveal__product {
-  font-family: var(--sans);
-  font-size: clamp(0.85rem, 2.8cqi, 1.85rem);
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  line-height: 1;
-  color: #5c6478;
-  white-space: nowrap;
 }
 
 .flight-reveal__title {
