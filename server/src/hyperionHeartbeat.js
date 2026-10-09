@@ -130,6 +130,10 @@ export function collectApplicationMetrics(deviceLabel) {
 }
 
 export async function sendHeartbeat(device, { healthStatus, applicationMetrics } = {}) {
+  if (!config.hyperionLoggingEnabled) {
+    return { ok: false, skipped: true, status: null, error: "Hyperion logging disabled" };
+  }
+
   const token = config.hyperionApi;
   if (!token) {
     return { ok: false, skipped: true, status: null, error: "HYPERION_API not set" };

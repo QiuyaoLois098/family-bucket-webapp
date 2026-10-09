@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import ExpediaBrandBar from "./ExpediaBrandBar.jsx";
 
 export default function RevealStep({ onReveal }) {
   const startY = useRef(null);
@@ -27,14 +28,7 @@ export default function RevealStep({ onReveal }) {
 
   return (
     <div className="reveal-step">
-      <header className="reveal-step__brandbar">
-        <img
-          className="reveal-step__logo"
-          src="/images/Expedia-images/expedia-logo.png"
-          alt="Expedia"
-        />
-        <span className="reveal-step__product">AI Activity Planner</span>
-      </header>
+      <ExpediaBrandBar />
 
       <h1 className="reveal-step__title">
         Your family

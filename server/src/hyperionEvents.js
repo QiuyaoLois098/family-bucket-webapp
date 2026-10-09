@@ -88,6 +88,10 @@ function eventRequestLog(payloadOrInput) {
 }
 
 export async function sendHyperionEvent(input) {
+  if (!config.hyperionLoggingEnabled) {
+    return { ok: false, skipped: true, status: null, error: "Hyperion logging disabled" };
+  }
+
   const token = config.hyperionApi;
   if (!token) {
     const result = { ok: false, skipped: true, status: null, error: "HYPERION_API not set" };

@@ -1,11 +1,14 @@
 export const QUESTIONS = [
   {
     id: "activity",
-    prompt: "What do you have in mind for your trip?",
+    prompt:
+      "Great — I’ll plan around what you already have booked. What sounds most like your family?",
+    pickHint: "(Pick 1 option)",
     options: [
       {
         id: "adventurous",
         label: "Try something adventurous",
+        description: "Kayaking, ropes courses, and family hikes.",
         image: "/images/Expedia-images/options/q1_1.png",
         youSay: "We'd like to try something adventurous.",
         aiSay: "A little adventure it is!",
@@ -15,6 +18,7 @@ export const QUESTIONS = [
       {
         id: "slow",
         label: "Take it slow",
+        description: "Calm lake views, easy outings, and good food.",
         image: "/images/Expedia-images/options/q1_2.png",
         youSay: "We'd like to take it slow.",
         aiSay: "Taking it slow it is!",
@@ -25,11 +29,13 @@ export const QUESTIONS = [
   },
   {
     id: "hero",
-    prompt: "Who gets to be the hero of this trip?",
+    prompt: "Who should this trip feel like it’s for?",
+    pickHint: "(Pick 1 option)",
     options: [
       {
         id: "kids",
         label: "The kids take the lead",
+        description: "Wildlife walks, splash time, and kid-first discoveries.",
         image: "/images/Expedia-images/options/q2-1.png",
         youSay: "Let the kids take the lead.",
         aiSay: "I'll keep your little explorers in mind.",
@@ -39,6 +45,7 @@ export const QUESTIONS = [
       {
         id: "grownups",
         label: "The grown-ups get to unwind",
+        description: "Quiet views, longer meals, and time to recharge.",
         image: "/images/Expedia-images/options/q2-2.png",
         youSay: "Let the grown-ups unwind.",
         aiSay: "I'll leave room for the grown-ups to recharge.",
@@ -48,6 +55,7 @@ export const QUESTIONS = [
       {
         id: "everyone",
         label: "Everyone gets their moment",
+        description: "Shared adventures with space for every age.",
         image: "/images/Expedia-images/options/q2-3.png",
         youSay: "Everyone gets their moment.",
         aiSay: "I'll make sure everyone gets a turn.",
@@ -59,10 +67,12 @@ export const QUESTIONS = [
   {
     id: "food",
     prompt: "What kind of food would you like to try?",
+    pickHint: "(Pick 1 option)",
     options: [
       {
         id: "local",
         label: "Local favorites",
+        description: "Neighborhood spots and regional specialties.",
         image: "/images/Expedia-images/options/q3-1.png",
         youSay: "We'd like to try local favorites.",
         aiSay: "I'll include local flavors for your family to discover.",
@@ -72,6 +82,7 @@ export const QUESTIONS = [
       {
         id: "fresh",
         label: "Fresh & healthy",
+        description: "Bright plates, fruit, and lighter coastal meals.",
         image: "/images/Expedia-images/options/q3-2.png",
         youSay: "We'd like something fresh and healthy.",
         aiSay: "I'll keep things fresh and healthy for your family.",

@@ -8,6 +8,9 @@ const rootDir = path.resolve(__dirname, "../..");
 dotenv.config({ path: path.join(rootDir, ".env"), override: true });
 dotenv.config({ path: path.join(__dirname, "../.env") });
 
+/** Flip to `true` to resume Hyperion heartbeats + custom events. */
+const HYPERION_LOGGING = false;
+
 export const config = {
   port: Number(process.env.PORT || 3002),
   rootDir,
@@ -26,4 +29,10 @@ export const config = {
 
   // Hyperion token only — device map lives in hyperionHeartbeat.js
   hyperionApi: process.env.HYPERION_API || "",
+
+  /** Master switch — see HYPERION_LOGGING const above (or HYPERION_LOGGING=1 in .env). */
+  hyperionLoggingEnabled:
+    process.env.HYPERION_LOGGING === "1" ||
+    process.env.HYPERION_LOGGING === "true" ||
+    (process.env.HYPERION_LOGGING == null && HYPERION_LOGGING),
 };

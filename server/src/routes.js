@@ -32,7 +32,11 @@ export function registerRoutes(app) {
     }
 
     const result = await forwardHeartbeatForPath(path);
-    if (result.skipped && result.error === "HYPERION_API not set") {
+    if (
+      result.skipped &&
+      (result.error === "HYPERION_API not set" ||
+        result.error === "Hyperion logging disabled")
+    ) {
       res.status(503).json({ ...result, path });
       return;
     }

@@ -54,7 +54,9 @@ server.listen(config.port, () => {
   }
   bindHyperionIo(io);
   bindHyperionActivityIo(io);
-  if (!config.hyperionApi) {
+  if (!config.hyperionLoggingEnabled) {
+    console.warn("[hyperion] logging OFF — set HYPERION_LOGGING=1 or flip config.hyperionLoggingEnabled");
+  } else if (!config.hyperionApi) {
     console.warn("[hyperion] HYPERION_API not set — screen heartbeats will fail until set");
   } else {
     console.log("[hyperion] ready — screens POST /api/hyperion/heartbeat (every 90s while open)");

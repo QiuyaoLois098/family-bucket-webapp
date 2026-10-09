@@ -1,4 +1,5 @@
 import { getDestination } from "@shared/destinations.js";
+import ExpediaBrandBar from "./ExpediaBrandBar.jsx";
 
 export default function PlanningStep({ destinationId }) {
   const destination = getDestination(destinationId);
@@ -6,14 +7,7 @@ export default function PlanningStep({ destinationId }) {
 
   return (
     <div className="planning">
-      <header className="planning__brandbar">
-        <img
-          className="planning__logo"
-          src="/images/Expedia-images/expedia-logo.png"
-          alt="Expedia"
-        />
-        <span className="planning__product">AI Activity Planner</span>
-      </header>
+      <ExpediaBrandBar />
 
       <div className="planning__body">
         <p className="planning__eyebrow">AI Activity Planner</p>

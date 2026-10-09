@@ -31,10 +31,8 @@ export default function ControlScreen() {
                 <QuestionStep
                   key={state.destination || "questions"}
                   currentQuestion={state.currentQuestion}
-                  answers={state.answers}
                   destinationId={state.destination}
                   onAnswer={actions.answer}
-                  onBack={actions.goBack}
                 />
               ) : null}
             </section>

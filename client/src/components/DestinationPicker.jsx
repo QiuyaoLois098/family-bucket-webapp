@@ -1,4 +1,5 @@
 import { DESTINATIONS, getDestination } from "@shared/destinations.js";
+import ExpediaBrandBar from "./ExpediaBrandBar.jsx";
 
 const ORDER = new Map(DESTINATIONS.map((item, index) => [item.id, index]));
 
@@ -10,14 +11,7 @@ export default function DestinationPicker({ onSelect, offeredIds }) {
 
   return (
     <div className="destinations">
-      <header className="destinations__brandbar">
-        <img
-          className="destinations__logo"
-          src="/images/Expedia-images/expedia-logo.png"
-          alt="Expedia"
-        />
-        <span className="destinations__product">AI Activity Planner</span>
-      </header>
+      <ExpediaBrandBar />
 
       <div className="destinations__intro">
         <p className="destinations__eyebrow">Future Family Memories</p>

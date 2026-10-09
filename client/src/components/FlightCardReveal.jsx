@@ -1,16 +1,11 @@
+import ExpediaBrandBar from "./ExpediaBrandBar.jsx";
+
 export default function FlightCardReveal({ destination }) {
   const place = destination?.shortTitle || "Your trip";
 
   return (
     <div className="flight-reveal">
-      <header className="flight-reveal__brandbar">
-        <img
-          className="flight-reveal__logo"
-          src="/images/Expedia-images/expedia-logo.png"
-          alt="Expedia"
-        />
-        <span className="flight-reveal__product">AI Activity Planner</span>
-      </header>
+      <ExpediaBrandBar />
 
       <h1 className="flight-reveal__title">
         Ready to make

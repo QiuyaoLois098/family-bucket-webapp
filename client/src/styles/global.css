@@ -200,10 +200,10 @@ button {
   width: 1080px;
   height: 1920px;
   border: 0;
-  background: var(--navy);
+  background: #ffffff;
   transform: scale(var(--scale, 0.35));
   transform-origin: top left;
-  box-shadow: 0 30px 80px rgba(25, 30, 59, 0.55);
+  box-shadow: 0 30px 80px rgba(25, 30, 59, 0.18);
 }
 
 /*
@@ -211,10 +211,11 @@ button {
  * Locked 1080×1920 (9∶16) letterbox — same idea as /vrbo-left.
  * Inner iframe is the design canvas so existing vh-based styles keep working.
  */
+/* Letterbox / chrome outside locked screens */
 html:has(.expedia-portrait),
 body:has(.expedia-portrait),
 #root:has(.expedia-portrait) {
-  background: #0b1020;
+  background: #000000;
 }
 
 .expedia-portrait {
@@ -222,7 +223,7 @@ body:has(.expedia-portrait),
   height: 100dvh;
   margin: 0;
   overflow: hidden;
-  background: #0b1020;
+  background: #000000;
 }
 
 .expedia-portrait__stage {
@@ -230,6 +231,30 @@ body:has(.expedia-portrait),
   height: 100%;
   display: grid;
   place-items: center;
+}
+
+.expedia-portrait__stage--compare {
+  --expedia-compare-gap: clamp(20px, 2.4vw, 36px);
+  --expedia-compare-pad-x: clamp(20px, 3vw, 48px);
+  --expedia-compare-pad-y: clamp(24px, 4vh, 48px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+  gap: var(--expedia-compare-gap);
+  padding: var(--expedia-compare-pad-y) var(--expedia-compare-pad-x);
+  box-sizing: border-box;
+}
+
+.expedia-portrait__column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
 }
 
 .expedia-portrait__frame {
@@ -241,8 +266,18 @@ body:has(.expedia-portrait),
   aspect-ratio: 9 / 16;
   overflow: hidden;
   container-type: size;
-  background: var(--navy, #191e3b);
-  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.35);
+  background: #ffffff;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
+}
+
+.expedia-portrait--compare .expedia-portrait__frame {
+  width: min(
+    100%,
+    calc((100vw - var(--expedia-compare-pad-x) * 2 - var(--expedia-compare-gap)) / 2),
+    calc((100dvh - var(--expedia-compare-pad-y) * 2 - 28px) * 9 / 16)
+  );
+  height: auto;
+  aspect-ratio: 9 / 16;
 }
 
 .expedia-portrait__frame iframe {
@@ -252,6 +287,36 @@ body:has(.expedia-portrait),
   width: 1080px;
   height: 1920px;
   border: 0;
-  background: var(--navy, #191e3b);
+  background: #ffffff;
   transform-origin: top left;
+}
+
+.expedia-portrait__frame--reference {
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 0;
+}
+
+.expedia-portrait__reference {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  background: #ffffff;
+}
+
+.expedia-portrait__caption {
+  margin: 0;
+  font-family: var(--sans, "Helvetica Neue", sans-serif);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  text-align: center;
+}
+
+.expedia-portrait__column .expedia-portrait__caption {
+  flex: 0 0 auto;
 }

@@ -60,7 +60,7 @@
   overflow: hidden;
   font-family: var(--vrbo-v2-content);
   color: var(--charcoal);
-  background: var(--cream);
+  background: #000000;
   user-select: none;
   touch-action: manipulation;
 }
@@ -2140,14 +2140,14 @@
 
 html:has(.vrbo-v2-device--phone),
 body:has(.vrbo-v2-device--phone),
-#root:has(.vrbo-v2-device--phone) {
-  background: #ffffff;
-}
-
+#root:has(.vrbo-v2-device--phone),
 html:has(.vrbo-v2-device--display),
 body:has(.vrbo-v2-device--display),
-#root:has(.vrbo-v2-device--display) {
-  background: var(--cream, #faf6f1);
+#root:has(.vrbo-v2-device--display),
+html:has(.vrbo-v2-stage),
+body:has(.vrbo-v2-stage),
+#root:has(.vrbo-v2-stage) {
+  background: #000000;
 }
 
 .vrbo-v2-device {
@@ -2161,14 +2161,15 @@ body:has(.vrbo-v2-device--display),
   color: var(--charcoal);
   user-select: none;
   touch-action: manipulation;
+  background: #000000;
 }
 
 .vrbo-v2-device--phone {
-  background: #ffffff;
+  background: #000000;
 }
 
 .vrbo-v2-device--display {
-  background: var(--cream);
+  background: #000000;
 }
 
 .vrbo-v2-device--display .vrbo-v2-stage__controls {
@@ -2202,7 +2203,7 @@ body:has(.vrbo-v2-device--display),
   padding: 0;
   box-sizing: border-box;
   overflow: hidden;
-  background: var(--cream, #faf6f1);
+  background: #000000;
 }
 
 /*
@@ -2278,13 +2279,13 @@ body:has(.vrbo-v2-device--display),
 }
 
 .vrbo-v2-device--phone.is-framed {
-  background: #e8e9ec;
+  background: #000000;
 }
 
 html:has(.vrbo-v2-device--phone.is-framed),
 body:has(.vrbo-v2-device--phone.is-framed),
 #root:has(.vrbo-v2-device--phone.is-framed) {
-  background: #e8e9ec;
+  background: #000000;
 }
 
 .vrbo-v2-device__stage {

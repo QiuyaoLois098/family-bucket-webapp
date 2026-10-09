@@ -1,3 +1,5 @@
+import ExpediaBrandBar from "./ExpediaBrandBar.jsx";
+
 const CARD_COUNT = 5;
 
 /** Fixed finale card copy — do not invent or replace. */
@@ -44,14 +46,7 @@ const FIXED_THUMBS = [
 export default function ItinerarySchedule({ onStartOver }) {
   return (
     <div className="schedule">
-      <header className="schedule__brandbar">
-        <img
-          className="schedule__logo"
-          src="/images/Expedia-images/expedia-logo.png"
-          alt="Expedia"
-        />
-        <span className="schedule__product">AI Activity Planner</span>
-      </header>
+      <ExpediaBrandBar />
 
       <div className="schedule__intro">
         <p className="schedule__location">{FIXED_LOCATION}</p>

@@ -1,10 +1,10 @@
 .screen--display {
-  background: var(--display);
-  color: var(--white);
+  background: #ffffff;
+  color: #191e3b;
 }
 
 .screen--display .reset-control {
-  color: var(--white);
+  color: #191e3b;
 }
 
 .idle-display,
@@ -25,8 +25,8 @@
   height: 100%;
   min-height: 0;
   padding: 5.2% 6.6% 4.2%;
-  background: var(--navy);
-  color: var(--white);
+  background: #ffffff;
+  color: #191e3b;
   animation: rise 0.7s ease both;
   container-type: size;
   container-name: flight;
@@ -44,7 +44,6 @@
   display: block;
   height: clamp(28px, 4.2cqi, 48px);
   width: auto;
-  mix-blend-mode: screen;
 }
 
 .flight-reveal__product {
@@ -53,7 +52,7 @@
   font-weight: 400;
   letter-spacing: 0.01em;
   line-height: 1;
-  color: var(--white);
+  color: #5c6478;
   white-space: nowrap;
 }
 
@@ -66,7 +65,7 @@
   font-size: clamp(2.4rem, 8.4cqi, 5.6rem);
   line-height: 1.05;
   letter-spacing: -0.02em;
-  color: var(--white);
+  color: #191e3b;
   text-align: left;
 }
 
@@ -162,7 +161,7 @@
   width: 3.7cqi;
   height: 3.7cqi;
   border-radius: 50%;
-  background: var(--navy);
+  background: #ffffff;
   transform: translateY(-50%);
 }
 
@@ -203,7 +202,7 @@
   flex: 0 0 auto;
   margin-top: auto;
   padding-top: clamp(18px, 2.8cqh, 36px);
-  border-top: 1px solid rgba(255, 255, 255, 0.28);
+  border-top: 1px solid rgba(25, 30, 59, 0.12);
 }
 
 .flight-reveal__footer p {
@@ -214,15 +213,15 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   line-height: 1.2;
-  color: rgba(255, 255, 255, 0.9);
+  color: #5c6478;
 }
 
 .screen--display.phase-reveal {
-  background: var(--navy);
+  background: #ffffff;
 }
 
 .idle-display {
-  background-color: var(--display);
+  background-color: #ffffff;
 }
 
 .idle-display__base,
