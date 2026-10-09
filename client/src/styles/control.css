@@ -282,26 +282,29 @@
 
 .question__trip {
   flex: 0 0 auto;
-  margin-top: 7.2cqh;
+  margin-top: 80px;
   text-align: center;
 }
 
+/* Matched to expedia-question.png @ 1080×1920 */
 .question__trip-line {
   margin: 0;
   font-family: var(--sans);
-  font-size: 2.55cqi;
+  font-size: 33px;
   font-weight: 600;
   letter-spacing: -0.01em;
-  line-height: 1.25;
-  color: var(--q-ink);
+  line-height: 1.15;
+  color: #191e3b;
 }
 
 .question__follow-up {
-  margin: 1cqh 0 0;
+  margin: 16px 0 0;
   font-family: var(--sans);
-  font-size: 2cqi;
+  font-size: 28px;
   font-weight: 400;
-  color: #9aa1b0;
+  letter-spacing: 0;
+  line-height: 1.15;
+  color: #676a7d;
 }
 
 .question__prompt {
@@ -314,7 +317,7 @@
   max-width: 18em;
   font-family: var(--sans);
   font-weight: 700;
-  font-size: 3.55cqi;
+  font-size: 4.3cqi;
   line-height: 1.28;
   letter-spacing: -0.025em;
   color: var(--q-ink);
@@ -323,9 +326,11 @@
 .question__pick-hint {
   margin: 2.4cqh 0 0;
   font-family: var(--sans);
-  font-size: 2.45cqi;
-  font-weight: 400;
-  color: var(--q-muted);
+  font-weight: 700;
+  font-size: 4.3cqi;
+  line-height: 1.28;
+  letter-spacing: -0.025em;
+  color: var(--q-ink);
 }
 
 .question__options {
