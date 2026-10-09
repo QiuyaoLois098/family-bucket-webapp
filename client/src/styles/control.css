@@ -256,11 +256,6 @@
   color: #5c6478;
 }
 
-/*
- * Question page — tuned to expedia-question.png reference (1080×1920).
- * Uses cqi/cqh against this panel.
- * Header: ExpediaBrandBar (+ expedia-brandbar.css) — do not restyle here.
- */
 .question,
 .question--planner {
   --q-ink: #191e3b;
@@ -272,12 +267,10 @@
   justify-content: flex-start;
   height: 100%;
   min-height: 0;
-  /* Match reference header inset (~80px on 1080 canvas) */
   padding: 80px 80px 5cqh;
   background: #ffffff;
   color: var(--q-ink);
   animation: rise 0.55s ease both;
-  container-type: size;
 }
 
 .question__trip {
@@ -286,7 +279,6 @@
   text-align: center;
 }
 
-/* Matched to expedia-question.png @ 1080×1920 */
 .question__trip-line {
   margin: 0;
   font-family: var(--sans);
@@ -317,7 +309,7 @@
   max-width: 18em;
   font-family: var(--sans);
   font-weight: 700;
-  font-size: 4.3cqi;
+  font-size: calc(100cqi * 40 / var(--canvas-w));
   line-height: 1.28;
   letter-spacing: -0.025em;
   color: var(--q-ink);
@@ -327,7 +319,7 @@
   margin: 2.4cqh 0 0;
   font-family: var(--sans);
   font-weight: 700;
-  font-size: 4.3cqi;
+  font-size: calc(100cqi * 40 / var(--canvas-w));
   line-height: 1.28;
   letter-spacing: -0.025em;
   color: var(--q-ink);
@@ -349,8 +341,8 @@
   width: 100%;
   margin: 0;
   padding: 2cqh 2.4cqi;
-  border: 2px solid transparent;
-  border-radius: 2.4cqi;
+  border: 4px solid transparent;
+  border-radius: calc(100cqi * 40 / var(--canvas-w));
   background: var(--q-card);
   text-align: left;
   color: var(--q-ink);

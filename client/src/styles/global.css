@@ -23,6 +23,9 @@
 }
 
 :root {
+  --canvas-w: 1080;
+  --canvas-h: 1920;
+
   /* Family Bucket List — brand palette only */
   --yellow: #fddb32;
   --navy: #191e3b;
@@ -80,6 +83,7 @@ button {
   overflow: hidden;
   user-select: none;
   touch-action: manipulation;
+  container-type: size;
 }
 
 .screen__grain,
