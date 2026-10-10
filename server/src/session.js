@@ -611,6 +611,48 @@ export class ExperienceSession extends EventEmitter {
       "debug-itinerary",
     );
   }
+
+  /** Dev shortcut: jump straight to luggage (reveal) or itinerary with seed data. */
+  debugJump(target) {
+    this.touch();
+    this.inputQuietUntil = 0;
+    clearTimeout(this.revealTimer);
+    this.imageJobId += 1;
+    this.itineraryJobId += 1;
+
+    const destId =
+      this.state.destination ||
+      this.state.offeredDestinations?.[0] ||
+      DESTINATIONS[0].id;
+    const dest = getDestination(destId);
+    if (!dest) return;
+
+    const answers =
+      this.state.answers?.length === QUESTIONS.length
+        ? this.state.answers
+        : QUESTIONS.map((question) => question.options[0].id);
+
+    const seeded = {
+      destination: destId,
+      answers,
+      currentQuestion: QUESTIONS.length,
+      imageUrl: dest.image,
+      imageReady: true,
+      imageSource: "fallback",
+      imageStatus: "fallback",
+      itinerary: dest.fallbackItinerary,
+      itineraryStatus: "fallback",
+    };
+
+    if (target === "reveal" || target === "luggage") {
+      this.set({ ...seeded, phase: PHASES.REVEAL }, "debug-jump-reveal");
+      return;
+    }
+
+    if (target === "itinerary") {
+      this.set({ ...seeded, phase: PHASES.ITINERARY }, "debug-jump-itinerary");
+    }
+  }
 }
 
 export const session = new ExperienceSession();

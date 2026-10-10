@@ -118,6 +118,7 @@ export function registerSockets(io) {
     socket.on("debug:skip", () => session.debugSkip());
     socket.on("debug:simulateImage", () => session.debugSimulateImage());
     socket.on("debug:simulateItinerary", () => session.debugSimulateItinerary());
+    socket.on("debug:jump", (payload) => session.debugJump(payload?.target));
     socket.on("debug:reset", () => session.reset("debug"));
 
     socket.on("vrbo-v2:join", () => {

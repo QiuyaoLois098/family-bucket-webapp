@@ -4,6 +4,7 @@ import { useSession } from "../hooks/useSession.js";
 
 const DESTINATION_REF = "/images/Expedia-images/example/start.png";
 const QUESTION_REF = "/images/Expedia-images/example/expedia-question.png";
+const LUGGAGE_REF = "/images/Expedia-images/example/luggage.png";
 
 /** Family Bucket screens in a locked 2160×3840 (9∶16) stage, like /vrbo-left. */
 
@@ -63,16 +64,42 @@ function ReferenceFrame({ src }) {
 
 /** Screen A · Control — live UI + same-size design reference beside it. */
 export function ExpediaLeftPage() {
-  const { state } = useSession({ syncOnly: true });
+  const { state, actions } = useSession({ syncOnly: true });
   const phase = state.phase === "idle" ? "destination" : state.phase;
-  const isDestination = phase === "destination";
-  const referenceSrc = isDestination ? DESTINATION_REF : QUESTION_REF;
-  const referenceCaption = isDestination
-    ? "Reference · destination"
-    : "Reference · question";
+  const referenceSrc =
+    phase === "destination"
+      ? DESTINATION_REF
+      : phase === "reveal" || phase === "itinerary"
+        ? LUGGAGE_REF
+        : QUESTION_REF;
+  const referenceCaption =
+    phase === "destination"
+      ? "Reference · destination"
+      : phase === "reveal"
+        ? "Reference · luggage"
+        : phase === "itinerary"
+          ? "Reference · luggage"
+          : "Reference · question";
 
   return (
     <div className="expedia-portrait expedia-portrait--compare">
+      <div className="expedia-portrait__dev" aria-label="Dev phase jumps">
+        <span className="expedia-portrait__dev-label">Dev</span>
+        <button
+          type="button"
+          className={phase === "reveal" ? "is-active" : undefined}
+          onClick={() => actions.debugJump("luggage")}
+        >
+          Luggage
+        </button>
+        <button
+          type="button"
+          className={phase === "itinerary" ? "is-active" : undefined}
+          onClick={() => actions.debugJump("itinerary")}
+        >
+          Itinerary
+        </button>
+      </div>
       <div className="expedia-portrait__stage expedia-portrait__stage--compare">
         <div className="expedia-portrait__column">
           <PortraitFrame title="Expedia · Control" src="/control" />

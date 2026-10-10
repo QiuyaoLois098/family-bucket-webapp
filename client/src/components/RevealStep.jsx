@@ -26,44 +26,54 @@ export default function RevealStep({ onReveal }) {
     startY.current = null;
   };
 
+  const pullHandlers = {
+    onClick: unlock,
+    onPointerDown,
+    onPointerMove,
+    onPointerUp,
+    onPointerCancel: onPointerUp,
+  };
+
   return (
     <div className="reveal-step">
       <ExpediaBrandBar />
 
-      <h1 className="reveal-step__title">
-        Your family
-        <br />
-        adventure is ready.
-      </h1>
+      <div className="reveal-step__body">
+        <h1 className="reveal-step__title">
+          Your family trip
+          <br />
+          starts here
+        </h1>
 
-      <div className="reveal-step__stage">
+        <p className="reveal-step__hint">
+          Pull up the suitcase handle to generate your personalized five-day
+          itinerary.
+        </p>
+
         <button
           type="button"
-          className="reveal-step__suitcase"
-          onClick={unlock}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerCancel={onPointerUp}
+          className="reveal-step__pull"
           aria-label="Pull up the suitcase handle to reveal your itinerary"
+          {...pullHandlers}
         >
           <img
-            src="/images/Expedia-images/suitcase-guide.png"
+            className="reveal-step__arrow"
+            src="/images/Expedia-images/up-arrow.png"
             alt=""
             draggable="false"
           />
         </button>
 
-        <p className="reveal-step__hint">
-          Pull up the suitcase handle
-          <br />
-          to reveal your itinerary.
-        </p>
+        <div className="reveal-step__luggage-slot">
+          <img
+            className="reveal-step__luggage"
+            src="/images/Expedia-images/luggage.png"
+            alt=""
+            draggable="false"
+            {...pullHandlers}
+          />
+        </div>
       </div>
-
-      <footer className="reveal-step__footer">
-        <p>Pull up to reveal ↑</p>
-      </footer>
     </div>
   );
 }

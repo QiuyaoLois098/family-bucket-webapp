@@ -43,6 +43,7 @@ export function useSession({ syncOnly = false } = {}) {
       debugSkip: () => getSocket().emit("debug:skip"),
       debugSimulateImage: () => getSocket().emit("debug:simulateImage"),
       debugSimulateItinerary: () => getSocket().emit("debug:simulateItinerary"),
+      debugJump: (target) => getSocket().emit("debug:jump", { target }),
     }),
     [],
   );

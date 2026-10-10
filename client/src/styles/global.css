@@ -384,11 +384,62 @@ body:has(.expedia-portrait),
 }
 
 .expedia-portrait {
+  position: relative;
   width: 100%;
   height: 100dvh;
   margin: 0;
   overflow: hidden;
   background: #000000;
+}
+
+.expedia-portrait__dev {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: rgba(20, 24, 40, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.expedia-portrait__dev-label {
+  padding: 0 4px;
+  font-family: var(--sans, "Helvetica Neue", sans-serif);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.expedia-portrait__dev button {
+  appearance: none;
+  margin: 0;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-family: var(--sans, "Helvetica Neue", sans-serif);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+.expedia-portrait__dev button:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.expedia-portrait__dev button.is-active {
+  background: #fff;
+  color: #141828;
+  border-color: #fff;
 }
 
 .expedia-portrait__stage {
