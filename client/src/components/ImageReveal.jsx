@@ -10,6 +10,7 @@ export default function ImageReveal({ state }) {
   const blur = done ? 0 : getBlurPx(state.answers.length);
   const scale = done ? 1 : getRevealScale(state.answers.length);
   const sharp = blur === 0;
+  const place = destination?.tripLabel || destination?.shortTitle || "";
 
   const layerStyle = (backgroundImage) => ({
     backgroundImage,
@@ -30,18 +31,19 @@ export default function ImageReveal({ state }) {
         />
       ) : null}
       <div className="image-reveal__grade" />
-          {destination && state.phase !== "itinerary" && state.phase !== "reveal" ? (
-            <div className="image-reveal__caption">
-              {state.phase === "planning" ? (
-                <h2>Your family adventure is ready.</h2>
-              ) : (
-                <>
-                  <p className="eyebrow">{destination.location}</p>
-                  <h2>{destination.shortTitle}</h2>
-                </>
-              )}
-            </div>
-          ) : null}
+      {destination && state.phase !== "itinerary" && state.phase !== "reveal" ? (
+        <div className="image-reveal__caption">
+          {state.phase === "planning" ? (
+            <h2>Your family adventure is ready.</h2>
+          ) : (
+            <>
+              <p className="image-reveal__product">AI Activity Planner</p>
+              <h2>{place}</h2>
+              <p className="image-reveal__status">Starting with what&apos;s already booked...</p>
+            </>
+          )}
+        </div>
+      ) : null}
     </div>
   );
 }

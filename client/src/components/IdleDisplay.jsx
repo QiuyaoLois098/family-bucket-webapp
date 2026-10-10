@@ -28,8 +28,9 @@ export default function IdleDisplay() {
             className="idle-display__caption"
             style={{ animationDelay: `${-index * SLOT_SECONDS}s` }}
           >
-            <h1>{destination.shortTitle}</h1>
-            <p>{destination.invitation || "A moment made for all of you."}</p>
+            <p className="idle-display__product">AI Activity Planner</p>
+            <h1>{destination.tripLabel || destination.shortTitle}</h1>
+            <p className="idle-display__status">Starting with what&apos;s already booked...</p>
           </div>
         ))}
       </div>
