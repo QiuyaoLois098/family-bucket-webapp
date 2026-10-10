@@ -1,7 +1,5 @@
 import ExpediaBrandBar from "./ExpediaBrandBar.jsx";
 
-const CARD_COUNT = 5;
-
 /** Fixed finale card copy — do not invent or replace. */
 const FIXED_CARDS = [
   {
@@ -31,9 +29,9 @@ const FIXED_CARDS = [
   },
 ];
 
-const FIXED_HEADLINE = "Big adventures, little explorers.";
-const FIXED_LOCATION = "Costa Rica / Manuel Antonio";
-const FIXED_FOOTER = "Adventure / Kids lead / Local favorites";
+const FIXED_HEADLINE = "Five days built for your family";
+const FIXED_META = "South Lake Tahoe · Jun 15 – 20";
+const FIXED_SUMMARY = "Kayaking, ropes, family hikes, and time by the lake";
 
 const FIXED_THUMBS = [
   "/images/Expedia-images/03-itinerary/it1.png",
@@ -43,14 +41,15 @@ const FIXED_THUMBS = [
   "/images/Expedia-images/03-itinerary/it5.png",
 ];
 
-export default function ItinerarySchedule({ onStartOver }) {
+export default function ItinerarySchedule() {
   return (
     <div className="schedule">
       <ExpediaBrandBar />
 
       <div className="schedule__intro">
-        <p className="schedule__location">{FIXED_LOCATION}</p>
         <h1 className="schedule__headline">{FIXED_HEADLINE}</h1>
+        <p className="schedule__meta">{FIXED_META}</p>
+        <p className="schedule__summary">{FIXED_SUMMARY}</p>
       </div>
 
       <ol className="schedule__list">
@@ -70,15 +69,6 @@ export default function ItinerarySchedule({ onStartOver }) {
           </li>
         ))}
       </ol>
-
-      <footer className="schedule__footer">
-        <p className="schedule__chips">{FIXED_FOOTER}</p>
-        {onStartOver ? (
-          <button type="button" className="schedule__restart" onClick={onStartOver}>
-            Start over
-          </button>
-        ) : null}
-      </footer>
     </div>
   );
 }

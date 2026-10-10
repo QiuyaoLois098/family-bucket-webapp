@@ -42,7 +42,7 @@ export default function ControlScreen() {
             >
               {phase === "reveal" ? <RevealStep onReveal={actions.shake} /> : null}
               {phase === "itinerary" ? (
-                <ItinerarySchedule onStartOver={actions.reset} />
+                <ItinerarySchedule />
               ) : null}
             </section>
           </main>

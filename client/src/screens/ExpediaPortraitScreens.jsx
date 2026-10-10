@@ -5,6 +5,7 @@ import { useSession } from "../hooks/useSession.js";
 const DESTINATION_REF = "/images/Expedia-images/example/start.png";
 const QUESTION_REF = "/images/Expedia-images/example/expedia-question.png";
 const LUGGAGE_REF = "/images/Expedia-images/example/luggage.png";
+const ITINERARY_REF = "/images/Expedia-images/example/itinerary.png";
 
 /** Family Bucket screens in a locked 2160×3840 (9∶16) stage, like /vrbo-left. */
 
@@ -69,16 +70,18 @@ export function ExpediaLeftPage() {
   const referenceSrc =
     phase === "destination"
       ? DESTINATION_REF
-      : phase === "reveal" || phase === "itinerary"
+      : phase === "reveal"
         ? LUGGAGE_REF
-        : QUESTION_REF;
+        : phase === "itinerary"
+          ? ITINERARY_REF
+          : QUESTION_REF;
   const referenceCaption =
     phase === "destination"
       ? "Reference · destination"
       : phase === "reveal"
         ? "Reference · luggage"
         : phase === "itinerary"
-          ? "Reference · luggage"
+          ? "Reference · itinerary"
           : "Reference · question";
 
   return (
