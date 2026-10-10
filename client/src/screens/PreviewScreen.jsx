@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+import { CANVAS_W, CANVAS_H } from "../canvas.js";
 
-const FRAME_WIDTH = 1080;
-const FRAME_HEIGHT = 1920;
+const FRAME_WIDTH = CANVAS_W;
+const FRAME_HEIGHT = CANVAS_H;
 const FRAME_GAP = 28;
 const LABEL_HEIGHT = 28;
 

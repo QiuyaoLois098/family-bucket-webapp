@@ -14,16 +14,11 @@ export default function DestinationPicker({ onSelect, offeredIds }) {
       <ExpediaBrandBar />
 
       <div className="destinations__intro">
-        <p className="destinations__eyebrow">Future Family Memories</p>
-        <h2>
-          Where will your
-          <br />
-          family go next?
-        </h2>
+        <h2>Find your family&apos;s next trip</h2>
         <p className="destinations__lede">
-          Find things to do, places to eat,
+          Choose a destination and start
           <br />
-          and moments to share.
+          making memories together.
         </p>
       </div>
 
@@ -45,10 +40,6 @@ export default function DestinationPicker({ onSelect, offeredIds }) {
           </button>
         ))}
       </div>
-
-      <footer className="destinations__footer">
-        <p>Tap a destination to begin</p>
-      </footer>
     </div>
   );
 }

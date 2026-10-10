@@ -24,7 +24,7 @@
   flex-direction: column;
   height: 100%;
   min-height: 0;
-  padding: 80px 80px 4.2%;
+  padding: calc(var(--u) * 80) calc(var(--u) * 80) 4.2%;
   background: #ffffff;
   color: #191e3b;
   animation: rise 0.7s ease both;
@@ -34,7 +34,7 @@
 
 .flight-reveal__title {
   flex: 0 0 auto;
-  margin: clamp(22px, 4.5cqh, 64px) 0 0;
+  margin: clamp(calc(var(--u) * 22), 4.5cqh, calc(var(--u) * 64)) 0 0;
   width: 100%;
   font-family: var(--serif);
   font-weight: 400;
@@ -53,12 +53,12 @@
   width: 100%;
   aspect-ratio: 1 / 1;
   max-height: 50%;
-  margin: clamp(20px, 3.6cqh, 48px) auto 0;
+  margin: clamp(calc(var(--u) * 20), 3.6cqh, calc(var(--u) * 48)) auto 0;
   min-height: 0;
-  border-radius: clamp(22px, 3.4cqi, 40px);
+  border-radius: clamp(calc(var(--u) * 22), 3.4cqi, calc(var(--u) * 40));
   background: var(--white);
   overflow: visible;
-  box-shadow: 0 24px 40px rgba(25, 30, 59, 0.32);
+  box-shadow: 0 calc(var(--u) * 24) calc(var(--u) * 40) rgba(25, 30, 59, 0.32);
   container-type: inline-size;
   container-name: ticket;
 }
@@ -67,7 +67,7 @@
   position: relative;
   flex: 1.58 1 0;
   min-height: 0;
-  border-radius: clamp(22px, 3.4cqi, 40px) clamp(22px, 3.4cqi, 40px) 0 0;
+  border-radius: clamp(calc(var(--u) * 22), 3.4cqi, calc(var(--u) * 40)) clamp(calc(var(--u) * 22), 3.4cqi, calc(var(--u) * 40)) 0 0;
   overflow: hidden;
   background: var(--sky);
 }
@@ -87,7 +87,7 @@
   grid-template-rows: 56% 44%;
   min-height: 0;
   padding: 0;
-  border-radius: 0 0 clamp(22px, 3.8cqi, 40px) clamp(22px, 3.8cqi, 40px);
+  border-radius: 0 0 clamp(calc(var(--u) * 22), 3.8cqi, calc(var(--u) * 40)) clamp(calc(var(--u) * 22), 3.8cqi, calc(var(--u) * 40));
   color: var(--navy);
   background: var(--white);
 }
@@ -177,12 +177,12 @@
 .flight-reveal__footer {
   flex: 0 0 auto;
   margin-top: auto;
-  padding-top: clamp(18px, 2.8cqh, 36px);
+  padding-top: clamp(calc(var(--u) * 18), 2.8cqh, calc(var(--u) * 36));
   border-top: 1px solid rgba(25, 30, 59, 0.12);
 }
 
 .flight-reveal__footer p {
-  margin: clamp(12px, 2cqh, 24px) 0 0;
+  margin: clamp(calc(var(--u) * 12), 2cqh, calc(var(--u) * 24)) 0 0;
   font-family: var(--sans);
   font-size: clamp(0.62rem, 1.7cqi, 1.15rem);
   font-weight: 400;
@@ -335,11 +335,11 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: clamp(36px, 7vh, 72px);
+  bottom: clamp(calc(var(--u) * 36), 7vh, calc(var(--u) * 72));
   padding: 0 6%;
   text-align: center;
   color: var(--white);
-  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+  text-shadow: 0 calc(var(--u) * 2) calc(var(--u) * 18) rgba(0, 0, 0, 0.35);
   pointer-events: none;
 }
 

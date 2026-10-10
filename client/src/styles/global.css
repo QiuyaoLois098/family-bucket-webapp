@@ -1,30 +1,187 @@
 @font-face {
   font-family: "Reckless XPD";
   src: url("/font/expedia/RecklessXPD-Regular.otf") format("opentype");
-  font-weight: 400 700;
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Centra No2";
+  src: url("/font/expedia/CentraNo2-Hairline.otf") format("opentype");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Centra No2";
+  src: url("/font/expedia/CentraNo2-HairlineItalic.otf") format("opentype");
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Centra No2";
+  src: url("/font/expedia/CentraNo2-Thin.otf") format("opentype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Centra No2";
+  src: url("/font/expedia/CentraNo2-ThinItalic.otf") format("opentype");
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Centra No2";
+  src: url("/font/expedia/CentraNo2-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Centra No2";
+  src: url("/font/expedia/CentraNo2-LightItalic.otf") format("opentype");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Centra No2";
   src: url("/font/expedia/CentraNo2-Reg.otf") format("opentype");
-  font-weight: 400 700;
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Centra No2";
+  src: url("/font/expedia/CentraNo2-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Centra No2";
+  src: url("/font/expedia/CentraNo2-MediumItalic.otf") format("opentype");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Centra No2";
+  src: url("/font/expedia/CentraNo2-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Centra No2";
+  src: url("/font/expedia/CentraNo2-BoldItalic.otf") format("opentype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Centra No2";
+  src: url("/font/expedia/CentraNo2-Extrabold.otf") format("opentype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Centra No2";
+  src: url("/font/expedia/CentraNo2-ExtraboldItalic.otf") format("opentype");
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Centra No2";
+  src: url("/font/expedia/CentraNo2-Black.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Centra No2";
+  src: url("/font/expedia/CentraNo2-BlackItalic.otf") format("opentype");
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Travel Sans";
+  src: url("/font/expedia/TravelSans-Light.otf") format("opentype");
+  font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Travel Sans";
+  src: url("/font/expedia/TravelSans-LightItalic.otf") format("opentype");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Travel Sans";
   src: url("/font/expedia/TravelSans-Regular.otf") format("opentype");
-  font-weight: 400 700;
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Travel Sans";
+  src: url("/font/expedia/TravelSans-RegularItalic.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Travel Sans";
+  src: url("/font/expedia/TravelSans-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Travel Sans";
+  src: url("/font/expedia/TravelSans-BoldItalic.otf") format("opentype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
 :root {
-  --canvas-w: 1080;
-  --canvas-h: 1920;
+  --design-w: 1080;
+  --design-h: 1920;
+  --canvas-w: 2160;
+  --canvas-h: 3840;
+  --canvas-scale: calc(var(--canvas-w) / var(--design-w));
+  /* rem tracks viewport vs design width (2× inside the 2160 canvas) */
+  font-size: calc(100vw / var(--design-w) * 16);
 
   /* Family Bucket List — brand palette only */
   --yellow: #fddb32;
@@ -63,7 +220,12 @@ body,
   margin: 0;
 }
 
+html {
+  container-type: size;
+}
+
 body {
+  --u: calc(100cqi / var(--design-w));
   font-family: var(--sans);
   color: var(--text);
   background: var(--page-bg);
@@ -83,7 +245,6 @@ button {
   overflow: hidden;
   user-select: none;
   touch-action: manipulation;
-  container-type: size;
 }
 
 .screen__grain,
@@ -201,8 +362,8 @@ button {
 }
 
 .preview__frame iframe {
-  width: 1080px;
-  height: 1920px;
+  width: calc(var(--canvas-w) * 1px);
+  height: calc(var(--canvas-h) * 1px);
   border: 0;
   background: #ffffff;
   transform: scale(var(--scale, 0.35));
@@ -212,7 +373,7 @@ button {
 
 /*
  * /expedia-left · /expedia-right
- * Locked 1080×1920 (9∶16) letterbox — same idea as /vrbo-left.
+ * Locked 2160×3840 (9∶16) letterbox — same idea as /vrbo-left.
  * Inner iframe is the design canvas so existing vh-based styles keep working.
  */
 /* Letterbox / chrome outside locked screens */
@@ -262,8 +423,6 @@ body:has(.expedia-portrait),
 }
 
 .expedia-portrait__frame {
-  --canvas-w: 1080;
-  --canvas-h: 1920;
   position: relative;
   width: min(100vw, calc(100dvh * 9 / 16));
   height: min(100dvh, calc(100vw * 16 / 9));
@@ -288,8 +447,8 @@ body:has(.expedia-portrait),
   position: absolute;
   top: 0;
   left: 0;
-  width: 1080px;
-  height: 1920px;
+  width: calc(var(--canvas-w) * 1px);
+  height: calc(var(--canvas-h) * 1px);
   border: 0;
   background: #ffffff;
   transform-origin: top left;

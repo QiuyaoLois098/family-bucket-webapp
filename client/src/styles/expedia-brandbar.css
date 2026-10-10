@@ -1,17 +1,17 @@
 /**
  * Shared Expedia header — imported only by ExpediaBrandBar.jsx.
- * Logo: /images/Expedia-images/expedia-logo.png on the 1080×1920 canvas.
+ * Sizes are design-space units (1080-wide); --u scales them to the canvas.
  */
 
 .expedia-brandbar {
   --brand-ink: #191e3b;
-  --brand-logo-h: 41px;
-  --brand-product: 25px;
+  --brand-logo-h: calc(var(--u) * 41);
+  --brand-product: calc(var(--u) * 25);
 
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: calc(var(--u) * 16);
   flex: 0 0 auto;
   width: 100%;
   min-height: var(--brand-logo-h);

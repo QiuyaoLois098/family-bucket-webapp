@@ -7,33 +7,33 @@
 
 .project-menu__toggle {
   position: fixed;
-  top: 18px;
-  left: 18px;
+  top: calc(var(--u) * 18);
+  left: calc(var(--u) * 18);
   z-index: 82;
-  width: 52px;
-  height: 52px;
+  width: calc(var(--u) * 52);
+  height: calc(var(--u) * 52);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 6px;
+  gap: calc(var(--u) * 6);
   border: 0;
-  border-radius: 14px;
+  border-radius: calc(var(--u) * 14);
   background: rgba(25, 30, 59, 0.7);
-  box-shadow: 0 10px 30px rgba(25, 30, 59, 0.45);
-  backdrop-filter: blur(12px);
+  box-shadow: 0 calc(var(--u) * 10) calc(var(--u) * 30) rgba(25, 30, 59, 0.45);
+  backdrop-filter: blur(calc(var(--u) * 12));
 }
 
 .project-menu__toggle span {
   display: block;
-  width: 20px;
-  height: 2px;
+  width: calc(var(--u) * 20);
+  height: calc(var(--u) * 2);
   background: var(--white);
-  border-radius: 2px;
+  border-radius: calc(var(--u) * 2);
 }
 
 .project-menu.is-open .project-menu__toggle span:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
+  transform: translateY(calc(var(--u) * 8)) rotate(45deg);
 }
 
 .project-menu.is-open .project-menu__toggle span:nth-child(2) {
@@ -61,16 +61,16 @@
   top: 0;
   left: 0;
   z-index: 81;
-  width: min(360px, 86vw);
+  width: min(calc(var(--u) * 360), 86vw);
   height: 100dvh;
-  padding: 96px 28px 32px;
+  padding: calc(var(--u) * 96) calc(var(--u) * 28) calc(var(--u) * 32);
   background: var(--navy);
   color: var(--white);
-  box-shadow: 18px 0 50px rgba(25, 30, 59, 0.45);
+  box-shadow: calc(var(--u) * 18) 0 calc(var(--u) * 50) rgba(25, 30, 59, 0.45);
 }
 
 .project-menu__eyebrow {
-  margin: 0 0 22px;
+  margin: 0 0 calc(var(--u) * 22);
   letter-spacing: 0.28em;
   text-transform: uppercase;
   font-size: 0.72rem;
@@ -83,15 +83,15 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: calc(var(--u) * 10);
 }
 
 .project-menu__drawer button {
   width: 100%;
   text-align: left;
   border: 0;
-  border-radius: 16px;
-  padding: 18px 18px 16px;
+  border-radius: calc(var(--u) * 16);
+  padding: calc(var(--u) * 18) calc(var(--u) * 18) calc(var(--u) * 16);
   background: rgba(255, 255, 255, 0.04);
   color: inherit;
 }
@@ -105,7 +105,7 @@
 
 .project-menu__drawer button span {
   display: block;
-  margin-top: 6px;
+  margin-top: calc(var(--u) * 6);
   font-size: 0.82rem;
   letter-spacing: 0.06em;
   opacity: 0.62;
@@ -117,5 +117,5 @@
 }
 
 .preview {
-  padding-left: 88px;
+  padding-left: calc(var(--u) * 88);
 }

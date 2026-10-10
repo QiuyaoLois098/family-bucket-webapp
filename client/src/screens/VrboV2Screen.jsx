@@ -212,7 +212,7 @@ function VrboDemo() {
   );
 }
 
-/** Display 1 · Organizer / interactive chat — scales in a locked 1080×1920 stage. */
+/** Display 1 · Organizer / interactive chat — scales in a locked 2160×3840 stage. */
 export function VrboLeftPage() {
   const { state, actions } = useVrboV2Session({ syncOnly: true });
   const propertyLookup = usePropertyLookup(state.results);
@@ -222,7 +222,7 @@ export function VrboLeftPage() {
     <div className="vrbo-v2-device vrbo-v2-device--display">
       <RestartControl onReset={actions.reset} />
       <div className="vrbo-v2-device__stage vrbo-v2-device__stage--display">
-        <div className="vrbo-v2-displayHd" aria-label="Display 1080×1920">
+        <div className="vrbo-v2-displayHd" aria-label="Display 2160×3840">
           <div className="vrbo-v2-displayHd__panel">
             <MainChatScreen
               messages={state.messages}
@@ -248,7 +248,7 @@ export function VrboRightPage() {
     <div className="vrbo-v2-device vrbo-v2-device--display">
       <RestartControl onReset={actions.reset} />
       <div className="vrbo-v2-device__stage vrbo-v2-device__stage--display">
-        <div className="vrbo-v2-displayHd" aria-label="Display 1080×1920">
+        <div className="vrbo-v2-displayHd" aria-label="Display 2160×3840">
           <div className="vrbo-v2-displayHd__panel">
             <RankingScreen
               stage={state.stage}

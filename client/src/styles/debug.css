@@ -1,22 +1,22 @@
 .debug-panel {
   position: fixed;
-  left: 16px;
-  bottom: 16px;
+  left: calc(var(--u) * 16);
+  bottom: calc(var(--u) * 16);
   z-index: 50;
-  width: min(360px, calc(100vw - 32px));
-  padding: 14px 16px 16px;
+  width: min(calc(var(--u) * 360), calc(100vw - calc(var(--u) * 32)));
+  padding: calc(var(--u) * 14) calc(var(--u) * 16) calc(var(--u) * 16);
   background: rgba(25, 30, 59, 0.92);
   color: var(--white);
-  font-size: 12px;
+  font-size: calc(var(--u) * 12);
   line-height: 1.35;
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(calc(var(--u) * 16));
 }
 
 .debug-panel__head {
   display: flex;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 10px;
+  gap: calc(var(--u) * 12);
+  margin-bottom: calc(var(--u) * 10);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -27,9 +27,9 @@
 
 .debug-panel dl > div {
   display: grid;
-  grid-template-columns: 88px 1fr;
-  gap: 8px;
-  padding: 4px 0;
+  grid-template-columns: calc(var(--u) * 88) 1fr;
+  gap: calc(var(--u) * 8);
+  padding: calc(var(--u) * 4) 0;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -45,16 +45,16 @@
 .debug-panel__actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 12px;
+  gap: calc(var(--u) * 8);
+  margin-top: calc(var(--u) * 12);
 }
 
 .debug-panel button {
-  min-height: 36px;
+  min-height: calc(var(--u) * 36);
   border: 1px solid rgba(255, 255, 255, 0.18);
   background: transparent;
   color: inherit;
-  font-size: 11px;
+  font-size: calc(var(--u) * 11);
   letter-spacing: 0.04em;
 }
 
@@ -69,22 +69,22 @@
 /* Hyperion request debug — enable with ?dev=1 */
 .hyperion-dev {
   position: fixed;
-  top: 10px;
-  left: 10px;
+  top: calc(var(--u) * 10);
+  left: calc(var(--u) * 10);
   z-index: 9999;
-  min-width: 220px;
-  max-width: min(360px, calc(100vw - 20px));
-  max-height: min(75vh, 560px);
+  min-width: calc(var(--u) * 220);
+  max-width: min(calc(var(--u) * 360), calc(100vw - calc(var(--u) * 20)));
+  max-height: min(75vh, calc(var(--u) * 560));
   overflow: auto;
-  padding: 10px 12px;
-  border-radius: 10px;
+  padding: calc(var(--u) * 10) calc(var(--u) * 12);
+  border-radius: calc(var(--u) * 10);
   background: rgba(15, 23, 42, 0.9);
   color: #f8fafc;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 11px;
+  font-size: calc(var(--u) * 11);
   line-height: 1.35;
   pointer-events: none;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 calc(var(--u) * 8) calc(var(--u) * 24) rgba(0, 0, 0, 0.28);
 }
 
 .hyperion-dev__section--events {
@@ -92,16 +92,16 @@
 }
 
 .hyperion-dev__title {
-  margin: 0 0 6px;
-  font-size: 10px;
+  margin: 0 0 calc(var(--u) * 6);
+  font-size: calc(var(--u) * 10);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   opacity: 0.7;
 }
 
 .hyperion-dev__section {
-  margin-top: 8px;
-  padding-top: 8px;
+  margin-top: calc(var(--u) * 8);
+  padding-top: calc(var(--u) * 8);
   border-top: 1px solid rgba(148, 163, 184, 0.25);
 }
 
@@ -112,32 +112,32 @@
 }
 
 .hyperion-dev__section-title {
-  margin: 0 0 4px !important;
-  font-size: 9px;
+  margin: 0 0 calc(var(--u) * 4) !important;
+  font-size: calc(var(--u) * 9);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   opacity: 0.55;
 }
 
 .hyperion-dev p {
-  margin: 2px 0;
+  margin: calc(var(--u) * 2) 0;
   word-break: break-word;
 }
 
 .hyperion-dev p span {
   display: inline-block;
-  min-width: 52px;
+  min-width: calc(var(--u) * 52);
   opacity: 0.55;
 }
 
 .hyperion-dev__error {
-  margin-top: 6px !important;
+  margin-top: calc(var(--u) * 6) !important;
   color: #fecaca;
 }
 
 .hyperion-dev__empty {
   opacity: 0.5;
-  margin: 4px 0 !important;
+  margin: calc(var(--u) * 4) 0 !important;
 }
 
 .hyperion-dev__list {
@@ -146,13 +146,13 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: calc(var(--u) * 6);
 }
 
 .hyperion-dev__row {
-  border-radius: 6px;
+  border-radius: calc(var(--u) * 6);
   background: rgba(255, 255, 255, 0.04);
-  border-left: 2px solid rgba(148, 163, 184, 0.45);
+  border-left: calc(var(--u) * 2) solid rgba(148, 163, 184, 0.45);
   overflow: hidden;
 }
 
@@ -173,7 +173,7 @@
   display: block;
   width: 100%;
   margin: 0;
-  padding: 5px 6px;
+  padding: calc(var(--u) * 5) calc(var(--u) * 6);
   border: 0;
   background: transparent;
   color: inherit;
@@ -195,7 +195,7 @@
 .hyperion-dev__row-top {
   display: flex;
   justify-content: space-between;
-  gap: 8px;
+  gap: calc(var(--u) * 8);
 }
 
 .hyperion-dev__row-top strong {
@@ -204,28 +204,28 @@
 }
 
 .hyperion-dev__row-meta {
-  margin-top: 2px;
+  margin-top: calc(var(--u) * 2);
   opacity: 0.55;
-  font-size: 10px;
+  font-size: calc(var(--u) * 10);
 }
 
 .hyperion-dev__row-error {
-  padding: 0 6px 5px;
+  padding: 0 calc(var(--u) * 6) calc(var(--u) * 5);
   color: #fecaca;
-  font-size: 10px;
+  font-size: calc(var(--u) * 10);
   word-break: break-word;
 }
 
 .hyperion-dev__request {
   margin: 0;
-  padding: 6px 8px 8px;
-  max-height: 220px;
+  padding: calc(var(--u) * 6) calc(var(--u) * 8) calc(var(--u) * 8);
+  max-height: calc(var(--u) * 220);
   overflow: auto;
   border-top: 1px solid rgba(148, 163, 184, 0.2);
   background: rgba(0, 0, 0, 0.28);
   color: #e2e8f0;
   font: inherit;
-  font-size: 10px;
+  font-size: calc(var(--u) * 10);
   line-height: 1.4;
   white-space: pre-wrap;
   word-break: break-word;

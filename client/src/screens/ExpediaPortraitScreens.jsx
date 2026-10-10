@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
+import { CANVAS_W, CANVAS_H } from "../canvas.js";
+import { useSession } from "../hooks/useSession.js";
 
-const CANVAS_W = 1080;
-const CANVAS_H = 1920;
-const QUESTION_REF =
-  "/images/Expedia-images/example/expedia-question.png";
+const DESTINATION_REF = "/images/Expedia-images/example/start.png";
+const QUESTION_REF = "/images/Expedia-images/example/expedia-question.png";
 
-/** Family Bucket screens in a locked 1080×1920 (9∶16) stage, like /vrbo-left. */
+/** Family Bucket screens in a locked 2160×3840 (9∶16) stage, like /vrbo-left. */
 
 function PortraitFrame({ title, src, className = "" }) {
   const frameRef = useRef(null);
@@ -63,6 +63,14 @@ function ReferenceFrame({ src }) {
 
 /** Screen A · Control — live UI + same-size design reference beside it. */
 export function ExpediaLeftPage() {
+  const { state } = useSession({ syncOnly: true });
+  const phase = state.phase === "idle" ? "destination" : state.phase;
+  const isDestination = phase === "destination";
+  const referenceSrc = isDestination ? DESTINATION_REF : QUESTION_REF;
+  const referenceCaption = isDestination
+    ? "Reference · destination"
+    : "Reference · question";
+
   return (
     <div className="expedia-portrait expedia-portrait--compare">
       <div className="expedia-portrait__stage expedia-portrait__stage--compare">
@@ -71,8 +79,8 @@ export function ExpediaLeftPage() {
           <p className="expedia-portrait__caption">Live · /control</p>
         </div>
         <div className="expedia-portrait__column">
-          <ReferenceFrame src={QUESTION_REF} />
-          <p className="expedia-portrait__caption">Reference · question</p>
+          <ReferenceFrame src={referenceSrc} />
+          <p className="expedia-portrait__caption">{referenceCaption}</p>
         </div>
       </div>
     </div>
