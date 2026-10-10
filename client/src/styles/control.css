@@ -164,6 +164,7 @@
   overflow: hidden;
   width: 100%;
   aspect-ratio: 188 / 120;
+  box-sizing: border-box;
   border: 0;
   padding: 0;
   border-radius: clamp(calc(var(--u) * 14), 3.3vw, calc(var(--u) * 36));
@@ -171,9 +172,8 @@
   color: var(--white);
   text-align: center;
   cursor: pointer;
-  outline: calc(var(--u) * 2) solid transparent;
-  outline-offset: calc(var(--u) * 3);
-  transition: outline-color 0.25s ease, transform 0.25s ease, box-shadow 0.35s ease;
+  outline: none;
+  transition: box-shadow 0.2s ease, transform 0.25s ease;
   animation: rise 0.55s ease both;
 }
 
@@ -206,27 +206,35 @@
   position: absolute;
   left: calc(var(--u) * 8);
   right: calc(var(--u) * 8);
-  bottom: clamp(calc(var(--u) * 8), 1.6vw, calc(var(--u) * 18));
+  bottom: calc(100cqi * 36 / var(--design-w));
   z-index: 1;
-  font-family: var(--sans);
+  font-family: var(--ui);
   font-weight: 500;
-  font-size: clamp(0.85rem, 2.6vw, 1.75rem);
+  font-size: calc(100cqi * 34 / var(--design-w));
   line-height: 1.15;
   letter-spacing: 0.01em;
   text-shadow: 0 1px calc(var(--u) * 10) rgba(25, 30, 59, 0.55);
 }
 
 .destination-card:hover,
-.destination-card:focus-visible,
-.destination-card:active {
-  outline-color: var(--gold);
-  box-shadow: 0 0 calc(var(--u) * 28) rgba(253, 219, 50, 0.22);
-  transform: translateY(-1px);
+.destination-card:focus-visible {
+  outline: none;
+}
+
+.destination-card.is-selected::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  box-sizing: border-box;
+  border: calc(var(--u) * 4) solid #191e3b;
+  border-radius: inherit;
+  pointer-events: none;
 }
 
 .destination-card:hover .destination-card__image,
 .destination-card:focus-visible .destination-card__image,
-.destination-card:active .destination-card__image {
+.destination-card.is-selected .destination-card__image {
   transform: scale(1.04);
 }
 
