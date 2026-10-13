@@ -10,9 +10,9 @@ const REVEAL_STAGGER_MS = 750;
 const THINKING_HOLD_MS = 2000;
 
 /**
- * Q1 → Thinking → Q2 activity-pair
+ * Q1 → same page: outdoors bubble → Thinking… → swap Thinking for Q2 (no remount)
  * Q2 → bubble + AI → Thinking → Q3
- * Q3 → bubble + AI + place card → Thinking → reveal
+ * Q3 → jump to reveal finale (luggage on right)
  */
 export default function QuestionStep({
   currentQuestion,
@@ -23,18 +23,33 @@ export default function QuestionStep({
   const [locked, setLocked] = useState(false);
   const [exiting, setExiting] = useState(false);
   const [bridge, setBridge] = useState(null);
-  /** 0=hidden … 1=bubble 2=ai 3=card 4=thinking */
+  /** 0=hidden … 1=bubble 2=ai 3=card 4=thinking 5=thinking fading */
   const [bridgeStep, setBridgeStep] = useState(0);
   const [bridgeExiting, setBridgeExiting] = useState(false);
+  /** Keep Q1 outdoors bubble while Q2 content replaces Thinking on the same page */
+  const [pinnedBubble, setPinnedBubble] = useState(null);
+  /** Local merge: show Q2 under the bubble before / as session advances */
+  const [mergedToQ2, setMergedToQ2] = useState(false);
   const [kayakId, setKayakId] = useState(null);
   const [ropesId, setRopesId] = useState(null);
   /** 0=none, 1=prompt, 2=hint, 3=first card, … */
   const [revealStep, setRevealStep] = useState(0);
+
   const timerRef = useRef(null);
   const revealTimersRef = useRef([]);
   const bridgeTimersRef = useRef([]);
+  const kayakIdRef = useRef(null);
+  const ropesIdRef = useRef(null);
+  const q2RevealStartedRef = useRef(false);
+  const confirmingRef = useRef(false);
+  const pinnedBubbleRef = useRef(null);
+  const mergedToQ2Ref = useRef(false);
 
-  const question = QUESTIONS[currentQuestion];
+  const liveQuestion = QUESTIONS[currentQuestion];
+  const question =
+    mergedToQ2 && liveQuestion?.type !== "activity-pair"
+      ? QUESTIONS[1]
+      : liveQuestion;
   const options = question?.options || [];
   const isActivityPair = question?.type === "activity-pair";
 
@@ -48,13 +63,39 @@ export default function QuestionStep({
     bridgeTimersRef.current = [];
   };
 
-  const startReveal = (optionCount) => {
+  const startActivityReveal = ({ keepBubble }) => {
+    clearRevealTimers();
+    setExiting(false);
+    setBridgeExiting(false);
+    setRevealStep(0);
+
+    const timers = keepBubble
+      ? [
+          setTimeout(() => setRevealStep(1), 80),
+          setTimeout(() => setRevealStep(2), 80 + REVEAL_STAGGER_MS),
+          setTimeout(() => setRevealStep(3), 80 + REVEAL_STAGGER_MS * 2),
+          setTimeout(() => setRevealStep(4), 80 + REVEAL_STAGGER_MS * 3),
+        ]
+      : [1, 2, 3, 4].map((step) =>
+          setTimeout(() => setRevealStep(step), 80 + (step - 1) * REVEAL_STAGGER_MS),
+        );
+    revealTimersRef.current = timers;
+  };
+
+  const startStandardReveal = (optionCount) => {
     clearRevealTimers();
     setRevealStep(0);
     setExiting(false);
     setBridge(null);
     setBridgeStep(0);
     setBridgeExiting(false);
+    setPinnedBubble(null);
+    setMergedToQ2(false);
+    pinnedBubbleRef.current = null;
+    mergedToQ2Ref.current = false;
+    q2RevealStartedRef.current = false;
+    confirmingRef.current = false;
+
     const totalSteps = 2 + optionCount;
     for (let step = 1; step <= totalSteps; step += 1) {
       revealTimersRef.current.push(
@@ -64,25 +105,53 @@ export default function QuestionStep({
   };
 
   useEffect(() => {
+    // Answer-confirm owns the screen — do not tear it down.
+    if (confirmingRef.current) {
+      return undefined;
+    }
+
+    // Q1→Q2 already merged on this page: session index caught up — unlock only.
+    if (q2RevealStartedRef.current && liveQuestion?.type === "activity-pair") {
+      setExiting(false);
+      setLocked(false);
+      setPendingId(null);
+      return undefined;
+    }
+
     clearTimeout(timerRef.current);
     clearBridgeTimers();
+    clearRevealTimers();
     setPendingId(null);
     setLocked(false);
     setKayakId(null);
     setRopesId(null);
-    if (isActivityPair) {
-      startReveal(2);
-    } else {
-      startReveal(options.length);
+    kayakIdRef.current = null;
+    ropesIdRef.current = null;
+    setBridge(null);
+    setBridgeStep(0);
+    setBridgeExiting(false);
+    confirmingRef.current = false;
+
+    if (liveQuestion?.type === "activity-pair") {
+      const keepBubble =
+        Boolean(pinnedBubbleRef.current) ||
+        mergedToQ2Ref.current ||
+        q2RevealStartedRef.current;
+      if (keepBubble) q2RevealStartedRef.current = true;
+      startActivityReveal({ keepBubble });
+    } else if (!mergedToQ2Ref.current) {
+      startStandardReveal(liveQuestion?.options?.length || 0);
     }
 
     return () => {
+      // Never kill an in-flight confirm or the Q1→Q2 merged stagger on index sync.
+      if (confirmingRef.current || q2RevealStartedRef.current) return;
       clearTimeout(timerRef.current);
-      clearRevealTimers();
       clearBridgeTimers();
+      clearRevealTimers();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- restart only when question/destination changes
-  }, [currentQuestion, destinationId, options.length, isActivityPair]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentQuestion, destinationId]);
 
   if (!question) return null;
 
@@ -90,18 +159,80 @@ export default function QuestionStep({
   const tripPlace = destination?.tripLabel || destination?.shortTitle || "Your trip";
   const tripDates = destination?.dates || DEFAULT_DATES;
 
-  const runBridgeThenAdvance = (optionId) => {
-    const option = resolveAnswerOption(question, optionId);
-    // Q1 uses a fixed outdoors bubble; later questions use the option youSay.
-    const bubbleText =
-      (currentQuestion === 0
-        ? question.bridgeBubble
-        : option?.youSay || question.userBubble) || "";
-    const aiText = currentQuestion === 0 ? null : option?.aiSay || null;
-    const placeCard = option?.answerCard || null;
+  const answerQuestionIndex = () => {
+    if (liveQuestion?.type === "activity-pair") return currentQuestion;
+    if (mergedToQ2) return 1;
+    return currentQuestion;
+  };
+
+  /** Q1 only: outdoors bubble → Thinking → same page becomes Q2 under the bubble. */
+  const runQ1BridgeIntoQ2 = (optionId) => {
+    const bubbleText = question.bridgeBubble || "";
 
     clearTimeout(timerRef.current);
     clearBridgeTimers();
+    setExiting(true);
+    setPinnedBubble(null);
+    setMergedToQ2(false);
+    pinnedBubbleRef.current = null;
+    mergedToQ2Ref.current = false;
+    q2RevealStartedRef.current = false;
+    confirmingRef.current = false;
+
+    timerRef.current = setTimeout(() => {
+      setBridge({ bubbleText, optionId, kind: "q1" });
+      setBridgeStep(0);
+      setBridgeExiting(false);
+      setExiting(false);
+
+      bridgeTimersRef.current.push(setTimeout(() => setBridgeStep(1), 40));
+      bridgeTimersRef.current.push(
+        setTimeout(() => setBridgeStep(4), 40 + REVEAL_STAGGER_MS),
+      );
+      bridgeTimersRef.current.push(
+        setTimeout(() => {
+          setBridgeStep(5);
+          bridgeTimersRef.current.push(
+            setTimeout(() => {
+              pinnedBubbleRef.current = bubbleText;
+              mergedToQ2Ref.current = true;
+              q2RevealStartedRef.current = true;
+              setPinnedBubble(bubbleText);
+              setMergedToQ2(true);
+              setBridge(null);
+              setBridgeStep(0);
+              setLocked(false);
+              setPendingId(null);
+              setKayakId(null);
+              setRopesId(null);
+              kayakIdRef.current = null;
+              ropesIdRef.current = null;
+              setExiting(false);
+              startActivityReveal({ keepBubble: true });
+              onAnswer(currentQuestion, optionId, { advance: true });
+            }, REVEAL_FADE_MS),
+          );
+        }, 40 + REVEAL_STAGGER_MS + THINKING_HOLD_MS),
+      );
+    }, REVEAL_FADE_MS);
+  };
+
+  /** Q2/Q3 answer confirm: bubble (+ AI) → Thinking → next question */
+  const runBridgeThenAdvance = (optionId) => {
+    const option = resolveAnswerOption(question, optionId);
+    if (!option && question?.type === "activity-pair") {
+      // Still proceed with synthesized copy if lookup fails
+    }
+    const bubbleText = option?.youSay || question.userBubble || "";
+    const aiText = option?.aiSay || null;
+    const placeCard = option?.answerCard || null;
+    const qIndex = answerQuestionIndex();
+
+    clearTimeout(timerRef.current);
+    clearBridgeTimers();
+    clearRevealTimers();
+    confirmingRef.current = true;
+    setLocked(true);
     setExiting(true);
 
     timerRef.current = setTimeout(() => {
@@ -109,6 +240,8 @@ export default function QuestionStep({
       setBridgeStep(0);
       setBridgeExiting(false);
       setExiting(false);
+      setPinnedBubble(null);
+      pinnedBubbleRef.current = null;
 
       let t = 40;
       bridgeTimersRef.current.push(setTimeout(() => setBridgeStep(1), t));
@@ -124,7 +257,6 @@ export default function QuestionStep({
         t += REVEAL_FADE_MS;
       }
 
-      // Thinking after dialogue (and card) has appeared
       bridgeTimersRef.current.push(setTimeout(() => setBridgeStep(4), t));
       t += THINKING_HOLD_MS;
 
@@ -133,7 +265,16 @@ export default function QuestionStep({
           setBridgeExiting(true);
           bridgeTimersRef.current.push(
             setTimeout(() => {
-              onAnswer(currentQuestion, optionId, { advance: true });
+              confirmingRef.current = false;
+              q2RevealStartedRef.current = false;
+              mergedToQ2Ref.current = false;
+              pinnedBubbleRef.current = null;
+              setMergedToQ2(false);
+              setPinnedBubble(null);
+              setBridge(null);
+              setBridgeStep(0);
+              setBridgeExiting(false);
+              onAnswer(qIndex, optionId, { advance: true });
             }, REVEAL_FADE_MS),
           );
         }, t),
@@ -142,18 +283,16 @@ export default function QuestionStep({
   };
 
   const handleSelect = (optionId) => {
-    if (locked || exiting || bridge) return;
+    if (locked || exiting || bridge || confirmingRef.current) return;
     const option = options.find((item) => item.id === optionId);
     if (!option) return;
 
     setLocked(true);
     setPendingId(optionId);
-    onAnswer(currentQuestion, optionId, { advance: false });
+    onAnswer(answerQuestionIndex(), optionId, { advance: false });
 
     clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
-      // Last question: jump to reveal immediately so right screen shows luggage
-      // while left plays the Q3 answer finale.
       if (currentQuestion === QUESTIONS.length - 1) {
         setExiting(true);
         timerRef.current = setTimeout(() => {
@@ -161,50 +300,77 @@ export default function QuestionStep({
         }, REVEAL_FADE_MS);
         return;
       }
+      if (currentQuestion === 0 && !mergedToQ2Ref.current) {
+        runQ1BridgeIntoQ2(optionId);
+        return;
+      }
       runBridgeThenAdvance(optionId);
     }, SELECT_HOLD_MS);
   };
 
-  const tryCompleteActivityPair = (nextKayak, nextRopes) => {
-    if (!nextKayak || !nextRopes || locked) return;
-    const optionId = `${nextKayak}|${nextRopes}`;
+  /** One card click advances — fill the other group with its first option for now. */
+  const handleActivitySelect = (groupId, optionId) => {
+    if (locked || confirmingRef.current || bridge) return;
+
+    const kayakGroup = question.groups?.find((g) => g.id === "kayak");
+    const ropesGroup = question.groups?.find((g) => g.id === "ropes");
+    const defaultKayak = kayakGroup?.options?.[0]?.id;
+    const defaultRopes = ropesGroup?.options?.[0]?.id;
+
+    const nextKayak = groupId === "kayak" ? optionId : defaultKayak;
+    const nextRopes = groupId === "ropes" ? optionId : defaultRopes;
+    if (!nextKayak || !nextRopes) return;
+
+    kayakIdRef.current = nextKayak;
+    ropesIdRef.current = nextRopes;
+    setKayakId(nextKayak);
+    setRopesId(nextRopes);
+
+    const answerId = `${nextKayak}|${nextRopes}`;
     setLocked(true);
-    setPendingId(optionId);
-    onAnswer(currentQuestion, optionId, { advance: false });
+    setPendingId(answerId);
+    onAnswer(answerQuestionIndex(), answerId, { advance: false });
     clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
-      runBridgeThenAdvance(optionId);
+      runBridgeThenAdvance(answerId);
     }, SELECT_HOLD_MS);
   };
-
-  const handleActivitySelect = (groupId, optionId) => {
-    if (locked || exiting || bridge) return;
-    if (groupId === "kayak") {
-      setKayakId(optionId);
-      tryCompleteActivityPair(optionId, ropesId);
-      return;
-    }
-    setRopesId(optionId);
-    tryCompleteActivityPair(kayakId, optionId);
-  };
-
-  const showPrompt = revealStep >= 1 && !exiting && !bridge;
-  const showHint = revealStep >= 2 && !exiting && !bridge;
-  const showActivityBubble =
-    isActivityPair && revealStep >= 1 && !exiting && !bridge;
 
   const inBridge = Boolean(bridge);
   const showBridgeBubble = inBridge && bridgeStep >= 1 && !bridgeExiting;
   const showBridgeAi = inBridge && bridge?.aiText && bridgeStep >= 2 && !bridgeExiting;
   const showBridgeCard =
     inBridge && bridge?.placeCard && bridgeStep >= 3 && !bridgeExiting;
-  const showBridgeThinking = inBridge && bridgeStep >= 4 && !bridgeExiting;
+  const showBridgeThinking =
+    inBridge && bridgeStep >= 4 && bridgeStep < 5 && !bridgeExiting;
+  const thinkingFading = inBridge && bridgeStep >= 5;
+
+  const showPinnedOrLiveBubble =
+    Boolean(pinnedBubble) ||
+    showBridgeBubble ||
+    (isActivityPair && !inBridge && (pinnedBubble || revealStep >= 1) && !exiting);
+
+  const showPrompt = revealStep >= 1 && !exiting && !inBridge;
+  const showHint = revealStep >= 2 && !exiting && !inBridge;
+
+  const bubbleText =
+    bridge?.bubbleText || pinnedBubble || question.userBubble || question.bridgeBubble;
+
+  const questionIndexKey =
+    mergedToQ2 || isActivityPair ? Math.max(currentQuestion, 1) : currentQuestion;
+
+  // Merged Q2: allow clicks even if stagger timers were interrupted.
+  const cardsEnabled =
+    !locked &&
+    !confirmingRef.current &&
+    !bridge &&
+    (mergedToQ2 || revealStep >= 3 || q2RevealStartedRef.current);
 
   return (
     <div
       className={`question question--planner question--count-${
         isActivityPair ? "activity" : options.length
-      }${exiting && !bridge ? " is-exiting" : ""}${inBridge ? " is-bridging" : ""}`}
+      }${exiting && !inBridge ? " is-exiting" : ""}${inBridge ? " is-bridging" : ""}`}
       style={{ "--question-reveal-ms": `${REVEAL_FADE_MS}ms` }}
     >
       <ExpediaBrandBar />
@@ -216,17 +382,19 @@ export default function QuestionStep({
         <p className="question__follow-up">Follow up</p>
       </div>
 
-      {inBridge || showActivityBubble ? (
+      {showPinnedOrLiveBubble || inBridge ? (
         <div
           className={`question__dialogue${bridgeExiting ? " is-exiting" : ""}`}
           style={{ "--briefing-fade-ms": `${REVEAL_FADE_MS}ms` }}
         >
           <div
             className={`briefing__bubble${
-              showBridgeBubble || showActivityBubble ? " is-visible" : ""
+              showBridgeBubble || Boolean(pinnedBubble) || (isActivityPair && revealStep >= 1)
+                ? " is-visible"
+                : ""
             }`}
           >
-            {bridge?.bubbleText || question.userBubble}
+            {bubbleText}
           </div>
 
           {bridge?.aiText ? (
@@ -254,8 +422,12 @@ export default function QuestionStep({
             </article>
           ) : null}
 
-          {inBridge && bridgeStep >= 4 ? (
-            <p className={`briefing__thinking${showBridgeThinking ? " is-visible" : ""}`}>
+          {inBridge && (bridgeStep >= 4 || thinkingFading) ? (
+            <p
+              className={`briefing__thinking${
+                showBridgeThinking ? " is-visible" : ""
+              }${thinkingFading ? " is-leaving" : ""}`}
+            >
               Thinking
               <span className="briefing__dots" aria-hidden="true">
                 <span>.</span>
@@ -282,7 +454,7 @@ export default function QuestionStep({
               const revealed = revealStep >= 3 + index && !exiting;
               return (
                 <button
-                  key={`${currentQuestion}-${option.id}`}
+                  key={`${questionIndexKey}-${option.id}`}
                   type="button"
                   role="listitem"
                   className={`question__option${selected ? " is-selected" : ""}${
@@ -312,20 +484,33 @@ export default function QuestionStep({
       {!inBridge && isActivityPair ? (
         <>
           <div className="question__prompt question__prompt--activity">
-            <h2 className={showPrompt ? "is-revealed" : undefined}>{question.prompt}</h2>
-            <p className={`question__pick-hint${showHint ? " is-revealed" : ""}`}>
+            <h2
+              className={
+                showPrompt || mergedToQ2 || revealStep >= 1 ? "is-revealed" : undefined
+              }
+            >
+              {question.prompt}
+            </h2>
+            <p
+              className={`question__pick-hint${
+                showHint || mergedToQ2 || revealStep >= 2 ? " is-revealed" : ""
+              }`}
+            >
               {question.pickHint}
             </p>
           </div>
 
           <div
             className={`activity-board${
-              revealStep >= 3 && !exiting ? " is-revealed" : ""
+              revealStep >= 3 || mergedToQ2 || q2RevealStartedRef.current
+                ? " is-revealed"
+                : ""
             }`}
           >
             {question.groups.map((group, groupIndex) => {
               const selectedId = group.id === "kayak" ? kayakId : ropesId;
-              const groupRevealed = revealStep >= 3 + groupIndex && !exiting;
+              const groupRevealed =
+                revealStep >= 3 + groupIndex || mergedToQ2 || revealStep >= 3;
               return (
                 <section
                   key={group.id}
@@ -340,7 +525,7 @@ export default function QuestionStep({
                           key={option.id}
                           type="button"
                           className={`activity-card${selected ? " is-selected" : ""}`}
-                          disabled={locked || !groupRevealed}
+                          disabled={!cardsEnabled}
                           onClick={() => handleActivitySelect(group.id, option.id)}
                         >
                           <span

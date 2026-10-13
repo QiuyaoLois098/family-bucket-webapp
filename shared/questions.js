@@ -96,7 +96,7 @@ export const QUESTIONS = [
     userBubble:
       "We love the outdoors—the kids are dying to try kayaking and a ropes course near South Lake Tahoe over spring break.",
     prompt: "Here are a few kayak and ropes course options.",
-    pickHint: "(Pick 1 option for each activity)",
+    pickHint: "(Pick 1 option)",
     groups: ACTIVITY_GROUPS,
     options: buildActivityPairOptions(ACTIVITY_GROUPS),
   },
