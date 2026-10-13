@@ -102,22 +102,42 @@ export function ExpediaLeftPage() {
         </button>
         <button
           type="button"
+          className={phase === "building" ? "is-active" : undefined}
+          onClick={() => actions.debugJump("building")}
+        >
+          Building
+        </button>
+        <button
+          type="button"
           className={phase === "itinerary" ? "is-active" : undefined}
           onClick={() => actions.debugJump("itinerary")}
         >
           Itinerary
         </button>
       </div>
-      <div className="expedia-portrait__stage expedia-portrait__stage--compare">
-        <div className="expedia-portrait__column">
-          <PortraitFrame title="Expedia · Control" src="/control" />
-          <p className="expedia-portrait__caption">Live · /control</p>
+      {phase === "building" ? (
+        <div className="expedia-portrait__stage expedia-portrait__stage--compare">
+          <div className="expedia-portrait__column">
+            <PortraitFrame title="Expedia · Control · building" src="/control" />
+            <p className="expedia-portrait__caption">Live · left · building-left</p>
+          </div>
+          <div className="expedia-portrait__column">
+            <PortraitFrame title="Expedia · Display · building" src="/display" />
+            <p className="expedia-portrait__caption">Live · right · building-right</p>
+          </div>
         </div>
-        <div className="expedia-portrait__column">
-          <ReferenceFrame src={referenceSrc} />
-          <p className="expedia-portrait__caption">{referenceCaption}</p>
+      ) : (
+        <div className="expedia-portrait__stage expedia-portrait__stage--compare">
+          <div className="expedia-portrait__column">
+            <PortraitFrame title="Expedia · Control" src="/control" />
+            <p className="expedia-portrait__caption">Live · /control</p>
+          </div>
+          <div className="expedia-portrait__column">
+            <ReferenceFrame src={referenceSrc} />
+            <p className="expedia-portrait__caption">{referenceCaption}</p>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

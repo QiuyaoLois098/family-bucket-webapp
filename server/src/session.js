@@ -39,6 +39,9 @@ function resolveOutputScreen(state) {
   if (state.phase === PHASES.PLANNING || state.phase === PHASES.REVEAL) {
     return "luggage";
   }
+  if (state.phase === PHASES.BUILDING) {
+    return "building";
+  }
   if (state.phase === PHASES.ITINERARY) {
     return "itinerary";
   }
@@ -503,7 +506,13 @@ export class ExperienceSession extends EventEmitter {
     const { destination, answers } = this.state;
     const result = await generateItinerary({ destination, answers });
     if (jobId !== this.itineraryJobId) return;
-    if (this.state.phase !== PHASES.PLANNING && this.state.phase !== PHASES.REVEAL) return;
+    if (
+      this.state.phase !== PHASES.PLANNING &&
+      this.state.phase !== PHASES.REVEAL &&
+      this.state.phase !== PHASES.BUILDING
+    ) {
+      return;
+    }
 
     const itinerary = result.itinerary || getDestination(destination)?.fallbackItinerary || null;
 
@@ -524,6 +533,14 @@ export class ExperienceSession extends EventEmitter {
     }, delayMs);
   }
 
+  scheduleBuildingToItinerary(delayMs = config.buildingHoldMs) {
+    clearTimeout(this.revealTimer);
+    this.revealTimer = setTimeout(() => {
+      if (this.state.phase !== PHASES.BUILDING) return;
+      this.set({ phase: PHASES.ITINERARY }, "building-complete");
+    }, delayMs);
+  }
+
   shake() {
     this.touch();
     if (this.state.phase !== PHASES.REVEAL) return;
@@ -537,10 +554,11 @@ export class ExperienceSession extends EventEmitter {
       {
         itinerary,
         itineraryStatus: this.state.itinerary ? this.state.itineraryStatus : "fallback",
-        phase: PHASES.ITINERARY,
+        phase: PHASES.BUILDING,
       },
       "shake",
     );
+    this.scheduleBuildingToItinerary();
   }
 
   reset(reason = "manual") {
@@ -592,6 +610,12 @@ export class ExperienceSession extends EventEmitter {
       return;
     }
 
+    if (phase === PHASES.BUILDING) {
+      clearTimeout(this.revealTimer);
+      this.set({ phase: PHASES.ITINERARY }, "debug-skip-building");
+      return;
+    }
+
     if (phase === PHASES.ITINERARY) {
       this.reset("debug-skip");
     }
@@ -629,7 +653,7 @@ export class ExperienceSession extends EventEmitter {
     );
   }
 
-  /** Dev shortcut: jump straight to luggage (reveal) or itinerary with seed data. */
+  /** Dev shortcut: jump to luggage / building / itinerary with seed data. */
   debugJump(target) {
     this.touch();
     this.inputQuietUntil = 0;
@@ -663,6 +687,12 @@ export class ExperienceSession extends EventEmitter {
 
     if (target === "reveal" || target === "luggage") {
       this.set({ ...seeded, phase: PHASES.REVEAL }, "debug-jump-reveal");
+      return;
+    }
+
+    if (target === "building") {
+      this.set({ ...seeded, phase: PHASES.BUILDING }, "debug-jump-building");
+      this.scheduleBuildingToItinerary();
       return;
     }
 

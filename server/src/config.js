@@ -24,6 +24,8 @@ export const config = {
   /** Vrbo celebration finale: auto-restart after this idle period. */
   vrboCelebrationTimeoutMs: Number(process.env.VRBO_CELEBRATION_TIMEOUT_MS || 30000),
   revealHoldMs: Number(process.env.REVEAL_HOLD_MS || 4000),
+  /** Hold on building screens after luggage pull before itinerary. */
+  buildingHoldMs: Number(process.env.BUILDING_HOLD_MS || 4000),
   openaiTimeoutMs: Number(process.env.OPENAI_TIMEOUT_MS || 45000),
   memorySlideMs: Number(process.env.MEMORY_SLIDE_MS || 7000),
 

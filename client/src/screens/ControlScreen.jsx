@@ -3,6 +3,7 @@ import DestinationPicker from "../components/DestinationPicker.jsx";
 import BriefingStep from "../components/BriefingStep.jsx";
 import QuestionStep from "../components/QuestionStep.jsx";
 import RevealStep from "../components/RevealStep.jsx";
+import BuildingMemoryStep from "../components/BuildingMemoryStep.jsx";
 import ItinerarySchedule from "../components/ItinerarySchedule.jsx";
 
 export default function ControlScreen() {
@@ -10,6 +11,8 @@ export default function ControlScreen() {
     <ScreenChrome role="control">
       {({ state, actions }) => {
         const phase = state.phase === "idle" ? "destination" : state.phase;
+        const finaleActive =
+          phase === "reveal" || phase === "building" || phase === "itinerary";
         return (
           <main className={`screen screen--control phase-${phase}`}>
             <div className="screen__grain" />
@@ -45,13 +48,12 @@ export default function ControlScreen() {
               ) : null}
             </section>
             <section
-              className={`panel ${phase === "reveal" || phase === "itinerary" ? "is-active" : ""}`}
-              inert={phase !== "reveal" && phase !== "itinerary" ? "" : undefined}
+              className={`panel ${finaleActive ? "is-active" : ""}`}
+              inert={!finaleActive ? "" : undefined}
             >
               {phase === "reveal" ? <RevealStep onReveal={actions.shake} /> : null}
-              {phase === "itinerary" ? (
-                <ItinerarySchedule />
-              ) : null}
+              {phase === "building" ? <BuildingMemoryStep /> : null}
+              {phase === "itinerary" ? <ItinerarySchedule /> : null}
             </section>
           </main>
         );
