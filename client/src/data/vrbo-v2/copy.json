@@ -23,7 +23,9 @@
     "groupPlannerLabel": "Group planner"
   },
   "ranking": {
-    "waitingTitle": "Great trips start with a conversation.",
+    "waitingTitle": "Great trips start with a conversation",
+    "waitingTitleLine1": "Great trips start",
+    "waitingTitleLine2": "with a conversation",
     "waitingSubtitle": "Your group is planning...",
     "waitingHero": "/images/Vrbo-Images/waiting-hero.png",
     "loadingTitle": "Pulling it all together",
@@ -55,7 +57,9 @@
   },
   "summary": {
     "brand": "Vrbo",
-    "title": "Describe a stay your whole group would love.",
+    "title": "Find a stay that fits your crew",
+    "boxLabel": "Group request · Writing",
+    "listening": "Listening to Jamie, Sarah, Alex, and Chris...",
     "footer": "Your words. Your group's next getaway.",
     "search": "Search",
     "destination": "Hawaii",

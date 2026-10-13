@@ -33,10 +33,11 @@ function WaitingPanel({ ready }) {
             />
           </header>
           <div className="vrbo-v2-rank__hero-mid">
-            <h2>{copy.ranking.waitingTitle}</h2>
-          </div>
-          <div className="vrbo-v2-rank__hero-photo" aria-hidden="true">
-            <img src={copy.ranking.waitingHero} alt="" />
+            <h2>
+              {copy.ranking.waitingTitleLine1}
+              <br />
+              {copy.ranking.waitingTitleLine2}
+            </h2>
           </div>
         </>
       )}
@@ -51,19 +52,37 @@ export function SummaryPanel({ summaryText, onSearch, compact = false }) {
       className={`vrbo-v2-summary ${compact ? "vrbo-v2-summary--compact" : ""}`}
       {...panelMotion}
     >
-      <img
-        className="vrbo-v2-summary__brand"
-        src="/logo/Vrbo_Logo_Blue_RGB.png"
-        alt={copy.summary.brand}
-      />
-      <h2 className="vrbo-v2-summary__title">{copy.summary.title}</h2>
-      <div className="vrbo-v2-summary__box" role="textbox" aria-readonly="true">
-        <p>{summaryText}</p>
+      <header className="vrbo-v2-summary__masthead">
+        <img
+          className="vrbo-v2-summary__brand"
+          src="/logo/Vrbo_Logo_Sail_RGB.png"
+          alt={copy.summary.brand}
+        />
+      </header>
+
+      <div className="vrbo-v2-summary__body">
+        <h2 className="vrbo-v2-summary__title">{copy.summary.title}</h2>
+
+        <div className="vrbo-v2-summary__box" role="textbox" aria-readonly="true">
+          <p className="vrbo-v2-summary__box-label">{copy.summary.boxLabel}</p>
+          <p className="vrbo-v2-summary__box-text">{summaryText}</p>
+        </div>
+
+        <p className="vrbo-v2-summary__listening">
+          <span className="vrbo-v2-summary__dots" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+          </span>
+          {copy.summary.listening}
+        </p>
+
+        <div className="vrbo-v2-summary__spacer" aria-hidden="true" />
+
+        <button type="button" className="vrbo-v2-summary__search" onClick={onSearch}>
+          {copy.summary.search}
+        </button>
       </div>
-      <button type="button" className="vrbo-v2-summary__search" onClick={onSearch}>
-        {copy.summary.search}
-      </button>
-      <p className="vrbo-v2-summary__footer">{copy.summary.footer}</p>
     </motion.div>
   );
 }
