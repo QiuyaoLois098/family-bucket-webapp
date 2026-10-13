@@ -581,6 +581,284 @@
   color: var(--q-muted);
 }
 
+/* Q1 → Thinking… bridge */
+.question__dialogue {
+  --briefing-blue: #008ff5;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: calc(var(--u) * 36);
+  width: 100%;
+  margin-top: calc(var(--u) * 100);
+}
+
+.question__dialogue.is-exiting .briefing__bubble,
+.question__dialogue.is-exiting .briefing__thinking {
+  opacity: 0;
+}
+
+.question.is-thinking .question__prompt,
+.question.is-thinking .question__options,
+.question.is-thinking .activity-board,
+.question.is-bridging .question__prompt,
+.question.is-bridging .question__options,
+.question.is-bridging .activity-board {
+  display: none;
+}
+
+.question__ai-line {
+  margin: 0;
+  max-width: 18em;
+  align-self: flex-start;
+  font-family: var(--ui);
+  font-size: calc(var(--u) * 36);
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  color: #191e3b;
+  opacity: 0;
+  transition: opacity var(--briefing-fade-ms, 650ms) ease;
+}
+
+.question__ai-line.is-visible {
+  opacity: 1;
+}
+
+.question__place-card {
+  align-self: stretch;
+  display: grid;
+  grid-template-columns: calc(var(--u) * 168) minmax(0, 1fr);
+  gap: calc(var(--u) * 28);
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  padding: calc(var(--u) * 32) calc(var(--u) * 36);
+  border-radius: calc(var(--u) * 40);
+  background: #f5f5f7;
+  opacity: 0;
+  transition: opacity var(--briefing-fade-ms, 650ms) ease;
+}
+
+.question__place-card.is-visible {
+  opacity: 1;
+}
+
+.question__place-thumb {
+  width: calc(var(--u) * 168);
+  height: calc(var(--u) * 168);
+  border-radius: calc(var(--u) * 28);
+  background-color: #d9dadf;
+  background-size: cover;
+  background-position: center;
+}
+
+.question__place-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(var(--u) * 12);
+  min-width: 0;
+}
+
+.question__place-title {
+  margin: 0;
+  font-family: var(--ui);
+  font-size: calc(var(--u) * 34);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #191e3b;
+}
+
+.question__place-meta {
+  margin: 0;
+  font-family: var(--ui);
+  font-size: calc(var(--u) * 28);
+  font-weight: 400;
+  line-height: 1.3;
+  color: #8b93a7;
+}
+
+.question__place-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-top: calc(var(--u) * 4);
+  padding: calc(var(--u) * 12) calc(var(--u) * 22);
+  border-radius: 999px;
+  background: #e8eaef;
+  font-family: var(--ui);
+  font-size: calc(var(--u) * 22);
+  font-weight: 500;
+  line-height: 1;
+  color: #191e3b;
+}
+
+.question__dialogue.is-exiting .question__ai-line,
+.question__dialogue.is-exiting .question__place-card {
+  opacity: 0;
+}
+
+.question__prompt--activity {
+  margin-top: calc(var(--u) * 36);
+}
+
+.question__prompt--activity h2 {
+  max-width: none;
+  font-size: calc(var(--u) * 36);
+  line-height: 1.3;
+}
+
+.question__prompt--activity .question__pick-hint {
+  margin-top: calc(var(--u) * 8);
+  font-size: calc(var(--u) * 36);
+  line-height: 1.3;
+}
+
+/* Q2 activity-pair — match example/question2.png */
+.activity-board {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 24);
+  width: 100%;
+  margin-top: calc(var(--u) * 32);
+  padding: 0;
+  background: transparent;
+  opacity: 0;
+  transition: opacity var(--question-reveal-ms, 650ms) ease;
+}
+
+.activity-board.is-revealed {
+  opacity: 1;
+}
+
+.activity-group {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 18);
+  padding: calc(var(--u) * 28) calc(var(--u) * 24) calc(var(--u) * 26);
+  border-radius: calc(var(--u) * 36);
+  background: #f2f3f5;
+  opacity: 0;
+  transition: opacity var(--question-reveal-ms, 650ms) ease;
+}
+
+.activity-group.is-revealed {
+  opacity: 1;
+}
+
+.activity-group__label {
+  margin: 0;
+  font-family: var(--ui);
+  font-size: calc(var(--u) * 22);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  color: #676a7d;
+}
+
+.activity-group__cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--u) * 18);
+}
+
+.activity-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+  border: calc(var(--u) * 4) solid transparent;
+  border-radius: calc(var(--u) * 28);
+  background: #ffffff;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: center;
+  color: var(--q-ink);
+}
+
+.activity-card:hover,
+.activity-card:focus-visible {
+  outline: none;
+}
+
+.activity-card.is-selected {
+  border-color: #191e3b;
+}
+
+.activity-card:disabled {
+  cursor: default;
+}
+
+.activity-card__image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background-color: #dde1ea;
+  background-size: cover;
+  background-position: center;
+}
+
+.activity-card__body {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+  background: #ffffff;
+}
+
+.activity-card__badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: calc(var(--u) * 42);
+  padding: calc(var(--u) * 10) calc(var(--u) * 12);
+  border-radius: 0;
+  font-family: var(--ui);
+  font-size: calc(var(--u) * 20);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: #191e3b;
+  white-space: nowrap;
+}
+
+.activity-card__badge--bookable {
+  background: #f0d756;
+}
+
+.activity-card__badge--maps {
+  background: #e8eaef;
+}
+
+.activity-card__label {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: calc(var(--u) * 96);
+  margin: 0;
+  padding: calc(var(--u) * 16) calc(var(--u) * 14) calc(var(--u) * 20);
+  font-family: var(--ui);
+  font-size: calc(var(--u) * 26);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: #191e3b;
+  text-align: center;
+}
+
+.question.is-exiting .activity-board,
+.question.is-exiting .activity-group,
+.question.is-exiting .question__prompt--activity h2,
+.question.is-exiting .question__prompt--activity .question__pick-hint {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .itinerary h2,
 .itinerary__header h2 {
   margin: 0;
@@ -869,6 +1147,11 @@
 .screen--control.phase-reveal,
 .screen--control.phase-building {
   background: #ffffff;
+}
+
+.screen--display.phase-reveal .reveal-step {
+  position: absolute;
+  inset: 0;
 }
 
 /* Building · left (control) — full design frame */

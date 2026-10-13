@@ -2,7 +2,7 @@ import { randomUUID } from "crypto";
 import { EventEmitter } from "events";
 import { INITIAL_STATE, PHASES, pickRandomDestinations } from "../../shared/index.js";
 import { DESTINATIONS, getDestination } from "../../shared/destinations.js";
-import { QUESTIONS } from "../../shared/questions.js";
+import { QUESTIONS, defaultAnswerId, isValidAnswer } from "../../shared/questions.js";
 import { config } from "./config.js";
 import {
   HYPERION_STATIONS,
@@ -390,7 +390,7 @@ export class ExperienceSession extends EventEmitter {
 
     const question = QUESTIONS[questionIndex];
     if (!question) return;
-    if (!question.options.some((option) => option.id === answerId)) return;
+    if (!isValidAnswer(question, answerId)) return;
 
     const lockedId = this.state.answers[questionIndex];
     if (lockedId && lockedId !== answerId) return;
@@ -596,7 +596,7 @@ export class ExperienceSession extends EventEmitter {
 
     if (phase === PHASES.QUESTIONS) {
       const question = QUESTIONS[this.state.currentQuestion];
-      this.answerQuestion(this.state.currentQuestion, question.options[0].id, true);
+      this.answerQuestion(this.state.currentQuestion, defaultAnswerId(question), true);
       return;
     }
 
@@ -672,7 +672,7 @@ export class ExperienceSession extends EventEmitter {
     const answers =
       this.state.answers?.length === QUESTIONS.length
         ? this.state.answers
-        : QUESTIONS.map((question) => question.options[0].id);
+        : QUESTIONS.map((question) => defaultAnswerId(question));
 
     const seeded = {
       destination: destId,

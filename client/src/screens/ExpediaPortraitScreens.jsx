@@ -6,7 +6,10 @@ import { useSession } from "../hooks/useSession.js";
 const DESTINATION_REF = "/images/Expedia-images/example/start.png";
 const BRIEFING_REF = "/images/Expedia-images/example/briefing.png";
 const QUESTION_REF = "/images/Expedia-images/example/expedia-question.png";
-const LUGGAGE_REF = "/images/Expedia-images/example/luggage.png";
+const QUESTION2_REF = "/images/Expedia-images/example/question2.png";
+const QUESTION3_REF = "/images/Expedia-images/example/question3.png";
+const ANSWER3_REF = "/images/Expedia-images/example/03-answer.png";
+const BUILDING_LEFT_REF = "/images/Expedia-images/example/building-left.png";
 const ITINERARY_REF = "/images/Expedia-images/example/itinerary.png";
 
 /** Family Bucket screens in a locked 2160×3840 (9∶16) stage, like /vrbo-left. */
@@ -69,26 +72,40 @@ function ReferenceFrame({ src }) {
 export function ExpediaLeftPage() {
   const { state, actions } = useSession({ syncOnly: true });
   const phase = state.phase === "idle" ? "destination" : state.phase;
+  const questionRef =
+    phase === "questions" && state.currentQuestion >= 2
+      ? QUESTION3_REF
+      : phase === "questions" && state.currentQuestion >= 1
+        ? QUESTION2_REF
+        : QUESTION_REF;
   const referenceSrc =
     phase === "destination"
       ? DESTINATION_REF
       : phase === "briefing"
         ? BRIEFING_REF
         : phase === "reveal"
-          ? LUGGAGE_REF
-          : phase === "itinerary"
-            ? ITINERARY_REF
-            : QUESTION_REF;
+          ? ANSWER3_REF
+          : phase === "building"
+            ? BUILDING_LEFT_REF
+            : phase === "itinerary"
+              ? ITINERARY_REF
+              : questionRef;
   const referenceCaption =
     phase === "destination"
       ? "Reference · destination"
       : phase === "briefing"
         ? "Reference · briefing"
         : phase === "reveal"
-          ? "Reference · luggage"
-          : phase === "itinerary"
-            ? "Reference · itinerary"
-            : "Reference · question";
+          ? "Reference · Q3 answer"
+          : phase === "building"
+            ? "Reference · building"
+            : phase === "itinerary"
+              ? "Reference · itinerary"
+              : state.currentQuestion >= 2
+                ? "Reference · question 3"
+                : state.currentQuestion >= 1
+                  ? "Reference · question 2"
+                  : "Reference · question";
 
   return (
     <div className="expedia-portrait expedia-portrait--compare">
@@ -116,15 +133,29 @@ export function ExpediaLeftPage() {
           Itinerary
         </button>
       </div>
-      {phase === "building" ? (
+      {phase === "reveal" || phase === "building" ? (
         <div className="expedia-portrait__stage expedia-portrait__stage--compare">
           <div className="expedia-portrait__column">
-            <PortraitFrame title="Expedia · Control · building" src="/control" />
-            <p className="expedia-portrait__caption">Live · left · building-left</p>
+            <PortraitFrame
+              title={`Expedia · Control · ${phase}`}
+              src="/control"
+            />
+            <p className="expedia-portrait__caption">
+              {phase === "reveal"
+                ? "Live · left · Q3 answer"
+                : "Live · left · building-left"}
+            </p>
           </div>
           <div className="expedia-portrait__column">
-            <PortraitFrame title="Expedia · Display · building" src="/display" />
-            <p className="expedia-portrait__caption">Live · right · building-right</p>
+            <PortraitFrame
+              title={`Expedia · Display · ${phase}`}
+              src="/display"
+            />
+            <p className="expedia-portrait__caption">
+              {phase === "reveal"
+                ? "Live · right · luggage"
+                : "Live · right · building-right"}
+            </p>
           </div>
         </div>
       ) : (

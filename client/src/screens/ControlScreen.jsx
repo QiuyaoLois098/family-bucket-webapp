@@ -2,7 +2,7 @@ import { ScreenChrome } from "../components/ScreenChrome.jsx";
 import DestinationPicker from "../components/DestinationPicker.jsx";
 import BriefingStep from "../components/BriefingStep.jsx";
 import QuestionStep from "../components/QuestionStep.jsx";
-import RevealStep from "../components/RevealStep.jsx";
+import AnswerFinaleStep from "../components/AnswerFinaleStep.jsx";
 import BuildingMemoryStep from "../components/BuildingMemoryStep.jsx";
 import ItinerarySchedule from "../components/ItinerarySchedule.jsx";
 
@@ -51,7 +51,12 @@ export default function ControlScreen() {
               className={`panel ${finaleActive ? "is-active" : ""}`}
               inert={!finaleActive ? "" : undefined}
             >
-              {phase === "reveal" ? <RevealStep onReveal={actions.shake} /> : null}
+              {phase === "reveal" ? (
+                <AnswerFinaleStep
+                  destinationId={state.destination}
+                  answers={state.answers}
+                />
+              ) : null}
               {phase === "building" ? <BuildingMemoryStep /> : null}
               {phase === "itinerary" ? <ItinerarySchedule /> : null}
             </section>

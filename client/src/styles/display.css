@@ -10,10 +10,15 @@
 .idle-display,
 .image-reveal,
 .flight-reveal,
+.reveal-step,
 .building-screen,
 .memory-sequence {
   position: absolute;
   inset: 0;
+}
+
+.screen--display.phase-reveal {
+  background: #ffffff;
 }
 
 /* Building · right (display) — full design frame (building-right.png) */

@@ -1,5 +1,12 @@
 export { DESTINATIONS, getDestination } from "./destinations.js";
-export { QUESTIONS, BLUR_LEVELS, REVEAL_VISIBLE } from "./questions.js";
+export {
+  QUESTIONS,
+  BLUR_LEVELS,
+  REVEAL_VISIBLE,
+  defaultAnswerId,
+  resolveAnswerOption,
+  isValidAnswer,
+} from "./questions.js";
 import { DESTINATIONS } from "./destinations.js";
 import { BLUR_LEVELS, REVEAL_VISIBLE } from "./questions.js";
 
