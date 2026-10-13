@@ -253,7 +253,11 @@
   padding: calc(var(--u) * 80) calc(var(--u) * 80) 5cqh;
   background: #ffffff;
   color: var(--q-ink);
-  animation: rise 0.55s ease both;
+}
+
+.question--planner {
+  /* Staggered dialogue reveal handles entrance; skip whole-page rise. */
+  animation: none;
 }
 
 .question__trip {
@@ -294,14 +298,22 @@
 }
 
 .briefing__bubble,
-.briefing__stay {
+.briefing__stay,
+.briefing__thinking {
   opacity: 0;
   transition: opacity var(--briefing-fade-ms, 650ms) ease;
 }
 
 .briefing__bubble.is-visible,
-.briefing__stay.is-visible {
+.briefing__stay.is-visible,
+.briefing__thinking.is-visible {
   opacity: 1;
+}
+
+.briefing__dialogue.is-exiting .briefing__bubble,
+.briefing__dialogue.is-exiting .briefing__stay,
+.briefing__dialogue.is-exiting .briefing__thinking {
+  opacity: 0;
 }
 
 .briefing__bubble {
@@ -399,17 +411,36 @@
   line-height: 1.2;
   letter-spacing: -0.01em;
   color: #191e3b;
-  animation: briefing-thinking-in 0.35s ease both;
 }
 
-@keyframes briefing-thinking-in {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
+.briefing__dots {
+  display: inline-flex;
+  margin-left: 0.05em;
+  letter-spacing: 0;
+}
+
+.briefing__dots span {
+  display: inline-block;
+  animation: briefing-dot 1.2s ease-in-out infinite;
+  opacity: 0.2;
+}
+
+.briefing__dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.briefing__dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes briefing-dot {
+  0%,
+  80%,
+  100% {
+    opacity: 0.2;
   }
-  to {
+  40% {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -427,6 +458,20 @@
   line-height: 1.28;
   letter-spacing: -0.025em;
   color: var(--q-ink);
+  opacity: 0;
+  transition: opacity var(--question-reveal-ms, 550ms) ease;
+}
+
+.question__prompt h2.is-revealed {
+  opacity: 1;
+}
+
+.question.is-exiting .question__prompt h2,
+.question.is-exiting .question__pick-hint,
+.question.is-exiting .question__option {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .question__pick-hint {
@@ -437,6 +482,12 @@
   line-height: 1.28;
   letter-spacing: -0.025em;
   color: var(--q-ink);
+  opacity: 0;
+  transition: opacity var(--question-reveal-ms, 550ms) ease;
+}
+
+.question__pick-hint.is-revealed {
+  opacity: 1;
 }
 
 .question__options {
@@ -461,8 +512,19 @@
   text-align: left;
   color: var(--q-ink);
   cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease;
-  animation: rise 0.5s ease both;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity var(--question-reveal-ms, 650ms) ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.question__option.is-revealed {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .question__option:hover,
@@ -481,7 +543,7 @@
   cursor: default;
 }
 
-.question__option:disabled:not(.is-selected) {
+.question__option.is-revealed:disabled:not(.is-selected) {
   opacity: 0.78;
 }
 
