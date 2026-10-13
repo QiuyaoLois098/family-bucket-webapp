@@ -1,5 +1,6 @@
 import { ScreenChrome } from "../components/ScreenChrome.jsx";
 import DestinationPicker from "../components/DestinationPicker.jsx";
+import BriefingStep from "../components/BriefingStep.jsx";
 import QuestionStep from "../components/QuestionStep.jsx";
 import RevealStep from "../components/RevealStep.jsx";
 import ItinerarySchedule from "../components/ItinerarySchedule.jsx";
@@ -24,9 +25,16 @@ export default function ControlScreen() {
               ) : null}
             </section>
             <section
-              className={`panel ${phase === "questions" ? "is-active" : ""}`}
-              inert={phase !== "questions" ? "" : undefined}
+              className={`panel ${phase === "briefing" || phase === "questions" ? "is-active" : ""}`}
+              inert={phase !== "briefing" && phase !== "questions" ? "" : undefined}
             >
+              {phase === "briefing" ? (
+                <BriefingStep
+                  key={state.destination || "briefing"}
+                  destinationId={state.destination}
+                  onContinue={actions.beginQuestions}
+                />
+              ) : null}
               {phase === "questions" ? (
                 <QuestionStep
                   key={state.destination || "questions"}

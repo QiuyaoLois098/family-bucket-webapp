@@ -35,6 +35,7 @@ export function useSession({ syncOnly = false } = {}) {
       startSession: () => getSocket().emit("experience:sessionStart"),
       selectDestination: (destinationId) =>
         getSocket().emit("experience:selectDestination", { destinationId }),
+      beginQuestions: () => getSocket().emit("experience:beginQuestions"),
       answer: (questionIndex, answerId, { advance = true } = {}) =>
         getSocket().emit("experience:answer", { questionIndex, answerId, advance }),
       goBack: () => getSocket().emit("experience:back"),

@@ -3,6 +3,7 @@ import { CANVAS_W, CANVAS_H } from "../canvas.js";
 import { useSession } from "../hooks/useSession.js";
 
 const DESTINATION_REF = "/images/Expedia-images/example/start.png";
+const BRIEFING_REF = "/images/Expedia-images/example/briefing.png";
 const QUESTION_REF = "/images/Expedia-images/example/expedia-question.png";
 const LUGGAGE_REF = "/images/Expedia-images/example/luggage.png";
 const ITINERARY_REF = "/images/Expedia-images/example/itinerary.png";
@@ -70,19 +71,23 @@ export function ExpediaLeftPage() {
   const referenceSrc =
     phase === "destination"
       ? DESTINATION_REF
-      : phase === "reveal"
-        ? LUGGAGE_REF
-        : phase === "itinerary"
-          ? ITINERARY_REF
-          : QUESTION_REF;
+      : phase === "briefing"
+        ? BRIEFING_REF
+        : phase === "reveal"
+          ? LUGGAGE_REF
+          : phase === "itinerary"
+            ? ITINERARY_REF
+            : QUESTION_REF;
   const referenceCaption =
     phase === "destination"
       ? "Reference · destination"
-      : phase === "reveal"
-        ? "Reference · luggage"
-        : phase === "itinerary"
-          ? "Reference · itinerary"
-          : "Reference · question";
+      : phase === "briefing"
+        ? "Reference · briefing"
+        : phase === "reveal"
+          ? "Reference · luggage"
+          : phase === "itinerary"
+            ? "Reference · itinerary"
+            : "Reference · question";
 
   return (
     <div className="expedia-portrait expedia-portrait--compare">

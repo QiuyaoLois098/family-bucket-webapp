@@ -1,15 +1,15 @@
 export const DESTINATIONS = [
-{
-    id: "costa-rica",
-    title: "Sunset by the beach in Costa Rica",
-    shortTitle: "Costa Rica",
-    tripLabel: "Manuel Antonio",
+  {
+    id: "san-diego",
+    title: "Sunset by the beach in San Diego",
+    shortTitle: "San Diego, CA",
+    tripLabel: "San Diego",
     dates: "Jun 15 – 20",
-    location: "Manuel Antonio",
-    invitation: "Golden hour along a wild shoreline.",
-    image: "/images/Expedia-images/destinations/costa-rica.png",
+    location: "California",
+    invitation: "Golden hour along a Pacific shoreline.",
+    image: "/images/Expedia-images/destination-chips/sandiego.png",
     gallery: [
-      "/images/Expedia-images/destinations/costa-rica.png",
+      "/images/Expedia-images/destination-chips/sandiego.png",
       "/images/Expedia-images/options/q1_2.png",
       "/images/Expedia-images/options/q2-1.png",
       "/images/Expedia-images/options/q1_1.png",
@@ -21,56 +21,56 @@ export const DESTINATIONS = [
       accent: "#fddb32",
     },
     imagePromptBase:
-      "Cinematic premium travel photograph of a Costa Rican Pacific coastline at sunset: palm silhouettes, wet sand reflecting molten sky, turquoise water turning gold, distant rainforest meeting the shore. Editorial Expedia campaign quality, large-format photography, no people, no text, no logos.",
+      "Cinematic premium travel photograph of a San Diego beach at sunset: palm silhouettes, wet sand reflecting molten sky, Pacific water turning gold. Editorial Expedia family campaign quality, no text, no logos.",
     fallbackItinerary: {
-      title: "Your Family Escape to Costa Rica",
-      subtitle: "A warm, slow journey along the Pacific coast",
-      headline: "Big adventures, little explorers.",
+      title: "Your Family Escape to San Diego",
+      subtitle: "Beach light, easy days, and a trip made for everyone",
+      headline: "Five days built for your family",
       moments: [
         {
           time: "Day 1",
           title: "Beach discovery",
           description:
-            "Explore Espadilla Norte after check-in; spot shorebirds together. Dinner at Soda Mar Azul, known for Costa Rican home cooking by Espadilla.",
+            "Settle in and walk the shoreline together. Dinner somewhere casual near the water.",
         },
         {
           time: "Day 2",
-          title: "Spot wild wonders",
+          title: "Tide pools & parks",
           description:
-            "A guided Manuel Antonio park walk, with kids choosing what to look for. Lunch at Sendero Tico, a local-style soda near the park entrance.",
+            "Explore tide pools or Balboa Park at an easy pace, with stops whenever the kids need them.",
         },
         {
           time: "Day 3",
           title: "Catch a first wave",
           description:
-            "A private family surf lesson at Espadilla. Back to the hotel to rest. Lunch at La Olla Tica, a casual spot for local flavors near Espadilla.",
+            "A family-friendly surf or beach day, then downtime back at the hotel.",
         },
         {
           time: "Day 4",
-          title: "Paddle & discover",
+          title: "Harbor afternoon",
           description:
-            "Explore Damas mangroves by guided kayak, with an adult paddling alongside. Dinner at Casa Quereña in Quepos, a welcoming spot for traditional Costa Rican cooking.",
+            "Stroll the harbor, grab ice cream, and let everyone pick one small adventure.",
         },
         {
           time: "Day 5",
           title: "One last seaside stop",
           description:
-            "After breakfast in Quepos, let the kids pick one last waterfront stop before your transfer. Breakfast at Café del Malecón, a traditional Costa Rican café by Quepos' waterfront.",
+            "A final morning by the water before you head home.",
         },
       ],
     },
   },
-{
-    id: "lake-tahoe",
-    title: "A lakeside afternoon at Lake Tahoe",
-    shortTitle: "Lake Tahoe",
+  {
+    id: "south-lake-tahoe",
+    title: "A lakeside afternoon at South Lake Tahoe",
+    shortTitle: "South Lake Tahoe, CA",
     tripLabel: "South Lake Tahoe",
     dates: "Jun 15 – 20",
-    location: "California / Nevada",
-    invitation: "A moment made for all of you.",
-    image: "/images/Expedia-images/destinations/lake-taho.png",
+    location: "California",
+    invitation: "Clear water, pine air, and a day made for everyone.",
+    image: "/images/Expedia-images/destination-chips/taho.png",
     gallery: [
-      "/images/Expedia-images/destinations/lake-taho.png",
+      "/images/Expedia-images/destination-chips/taho.png",
       "/images/memories/drive.png",
       "/images/memories/food.jpg",
       "/images/memories/forest.png",
@@ -81,49 +81,56 @@ export const DESTINATIONS = [
       accent: "#4a7aa0",
     },
     imagePromptBase:
-      "Cinematic premium travel photograph of Lake Tahoe: clear alpine water, pine forest, snow-capped peaks, rocky shoreline, bright mountain light. Editorial family travel campaign quality, no text, no logos.",
+      "Cinematic premium travel photograph of South Lake Tahoe: clear alpine water, pine forest, snow-capped peaks, rocky shoreline, bright mountain light. Editorial family travel campaign quality, no text, no logos.",
     fallbackItinerary: {
-      title: "Your Family Escape to Lake Tahoe",
-      subtitle: "Clear water, mountain air, and a day made for everyone",
+      title: "Your Family Escape to South Lake Tahoe",
+      subtitle: "Kayaking, ropes, family hikes, and time by the lake",
+      headline: "Five days built for your family",
       moments: [
         {
-          time: "Morning",
-          title: "Shoreline Walk",
+          time: "Day 1",
+          title: "Shoreline walk",
           description:
-            "Start where the pines meet the water. The lake is cold and bright, and everyone finds their own pace along the rocks.",
+            "Start where the pines meet the water. Everyone finds their own pace along the rocks.",
         },
         {
-          time: "Afternoon",
-          title: "Picnic by the Water",
+          time: "Day 2",
+          title: "Lake day",
           description:
-            "Find a flat stone or a quiet beach. Pack something simple and stay until the light turns warmer on the peaks.",
+            "Kayak, paddle, or simply sit by the shoreline with a picnic.",
         },
         {
-          time: "Sunset",
-          title: "Mountain Gold",
+          time: "Day 3",
+          title: "Forest hike",
           description:
-            "Watch the summits catch the last light while the lake goes still. This is the hour the photos never quite capture.",
+            "An easy family hike with plenty of stops for views and snacks.",
         },
         {
-          time: "Evening",
-          title: "Cabin Supper",
+          time: "Day 4",
+          title: "Village afternoon",
           description:
-            "Come in for a long table dinner. Outside, the water keeps reflecting the night. Inside, no one is in a hurry.",
+            "Browse town, grab a warm drink, and let the kids choose the next stop.",
+        },
+        {
+          time: "Day 5",
+          title: "Mountain gold",
+          description:
+            "One last look at the lake as the light turns warmer on the peaks.",
         },
       ],
     },
   },
-{
-    id: "catskills",
-    title: "Campfire stories in the Catskills",
-    shortTitle: "The Catskills",
-    tripLabel: "The Catskills",
+  {
+    id: "asheville",
+    title: "Campfire evenings in Asheville",
+    shortTitle: "Asheville, NC",
+    tripLabel: "Asheville",
     dates: "Jun 15 – 20",
-    location: "New York",
-    invitation: "Woodsmoke, pines, and a sky full of quiet.",
-    image: "/images/Expedia-images/destinations/catskills.png",
+    location: "North Carolina",
+    invitation: "Woodsmoke, mountain air, and a sky full of quiet.",
+    image: "/images/Expedia-images/destination-chips/asheville.png",
     gallery: [
-      "/images/Expedia-images/destinations/catskills.png",
+      "/images/Expedia-images/destination-chips/asheville.png",
       "/images/memories/forest.png",
       "/images/memories/food.jpg",
       "/images/memories/drive.png",
@@ -134,102 +141,116 @@ export const DESTINATIONS = [
       accent: "#fddb32",
     },
     imagePromptBase:
-      "Cinematic premium travel photograph of a Catskills mountain evening: a stone fire ring with glowing embers, Adirondack chairs, pine forest, cedar cabin porch light, autumn-toned woods, star-faint sky. Editorial, intimate, no people, no text, no logos.",
+      "Cinematic premium travel photograph of an Asheville cabin evening: campfire glow, timber porch, Blue Ridge forest, soft twilight. Editorial family travel, no text, no logos.",
     fallbackItinerary: {
-      title: "Your Family Escape to the Catskills",
-      subtitle: "Woodsmoke, pine air, and stories that last past midnight",
+      title: "Your Family Escape to Asheville",
+      subtitle: "Trails, porches, and campfire stories in the Blue Ridge",
+      headline: "Five days built for your family",
       moments: [
         {
-          time: "Morning",
-          title: "Trail Above the Creek",
+          time: "Day 1",
+          title: "Settle in",
           description:
-            "A leaf-strewn path follows cold water through hemlock and birch. Stop where the creek pools - the kind of place that makes everyone walk a little slower.",
+            "Arrive at the cabin, unpack slowly, and take a short walk before dinner.",
         },
         {
-          time: "Afternoon",
-          title: "Porch and Provisions",
+          time: "Day 2",
+          title: "Trail above the creek",
           description:
-            "Return to a cabin porch with a board of local cheese, apples, and something baked that morning in town. The mountains do the rest of the talking.",
+            "An easy leaf-strewn path with stops wherever the kids want to explore.",
         },
         {
-          time: "Sunset",
-          title: "Ridge Light",
+          time: "Day 3",
+          title: "Town afternoon",
           description:
-            "Drive or walk to a western ridge as the valleys fill with gold. The Catskills turn blue in layers, one after another.",
+            "Browse downtown Asheville for snacks, crafts, and a long lunch.",
         },
         {
-          time: "Evening",
-          title: "Firepit Stories",
+          time: "Day 4",
+          title: "Porch day",
           description:
-            "Build the fire before the cold settles. Sparks lift into the pines. This is the night you will remember when someone says, tell that one again.",
+            "A slow day on the porch with games, books, and mountain air.",
+        },
+        {
+          time: "Day 5",
+          title: "Firepit stories",
+          description:
+            "Build the fire before the cold settles. Sparks lift into the pines.",
         },
       ],
     },
   },
-{
-    id: "alps",
-    title: "A winter escape in the Alps",
-    shortTitle: "The Alps",
-    tripLabel: "The Alps",
+  {
+    id: "new-braunfels",
+    title: "River days in New Braunfels",
+    shortTitle: "New Braunfels, TX",
+    tripLabel: "New Braunfels",
     dates: "Jun 15 – 20",
-    location: "Europe",
-    invitation: "Snow light, timber rooms, and mountain quiet.",
-    image: "/images/Expedia-images/destinations/apls.png",
+    location: "Texas",
+    invitation: "River light, easy outings, and time outdoors together.",
+    image: "/images/Expedia-images/destination-chips/newbrounfels.png",
     gallery: [
-      "/images/Expedia-images/destinations/apls.png",
-      "/images/memories/snow.png",
-      "/images/memories/food.jpg",
+      "/images/Expedia-images/destination-chips/newbrounfels.png",
       "/images/memories/drive.png",
+      "/images/memories/food.jpg",
+      "/images/memories/forest.png",
     ],
-    crops: ["center 30%", "center 60%", "left 20%", "right 40%"],
+    crops: ["center 35%", "center 60%", "left 20%", "right 40%"],
     palette: {
       wash: "linear-gradient(180deg, #191e3b 0%, #4a7aa0 48%, #fddb32 100%)",
       accent: "#4a7aa0",
     },
     imagePromptBase:
-      "Cinematic premium travel photograph of a snow-covered Alpine village at dusk: timber chalets, warm window light, pine forest, mountains, freshly fallen snow, blue-hour sky. Editorial luxury winter travel, no prominent people, no text, no logos.",
+      "Cinematic premium travel photograph of a Texas Hill Country outdoor family day near New Braunfels: open sky, riverbanks, warm daylight. Editorial family travel, no text, no logos.",
     fallbackItinerary: {
-      title: "Your Family Escape to the Alps",
-      subtitle: "Snow light, timber rooms, and the hush of high winter",
+      title: "Your Family Escape to New Braunfels",
+      subtitle: "River floats, easy hikes, and unhurried evenings",
+      headline: "Five days built for your family",
       moments: [
         {
-          time: "Morning",
-          title: "First Tracks",
+          time: "Day 1",
+          title: "Arrive & unwind",
           description:
-            "Step into air so cold it feels new. Whether you ski or simply walk the packed village path, the mountains are close enough to touch.",
+            "Check in, stretch your legs, and find a simple dinner nearby.",
         },
         {
-          time: "Afternoon",
-          title: "Fireside Pause",
+          time: "Day 2",
+          title: "River morning",
           description:
-            "Come in while the light is still white on the peaks. Cocoa, a heavy blanket, and windows that frame the whole range.",
+            "Spend the morning by the water — float, splash, or sit on the bank.",
         },
         {
-          time: "Sunset",
-          title: "Alpenglow",
+          time: "Day 3",
+          title: "Hill Country walk",
           description:
-            "Watch the summits go rose, then violet. It lasts only minutes. Everyone goes quiet without being asked.",
+            "An easy outdoor walk with wide views and plenty of snack breaks.",
         },
         {
-          time: "Evening",
-          title: "Mountain Supper",
+          time: "Day 4",
+          title: "Town stroll",
           description:
-            "A wood-paneled room, candlelight, and the kind of dinner that makes winter feel like a gift. Snow keeps falling in the dark.",
+            "Explore local shops and grab something sweet in the afternoon.",
+        },
+        {
+          time: "Day 5",
+          title: "One last outdoor hour",
+          description:
+            "A final easy outing before you pack up for home.",
         },
       ],
     },
   },
-{
-    id: "desert",
-    title: "Stargazing in the desert",
-    shortTitle: "The Desert",
+  {
+    id: "sedona",
+    title: "Stargazing in Sedona",
+    shortTitle: "Sedona, AZ",
     tripLabel: "Sedona",
     dates: "Jun 15 – 20",
     location: "Arizona",
     invitation: "Red rock, wide sky, and a silence that goes on forever.",
-    image: "/images/Expedia-images/destinations/the-desert.png",
+    image: "/images/Expedia-images/destination-chips/sedona.png",
     gallery: [
-      "/images/Expedia-images/destinations/the-desert.png",
+      "/images/Expedia-images/destination-chips/sedona.png",
       "/images/memories/drive.png",
       "/images/memories/food.jpg",
       "/images/memories/forest.png",
@@ -240,52 +261,59 @@ export const DESTINATIONS = [
       accent: "#fddb32",
     },
     imagePromptBase:
-      "Cinematic premium travel photograph of the Arizona desert: red sandstone mesas and buttes like Monument Valley, warm late-afternoon light, sparse scrub, immense blue sky turning gold at the horizon. Editorial Southwest travel campaign quality, no people, no text, no logos.",
+      "Cinematic premium travel photograph of Sedona: red sandstone formations, warm late-afternoon light, glamping tent, immense sky. Editorial Southwest family travel, no text, no logos.",
     fallbackItinerary: {
-      title: "Your Family Escape to the Desert",
+      title: "Your Family Escape to Sedona",
       subtitle: "Red earth by day, and a sky that rewrites the night",
+      headline: "Five days built for your family",
       moments: [
         {
-          time: "Morning",
-          title: "First Light on the Rocks",
+          time: "Day 1",
+          title: "First light on the rocks",
           description:
-            "Wake for the hour when the mesas catch fire. The desert is cool, quiet, and briefly gentle.",
+            "Settle in and watch the mesas catch the evening light.",
         },
         {
-          time: "Afternoon",
-          title: "Shade and Stillness",
+          time: "Day 2",
+          title: "Easy red-rock walk",
           description:
-            "Retreat to a casita or canyon wall when the sun is high. Cold drinks, a slow lunch, and the luxury of doing almost nothing.",
+            "A short scenic walk with stops for photos and water.",
         },
         {
-          time: "Sunset",
-          title: "Dune Horizon",
+          time: "Day 3",
+          title: "Shade and stillness",
           description:
-            "Walk out as the temperature drops. Shadows lengthen into geometry. The first stars appear before the sky is fully dark.",
+            "A slower day near camp — games, reading, and cool drinks.",
         },
         {
-          time: "Evening",
-          title: "The Whole Sky",
+          time: "Day 4",
+          title: "Sunset overlook",
           description:
-            "Blankets, a thermos, and no city glow. The Milky Way arrives as if someone opened a door. This is the memory you came for.",
+            "Head out as the temperature drops and shadows lengthen.",
+        },
+        {
+          time: "Day 5",
+          title: "The whole sky",
+          description:
+            "Blankets and stargazing before you leave. The Milky Way does the rest.",
         },
       ],
     },
   },
-{
-    id: "kyoto",
-    title: "Cherry blossom season in Kyoto",
-    shortTitle: "Kyoto",
-    tripLabel: "Kyoto",
+  {
+    id: "orlando",
+    title: "A family week in Orlando",
+    shortTitle: "Orlando, FL",
+    tripLabel: "Orlando",
     dates: "Jun 15 – 20",
-    location: "Japan",
-    invitation: "Petals, temple gardens, and pale spring light.",
-    image: "/images/Expedia-images/destinations/kyoto.png",
+    location: "Florida",
+    invitation: "Shared days, bright streets, and memories you plan together.",
+    image: "/images/Expedia-images/destination-chips/orlando.png",
     gallery: [
-      "/images/Expedia-images/destinations/kyoto.png",
-      "/images/memories/sakura.png",
-      "/images/memories/sushi.png",
-      "/images/memories/drive.png",
+      "/images/Expedia-images/destination-chips/orlando.png",
+      "/images/Expedia-images/options/q1_1.png",
+      "/images/Expedia-images/options/q2-1.png",
+      "/images/Expedia-images/options/q3-1.png",
     ],
     crops: ["center 25%", "center 60%", "right center", "left 20%"],
     palette: {
@@ -293,38 +321,45 @@ export const DESTINATIONS = [
       accent: "#4a7aa0",
     },
     imagePromptBase:
-      "Cinematic premium travel photograph of Kyoto in cherry blossom season: a quiet temple garden path, pale pink petals over still water, wooden architecture, stone lanterns, morning mist. Editorial, serene, no prominent people, no text, no logos.",
+      "Cinematic premium travel photograph of an Orlando family day: charming resort streetscape, warm daylight, colorful architecture. Editorial family travel campaign, no text, no logos.",
     fallbackItinerary: {
-      title: "Your Family Escape to Kyoto",
-      subtitle: "A pale-pink spring among gardens, rivers, and quiet streets",
+      title: "Your Family Escape to Orlando",
+      subtitle: "Parks, pools, and easy evenings made for everyone",
+      headline: "Five days built for your family",
       moments: [
         {
-          time: "Morning",
-          title: "Temple Garden",
+          time: "Day 1",
+          title: "Arrive & explore",
           description:
-            "Arrive before the lanes fill. Petals rest on moss and pond water. Walk slowly - Kyoto rewards the unhurried.",
+            "Check in, walk the resort pathways, and keep the first night easy.",
         },
         {
-          time: "Afternoon",
-          title: "Philosopher’s Path",
+          time: "Day 2",
+          title: "Park morning",
           description:
-            "Follow the canal under a vault of blossom. Stop for tea and a sweet; watch the current carry petals like small boats.",
+            "A focused morning outing, then an afternoon break back at the hotel.",
         },
         {
-          time: "Sunset",
-          title: "Kamo River Light",
+          time: "Day 3",
+          title: "Pool day",
           description:
-            "Sit on the riverbank as the sky turns the color of silk. The city softens. Spring feels briefly endless.",
+            "Slow morning by the pool with snacks and no fixed agenda.",
         },
         {
-          time: "Evening",
-          title: "Lantern Streets",
+          time: "Day 4",
+          title: "Another adventure",
           description:
-            "Wander Gion or Ponto-cho as lanterns warm the wood facades. Dinner is seasonal, careful, and meant to be remembered.",
+            "Let the kids help choose the day’s main stop — park, show, or stroll.",
+        },
+        {
+          time: "Day 5",
+          title: "One last stroll",
+          description:
+            "A final walk through the colorful streets before you head home.",
         },
       ],
     },
-  }
+  },
 ];
 
 export function getDestination(id) {

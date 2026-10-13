@@ -29,6 +29,9 @@ function resolveOutputScreen(state) {
   ) {
     return "start";
   }
+  if (state.phase === PHASES.BRIEFING) {
+    return "briefing";
+  }
   if (state.phase === PHASES.QUESTIONS) {
     const step = Math.min(Math.max(state.currentQuestion ?? 0, 0), 2) + 1;
     return `question${step}`;
@@ -255,7 +258,7 @@ export class ExperienceSession extends EventEmitter {
     this.quiet();
     this.set(
       {
-        phase: PHASES.QUESTIONS,
+        phase: PHASES.BRIEFING,
         destination: dest.id,
         answers: [],
         currentQuestion: 0,
@@ -270,6 +273,15 @@ export class ExperienceSession extends EventEmitter {
     );
 
     this.startImageGeneration();
+  }
+
+  /** Advance from booked-context briefing into question 1. */
+  beginQuestions(force = false) {
+    this.touch();
+    if (!this.canAcceptInput(force)) return;
+    if (this.state.phase !== PHASES.BRIEFING) return;
+    this.quiet();
+    this.set({ phase: PHASES.QUESTIONS, currentQuestion: 0 }, "begin-questions");
   }
 
   /**
@@ -555,6 +567,11 @@ export class ExperienceSession extends EventEmitter {
     if (phase === PHASES.DESTINATION) {
       const offered = this.state.offeredDestinations?.[0] || DESTINATIONS[0].id;
       this.selectDestination(offered, true);
+      return;
+    }
+
+    if (phase === PHASES.BRIEFING) {
+      this.beginQuestions(true);
       return;
     }
 

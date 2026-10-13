@@ -6,6 +6,7 @@ import { BLUR_LEVELS, REVEAL_VISIBLE } from "./questions.js";
 export const PHASES = {
   IDLE: "idle",
   DESTINATION: "destination",
+  BRIEFING: "briefing",
   QUESTIONS: "questions",
   PLANNING: "planning",
   REVEAL: "reveal",

@@ -106,6 +106,7 @@ export function registerSockets(io) {
     socket.on("experience:selectDestination", (payload) => {
       session.selectDestination(payload?.destinationId);
     });
+    socket.on("experience:beginQuestions", () => session.beginQuestions());
     socket.on("experience:answer", (payload) => {
       session.answerQuestion(payload?.questionIndex, payload?.answerId, false, {
         advance: payload?.advance !== false,
