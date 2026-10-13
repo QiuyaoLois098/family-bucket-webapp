@@ -1,7 +1,8 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useSession } from "../hooks/useSession.js";
 import DebugPanel from "./DebugPanel.jsx";
+import ExpediaRestartButton from "./ExpediaRestartButton.jsx";
 
 export function useDebugMode() {
   const [params] = useSearchParams();
@@ -11,6 +12,11 @@ export function useDebugMode() {
 export function ScreenChrome({ role, syncOnly = false, children }) {
   const { state, connected, actions } = useSession({ syncOnly });
   const debug = useDebugMode();
+  const [standalone, setStandalone] = useState(true);
+
+  useEffect(() => {
+    setStandalone(window.self === window.top);
+  }, []);
 
   // Interactive display (/control · /expedia-left): any first click starts FBL session.
   useEffect(() => {
@@ -36,6 +42,9 @@ export function ScreenChrome({ role, syncOnly = false, children }) {
   return (
     <>
       {content}
+      {standalone ? (
+        <ExpediaRestartButton onRestart={actions.reset} />
+      ) : null}
       {debug ? (
         <DebugPanel role={role} state={state} connected={connected} actions={actions} />
       ) : null}

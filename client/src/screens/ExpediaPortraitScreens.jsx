@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { CANVAS_W, CANVAS_H } from "../canvas.js";
+import ExpediaRestartButton from "../components/ExpediaRestartButton.jsx";
 import { useSession } from "../hooks/useSession.js";
 
 const DESTINATION_REF = "/images/Expedia-images/example/start.png";
@@ -138,17 +139,21 @@ export function ExpediaLeftPage() {
           </div>
         </div>
       )}
+      <ExpediaRestartButton onRestart={actions.reset} />
     </div>
   );
 }
 
 /** Screen B · Display */
 export function ExpediaRightPage() {
+  const { actions } = useSession({ syncOnly: true });
+
   return (
     <div className="expedia-portrait">
       <div className="expedia-portrait__stage">
         <PortraitFrame title="Expedia · Display" src="/display" />
       </div>
+      <ExpediaRestartButton onRestart={actions.reset} />
     </div>
   );
 }

@@ -95,7 +95,8 @@ export function registerSockets(io) {
     });
 
     socket.on("session:join", () => {
-      session.reset("page-load");
+      // Don't wipe session on reconnect/HMR — only sync state (use experience:reset to go home).
+      socket.emit("session:state", session.snapshot());
     });
     socket.on("session:subscribe", () => {
       socket.emit("session:state", session.snapshot());

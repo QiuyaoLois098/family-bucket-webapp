@@ -500,12 +500,12 @@
 
 .question__option {
   display: grid;
-  grid-template-columns: 14.2cqi minmax(0, 1fr);
+  grid-template-columns: 20cqi minmax(0, 1fr);
   align-items: center;
   gap: 3.2cqi;
   width: 100%;
   margin: 0;
-  padding: 2cqh 2.4cqi;
+  padding: 1.2cqh 2cqi;
   border: calc(var(--u) * 4) solid transparent;
   border-radius: calc(var(--u) * 40);
   background: var(--q-card);
@@ -568,31 +568,17 @@
 .question__option-label {
   font-family: var(--sans);
   font-size: 2.85cqi;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.2;
-  letter-spacing: -0.02em;
   color: var(--q-ink);
 }
 
 .question__option-desc {
   font-family: var(--sans);
-  font-size: 2.25cqi;
+  font-size: 60px;
   font-weight: 400;
-  line-height: 1.35;
+  line-height: 1;
   color: var(--q-muted);
-}
-
-.question--count-3 .question__option {
-  padding: 1.6cqh 2cqi;
-  grid-template-columns: 12.5cqi minmax(0, 1fr);
-}
-
-.question--count-3 .question__option-label {
-  font-size: 2.55cqi;
-}
-
-.question--count-3 .question__option-desc {
-  font-size: 2.05cqi;
 }
 
 .itinerary h2,

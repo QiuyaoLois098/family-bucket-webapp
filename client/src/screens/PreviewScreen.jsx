@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { CANVAS_W, CANVAS_H } from "../canvas.js";
+import ExpediaRestartButton from "../components/ExpediaRestartButton.jsx";
+import { useSession } from "../hooks/useSession.js";
 
 const FRAME_WIDTH = CANVAS_W;
 const FRAME_HEIGHT = CANVAS_H;
@@ -9,6 +11,7 @@ const LABEL_HEIGHT = 28;
 export default function PreviewScreen() {
   const stageRef = useRef(null);
   const [scale, setScale] = useState(0.35);
+  const { actions } = useSession({ syncOnly: true });
 
   useEffect(() => {
     const fit = () => {
@@ -42,6 +45,7 @@ export default function PreviewScreen() {
           </div>
         </div>
       </div>
+      <ExpediaRestartButton onRestart={actions.reset} />
     </div>
   );
 }

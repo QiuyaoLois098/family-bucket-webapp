@@ -20,7 +20,8 @@ export const config = {
   textModel: process.env.OPENAI_TEXT_MODEL || "gpt-4o-mini",
   imageModel: process.env.OPENAI_IMAGE_MODEL || "gpt-image-1",
   imageSize: process.env.OPENAI_IMAGE_SIZE || "1024x1536",
-  inactivityTimeoutMs: Number(process.env.INACTIVITY_TIMEOUT_MS || 120000),
+  /** Set to 0 (or INACTIVITY_TIMEOUT_MS=0) to disable auto-reset while styling. */
+  inactivityTimeoutMs: Number(process.env.INACTIVITY_TIMEOUT_MS || 0),
   /** Vrbo celebration finale: auto-restart after this idle period. */
   vrboCelebrationTimeoutMs: Number(process.env.VRBO_CELEBRATION_TIMEOUT_MS || 30000),
   revealHoldMs: Number(process.env.REVEAL_HOLD_MS || 4000),

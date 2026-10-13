@@ -318,6 +318,38 @@ button {
   opacity: 1;
 }
 
+.expedia-restart {
+  position: fixed;
+  left: 28px;
+  bottom: 24px;
+  z-index: 50;
+  margin: 0;
+  border: 1px solid rgba(25, 30, 59, 0.18);
+  border-radius: 999px;
+  padding: 12px 18px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #191e3b;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(25, 30, 59, 0.12);
+}
+
+.expedia-restart:hover,
+.expedia-restart:focus-visible {
+  background: #ffffff;
+  border-color: rgba(25, 30, 59, 0.35);
+}
+
+.expedia-portrait .expedia-restart,
+.preview .expedia-restart,
+.expedia-ba .expedia-restart {
+  background: rgba(255, 255, 255, 0.95);
+}
+
 .preview {
   display: flex;
   flex-direction: column;
@@ -356,7 +388,7 @@ button {
   height: 20px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  font-size: 0.72rem;
+  font-size: 0.5rem;
   opacity: 0.7;
   font-family: var(--sans);
 }

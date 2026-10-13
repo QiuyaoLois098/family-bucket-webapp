@@ -143,6 +143,7 @@ export class ExperienceSession extends EventEmitter {
   }
 
   checkInactivity() {
+    if (!config.inactivityTimeoutMs || config.inactivityTimeoutMs <= 0) return;
     if (this.state.phase === PHASES.DESTINATION && !this.state.destination) return;
     if (this.state.phase === PHASES.IDLE) return;
     if (Date.now() - this.lastInteractionAt < config.inactivityTimeoutMs) return;

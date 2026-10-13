@@ -1,3 +1,4 @@
+import ExpediaRestartButton from "../components/ExpediaRestartButton.jsx";
 import { useSession } from "../hooks/useSession.js";
 
 export default function ExpediaBaScreen() {
@@ -14,13 +15,7 @@ export default function ExpediaBaScreen() {
       >
         Reveal
       </button>
-      <button
-        type="button"
-        className="expedia-ba__btn expedia-ba__btn--restart"
-        onClick={() => actions.reset()}
-      >
-        Restart
-      </button>
+      <ExpediaRestartButton onRestart={actions.reset} />
     </main>
   );
 }
