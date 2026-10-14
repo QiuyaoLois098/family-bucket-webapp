@@ -8,10 +8,12 @@ const DEFAULT_DATES = "Jun 15 – 20";
 const REVEAL_FADE_MS = 650;
 const REVEAL_STAGGER_MS = 750;
 const THINKING_HOLD_MS = 2000;
+const TYPE_CHAR_MS = 26;
+const TYPE_PAUSE_AFTER_MS = 320;
 
 /**
  * Unified question flow (all questions = 2 options):
- * fade in → prompt / hint / cards stagger → select → fade out →
+ * type prompt → then hint / cards stagger → select → fade out →
  * answer confirm (bubble → AI → optional card → Thinking) → fade → next
  * Q3 → fade out → reveal finale (luggage on right)
  */
@@ -27,12 +29,15 @@ export default function QuestionStep({
   /** 0=hidden … 1=bubble 2=ai 3=card 4=thinking */
   const [bridgeStep, setBridgeStep] = useState(0);
   const [bridgeExiting, setBridgeExiting] = useState(false);
-  /** 0=none, 1=prompt, 2=hint, 3=first card, 4=second card */
+  /** 0=none, 1=prompt typing/done, 2=hint, 3=first card, 4=second card */
   const [revealStep, setRevealStep] = useState(0);
+  const [typedPrompt, setTypedPrompt] = useState("");
+  const [promptDone, setPromptDone] = useState(false);
 
   const timerRef = useRef(null);
   const revealTimersRef = useRef([]);
   const bridgeTimersRef = useRef([]);
+  const typeTimerRef = useRef(null);
   const confirmingRef = useRef(false);
 
   const question = QUESTIONS[currentQuestion];
@@ -48,21 +53,60 @@ export default function QuestionStep({
     bridgeTimersRef.current = [];
   };
 
-  const startQuestionReveal = (optionCount) => {
+  const clearTypeTimer = () => {
+    if (typeTimerRef.current != null) {
+      clearInterval(typeTimerRef.current);
+      typeTimerRef.current = null;
+    }
+  };
+
+  const startQuestionReveal = (promptText, optionCount) => {
     clearRevealTimers();
+    clearTypeTimer();
     setRevealStep(0);
+    setTypedPrompt("");
+    setPromptDone(false);
     setExiting(false);
     setBridge(null);
     setBridgeStep(0);
     setBridgeExiting(false);
     confirmingRef.current = false;
 
-    const totalSteps = 2 + optionCount;
-    for (let step = 1; step <= totalSteps; step += 1) {
-      revealTimersRef.current.push(
-        setTimeout(() => setRevealStep(step), 80 + (step - 1) * REVEAL_STAGGER_MS),
-      );
+    const full = promptText || "";
+    // Show prompt shell immediately, then type character-by-character.
+    setRevealStep(1);
+
+    if (!full) {
+      setPromptDone(true);
+      for (let step = 2; step <= 2 + optionCount; step += 1) {
+        revealTimersRef.current.push(
+          setTimeout(
+            () => setRevealStep(step),
+            TYPE_PAUSE_AFTER_MS + (step - 2) * REVEAL_STAGGER_MS,
+          ),
+        );
+      }
+      return;
     }
+
+    let i = 0;
+    typeTimerRef.current = setInterval(() => {
+      i += 1;
+      setTypedPrompt(full.slice(0, i));
+      if (i < full.length) return;
+
+      clearTypeTimer();
+      setPromptDone(true);
+      // Only after the question finishes typing: hint, then cards.
+      for (let step = 2; step <= 2 + optionCount; step += 1) {
+        revealTimersRef.current.push(
+          setTimeout(
+            () => setRevealStep(step),
+            TYPE_PAUSE_AFTER_MS + (step - 2) * REVEAL_STAGGER_MS,
+          ),
+        );
+      }
+    }, TYPE_CHAR_MS);
   };
 
   useEffect(() => {
@@ -71,6 +115,7 @@ export default function QuestionStep({
     clearTimeout(timerRef.current);
     clearBridgeTimers();
     clearRevealTimers();
+    clearTypeTimer();
     setPendingId(null);
     setLocked(false);
     setBridge(null);
@@ -78,13 +123,14 @@ export default function QuestionStep({
     setBridgeExiting(false);
     confirmingRef.current = false;
 
-    startQuestionReveal(question?.options?.length || 0);
+    startQuestionReveal(question?.prompt || "", question?.options?.length || 0);
 
     return () => {
       if (confirmingRef.current) return;
       clearTimeout(timerRef.current);
       clearBridgeTimers();
       clearRevealTimers();
+      clearTypeTimer();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentQuestion, destinationId]);
@@ -113,6 +159,7 @@ export default function QuestionStep({
     clearTimeout(timerRef.current);
     clearBridgeTimers();
     clearRevealTimers();
+    clearTypeTimer();
     confirmingRef.current = true;
     setLocked(true);
     setExiting(true);
@@ -259,7 +306,12 @@ export default function QuestionStep({
       {!inBridge ? (
         <>
           <div className="question__prompt">
-            <h2 className={showPrompt ? "is-revealed" : undefined}>{question.prompt}</h2>
+            <h2 className={showPrompt ? "is-revealed is-typing" : undefined}>
+              <span className="question__prompt-text">{typedPrompt}</span>
+              {showPrompt && !promptDone ? (
+                <span className="question__prompt-caret" aria-hidden="true" />
+              ) : null}
+            </h2>
             <p className={`question__pick-hint${showHint ? " is-revealed" : ""}`}>
               {question.pickHint || "(Pick 1 option)"}
             </p>

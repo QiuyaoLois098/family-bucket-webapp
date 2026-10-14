@@ -1,4 +1,4 @@
-/** Physical render canvas (4K portrait). */
+/** Physical render canvas — portrait 4K (rotated 3840×2160 panel). */
 export const CANVAS_W = 2160;
 export const CANVAS_H = 3840;
 

@@ -1,5 +1,6 @@
-import { useMemo, useState, useEffect } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { CANVAS_H, CANVAS_W } from "../canvas.js";
 import GuestPhone from "../components/vrbo-v2/GuestPhone.jsx";
 import MainChatScreen from "../components/vrbo-v2/MainChatScreen.jsx";
 import RankingScreen from "../components/vrbo-v2/RankingScreen.jsx";
@@ -10,6 +11,55 @@ import users from "../data/vrbo-v2/users.json";
 import useLandscapeGate from "../hooks/useLandscapeGate.js";
 import useVrboSessionStartOnActivity from "../hooks/useVrboSessionStartOnActivity.js";
 import useVrboV2Session, { guests } from "../hooks/useVrboV2Session.js";
+
+/**
+ * Portrait 4K canvas (2160×3840 = rotated 3840×2160 panel).
+ * Outer frame fluid-fits the container (same idea as iPhone 15 frame);
+ * inner UI stays fixed pixels and scales with transform.
+ */
+function ScaledDisplayCanvas({ className = "", children }) {
+  const frameRef = useRef(null);
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const node = frameRef.current;
+    if (!node) return undefined;
+
+    const fit = () => {
+      const width = node.clientWidth || 1;
+      const height = node.clientHeight || 1;
+      setScale(Math.min(width / CANVAS_W, height / CANVAS_H));
+    };
+
+    fit();
+    const observer = new ResizeObserver(fit);
+    observer.observe(node);
+    window.addEventListener("resize", fit);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", fit);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={frameRef}
+      className={`vrbo-v2-displayHd ${className}`.trim()}
+      aria-label={`${CANVAS_W}×${CANVAS_H}`}
+    >
+      <div
+        className="vrbo-v2-displayHd__panel"
+        style={{
+          width: CANVAS_W,
+          height: CANVAS_H,
+          transform: `scale(${scale})`,
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
 
 const userById = Object.fromEntries(users.map((user) => [user.id, user]));
 const preferenceById = new Map(preferences.map((preference) => [preference.id, preference]));
@@ -212,18 +262,24 @@ function VrboDemo() {
   );
 }
 
-/** Display 1 · Organizer / interactive chat — scales in a locked 2160×3840 stage. */
+const VRBO_LEFT1_REF = "/images/Vrbo-Images/example/left1.png";
+
+/** Display 1 · Organizer chat + same-size design reference (phone-style compare). */
 export function VrboLeftPage() {
   const { state, actions } = useVrboV2Session({ syncOnly: true });
   const propertyLookup = usePropertyLookup(state.results);
   useVrboSessionStartOnActivity(actions.startSession);
 
+  // First page reference; swap by stage later as more comps land.
+  const referenceSrc = VRBO_LEFT1_REF;
+  const referenceCaption = "Reference · intro";
+
   return (
     <div className="vrbo-v2-device vrbo-v2-device--display">
       <RestartControl onReset={actions.reset} />
-      <div className="vrbo-v2-device__stage vrbo-v2-device__stage--display">
-        <div className="vrbo-v2-displayHd" aria-label="Display 2160×3840">
-          <div className="vrbo-v2-displayHd__panel">
+      <div className="vrbo-v2-device__stage vrbo-v2-device__stage--display-compare">
+        <div className="vrbo-v2-displayFrame">
+          <ScaledDisplayCanvas>
             <MainChatScreen
               messages={state.messages}
               typing={state.typing}
@@ -233,7 +289,22 @@ export function VrboLeftPage() {
               joined={state.joined}
               displayNames={state.displayNames ?? {}}
             />
+          </ScaledDisplayCanvas>
+          <p className="vrbo-v2-displayFrame__caption">Live · chat</p>
+        </div>
+        <div className="vrbo-v2-displayFrame">
+          <div
+            className="vrbo-v2-displayHd vrbo-v2-displayHd--reference"
+            aria-label={`${CANVAS_W}×${CANVAS_H} reference`}
+          >
+            <img
+              className="vrbo-v2-displayHd__reference"
+              src={referenceSrc}
+              alt="Vrbo left design reference"
+              draggable={false}
+            />
           </div>
+          <p className="vrbo-v2-displayFrame__caption">{referenceCaption}</p>
         </div>
       </div>
     </div>
@@ -248,20 +319,18 @@ export function VrboRightPage() {
     <div className="vrbo-v2-device vrbo-v2-device--display">
       <RestartControl onReset={actions.reset} />
       <div className="vrbo-v2-device__stage vrbo-v2-device__stage--display">
-        <div className="vrbo-v2-displayHd" aria-label="Display 2160×3840">
-          <div className="vrbo-v2-displayHd__panel">
-            <RankingScreen
-              stage={state.stage}
-              summaryText={state.summaryText}
-              results={state.results}
-              priorities={state.priorities}
-              allSubmitted={allSubmitted}
-              previewPropertyId={state.previewPropertyId}
-              selectedPropertyId={state.selectedPropertyId}
-              actions={actions}
-            />
-          </div>
-        </div>
+        <ScaledDisplayCanvas>
+          <RankingScreen
+            stage={state.stage}
+            summaryText={state.summaryText}
+            results={state.results}
+            priorities={state.priorities}
+            allSubmitted={allSubmitted}
+            previewPropertyId={state.previewPropertyId}
+            selectedPropertyId={state.selectedPropertyId}
+            actions={actions}
+          />
+        </ScaledDisplayCanvas>
       </div>
     </div>
   );

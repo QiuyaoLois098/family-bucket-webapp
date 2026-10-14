@@ -17,10 +17,10 @@
     "typingLabel": "typing",
     "sharedCard": "Shared from touchscreen · Vrbo",
     "prompt": "Plan your Hawaii getaway together.",
-    "footer": "Pick up a phone and join the conversation.",
+    "footer": "Pick up a phone\nand join the conversation",
     "footerPlanning": "Your group is planning...",
     "waitingGuests": "Waiting for {count} guests to join",
-    "groupPlannerLabel": "Group planner"
+    "groupPlannerLabel": "Primary planner"
   },
   "ranking": {
     "waitingTitle": "Great trips start with a conversation",

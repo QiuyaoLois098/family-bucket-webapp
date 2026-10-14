@@ -27,7 +27,6 @@ export default function AnswerFinaleStep({ destinationId, answers }) {
       setTimeout(() => setStep(1), 40),
       setTimeout(() => setStep(2), 40 + STAGGER_MS),
       setTimeout(() => setStep(3), 40 + STAGGER_MS * 2),
-      setTimeout(() => setStep(4), 40 + STAGGER_MS * 2 + FADE_MS),
     ];
     return () => timers.forEach(clearTimeout);
   }, [answerId, destinationId]);
@@ -76,17 +75,6 @@ export default function AnswerFinaleStep({ destinationId, answers }) {
               ) : null}
             </div>
           </article>
-        ) : null}
-
-        {step >= 4 ? (
-          <p className={`briefing__thinking${step >= 4 ? " is-visible" : ""}`}>
-            Thinking
-            <span className="briefing__dots" aria-hidden="true">
-              <span>.</span>
-              <span>.</span>
-              <span>.</span>
-            </span>
-          </p>
         ) : null}
       </div>
     </div>

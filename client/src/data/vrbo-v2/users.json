@@ -9,8 +9,8 @@
     "role": "coordinator",
     "side": "left",
     "phoneLabel": "Jamie",
-    "statusLine": "Group planner",
-    "roleLabel": "Group planner"
+    "statusLine": "Primary planner",
+    "roleLabel": "Primary planner"
   },
   {
     "id": "sarah",

@@ -52,11 +52,11 @@ export default function MainChatScreen({
     (user) => user.role === "guest" && Boolean(joined[user.id]),
   ).length;
   const guestsWaiting = Math.max(0, guestTotal - guestsJoined);
-  const plannerLabel = copy.chat.groupPlannerLabel || "Group planner";
-  const jamie = members.find((user) => user.role === "coordinator");
+  const plannerLabel = copy.chat.groupPlannerLabel || "Primary planner";
+  // Intro matches reference: list everyone; after joins, show who is in the trip.
   const peopleLine =
-    guestsWaiting > 0 && jamie
-      ? `${jamie.name} · ${plannerLabel} · ${String(copy.chat.waitingGuests).replaceAll("{count}", String(guestsWaiting))}`
+    guestsWaiting > 0
+      ? chatScript.groupSubtitle
       : members
           .map((user) =>
             user.role === "coordinator" ? `${user.name} · ${plannerLabel}` : user.name,
@@ -104,8 +104,6 @@ export default function MainChatScreen({
       </header>
 
       <div className="vrbo-v2-chat__body">
-        <p className="vrbo-v2-chat__prompt">{copy.chat.prompt}</p>
-
         <div className="vrbo-v2-chat__feed" ref={feedRef}>
           <AnimatePresence initial={false}>
             {messages.map((message) => {
@@ -128,9 +126,9 @@ export default function MainChatScreen({
                   ) : (
                     <>
                       <Avatar user={user} />
-                      <div className="vrbo-v2-chat__column">
+                      <div className="vrbo-v2-chat__bubble">
                         <span className="vrbo-v2-chat__author">{authorLabel(user)}</span>
-                        <p className="vrbo-v2-chat__bubble">{message.text}</p>
+                        <p className="vrbo-v2-chat__text">{message.text}</p>
                       </div>
                     </>
                   )}
@@ -161,7 +159,15 @@ export default function MainChatScreen({
         </div>
 
         <p className="vrbo-v2-chat__footer">
-          {guestsWaiting > 0 ? copy.chat.footer : copy.chat.footerPlanning || copy.chat.footer}
+          {guestsWaiting > 0 ? (
+            <>
+              Pick up a phone
+              <br />
+              and join the conversation
+            </>
+          ) : (
+            copy.chat.footerPlanning || copy.chat.footer
+          )}
         </p>
       </div>
     </div>

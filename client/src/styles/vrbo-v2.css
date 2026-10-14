@@ -45,9 +45,10 @@
   --button: #1b1f3a;
   --button-text: #ffffff;
   --vrbo-v2-sans: "Albra Sans", "Helvetica Neue", sans-serif;
-  --vrbo-v2-content: "Albra Grotesk", "Helvetica Neue", sans-serif;
-  /* Design canvas — shared blue header height on Display 1 / 2. */
-  --display-masthead-height: 14.5cqh;
+  /* Temporary: match Expedia content (Centra No2) until Albra is finalized. */
+  --vrbo-v2-content: "Centra No2", "Helvetica Neue", sans-serif;
+  /* Design canvas — shared blue header height on Display 1 / 2 (match left1 ref). */
+  --display-masthead-height: 20cqh;
 }
 
 .vrbo-v2-stage {
@@ -446,6 +447,9 @@
 /* ---------- display 1 · group chat ---------- */
 
 .vrbo-v2-chat {
+  /* Design canvas — convert Figma/px specs with: calc(N / var(--design-h) * 100cqh) */
+  --design-w: 2160;
+  --design-h: 3840;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -465,11 +469,11 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 0.35cqh;
+  gap: 1.2cqh;
   height: var(--display-masthead-height);
   min-height: var(--display-masthead-height);
   max-height: var(--display-masthead-height);
-  padding: 2cqh 4.6cqw 1.6cqh;
+  padding: 3.6cqh 6cqw 3.2cqh;
   background: var(--blue-screen);
   color: #ffffff;
   box-sizing: border-box;
@@ -478,15 +482,16 @@
 
 .vrbo-v2-chat__brand {
   display: block;
-  width: 22cqw;
-  height: auto;
+  width: auto;
+  /* 137.7px @ 3840 design height — must use cqh so it rides the scaled canvas */
+  height: calc(137.7 / var(--design-h) * 100cqh);
   mix-blend-mode: screen;
 }
 
 .vrbo-v2-chat__trip {
-  margin: 0.25cqh 0 0;
+  margin: 0.55cqh 0 0;
   font-family: var(--vrbo-v2-sans);
-  font-size: 2.7cqh;
+  font-size: 3.1cqh;
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.05;
@@ -494,9 +499,9 @@
 }
 
 .vrbo-v2-chat__people {
-  margin: 0;
+  margin: 0.15cqh 0 0;
   font-family: var(--vrbo-v2-content);
-  font-size: 1.25cqh;
+  font-size: 1.9cqh;
   font-weight: 400;
   color: rgba(255, 255, 255, 0.9);
 }
@@ -507,36 +512,35 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  padding: 2.4cqh 1.8cqw 2.2cqh;
+  padding: 3.2cqh 5.5cqw 4.5cqh;
   background: var(--cream);
 }
 
 .vrbo-v2-chat__prompt {
-  flex: 0 0 auto;
-  margin: 0 0 2cqh;
-  font-family: var(--vrbo-v2-content);
-  font-size: 1.95cqh;
-  font-weight: 500;
-  color: var(--charcoal);
+  display: none;
 }
 
 .vrbo-v2-chat__footer {
   flex: 0 0 auto;
-  margin-top: 0;
-  padding-top: 1.6cqh;
+  margin: auto 0 0;
+  padding-bottom: 4.6cqh;
   font-family: var(--vrbo-v2-content);
-  font-size: 1.55cqh;
+  font-size: 2.4cqh;
   font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-align: center;
   color: var(--blue);
 }
 
 .vrbo-v2-chat__feed {
-  flex: 1;
+  flex: 0 1 auto;
   min-height: 0;
+  max-height: 100%;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 1.6cqh;
+  gap: 1.8cqh;
   padding: 0;
   scrollbar-width: thin;
   scrollbar-color: var(--soft-gray) transparent;
@@ -554,30 +558,34 @@
 .vrbo-v2-chat__row {
   display: flex;
   align-items: flex-start;
-  gap: 0.95cqw;
+  gap: 1.35cqw;
   align-self: flex-start;
-  max-width: 92%;
+  max-width: 100%;
 }
 
 .vrbo-v2-chat__avatar {
   display: grid;
   place-items: center;
   flex: 0 0 auto;
-  width: 3.6cqh;
-  height: 3.6cqh;
-  margin-top: 0.1cqh;
+  /* 160px @ 3840 design height */
+  width: calc(160 / var(--design-h) * 100cqh);
+  height: calc(160 / var(--design-h) * 100cqh);
+  margin-top: 0;
   border-radius: 50%;
-  font-size: 1.2cqh;
+  font-size: 1.5cqh;
   font-weight: 600;
   overflow: hidden;
+  background: #f3e7c8;
 }
 
 .vrbo-v2-chat__avatar.has-photo {
-  background: #ffffff;
+  background: #f3e7c8;
+  border: 0;
 }
 
 .vrbo-v2-chat__avatar img,
 .vrbo-v2-chat__typing-avatar img {
+  /* Fill the cqh-sized circle — raw px here will not match the scaled canvas */
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -587,39 +595,53 @@
 .vrbo-v2-chat__column {
   display: flex;
   flex-direction: column;
-  gap: 0.55cqh;
+  gap: 0.4cqh;
   min-width: 0;
 }
 
 .vrbo-v2-chat__author {
-  padding: 0 0.35cqw;
+  display: block;
+  margin: 0 0 0.55cqh;
+  padding: 0;
   font-family: var(--vrbo-v2-content);
-  font-size: 1.35cqh;
-  font-weight: 600;
+  font-size: 1.6cqh;
+  font-weight: 400;
   letter-spacing: 0;
+  line-height: 1.2;
   text-transform: none;
   color: var(--blue);
 }
 
 .vrbo-v2-chat__bubble {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
   margin: 0;
-  padding: 1.5cqh 1.4cqw;
-  border-radius: 1.7cqw;
-  border-bottom-left-radius: 0.55cqw;
-  background: #ffffff;
+  padding: 2.4cqh 4cqw 2.4cqh;
+  border-radius: 2cqw;
+  background: #eceae4;
   color: var(--charcoal);
-  font-size: 1.8cqh;
-  line-height: 1.4;
-  white-space: pre-line;
+  font-family: var(--vrbo-v2-content);
   border: 0;
-  box-shadow: 0 0.75cqh 2.2cqh rgba(32, 32, 32, 0.06);
+  box-shadow: none;
+}
+
+.vrbo-v2-chat__text {
+  margin: 0;
+  color: var(--charcoal);
+  font-family: var(--vrbo-v2-content);
+  font-size: 2cqh;
+  font-weight: 400;
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  white-space: pre-line;
 }
 
 .vrbo-v2-chat__row--coordinator .vrbo-v2-chat__bubble {
-  background: #ffffff;
+  background: #eceae4;
   color: var(--charcoal);
   border-color: transparent;
-  box-shadow: 0 0.75cqh 2.2cqh rgba(32, 32, 32, 0.06);
+  box-shadow: none;
 }
 
 .vrbo-v2-chat__typing {
@@ -648,10 +670,13 @@
 
 .vrbo-v2-chat__bubble--typing {
   display: flex;
+  flex-direction: row;
   gap: 0.45cqw;
   align-items: center;
   padding: 1.5cqh 1.3cqw;
+  background: #eceae4;
   color: var(--blue);
+  box-shadow: none;
 }
 
 .vrbo-v2-chat__bubble--typing i {
@@ -731,7 +756,7 @@
   height: var(--display-masthead-height);
   min-height: var(--display-masthead-height);
   max-height: var(--display-masthead-height);
-  padding: 2cqh 4.6cqw 1.6cqh;
+  padding: 3.6cqh 5.5cqw 3.2cqh;
   background: var(--blue-screen);
   box-sizing: border-box;
 }
@@ -2285,37 +2310,88 @@ body:has(.vrbo-v2-stage),
 }
 
 .vrbo-v2-device__stage--display {
+  --display-stage-pad: 0px;
   width: 100%;
   height: 100%;
   display: grid;
   place-items: center;
-  padding: 0;
+  padding: var(--display-stage-pad);
   box-sizing: border-box;
   overflow: hidden;
   background: #000000;
 }
 
+/* /vrbo-left: live + reference side-by-side (same pattern as iPhone compare). */
+.vrbo-v2-device__stage--display-compare {
+  --display-gap: clamp(20px, 2.4vw, 36px);
+  --display-stage-pad-x: clamp(20px, 3vw, 48px);
+  --display-stage-pad-y: clamp(24px, 4vh, 48px);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--display-gap);
+  padding: var(--display-stage-pad-y) var(--display-stage-pad-x);
+  box-sizing: border-box;
+  overflow: auto;
+  background: #000000;
+}
+
+.vrbo-v2-displayFrame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 0 0 auto;
+}
+
+.vrbo-v2-displayFrame__caption {
+  margin: 0;
+  font-family: var(--vrbo-v2-content, "Helvetica Neue", sans-serif);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.vrbo-v2-device__stage--display-compare .vrbo-v2-displayHd {
+  width: min(
+    calc((100vw - var(--display-stage-pad-x) * 2 - var(--display-gap)) / 2),
+    calc((100dvh - var(--display-stage-pad-y) * 2 - 28px) * 9 / 16)
+  );
+  height: auto;
+}
+
 /*
- * Dedicated Display 1 / Display 2 stage.
- * Design canvas: 2160×3840 (9∶16). Letterbox without stretching.
- * Inner UI uses cqw/cqh against this panel.
+ * Display 1 / 2: outer frame fluid-fits container (like iPhone 15 bezel).
+ * Inner panel is fixed 2160×3840 (portrait 4K / rotated 3840×2160) + transform scale.
  */
 .vrbo-v2-displayHd {
   --display-w: 2160;
   --display-h: 3840;
+  position: relative;
   width: min(100vw, calc(100dvh * 9 / 16));
   height: min(100dvh, calc(100vw * 16 / 9));
   aspect-ratio: 9 / 16;
   flex: 0 0 auto;
+  overflow: hidden;
+  container-type: normal;
+  background: #111318;
+  box-shadow: 0 calc(var(--u) * 24) calc(var(--u) * 60) rgba(15, 23, 42, 0.28);
 }
 
 .vrbo-v2-displayHd__panel {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(var(--display-w) * 1px);
+  height: calc(var(--display-h) * 1px);
+  transform-origin: top left;
   overflow: hidden;
   container-type: size;
   background: var(--cream, #faf6f1);
-  box-shadow: 0 calc(var(--u) * 24) calc(var(--u) * 60) rgba(15, 23, 42, 0.16);
 }
 
 .vrbo-v2-displayHd__panel > .vrbo-v2-chat,
@@ -2323,6 +2399,22 @@ body:has(.vrbo-v2-stage),
   width: 100%;
   height: 100%;
   container-type: size;
+}
+
+.vrbo-v2-displayHd--reference {
+  display: block;
+  padding: 0;
+  background: #111318;
+}
+
+.vrbo-v2-displayHd__reference {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  user-select: none;
+  pointer-events: none;
 }
 
 .vrbo-v2-device--phone > .vrbo-v2-phone,
