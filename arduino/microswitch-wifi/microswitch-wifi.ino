@@ -1,0 +1,166 @@
+
+#include <Arduino.h>
+#include <WiFi.h>
+#include <WiFiUdp.h>
+
+// ================================
+// WIFI
+// ================================
+const char* ssid = "DE-YAN Wifi";
+const char* password = "Gkrsd34982!";
+
+// ================================
+// UDP
+// ================================
+IPAddress pcIP(192, 168, 128, 137);
+const int pcPort = 41234;
+
+WiFiUDP udp;
+
+// ================================
+// MICRO SWITCH
+// ================================
+const int luggagePin = D2;
+
+const unsigned long DEBOUNCE_MS = 10;
+const unsigned long RECONNECT_MS = 5000;
+
+int rawState;
+int stableState;
+
+unsigned long lastRawChange = 0;
+unsigned long lastReconnectAttempt = 0;
+
+bool wasConnected = false;
+
+// ================================
+// SEND UDP
+// ================================
+void sendLuggageStatus(int status) {
+
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("WiFi offline, UDP skipped");
+    return;
+  }
+
+  char message[32];
+
+  snprintf(
+    message,
+    sizeof(message),
+    "luggage status: %d",
+    status
+  );
+
+  unsigned long start = millis();
+
+  if (!udp.beginPacket(pcIP, pcPort)) {
+    Serial.println("UDP beginPacket failed");
+    return;
+  }
+
+  udp.print(message);
+
+  int result = udp.endPacket();
+
+  Serial.print("UDP sent: ");
+  Serial.print(message);
+
+  Serial.print(" | result: ");
+  Serial.print(result);
+
+  Serial.print(" | elapsed: ");
+  Serial.print(millis() - start);
+  Serial.println(" ms");
+}
+
+// ================================
+// SETUP
+// ================================
+void setup() {
+
+  Serial.begin(115200);
+
+  // COM -> GND, NO -> D2
+  pinMode(luggagePin, INPUT_PULLUP);
+
+  rawState = digitalRead(luggagePin);
+  stableState = rawState;
+
+  WiFi.mode(WIFI_STA);
+  WiFi.setSleep(false);
+
+  // Start WiFi without blocking
+  WiFi.begin(ssid, password);
+
+  Serial.println("System started");
+}
+
+// ================================
+// LOOP
+// ================================
+void loop() {
+
+  unsigned long now = millis();
+
+  // ------------------------------
+  // 1. READ SWITCH FIRST
+  // ------------------------------
+  int reading = digitalRead(luggagePin);
+
+  if (reading != rawState) {
+    rawState = reading;
+    lastRawChange = now;
+  }
+
+  if (rawState != stableState &&
+      now - lastRawChange >= DEBOUNCE_MS) {
+
+    stableState = rawState;
+
+    Serial.print("SWITCH changed: ");
+    Serial.print(stableState);
+
+    Serial.print(" | millis: ");
+    Serial.println(now);
+
+    sendLuggageStatus(stableState);
+  }
+
+  // ------------------------------
+  // 2. WIFI STATUS
+  // ------------------------------
+  bool connected =
+    WiFi.status() == WL_CONNECTED;
+
+  if (connected && !wasConnected) {
+
+    Serial.println("WiFi connected!");
+
+    Serial.print("ESP32 IP: ");
+    Serial.println(WiFi.localIP());
+
+    // Synchronize current switch state
+    sendLuggageStatus(stableState);
+  }
+
+  if (!connected && wasConnected) {
+    Serial.println("WiFi disconnected");
+  }
+
+  wasConnected = connected;
+
+  // ------------------------------
+  // 3. NON-BLOCKING RECONNECT
+  // ------------------------------
+  if (!connected &&
+      now - lastReconnectAttempt >= RECONNECT_MS) {
+
+    lastReconnectAttempt = now;
+
+    Serial.println("Reconnecting WiFi...");
+    WiFi.reconnect();
+  }
+
+  delay(2);
+}
