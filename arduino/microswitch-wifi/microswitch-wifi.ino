@@ -6,13 +6,15 @@
 // ================================
 // WIFI
 // ================================
-const char* ssid = "DE-YAN Wifi";
-const char* password = "Gkrsd34982!";
+// const char* ssid = "DE-YAN Wifi";
+// const char* password = "Gkrsd34982!";
+const char* ssid = "NETGEAR34";
+const char* password = "thirstybox961";
 
 // ================================
 // UDP
 // ================================
-IPAddress pcIP(192, 168, 128, 137);
+IPAddress pcIP(192, 168, 1, 137);
 const int pcPort = 41234;
 
 WiFiUDP udp;

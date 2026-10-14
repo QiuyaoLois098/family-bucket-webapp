@@ -591,6 +591,29 @@
   color: var(--q-muted);
 }
 
+.question__option-badge {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  margin-top: 0.4cqh;
+  padding: 0.55cqh 1.4cqi;
+  border-radius: 999px;
+  font-family: var(--sans);
+  font-size: 1.7cqi;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: #191e3b;
+}
+
+.question__option-badge--bookable {
+  background: #f0d756;
+}
+
+.question__option-badge--maps {
+  background: #e8eaef;
+}
+
 /* Q1 → Thinking… bridge */
 .question__dialogue {
   --briefing-blue: #008ff5;

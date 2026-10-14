@@ -1,70 +1,10 @@
-const KAYAK_OPTIONS = [
-  {
-    id: "emerald-bay",
-    label: "Guided Kayak Tour on Emerald Bay",
-    shortLabel: "kayaking on Emerald Bay",
-    badge: "Expedia · Bookable",
-    badgeTone: "bookable",
-    image: "/images/Expedia-images/options/q2-kayak-1.png",
-  },
-  {
-    id: "sand-harbor",
-    label: "Clear-Bottom Kayak Tour at Sand Harbor",
-    shortLabel: "kayaking at Sand Harbor",
-    badge: "From Google Maps",
-    badgeTone: "maps",
-    image: "/images/Expedia-images/options/q2-kayak-2.png",
-  },
-];
-
-const ROPES_OPTIONS = [
-  {
-    id: "tahoe-city",
-    label: "Ropes Course in Tahoe City",
-    shortLabel: "the ropes course in Tahoe City",
-    badge: "From Google Maps",
-    badgeTone: "maps",
-    image: "/images/Expedia-images/options/q2-ropes-1.png",
-  },
-  {
-    id: "treetop",
-    label: "Tahoe Treetop Adventure Ropes Course",
-    shortLabel: "the ropes course at Heavenly",
-    badge: "Heavenly · Bookable",
-    badgeTone: "bookable",
-    image: "/images/Expedia-images/options/q2-ropes-2.png",
-  },
-];
-
-/** Flatten activity-pair choices for session / itinerary lookup. */
-function buildActivityPairOptions(groups) {
-  const [left, right] = groups;
-  const options = [];
-  for (const a of left.options) {
-    for (const b of right.options) {
-      options.push({
-        id: `${a.id}|${b.id}`,
-        label: `${a.label}; ${b.label}`,
-        youSay: `Let’s build around the ${a.label} and ${b.label}.`,
-        aiSay: `Perfect — I’ll start with ${a.shortLabel}, then add ${b.shortLabel}.`,
-        promptHint: `${a.label}, ${b.label}, family outdoor adventure near South Lake Tahoe`,
-      });
-    }
-  }
-  return options;
-}
-
-const ACTIVITY_GROUPS = [
-  { id: "kayak", label: "KAYAK", options: KAYAK_OPTIONS },
-  { id: "ropes", label: "ROPES COURSE", options: ROPES_OPTIONS },
-];
-
 export const QUESTIONS = [
   {
     id: "activity",
     prompt:
       "Great — I’ll plan around what you already have booked. What sounds most like your family?",
     pickHint: "(Pick 1 option)",
+    /** After select: outdoors bubble + Thinking, then fade into Q2 */
     bridgeBubble:
       "We love the outdoors—the kids are dying to try kayaking and a ropes course near South Lake Tahoe over spring break.",
     options: [
@@ -92,13 +32,38 @@ export const QUESTIONS = [
   },
   {
     id: "activities",
-    type: "activity-pair",
-    userBubble:
-      "We love the outdoors—the kids are dying to try kayaking and a ropes course near South Lake Tahoe over spring break.",
-    prompt: "Here are a few kayak and ropes course options.",
+    prompt: "I found two options your family might love. Which one should we add?",
     pickHint: "(Pick 1 option)",
-    groups: ACTIVITY_GROUPS,
-    options: buildActivityPairOptions(ACTIVITY_GROUPS),
+    options: [
+      {
+        id: "emerald-bay",
+        label: "Emerald Bay guided kayak",
+        description: "Clear-bottom kayaking on Emerald Bay.",
+        badge: "Expedia · Bookable",
+        badgeTone: "bookable",
+        image: "/images/Expedia-images/options/q2-kayak-1.png",
+        youSay:
+          "Let’s build around the Guided Kayak Tour on Emerald Bay and Tahoe Treetop Adventure Ropes Course.",
+        aiSay:
+          "Perfect — I’ll start with kayaking on Emerald Bay, then add the ropes course in Tahoe City.",
+        promptHint:
+          "clear-bottom kayaking on Emerald Bay, family outdoor adventure near South Lake Tahoe",
+      },
+      {
+        id: "tahoe-city-ropes",
+        label: "Tahoe City ropes course",
+        description: "Take on a treetop ropes course in Tahoe City.",
+        badge: "From Google Maps",
+        badgeTone: "maps",
+        image: "/images/Expedia-images/options/q2-ropes-1.png",
+        youSay:
+          "Let’s build around the Tahoe City ropes course and a clear-bottom kayak on Emerald Bay.",
+        aiSay:
+          "Perfect — I’ll start with the ropes course in Tahoe City, then add kayaking on Emerald Bay.",
+        promptHint:
+          "treetop ropes course in Tahoe City, family outdoor adventure near South Lake Tahoe",
+      },
+    ],
   },
   {
     id: "add-on",
@@ -145,10 +110,6 @@ export const QUESTIONS = [
 
 export function defaultAnswerId(question) {
   if (!question) return null;
-  if (question.type === "activity-pair") {
-    const [left, right] = question.groups;
-    return `${left.options[0].id}|${right.options[0].id}`;
-  }
   return question.options?.[0]?.id ?? null;
 }
 
