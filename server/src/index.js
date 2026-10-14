@@ -8,7 +8,9 @@ import { config } from "./config.js";
 import { bindHyperionActivityIo } from "./hyperionActivity.js";
 import { bindHyperionIo } from "./hyperionHeartbeat.js";
 import { registerRoutes, registerSockets } from "./routes.js";
+import { session } from "./session.js";
 import { startUdpBridge } from "./udpBridge.js";
+import { createLuggageUdpTrigger } from "./luggageUdpTrigger.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -23,7 +25,12 @@ app.use("/images", express.static(path.join(config.rootDir, "client/public/image
 
 registerRoutes(app);
 registerSockets(io);
-startUdpBridge(io, { port: Number(process.env.UDP_PORT || 41234) });
+
+const luggageUdp = createLuggageUdpTrigger(session);
+startUdpBridge(io, {
+  port: Number(process.env.UDP_PORT || 41234),
+  onPacket: luggageUdp.handlePacket,
+});
 
 if (fs.existsSync(config.clientDist)) {
   app.use(express.static(config.clientDist));
