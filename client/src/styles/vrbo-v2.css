@@ -1469,7 +1469,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2.4cqw;
-  padding: 0.6cqh var(--sc-pad) 0;
+  padding: 1.8cqh var(--sc-pad) 0;
   background: #ffffff;
   touch-action: manipulation;
 }
@@ -1478,7 +1478,7 @@
   position: relative;
   display: block;
   width: 100%;
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 3 / 2.2;
   margin: 0;
   padding: 0;
   border-radius: 1.8cqw;
@@ -1517,17 +1517,22 @@
   top: 1.1cqw;
   left: 1.1cqw;
   z-index: 1;
-  display: grid;
-  place-items: center;
-  width: calc(72 / var(--design-h) * 100cqh);
-  height: calc(72 / var(--design-h) * 100cqh);
-  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: calc(120 / var(--design-h) * 100cqh);
+  height: calc(100 / var(--design-h) * 100cqh);
+  border-radius: 999px;
   background: var(--sc-blue);
   color: #ffffff;
   font-family: var(--sc-ui);
-  font-size: calc(34 / var(--design-h) * 100cqh);
-  font-weight: 600;
+  font-size: calc(52 / var(--design-h) * 100cqh);
+  font-weight: 500;
   line-height: 1;
+  /* Digits sit optically low in Centra — nudge text up inside the pill */
+  padding: 0.13em 0 0;
+  text-align: center;
 }
 
 .vrbo-v2-showcase__actions {
