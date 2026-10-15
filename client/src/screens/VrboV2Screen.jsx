@@ -9,8 +9,15 @@ import preferences from "../data/vrbo-v2/preferences.json";
 import properties from "../data/vrbo-v2/properties.json";
 import users from "../data/vrbo-v2/users.json";
 import useLandscapeGate from "../hooks/useLandscapeGate.js";
+import useVrboIphoneWebApp from "../hooks/useVrboIphoneWebApp.js";
 import useVrboSessionStartOnActivity from "../hooks/useVrboSessionStartOnActivity.js";
 import useVrboV2Session, { guests } from "../hooks/useVrboV2Session.js";
+
+const VRBO_IPHONE_WEBAPP = {
+  sarah: { routeKey: "ip1", title: "Interactive Experience" },
+  alex: { routeKey: "ip2", title: "Interactive Experience" },
+  chris: { routeKey: "ip3", title: "Interactive Experience" },
+};
 
 /**
  * Portrait 4K canvas (2160×3840 = rotated 3840×2160 panel).
@@ -391,9 +398,16 @@ export function VrboRightPage() {
 export function GuestPhonePage({ guestId }) {
   const [params, setParams] = useSearchParams();
   const frameParam = params.get("frame") ?? params.get("iphone");
+  const standalone =
+    typeof window !== "undefined" &&
+    (window.matchMedia("(display-mode: standalone)").matches ||
+      window.navigator.standalone === true);
+  // Desktop preview can show the iPhone chrome; home-screen / Guided Access is always full bleed.
   const framed =
-    frameParam === "1" ||
-    (guestId === "sarah" && frameParam !== "0");
+    !standalone &&
+    (frameParam === "1" || (guestId === "sarah" && frameParam !== "0"));
+  const webApp = VRBO_IPHONE_WEBAPP[guestId];
+  useVrboIphoneWebApp(webApp ?? {});
   const { state, actions } = useVrboV2Session({ syncOnly: true });
   const {
     stage,
@@ -469,14 +483,16 @@ export function GuestPhonePage({ guestId }) {
     <div
       className={`vrbo-v2-device vrbo-v2-device--phone${framed ? " is-framed" : ""}`}
     >
-      <button
-        type="button"
-        className="vrbo-v2-device__frame-toggle"
-        onClick={toggleFrame}
-        aria-pressed={framed}
-      >
-        {framed ? "Full screen" : "iPhone 15 frame"}
-      </button>
+      {standalone ? null : (
+        <button
+          type="button"
+          className="vrbo-v2-device__frame-toggle"
+          onClick={toggleFrame}
+          aria-pressed={framed}
+        >
+          {framed ? "Full screen" : "iPhone 15 frame"}
+        </button>
+      )}
 
       {framed ? (
         <div

@@ -2352,6 +2352,13 @@ body:has(.vrbo-v2-stage),
   background: #000000;
 }
 
+/* Standalone / Guided Access: blue fills under the status bar + notch */
+html:has(.vrbo-v2-device--phone:not(.is-framed)),
+body:has(.vrbo-v2-device--phone:not(.is-framed)),
+#root:has(.vrbo-v2-device--phone:not(.is-framed)) {
+  background: var(--blue, #0f51ec);
+}
+
 .vrbo-v2-device {
   position: relative;
   width: 100%;
@@ -2368,6 +2375,43 @@ body:has(.vrbo-v2-stage),
 
 .vrbo-v2-device--phone {
   background: #000000;
+}
+
+.vrbo-v2-device--phone:not(.is-framed) {
+  background: var(--blue, #0f51ec);
+}
+
+/*
+ * Real-device full bleed: blue chrome = notch / Dynamic Island only
+ * (replaces the mock status spacer so the header sits one safe-area higher).
+ */
+.vrbo-v2-device--phone:not(.is-framed) .vrbo-v2-phone__chrome {
+  min-height: env(safe-area-inset-top, 0px);
+  height: env(safe-area-inset-top, 0px);
+  padding: 0;
+  overflow: hidden;
+}
+
+.vrbo-v2-device--phone:not(.is-framed) .vrbo-v2-phone__join-head {
+  padding-top: calc(13 / var(--phone-h) * 100cqh);
+}
+
+.vrbo-v2-device--phone:not(.is-framed) .vrbo-v2-phone__composer {
+  padding-bottom: calc(
+    56 / var(--phone-h) * 100cqh + env(safe-area-inset-bottom, 0px)
+  );
+}
+
+.vrbo-v2-device--phone:not(.is-framed) .vrbo-v2-phone__composer.is-readonly {
+  padding-bottom: calc(
+    40 / var(--phone-h) * 100cqh + env(safe-area-inset-bottom, 0px)
+  );
+}
+
+.vrbo-v2-device--phone:not(.is-framed) .vrbo-v2-phone__panel--select .vrbo-v2-phone__composer {
+  padding-bottom: calc(
+    72 / var(--phone-h) * 100cqh + env(safe-area-inset-bottom, 0px)
+  );
 }
 
 .vrbo-v2-device--display {

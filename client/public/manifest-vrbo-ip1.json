@@ -1,0 +1,10 @@
+{
+  "name": "Interactive Experience",
+  "short_name": "Experience",
+  "display": "standalone",
+  "start_url": "/vrbo-ip1",
+  "scope": "/",
+  "orientation": "portrait",
+  "background_color": "#0f51ec",
+  "theme_color": "#0f51ec"
+}
