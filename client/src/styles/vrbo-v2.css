@@ -810,15 +810,13 @@
 }
 
 .vrbo-v2-summary__box {
-  flex: 0 0 38cqh;
+  flex: 0 0 31cqh;
   display: flex;
   flex-direction: column;
   gap: 1.6cqh;
-  min-height: 34cqh;
-  max-height: 42cqh;
-  padding: 2.6cqh 3.4cqw 3cqh;
-  border: 0.18cqh solid #9eb6f5;
-  border-radius: 3.2cqw;
+  padding: 2.2cqh 3.4cqw 3cqh;
+  border: 0.15cqh solid #1668E3;
+  border-radius: 4cqw;
   background: #ffffff;
   overflow: hidden;
   box-sizing: border-box;
@@ -847,10 +845,9 @@
   flex: 1 1 auto;
   min-height: 0;
   font-family: var(--vrbo-v2-content);
-  font-size: 2.35cqh;
+  font-size: calc(80 / var(--design-h) * 100cqh);
   font-weight: 400;
-  line-height: 1.4;
-  letter-spacing: -0.01em;
+  line-height: 1.3;
   color: #202020;
   overflow: hidden;
 }
@@ -862,12 +859,12 @@
 .vrbo-v2-summary__listening {
   display: flex;
   align-items: center;
-  gap: 1.2cqw;
-  margin: 2cqh 0 0;
+  gap: 2.6cqw;
+  margin: 3cqh 0 0;
   font-family: var(--vrbo-v2-content);
-  font-size: 1.7cqh;
+  font-size: calc(72 / var(--design-h) * 100cqh);
   font-weight: 400;
-  line-height: 1.3;
+  line-height: calc(54 / var(--design-h) * 100cqh);
   color: #5c5c5c;
 }
 
@@ -921,12 +918,12 @@
   margin: 0;
   border: 0;
   border-radius: 999px;
-  padding: 2.4cqh 2cqw;
+  padding: 2cqh 2cqw;
   background: var(--blue);
   color: #ffffff;
   font-family: var(--vrbo-v2-content);
-  font-size: 2.6cqh;
-  font-weight: 600;
+  font-size: calc(80 / var(--design-h) * 100cqh);
+  font-weight: 400;
   letter-spacing: -0.01em;
   line-height: 1;
   cursor: pointer;
