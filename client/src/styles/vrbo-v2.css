@@ -552,6 +552,13 @@
   scrollbar-color: var(--soft-gray) transparent;
 }
 
+/* Pins bubbles to the bottom so new lines slide older ones up (with layout). */
+.vrbo-v2-chat__feed-spacer {
+  flex: 1 1 auto;
+  min-height: 0;
+  pointer-events: none;
+}
+
 .vrbo-v2-chat__feed::-webkit-scrollbar {
   width: 0.55cqw;
 }
@@ -567,6 +574,42 @@
   gap: 1.35cqw;
   align-self: flex-start;
   max-width: 100%;
+}
+
+/* Only NEW bubbles — never layout-animate older ones */
+.vrbo-v2-chat__row.is-enter,
+.vrbo-v2-chat__typing.is-enter,
+.vrbo-v2-phone__property.is-enter,
+.vrbo-v2-phone__msg-wrap.is-enter,
+.vrbo-v2-phone__feed > .is-enter,
+.vrbo-v2-phone__typing.is-enter {
+  animation: vrbo-msg-enter 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.vrbo-v2-chat__row.is-exit,
+.vrbo-v2-phone__property.is-exit,
+.vrbo-v2-phone__msg-wrap.is-exit,
+.vrbo-v2-phone__feed > .is-exit {
+  animation: vrbo-msg-exit 0.42s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes vrbo-msg-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes vrbo-msg-exit {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 .vrbo-v2-chat__avatar {
@@ -739,6 +782,28 @@
   height: 100%;
   background: var(--warm-white);
   container-type: size;
+}
+
+.vrbo-v2-rank--finale,
+.vrbo-v2-rank__finale {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #111318;
+}
+
+.vrbo-v2-rank__finale-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  user-select: none;
+  pointer-events: none;
 }
 
 .vrbo-v2-summary {
@@ -969,6 +1034,36 @@
   flex-direction: column;
   gap: 1.3cqh;
   padding: 2.4cqh 1.7cqw 2cqh;
+}
+
+/* GPU opacity/transform only — avoid Framer layout inside scaled canvas */
+.vrbo-v2-rank__panel--enter,
+.vrbo-v2-summary.vrbo-v2-rank__panel--enter {
+  animation: vrbo-panel-enter 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.vrbo-v2-rank__panel--enter-up {
+  animation: vrbo-panel-enter-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes vrbo-panel-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes vrbo-panel-enter-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 32px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 .vrbo-v2-rank__panel--light {
@@ -2603,6 +2698,10 @@ body:has(.vrbo-v2-device--phone.is-framed),
   max-height: 100dvh;
 }
 
+.vrbo-v2-displayHd--finale {
+  animation: vrbo-panel-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 /* Must follow .vrbo-v2-device__stage so grid/flex overrides win (same specificity). */
 .vrbo-v2-device__stage--display-compare {
   --display-gap: clamp(20px, 2.4vw, 36px);
@@ -3192,7 +3291,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
 }
 
 .vrbo-v2-phone__panel--select .vrbo-v2-phone__feed {
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 
 .vrbo-v2-phone__feed.is-live {
@@ -3291,19 +3390,36 @@ body:has(.vrbo-v2-device--phone.is-framed),
   box-shadow: none;
 }
 
+.vrbo-v2-phone__msg-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: flex-start;
+  max-width: 86%;
+  width: fit-content;
+  min-width: 0;
+}
+
+.vrbo-v2-phone__msg-wrap.is-self {
+  align-items: flex-end;
+  align-self: flex-end;
+  max-width: 82%;
+  margin-left: auto;
+}
+
 .vrbo-v2-phone__msg {
   display: flex;
   align-items: flex-start;
   gap: calc(16 / var(--phone-w) * 100cqw);
   align-self: flex-start;
-  max-width: 86%;
+  max-width: 100%;
   width: fit-content;
 }
 
 .vrbo-v2-phone__msg.is-self {
   align-self: flex-end;
   flex-direction: row;
-  max-width: 82%;
+  max-width: 100%;
 }
 
 .vrbo-v2-phone__property.is-self {

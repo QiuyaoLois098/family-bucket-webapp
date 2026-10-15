@@ -3,14 +3,15 @@ import { AnimatePresence, motion } from "framer-motion";
 import chatScript from "../../data/vrbo-v2/chatScript.json";
 import copy from "../../data/vrbo-v2/copy.json";
 import users from "../../data/vrbo-v2/users.json";
+import { createEnterTracker } from "./chatMotion.js";
 import PreferenceCard from "./PreferenceCard.jsx";
 import PropertyCard from "./PropertyCard.jsx";
 
 const panelMotion = {
-  initial: { opacity: 0, y: 16 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -12 },
-  transition: { duration: 0.32, ease: "easeOut" },
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
+  transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
 };
 
 const guests = users.filter((user) => user.role === "guest");
@@ -145,14 +146,18 @@ function MessageFeed({
   afterMessages = null,
 }) {
   const feedRef = useRef(null);
+  const enterRef = useRef(null);
+  if (enterRef.current == null) enterRef.current = createEnterTracker();
   const visibleMessages = live
     ? messages ?? []
     : (messages ?? []).filter((message) => message.kind !== "property").slice(-6);
 
+  enterRef.current.prepare(visibleMessages.map((message) => message.id));
+
   useEffect(() => {
     const node = feedRef.current;
     if (!node) return;
-    node.scrollTo({ top: node.scrollHeight, behavior: "smooth" });
+    node.scrollTop = node.scrollHeight;
   }, [messages?.length, typing?.length, live, afterMessages]);
 
   return (
@@ -162,11 +167,15 @@ function MessageFeed({
         if (!author) return null;
         const isSelf = Boolean(selfId && author.id === selfId);
         const entry = propertyLookup?.(message.propertyId);
+        const enter = !message.exiting && enterRef.current.shouldEnter(message.id);
+        const exitClass = message.exiting ? " is-exit" : "";
         if (message.kind === "property" && entry) {
           return (
             <div
               key={message.id}
-              className={`vrbo-v2-phone__property${isSelf ? " is-self" : ""}`}
+              className={`vrbo-v2-phone__property${isSelf ? " is-self" : ""}${
+                enter ? " is-enter" : ""
+              }${exitClass}`}
             >
               <div className={`vrbo-v2-phone__msg${isSelf ? " is-self" : ""}`}>
                 {!isSelf ? <PhoneAvatar user={author} /> : null}
@@ -180,10 +189,19 @@ function MessageFeed({
           );
         }
         return (
-          <PhoneBubble key={message.id} user={author} text={message.text} isSelf={isSelf} />
+          <div
+            key={message.id}
+            className={`vrbo-v2-phone__msg-wrap${isSelf ? " is-self" : ""}${
+              enter ? " is-enter" : ""
+            }${exitClass}`}
+          >
+            <PhoneBubble user={author} text={message.text} isSelf={isSelf} />
+          </div>
         );
       })}
-      {typing?.length ? <p className="vrbo-v2-phone__typing">{copy.phone.idleSubtitle}</p> : null}
+      {typing?.length ? (
+        <p className="vrbo-v2-phone__typing is-enter">{copy.phone.idleSubtitle}</p>
+      ) : null}
       {afterMessages}
     </div>
   );
@@ -248,15 +266,15 @@ export default function GuestPhone({
 
   const max = copy.maxSelections;
   const groupFinished = stage === "summary" || stage === "results";
+  // After join → select chips immediately (never flash the idle message feed
+  // while stage is still "intro" / locked).
   const phase = !joined
     ? canJoin
       ? "join"
       : "closed"
-    : locked
-      ? "idle"
-      : submitted || groupFinished
-        ? "watch"
-        : "select";
+    : submitted || groupFinished
+      ? "watch"
+      : "select";
   const atLimit = selection.length >= max;
   const canSend = selection.length === max;
   const draftLines = selection
@@ -312,17 +330,6 @@ export default function GuestPhone({
           </PhoneHeader>
 
           <AnimatePresence mode="wait" initial={false}>
-            {phase === "idle" ? (
-              <motion.div key="idle" className="vrbo-v2-phone__panel vrbo-v2-phone__panel--chat" {...panelMotion}>
-                <MessageFeed
-                  messages={messages}
-                  typing={typing}
-                  userById={namedUserById}
-                  selfId={user.id}
-                />
-              </motion.div>
-            ) : null}
-
             {phase === "join" || phase === "closed" ? (
               <motion.div key="join" className="vrbo-v2-phone__panel vrbo-v2-phone__panel--join" {...panelMotion}>
                 <div className="vrbo-v2-phone__join">
@@ -374,8 +381,11 @@ export default function GuestPhone({
                           preference={preference}
                           variant="chip"
                           selected={selected}
-                          disabled={!selected && atLimit}
-                          onSelect={() => onToggle(user.id, preference.id)}
+                          disabled={locked || (!selected && atLimit)}
+                          onSelect={() => {
+                            if (locked) return;
+                            onToggle(user.id, preference.id);
+                          }}
                         />
                       );
                     })}

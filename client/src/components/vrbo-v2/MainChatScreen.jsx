@@ -1,15 +1,9 @@
 import { useEffect, useRef } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import chatScript from "../../data/vrbo-v2/chatScript.json";
 import copy from "../../data/vrbo-v2/copy.json";
+import { createEnterTracker } from "./chatMotion.js";
 import Celebration from "./Celebration.jsx";
 import PropertyCard from "./PropertyCard.jsx";
-
-const bubbleMotion = {
-  initial: { opacity: 0, y: 18, scale: 0.94 },
-  animate: { opacity: 1, y: 0, scale: 1 },
-  transition: { type: "spring", stiffness: 420, damping: 32 },
-};
 
 function Avatar({ user, className = "vrbo-v2-chat__avatar" }) {
   if (user?.avatar) {
@@ -37,13 +31,18 @@ export default function MainChatScreen({
   displayNames = {},
 }) {
   const feedRef = useRef(null);
+  const enterRef = useRef(null);
+  if (enterRef.current == null) enterRef.current = createEnterTracker();
+
+  // First list from socket = already-there; later ids fade in once.
+  enterRef.current.prepare((messages ?? []).map((message) => message.id));
+
   const namedUserById = Object.fromEntries(
     Object.entries(userById).map(([id, user]) => {
       const custom = displayNames[id];
       return [id, custom ? { ...user, name: custom } : user];
     }),
   );
-  // Blue header starts with Jamie; guests appear only after they Join.
   const members = Object.values(namedUserById).filter(
     (user) => user.role === "coordinator" || Boolean(joined[user.id]),
   );
@@ -56,7 +55,6 @@ export default function MainChatScreen({
   const anyoneSubmitted = Object.values(submitted).some(Boolean);
   const showPickupFooter = guestsWaiting > 0 && !anyoneSubmitted;
   const plannerLabel = copy.chat.groupPlannerLabel || "Primary planner";
-  // Intro matches reference: list everyone; after joins, show who is in the trip.
   const peopleLine =
     guestsWaiting > 0
       ? chatScript.groupSubtitle
@@ -75,21 +73,9 @@ export default function MainChatScreen({
 
   useEffect(() => {
     const node = feedRef.current;
-    if (!node) return undefined;
-
-    const scrollToBottom = () => {
-      node.scrollTop = node.scrollHeight;
-    };
-
-    // Wait a frame so new bubbles have laid out; avoid ResizeObserver — it
-    // fights framer-motion layout and can leave the feed visually empty.
-    const raf = requestAnimationFrame(scrollToBottom);
-    const timer = window.setTimeout(scrollToBottom, 280);
-
-    return () => {
-      cancelAnimationFrame(raf);
-      window.clearTimeout(timer);
-    };
+    if (!node) return;
+    // Instant pin — never animate scroll (fights paint of new bubbles).
+    node.scrollTop = node.scrollHeight;
   }, [messages.length, typing.length]);
 
   return (
@@ -108,76 +94,61 @@ export default function MainChatScreen({
 
       <div className="vrbo-v2-chat__body">
         <div className="vrbo-v2-chat__feed" ref={feedRef}>
-          <AnimatePresence initial={false}>
-            {messages.map((message) => {
-              const user = namedUserById[message.authorId];
-              if (!user) return null;
-              const entry = propertyLookup?.(message.propertyId);
+          <div className="vrbo-v2-chat__feed-spacer" aria-hidden="true" />
+          {messages.map((message) => {
+            const user = namedUserById[message.authorId];
+            if (!user) return null;
+            const entry = propertyLookup?.(message.propertyId);
+            const enter = !message.exiting && enterRef.current.shouldEnter(message.id);
 
-              return (
-                <motion.div
-                  key={message.id}
-                  {...bubbleMotion}
-                  className={`vrbo-v2-chat__row vrbo-v2-chat__row--${user.role} ${
-                    message.kind === "property" ? "vrbo-v2-chat__row--card" : ""
-                  }`}
-                >
-                  {message.kind === "property" && entry ? (
-                    <div className="vrbo-v2-chat__card">
-                      <PropertyCard property={entry.property} variant="chat" />
-                    </div>
-                  ) : (
-                    <>
-                      <Avatar user={user} />
-                      <div className="vrbo-v2-chat__bubble">
-                        <span className="vrbo-v2-chat__author">{authorLabel(user)}</span>
-                        <p className="vrbo-v2-chat__text">{message.text}</p>
-                      </div>
-                    </>
-                  )}
-                </motion.div>
-              );
-            })}
-
-            {typingUsers.length ? (
-              <motion.div
-                key={`typing-${typingUsers.map((u) => u.id).join("-")}`}
-                {...bubbleMotion}
-                exit={{ opacity: 0, scale: 0.9 }}
-                className="vrbo-v2-chat__typing"
+            return (
+              <div
+                key={message.id}
+                className={`vrbo-v2-chat__row vrbo-v2-chat__row--${user.role}${
+                  message.kind === "property" ? " vrbo-v2-chat__row--card" : ""
+                }${enter ? " is-enter" : ""}${message.exiting ? " is-exit" : ""}`}
               >
-                <div className="vrbo-v2-chat__typing-avatars" aria-hidden="true">
-                  {typingUsers.slice(0, 3).map((user) => (
-                    <Avatar key={user.id} user={user} className="vrbo-v2-chat__typing-avatar" />
-                  ))}
-                </div>
-                <p className="vrbo-v2-chat__bubble vrbo-v2-chat__bubble--typing" aria-hidden="true">
-                  <i />
-                  <i />
-                  <i />
-                </p>
-              </motion.div>
-            ) : null}
-          </AnimatePresence>
+                {message.kind === "property" && entry ? (
+                  <div className="vrbo-v2-chat__card">
+                    <PropertyCard property={entry.property} variant="chat" />
+                  </div>
+                ) : (
+                  <>
+                    <Avatar user={user} />
+                    <div className="vrbo-v2-chat__bubble">
+                      <span className="vrbo-v2-chat__author">{authorLabel(user)}</span>
+                      <p className="vrbo-v2-chat__text">{message.text}</p>
+                    </div>
+                  </>
+                )}
+              </div>
+            );
+          })}
+
+          {typingUsers.length ? (
+            <div key="typing" className="vrbo-v2-chat__typing is-enter">
+              <div className="vrbo-v2-chat__typing-avatars" aria-hidden="true">
+                {typingUsers.slice(0, 3).map((user) => (
+                  <Avatar key={user.id} user={user} className="vrbo-v2-chat__typing-avatar" />
+                ))}
+              </div>
+              <p className="vrbo-v2-chat__bubble vrbo-v2-chat__bubble--typing" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+              </p>
+            </div>
+          ) : null}
         </div>
 
         <div className="vrbo-v2-chat__footer">
-          <AnimatePresence mode="wait" initial={false}>
-            {showPickupFooter ? (
-              <motion.p
-                key="pickup"
-                className="vrbo-v2-chat__footer-text"
-                initial={{ opacity: 1 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.55, ease: "easeOut" }}
-              >
-                Pick up a phone
-                <br />
-                and join the conversation
-              </motion.p>
-            ) : null}
-          </AnimatePresence>
+          {showPickupFooter ? (
+            <p className="vrbo-v2-chat__footer-text">
+              Pick up a phone
+              <br />
+              and join the conversation
+            </p>
+          ) : null}
         </div>
       </div>
     </div>

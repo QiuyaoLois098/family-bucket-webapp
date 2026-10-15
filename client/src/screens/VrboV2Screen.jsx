@@ -246,6 +246,7 @@ function VrboDemo() {
                   allSubmitted={allSubmitted}
                   previewPropertyId={previewPropertyId}
                   selectedPropertyId={selectedPropertyId}
+                  celebrating={celebrating}
                   actions={actions}
                 />
               </div>
@@ -376,6 +377,7 @@ export function VrboRightPage() {
         allSubmitted={allSubmitted}
         previewPropertyId={state.previewPropertyId}
         selectedPropertyId={state.selectedPropertyId}
+        celebrating={state.celebrating}
         actions={actions}
       />
     </ScaledDisplayCanvas>
@@ -396,7 +398,9 @@ export function VrboRightPage() {
       <div className="vrbo-v2-device__stage vrbo-v2-device__stage--display-compare">
         <div className="vrbo-v2-displayFrame">
           {live}
-          <p className="vrbo-v2-displayFrame__caption">Live · search</p>
+          <p className="vrbo-v2-displayFrame__caption">
+            {state.celebrating ? "Finale · locked in" : "Live · search"}
+          </p>
         </div>
         <div className="vrbo-v2-displayFrame">
           <div

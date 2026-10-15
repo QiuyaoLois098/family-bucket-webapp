@@ -12,7 +12,8 @@
   "handoffPause": 900,
   "preference": {
     "typing": 700,
-    "stagger": 1000
+    "stagger": 1000,
+    "introFadeMs": 420
   },
   "finale": {
     "reveal": { "authorId": "jamie", "text": "I might've found the perfect place...", "pause": 300, "typing": 1000 },

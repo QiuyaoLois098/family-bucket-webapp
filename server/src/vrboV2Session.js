@@ -295,26 +295,21 @@ export class VrboV2Session extends EventEmitter {
 
     chatScript.intro.forEach((line) => {
       offset += line.pause ?? 0;
+      // No "..." — message fades in complete; typing ms kept as dwell before handoff.
       this.schedule(() => {
         if (this.state.stage !== "intro") return;
         this.patch({
-          typing: this.state.typing.includes(line.authorId)
-            ? this.state.typing
-            : [...this.state.typing, line.authorId],
-        });
-      }, offset);
-
-      offset += line.typing ?? 0;
-      this.schedule(() => {
-        if (this.state.stage !== "intro") return;
-        this.patch({
-          typing: withoutTyping(this.state.typing, line.authorId),
           messages: [
             ...this.state.messages,
-            this.makeMessage({ authorId: line.authorId, text: line.text }),
+            this.makeMessage({
+              authorId: line.authorId,
+              text: line.text,
+              phase: "intro",
+            }),
           ],
         });
       }, offset);
+      offset += line.typing ?? 0;
     });
 
     offset += Math.max(chatScript.handoffPause ?? 900, 2200);
@@ -364,7 +359,7 @@ export class VrboV2Session extends EventEmitter {
     });
     this.maybeOpenSummary();
 
-    const { typing = 700 } = chatScript.preference;
+    const fadeMs = chatScript.preference?.introFadeMs ?? 420;
     const text = picks
       .map((preferenceId) => {
         const preference = preferenceById.get(preferenceId);
@@ -372,29 +367,42 @@ export class VrboV2Session extends EventEmitter {
       })
       .join("\n");
 
-    this.schedule(() => {
-      if (this.state.submitted[userId] == null) return;
-      this.patch({
-        typing: this.state.typing.includes(userId)
-          ? this.state.typing
-          : [...this.state.typing, userId],
-      });
-    }, 0);
+    const hasIntro = this.state.messages.some((message) => message.phase === "intro");
 
-    this.schedule(() => {
+    const revealPreference = () => {
       if (this.state.submitted[userId] == null) return;
+      const rest = this.state.messages.filter(
+        (message) => message.phase !== "intro" && !message.exiting,
+      );
       this.patch({
         typing: withoutTyping(this.state.typing, userId),
         messages: [
-          ...this.state.messages,
           this.makeMessage({
             authorId: userId,
             text,
             preferenceIds: picks,
+            phase: "preference",
           }),
+          ...rest,
         ],
       });
-    }, typing);
+    };
+
+    if (hasIntro) {
+      // Fade Jamie's intro, then show message — no "..." typing in between.
+      this.schedule(() => {
+        if (this.state.submitted[userId] == null) return;
+        this.patch({
+          messages: this.state.messages.map((message) =>
+            message.phase === "intro" ? { ...message, exiting: true } : message,
+          ),
+        });
+      }, 0);
+      this.schedule(revealPreference, fadeMs);
+    } else {
+      // Later submitters: message fades in immediately.
+      this.schedule(revealPreference, 0);
+    }
   }
 
   maybeOpenSummary() {
@@ -405,7 +413,8 @@ export class VrboV2Session extends EventEmitter {
       joinedUsers.every((user) => Boolean(this.state.submitted[user.id]));
     if (!allSubmitted) return;
 
-    const settle = (chatScript.preference.typing ?? 700) + (chatScript.preference.stagger ?? 800);
+    const settle =
+      (chatScript.preference?.introFadeMs ?? 420) + (chatScript.preference.stagger ?? 800);
     this.schedule(() => {
       if (this.state.stage !== "selecting") return;
       const stillJoined = guests.filter((user) => Boolean(this.state.joined[user.id]));
@@ -458,9 +467,12 @@ export class VrboV2Session extends EventEmitter {
     if (!result) return;
 
     this.noteActivity();
+    // Wipe prior preference / intro thread — finale starts from a clean chat.
     this.patch({
       previewPropertyId: propertyId,
       selectedPropertyId: propertyId,
+      messages: [],
+      typing: [],
     });
 
     const finale = chatScript.finale;
@@ -478,27 +490,19 @@ export class VrboV2Session extends EventEmitter {
     };
 
     let offset = finale.reveal.pause ?? 300;
+    // Jamie reveal first (no "...")
     this.schedule(() => {
       this.patch({
-        typing: this.state.typing.includes(finale.reveal.authorId)
-          ? this.state.typing
-          : [...this.state.typing, finale.reveal.authorId],
-      });
-    }, offset);
-
-    offset += finale.reveal.typing ?? 1000;
-    this.schedule(() => {
-      this.patch({
-        typing: withoutTyping(this.state.typing, finale.reveal.authorId),
         messages: [
-          ...this.state.messages,
           this.makeMessage({
             authorId: finale.reveal.authorId,
             text: fillTemplate(finale.reveal.text, vars),
+            phase: "finale",
           }),
         ],
       });
     }, offset);
+    offset += finale.reveal.typing ?? 1000;
 
     offset += finale.propertyPause ?? 700;
     this.schedule(() => {
@@ -509,42 +513,43 @@ export class VrboV2Session extends EventEmitter {
             kind: "property",
             authorId: finale.propertyAuthorId ?? "jamie",
             propertyId,
+            phase: "finale",
           }),
         ],
       });
     }, offset);
 
-    (finale.reactions ?? []).forEach((line) => {
-      if (!isActiveAuthor(line.authorId)) return;
-      offset += line.pause ?? 700;
+    const reactions = (finale.reactions ?? []).filter((line) => isActiveAuthor(line.authorId));
+    if (!reactions.length) {
+      offset += finale.celebrationPause ?? 400;
       this.schedule(() => {
-        this.patch({
-          typing: this.state.typing.includes(line.authorId)
-            ? this.state.typing
-            : [...this.state.typing, line.authorId],
-        });
+        this.touch();
+        this.patch({ celebrating: true });
       }, offset);
-      offset += line.typing ?? 700;
-      this.schedule(() => {
-        this.patch({
-          typing: withoutTyping(this.state.typing, line.authorId),
-          messages: [
-            ...this.state.messages,
-            this.makeMessage({
-              authorId: line.authorId,
-              text: fillTemplate(line.text, vars),
-            }),
-          ],
-        });
-      }, offset);
-    });
-
-    offset += finale.celebrationPause ?? 400;
-    this.schedule(() => {
-      // Start the 30s celebration idle clock when the finale lands.
-      this.touch();
-      this.patch({ celebrating: true });
-    }, offset);
+    } else {
+      reactions.forEach((line, index) => {
+        offset += line.pause ?? 700;
+        const isLast = index === reactions.length - 1;
+        // Celebration: no "..." — full message fades in.
+        // On the last SMS, flip right display to locked-in art.
+        this.schedule(() => {
+          this.patch({
+            typing: [],
+            messages: [
+              ...this.state.messages,
+              this.makeMessage({
+                authorId: line.authorId,
+                text: fillTemplate(line.text, vars),
+                phase: "finale",
+              }),
+            ],
+            ...(isLast ? { celebrating: true } : {}),
+          });
+          if (isLast) this.touch();
+        }, offset);
+        if (!isLast) offset += line.typing ?? 700;
+      });
+    }
   }
 
   /**

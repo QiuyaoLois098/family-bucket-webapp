@@ -1,20 +1,12 @@
-import { AnimatePresence, motion } from "framer-motion";
 import copy from "../../data/vrbo-v2/copy.json";
 import { StayShowcase } from "./StayViews.jsx";
 
-const panelMotion = {
-  initial: { opacity: 0, y: 24 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -18 },
-  transition: { duration: 0.42, ease: "easeOut" },
-};
+const FINALE_LOCKED_SRC = "/images/Vrbo-Images/example/vrbo-r/4.png";
 
 function WaitingPanel({ ready }) {
   return (
-    <motion.div
-      key={ready ? "loading" : "waiting"}
-      className={`vrbo-v2-rank__panel vrbo-v2-rank__panel--hero ${ready ? "is-loading" : ""}`}
-      {...panelMotion}
+    <div
+      className={`vrbo-v2-rank__panel vrbo-v2-rank__panel--hero ${ready ? "is-loading" : ""} vrbo-v2-rank__panel--enter`}
     >
       {ready ? (
         <div className="vrbo-v2-rank__hero-loading">
@@ -41,17 +33,13 @@ function WaitingPanel({ ready }) {
           </div>
         </>
       )}
-    </motion.div>
+    </div>
   );
 }
 
 export function SummaryPanel({ summaryText, onSearch, compact = false }) {
   return (
-    <motion.div
-      key="summary"
-      className={`vrbo-v2-summary ${compact ? "vrbo-v2-summary--compact" : ""}`}
-      {...panelMotion}
-    >
+    <div className={`vrbo-v2-summary ${compact ? "vrbo-v2-summary--compact" : ""} vrbo-v2-rank__panel--enter`}>
       <header className="vrbo-v2-summary__masthead">
         <img
           className="vrbo-v2-summary__brand"
@@ -83,7 +71,7 @@ export function SummaryPanel({ summaryText, onSearch, compact = false }) {
           {copy.summary.search}
         </button>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -95,11 +83,7 @@ function ResultsPanel({
   actions,
 }) {
   return (
-    <motion.div
-      key="results"
-      className="vrbo-v2-rank__panel vrbo-v2-rank__panel--light vrbo-v2-rank__panel--showcase"
-      {...panelMotion}
-    >
+    <div className="vrbo-v2-rank__panel vrbo-v2-rank__panel--light vrbo-v2-rank__panel--showcase vrbo-v2-rank__panel--enter-up">
       <StayShowcase
         results={results}
         priorities={priorities}
@@ -108,7 +92,20 @@ function ResultsPanel({
         onPreview={actions.previewProperty}
         onShare={actions.selectProperty}
       />
-    </motion.div>
+    </div>
+  );
+}
+
+function FinaleLockedPanel() {
+  return (
+    <div className="vrbo-v2-rank__finale vrbo-v2-rank__panel--enter" aria-label="Trip locked in">
+      <img
+        className="vrbo-v2-rank__finale-img"
+        src={FINALE_LOCKED_SRC}
+        alt="Hawaii Trip 2027 locked in"
+        draggable={false}
+      />
+    </div>
   );
 }
 
@@ -120,30 +117,37 @@ export default function RankingScreen({
   allSubmitted,
   previewPropertyId,
   selectedPropertyId,
+  celebrating = false,
   actions,
 }) {
+  if (celebrating) {
+    return (
+      <div className="vrbo-v2-rank vrbo-v2-rank--finale">
+        <FinaleLockedPanel />
+      </div>
+    );
+  }
+
   return (
     <div className="vrbo-v2-rank">
-      <AnimatePresence mode="wait" initial={false}>
-        {stage === "intro" || stage === "selecting" ? (
-          <WaitingPanel key={allSubmitted ? "loading" : "waiting"} ready={allSubmitted} />
-        ) : null}
+      {stage === "intro" || stage === "selecting" ? (
+        <WaitingPanel key={allSubmitted ? "loading" : "waiting"} ready={allSubmitted} />
+      ) : null}
 
-        {stage === "summary" ? (
-          <SummaryPanel key="summary" summaryText={summaryText} onSearch={actions.searchStays} />
-        ) : null}
+      {stage === "summary" ? (
+        <SummaryPanel key="summary" summaryText={summaryText} onSearch={actions.searchStays} />
+      ) : null}
 
-        {stage === "results" ? (
-          <ResultsPanel
-            key="results"
-            results={results}
-            priorities={priorities}
-            previewPropertyId={previewPropertyId}
-            selectedPropertyId={selectedPropertyId}
-            actions={actions}
-          />
-        ) : null}
-      </AnimatePresence>
+      {stage === "results" ? (
+        <ResultsPanel
+          key="results"
+          results={results}
+          priorities={priorities}
+          previewPropertyId={previewPropertyId}
+          selectedPropertyId={selectedPropertyId}
+          actions={actions}
+        />
+      ) : null}
     </div>
   );
 }
