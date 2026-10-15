@@ -2922,13 +2922,15 @@ body:has(.vrbo-v2-device--phone.is-framed),
   gap: 0;
   min-height: 0;
   margin-top: 0;
-  padding: calc(12 / var(--phone-h) * 100cqh) calc(48 / var(--phone-w) * 100cqw) calc(40 / var(--phone-h) * 100cqh);
+  padding: calc(20 / var(--phone-h) * 100cqh) calc(48 / var(--phone-w) * 100cqw) calc(56 / var(--phone-h) * 100cqh);
   background: #ffffff;
 }
 
 .vrbo-v2-phone__panel--select .vrbo-v2-phone__composer {
   flex: 0 0 auto;
   justify-content: flex-start;
+  /* Space above home indicator */
+  padding-bottom: calc(72 / var(--phone-h) * 100cqh);
 }
 
 .vrbo-v2-phone__draft-label {
@@ -2989,26 +2991,29 @@ body:has(.vrbo-v2-device--phone.is-framed),
   position: relative;
   flex: 1;
   min-width: 0;
-  min-height: calc(220 / var(--phone-h) * 100cqh);
+  min-height: calc(280 / var(--phone-h) * 100cqh);
   max-height: none;
   overflow: visible;
-  padding: calc(36 / var(--phone-h) * 100cqh) calc(36 / var(--phone-w) * 100cqw);
-  border: calc(2 / var(--phone-h) * 100cqh) solid rgba(32, 32, 32, 0.12);
-  border-radius: calc(36 / var(--phone-h) * 100cqh);
+  box-sizing: border-box;
+  padding: calc(40 / var(--phone-h) * 100cqh) calc(40 / var(--phone-w) * 100cqw);
+  border: calc(2 / var(--phone-h) * 100cqh) solid rgba(32, 32, 32, 0.14);
+  border-radius: calc(44 / var(--phone-h) * 100cqh);
   background: #ffffff;
   color: rgba(32, 32, 32, 0.4);
   font-family: var(--vrbo-v2-content);
-  font-size: calc(40 / var(--phone-h) * 100cqh);
-  line-height: 1.35;
+  /* 34px @ 2274 phone height */
+  font-size: calc(34 / var(--phone-h) * 100cqh);
+  font-weight: 400;
+  line-height: 1.4;
 }
 
 .vrbo-v2-phone__panel--select .vrbo-v2-phone__composer-field {
-  padding-right: calc(120 / var(--phone-w) * 100cqw);
-  padding-bottom: calc(100 / var(--phone-h) * 100cqh);
+  padding-right: calc(140 / var(--phone-w) * 100cqw);
+  padding-bottom: calc(120 / var(--phone-h) * 100cqh);
 }
 
 .vrbo-v2-phone__composer-field.is-filled {
-  color: var(--charcoal);
+  color: #202020;
   background: #ffffff;
 }
 
@@ -3020,13 +3025,13 @@ body:has(.vrbo-v2-device--phone.is-framed),
   flex: 0 0 auto;
   display: grid;
   place-items: center;
-  width: calc(88 / var(--phone-h) * 100cqh);
-  height: calc(88 / var(--phone-h) * 100cqh);
+  width: calc(96 / var(--phone-h) * 100cqh);
+  height: calc(96 / var(--phone-h) * 100cqh);
   border: 0;
   border-radius: 50%;
   background: var(--blue);
   color: #ffffff;
-  font-size: calc(40 / var(--phone-h) * 100cqh);
+  font-size: calc(44 / var(--phone-h) * 100cqh);
   font-weight: 700;
   line-height: 1;
   cursor: pointer;
@@ -3034,8 +3039,8 @@ body:has(.vrbo-v2-device--phone.is-framed),
 
 .vrbo-v2-phone__panel--select .vrbo-v2-phone__composer-send {
   position: absolute;
-  right: calc(24 / var(--phone-w) * 100cqw);
-  bottom: calc(24 / var(--phone-h) * 100cqh);
+  right: calc(28 / var(--phone-w) * 100cqw);
+  bottom: calc(28 / var(--phone-h) * 100cqh);
 }
 
 .vrbo-v2-phone__composer-send:disabled {
