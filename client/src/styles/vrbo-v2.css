@@ -1214,7 +1214,7 @@
   --design-w: 2160;
   --design-h: 3840;
   /* Hero height in design px @ 3840 — change this number to resize the image band */
-  --sc-hero-h: 1243.76;
+  --sc-hero-h: 1230;
   --sc-blue: #0f51ec;
   --sc-cream: #f9f6f2;
   --sc-ink: #1a1a1a;
@@ -1308,7 +1308,7 @@
   flex-direction: column;
   gap: 2.8cqh;
   min-height: 0;
-  padding: 3.2cqh var(--sc-pad) 2.2cqh;
+  padding: 2.6cqh var(--sc-pad) 2.2cqh;
   background: #ffffff;
   overflow: hidden;
 }
@@ -1316,7 +1316,7 @@
 .vrbo-v2-showcase__heading {
   display: flex;
   flex-direction: column;
-  gap: 0.85cqh;
+  gap: 0.5cqh;
   min-width: 0;
   flex: 0 0 auto;
 }
@@ -1325,8 +1325,8 @@
   margin: 0;
   font-family: var(--sc-ui);
   /* ~120px @ 3840 */
-  font-size: calc(120 / var(--design-h) * 100cqh);
-  font-weight: 700;
+  font-size: calc(112 / var(--design-h) * 100cqh);
+  font-weight: 500;
   line-height: 1.05;
   letter-spacing: -0.025em;
   color: var(--sc-ink);
@@ -1336,7 +1336,7 @@
   margin: 0;
   font-family: var(--sc-ui);
   /* ~56px @ 3840 */
-  font-size: calc(56 / var(--design-h) * 100cqh);
+  font-size: calc(72 / var(--design-h) * 100cqh);
   font-weight: 400;
   line-height: 1.25;
   color: var(--sc-muted);

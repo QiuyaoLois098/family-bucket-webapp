@@ -1,6 +1,8 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import HyperionDevOverlay from "./components/HyperionDevOverlay.jsx";
 import ProjectMenu from "./components/ProjectMenu.jsx";
+/* TEMP — delete DebugHeightGuide import + <DebugHeightGuide /> when done */
+import DebugHeightGuide from "./debug/DebugHeightGuide.jsx";
 import ControlScreen from "./screens/ControlScreen.jsx";
 import DisplayScreen from "./screens/DisplayScreen.jsx";
 import ExpediaBaScreen from "./screens/ExpediaBaScreen.jsx";
@@ -38,6 +40,8 @@ export default function App() {
     <>
       <ProjectMenu hideOnPaths={DEVICE_PATHS} />
       <HyperionDevOverlay heartbeat={heartbeat} />
+      {/* TEMP — delete with ./debug/DebugHeightGuide.jsx */}
+      <DebugHeightGuide />
       <Routes>
         <Route path="/" element={<PreviewScreen />} />
         <Route path="/expedia-left" element={<ExpediaLeftPage />} />
