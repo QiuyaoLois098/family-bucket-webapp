@@ -99,7 +99,7 @@
     "joinAvatarLabel": "Your avatar",
     "groupCount": "Your group · {count} people",
     "promptTitle": "What matters to you? Choose three.",
-    "selectedReview": "{count} of {max} selected · Review your messages below",
+    "selectedReview": "{count} of {max} selected",
     "draftLabel": " / Draft · not sent",
     "draftStatus": "Draft · not sent",
     "composerPlaceholder": "Tap chips to draft your messages",

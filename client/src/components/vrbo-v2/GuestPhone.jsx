@@ -73,9 +73,14 @@ function WaitingPills({ guestList, joinedMap, displayNames }) {
 /** Same pill row as join Waiting… — used for joined members in chat phases. */
 function MemberPills({ members, selfId }) {
   if (!members.length) return null;
+  const ordered = [...members].sort((a, b) => {
+    if (a.id === selfId) return -1;
+    if (b.id === selfId) return 1;
+    return 0;
+  });
   return (
     <div className="vrbo-v2-phone__waiting" aria-label="People in this trip">
-      {members.map((member) => {
+      {ordered.map((member) => {
         const isYou = member.id === selfId;
         return (
           <span
@@ -256,8 +261,6 @@ export default function GuestPhone({
       ),
     [userById, displayNames],
   );
-  const selfUser = resolveUser(user, displayNames);
-
   const chipMembers = Object.values(namedUserById).filter(
     (member) => member.role === "coordinator" || Boolean(joinedMap[member.id]),
   );
@@ -371,11 +374,6 @@ export default function GuestPhone({
                 </div>
 
                 <div className={`vrbo-v2-phone__composer ${draftLines.length ? "has-draft" : ""}`}>
-                  <p className="vrbo-v2-phone__draft-label">
-                    <strong>{selfUser.name} · You</strong>
-                    <span> / </span>
-                    <strong>{copy.phone.draftStatus}</strong>
-                  </p>
                   <div className="vrbo-v2-phone__composer-row">
                     <div
                       className={`vrbo-v2-phone__composer-field ${
@@ -383,11 +381,9 @@ export default function GuestPhone({
                       }`}
                     >
                       {draftLines.length ? (
-                        draftLines.map((line) => (
-                          <p key={line.id} className="vrbo-v2-phone__draft-line">
-                            {line.text}
-                          </p>
-                        ))
+                        <p className="vrbo-v2-phone__draft-line">
+                          {draftLines.map((line) => line.text).join(" ")}
+                        </p>
                       ) : (
                         <span>{copy.phone.composerPlaceholder}</span>
                       )}
