@@ -170,7 +170,6 @@ function VrboDemo() {
       joined={Boolean(joined[user.id])}
       joinedMap={joined}
       displayNames={displayNames}
-      locked={stage === "intro"}
       canJoin={stage === "intro" || stage === "selecting"}
       stage={stage}
       groupReady={allSubmitted}
@@ -467,7 +466,6 @@ export function GuestPhonePage({ guestId }) {
       joined={Boolean(joined[guest.id])}
       joinedMap={joined}
       displayNames={displayNames}
-      locked={stage === "intro"}
       canJoin={stage === "intro" || stage === "selecting"}
       stage={stage}
       messages={messages}

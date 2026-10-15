@@ -2698,10 +2698,6 @@ body:has(.vrbo-v2-device--phone.is-framed),
   max-height: 100dvh;
 }
 
-.vrbo-v2-displayHd--finale {
-  animation: vrbo-panel-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
 /* Must follow .vrbo-v2-device__stage so grid/flex overrides win (same specificity). */
 .vrbo-v2-device__stage--display-compare {
   --display-gap: clamp(20px, 2.4vw, 36px);
@@ -3025,6 +3021,10 @@ body:has(.vrbo-v2-device--phone.is-framed),
   flex-direction: column;
   flex: 1;
   min-height: 0;
+}
+
+.vrbo-v2-phone__panel--enter {
+  animation: vrbo-panel-enter 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .vrbo-v2-phone__panel--chat {
@@ -3783,60 +3783,6 @@ body:has(.vrbo-v2-device--phone.is-framed),
   color: rgba(32, 32, 32, 0.55);
 }
 
-.vrbo-v2-phone__check {
-  display: grid;
-  place-items: center;
-  width: calc(227 / var(--phone-h) * 100cqh);
-  height: calc(227 / var(--phone-h) * 100cqh);
-  border-radius: 50%;
-  background: var(--blue);
-  color: #ffffff;
-  font-size: calc(102 / var(--phone-h) * 100cqh);
-  animation: vrbo-v2-pop 0.5s ease;
-}
-
-@keyframes vrbo-v2-pop {
-  from {
-    transform: scale(0.4);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.vrbo-v2-phone__picks {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: calc(23 / var(--phone-h) * 100cqh);
-  width: 100%;
-  margin: calc(14 / var(--phone-h) * 100cqh) 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.vrbo-v2-phone__picks li {
-  display: flex;
-  align-items: center;
-  gap: calc(21 / var(--phone-w) * 100cqw);
-  padding: calc(34 / var(--phone-h) * 100cqh) calc(32 / var(--phone-w) * 100cqw);
-  border-radius: calc(999 / var(--phone-h) * 100cqh);
-  background: #dce8ff;
-  color: var(--blue);
-  font-size: calc(48 / var(--phone-h) * 100cqh);
-  font-weight: 500;
-  text-align: left;
-}
-
-.vrbo-v2-phone__waiting {
-  font-size: calc(41 / var(--phone-h) * 100cqh);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(32, 32, 32, 0.45);
-}
-
 /* ---------- celebration ---------- */
 
 .vrbo-v2-confetti {
@@ -3852,7 +3798,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
   top: -8%;
   border-radius: calc(var(--u) * 2);
   opacity: 0;
-  animation-name: vrbo-fall;
+  animation-name: vrbo-v2-fall;
   animation-timing-function: cubic-bezier(0.3, 0.1, 0.4, 1);
   animation-iteration-count: 3;
 }

@@ -1,18 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import chatScript from "../../data/vrbo-v2/chatScript.json";
 import copy from "../../data/vrbo-v2/copy.json";
 import users from "../../data/vrbo-v2/users.json";
 import { createEnterTracker } from "./chatMotion.js";
 import PreferenceCard from "./PreferenceCard.jsx";
 import PropertyCard from "./PropertyCard.jsx";
-
-const panelMotion = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-  exit: { opacity: 0 },
-  transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
-};
 
 const guests = users.filter((user) => user.role === "guest");
 
@@ -239,7 +231,6 @@ export default function GuestPhone({
   joined,
   joinedMap = {},
   displayNames = {},
-  locked,
   canJoin,
   stage,
   messages,
@@ -266,8 +257,7 @@ export default function GuestPhone({
 
   const max = copy.maxSelections;
   const groupFinished = stage === "summary" || stage === "results";
-  // After join → select chips immediately (never flash the idle message feed
-  // while stage is still "intro" / locked).
+  // After join → select chips immediately (never flash the idle message feed).
   const phase = !joined
     ? canJoin
       ? "join"
@@ -329,123 +319,127 @@ export default function GuestPhone({
             ) : null}
           </PhoneHeader>
 
-          <AnimatePresence mode="wait" initial={false}>
-            {phase === "join" || phase === "closed" ? (
-              <motion.div key="join" className="vrbo-v2-phone__panel vrbo-v2-phone__panel--join" {...panelMotion}>
-                <div className="vrbo-v2-phone__join">
-                  <div className="vrbo-v2-phone__join-avatar-wrap">
-                    <PhoneAvatar user={user} className="vrbo-v2-phone__join-avatar" />
-                    <span className="vrbo-v2-phone__join-avatar-label">{copy.phone.joinAvatarLabel}</span>
-                  </div>
-                  <h4>{copy.phone.joinTitle}</h4>
-                  <p>{phase === "closed" ? copy.phone.joinClosed : copy.phone.joinBody}</p>
-                  {phase === "join" ? (
-                    <>
-                      <label className="vrbo-v2-phone__join-field">
-                        <span className="visually-hidden">{user.name}</span>
-                        <input
-                          type="text"
-                          value={draftName}
-                          placeholder={copy.phone.joinPlaceholder}
-                          autoComplete="nickname"
-                          maxLength={24}
-                          onChange={(event) => setDraftName(event.target.value)}
-                          onKeyDown={(event) => {
-                            if (event.key === "Enter") handleContinue();
-                          }}
-                        />
-                      </label>
-                      <button
-                        type="button"
-                        className="vrbo-v2-btn vrbo-v2-phone__join-cta"
-                        onClick={handleContinue}
-                      >
-                        {copy.phone.joinCta}
-                      </button>
-                    </>
-                  ) : null}
+          {phase === "join" || phase === "closed" ? (
+            <div
+              key="join"
+              className="vrbo-v2-phone__panel vrbo-v2-phone__panel--join vrbo-v2-phone__panel--enter"
+            >
+              <div className="vrbo-v2-phone__join">
+                <div className="vrbo-v2-phone__join-avatar-wrap">
+                  <PhoneAvatar user={user} className="vrbo-v2-phone__join-avatar" />
+                  <span className="vrbo-v2-phone__join-avatar-label">{copy.phone.joinAvatarLabel}</span>
                 </div>
-              </motion.div>
-            ) : null}
+                <h4>{copy.phone.joinTitle}</h4>
+                <p>{phase === "closed" ? copy.phone.joinClosed : copy.phone.joinBody}</p>
+                {phase === "join" ? (
+                  <>
+                    <label className="vrbo-v2-phone__join-field">
+                      <span className="visually-hidden">{user.name}</span>
+                      <input
+                        type="text"
+                        value={draftName}
+                        placeholder={copy.phone.joinPlaceholder}
+                        autoComplete="nickname"
+                        maxLength={24}
+                        onChange={(event) => setDraftName(event.target.value)}
+                        onKeyDown={(event) => {
+                          if (event.key === "Enter") handleContinue();
+                        }}
+                      />
+                    </label>
+                    <button
+                      type="button"
+                      className="vrbo-v2-btn vrbo-v2-phone__join-cta"
+                      onClick={handleContinue}
+                    >
+                      {copy.phone.joinCta}
+                    </button>
+                  </>
+                ) : null}
+              </div>
+            </div>
+          ) : null}
 
-            {phase === "select" ? (
-              <motion.div key="select" className="vrbo-v2-phone__panel vrbo-v2-phone__panel--select" {...panelMotion}>
-                <div className="vrbo-v2-phone__prompt">
-                  <p className="vrbo-v2-phone__prompt-title">{copy.phone.promptTitle}</p>
-                  <div className="vrbo-v2-phone__chips">
-                    {preferences.map((preference) => {
-                      const selected = selection.includes(preference.id);
-                      return (
+          {phase === "select" ? (
+            <div
+              key="select"
+              className="vrbo-v2-phone__panel vrbo-v2-phone__panel--select vrbo-v2-phone__panel--enter"
+            >
+              <div className="vrbo-v2-phone__prompt">
+                <p className="vrbo-v2-phone__prompt-title">{copy.phone.promptTitle}</p>
+                <div className="vrbo-v2-phone__chips">
+                  {preferences.map((preference) => {
+                    const selected = selection.includes(preference.id);
+                    return (
                         <PreferenceCard
                           key={preference.id}
                           preference={preference}
                           variant="chip"
                           selected={selected}
-                          disabled={locked || (!selected && atLimit)}
-                          onSelect={() => {
-                            if (locked) return;
-                            onToggle(user.id, preference.id);
-                          }}
+                          disabled={!selected && atLimit}
+                          onSelect={() => onToggle(user.id, preference.id)}
                         />
-                      );
-                    })}
-                  </div>
-                  <p className="vrbo-v2-phone__selected-hint">
-                    {fill(copy.phone.selectedReview, {
-                      count: draftLines.length,
-                      max,
-                    })}
-                  </p>
+                    );
+                  })}
                 </div>
+                <p className="vrbo-v2-phone__selected-hint">
+                  {fill(copy.phone.selectedReview, {
+                    count: draftLines.length,
+                    max,
+                  })}
+                </p>
+              </div>
 
-                <div className={`vrbo-v2-phone__composer ${draftLines.length ? "has-draft" : ""}`}>
-                  <div className="vrbo-v2-phone__composer-row">
-                    <div
-                      className={`vrbo-v2-phone__composer-field ${
-                        draftLines.length ? "is-filled" : ""
-                      }`}
+              <div className={`vrbo-v2-phone__composer ${draftLines.length ? "has-draft" : ""}`}>
+                <div className="vrbo-v2-phone__composer-row">
+                  <div
+                    className={`vrbo-v2-phone__composer-field ${
+                      draftLines.length ? "is-filled" : ""
+                    }`}
+                  >
+                    {draftLines.length ? (
+                      <p className="vrbo-v2-phone__draft-line">
+                        {draftLines.map((line) => line.text).join(" ")}
+                      </p>
+                    ) : (
+                      <span>{copy.phone.composerPlaceholder}</span>
+                    )}
+                    <button
+                      type="button"
+                      className="vrbo-v2-phone__composer-send"
+                      disabled={!canSend}
+                      aria-label={canSend ? copy.phone.submit : copy.phone.submitLocked}
+                      onClick={() => onSubmit(user.id)}
                     >
-                      {draftLines.length ? (
-                        <p className="vrbo-v2-phone__draft-line">
-                          {draftLines.map((line) => line.text).join(" ")}
-                        </p>
-                      ) : (
-                        <span>{copy.phone.composerPlaceholder}</span>
-                      )}
-                      <button
-                        type="button"
-                        className="vrbo-v2-phone__composer-send"
-                        disabled={!canSend}
-                        aria-label={canSend ? copy.phone.submit : copy.phone.submitLocked}
-                        onClick={() => onSubmit(user.id)}
-                      >
-                        ↑
-                      </button>
-                    </div>
+                      ↑
+                    </button>
                   </div>
                 </div>
-              </motion.div>
-            ) : null}
+              </div>
+            </div>
+          ) : null}
 
-            {phase === "watch" ? (
-              <motion.div key="watch" className="vrbo-v2-phone__panel vrbo-v2-phone__panel--chat" {...panelMotion}>
-                <MessageFeed
-                  messages={messages}
-                  typing={typing}
-                  userById={namedUserById}
-                  propertyLookup={propertyLookup}
-                  selfId={user.id}
-                  live
-                  afterMessages={
-                    selectedPropertyId ? null : (
-                      <p className="vrbo-v2-phone__continue">{copy.phone.continueCta}</p>
-                    )
-                  }
-                />
-                <ReadonlyComposer />
-              </motion.div>
-            ) : null}
-          </AnimatePresence>
+          {phase === "watch" ? (
+            <div
+              key="watch"
+              className="vrbo-v2-phone__panel vrbo-v2-phone__panel--chat vrbo-v2-phone__panel--enter"
+            >
+              <MessageFeed
+                messages={messages}
+                typing={typing}
+                userById={namedUserById}
+                propertyLookup={propertyLookup}
+                selfId={user.id}
+                live
+                afterMessages={
+                  selectedPropertyId ? null : (
+                    <p className="vrbo-v2-phone__continue">{copy.phone.continueCta}</p>
+                  )
+                }
+              />
+              <ReadonlyComposer />
+            </div>
+          ) : null}
         </div>
   );
 
