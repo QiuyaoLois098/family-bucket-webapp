@@ -757,25 +757,31 @@
 .vrbo-v2-summary__masthead {
   flex: 0 0 var(--display-masthead-height);
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
+  justify-content: flex-start;
   height: var(--display-masthead-height);
   min-height: var(--display-masthead-height);
   max-height: var(--display-masthead-height);
-  padding: 3.6cqh 5.5cqw 3.2cqh;
+  /* Match left chat masthead */
+  padding: 3.6cqh 6cqw 3.2cqh;
   background: var(--blue-screen);
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .vrbo-v2-summary__brand {
   display: block;
-  width: 22cqw;
-  height: auto;
+  width: auto;
+  /* Match left chat logo (137.7px @ 3840) */
+  height: calc(137.7 / var(--design-h) * 100cqh);
   margin: 0;
   mix-blend-mode: screen;
 }
 
 .vrbo-v2-summary--compact .vrbo-v2-summary__brand {
-  width: 22cqw;
+  width: auto;
+  height: calc(137.7 / var(--design-h) * 100cqh);
 }
 
 .vrbo-v2-summary__body {
