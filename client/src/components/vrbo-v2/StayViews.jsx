@@ -29,7 +29,6 @@ function GuestRatingBadge({ rating, label }) {
         aria-hidden="true"
       />
       <strong>{rating}</strong>
-      <em>{label}</em>
     </div>
   );
 }
@@ -79,10 +78,12 @@ export function StayShowcase({
     onPreview?.(propertyId);
   }
 
-  const eyebrow = `${padIndex(index)} / ${property.tagline}`;
   const stats = [property.bedrooms, property.sleeps, `${property.nightly} / night`]
     .filter(Boolean)
     .join(" · ");
+  const reviews = property.thumbReviews || copy.ranking.reviewsFallback || "128 reviews";
+  const highlights =
+    property.highlightsText || (property.highlights ?? []).join(", ");
 
   return (
     <div className={`vrbo-v2-showcase${shared ? " is-shared" : ""}`}>
@@ -99,30 +100,26 @@ export function StayShowcase({
       <StayImage property={property} className="vrbo-v2-showcase__hero" />
 
       <div className="vrbo-v2-showcase__body">
-        <div className="vrbo-v2-showcase__title-row">
-          <div className="vrbo-v2-showcase__title-block">
-            <p className="vrbo-v2-showcase__eyebrow">{eyebrow}</p>
-            <h3 className="vrbo-v2-showcase__name">{property.name}</h3>
-            <p className="vrbo-v2-showcase__location">{property.location}</p>
-            <p className="vrbo-v2-showcase__stats">{stats}</p>
-          </div>
-          <GuestRatingBadge
-            rating={property.rating}
-            label={property.ratingLabel || copy.ranking.guestRatingLabel}
-          />
+        <div className="vrbo-v2-showcase__heading">
+          <h3 className="vrbo-v2-showcase__name">{property.name}</h3>
+          <p className="vrbo-v2-showcase__stats">{stats}</p>
         </div>
 
-        <section className="vrbo-v2-showcase__section">
-          <h4>{copy.ranking.highlightsLabel}</h4>
-          <p className="vrbo-v2-showcase__highlights-text">
-            {property.highlightsText || (property.highlights ?? []).join(", ")}
-          </p>
-        </section>
+        <div className="vrbo-v2-showcase__cards">
+          <section className="vrbo-v2-showcase__card vrbo-v2-showcase__card--loved">
+            <h4>{copy.ranking.lovedByGuests || "Loved by Guests"}</h4>
+            <p className="vrbo-v2-showcase__reviews">{reviews}</p>
+            <GuestRatingBadge
+              rating={property.rating}
+              label={property.ratingLabel || copy.ranking.guestRatingLabel}
+            />
+          </section>
 
-        <section className="vrbo-v2-showcase__section vrbo-v2-showcase__section--about">
-          <h4>{copy.ranking.aboutLabel}</h4>
-          <p className="vrbo-v2-showcase__about-text">{property.about}</p>
-        </section>
+          <section className="vrbo-v2-showcase__card vrbo-v2-showcase__card--highlights">
+            <h4>{copy.ranking.highlightsLabel}</h4>
+            <p className="vrbo-v2-showcase__highlights-text">{highlights}</p>
+          </section>
+        </div>
       </div>
 
       <div className="vrbo-v2-showcase__thumbs" role="listbox" aria-label="Stays">
@@ -142,13 +139,6 @@ export function StayShowcase({
             >
               <StayImage property={thumb} className="vrbo-v2-showcase__thumb-img" />
               <span className="vrbo-v2-showcase__thumb-badge">{padIndex(thumbIndex)}</span>
-              <span className="vrbo-v2-showcase__thumb-meta">
-                <strong>{thumb.name}</strong>
-                <em>
-                  Guest rating {thumb.thumbRating ?? thumb.rating}
-                  {thumb.thumbReviews ? ` - ${thumb.thumbReviews}` : ""}
-                </em>
-              </span>
             </button>
           );
         })}
@@ -164,8 +154,6 @@ export function StayShowcase({
           {shared ? copy.ranking.shared : copy.ranking.share}
         </button>
       </div>
-
-      <p className="vrbo-v2-showcase__disclaimer">{copy.ranking.resultsDisclaimer}</p>
     </div>
   );
 }

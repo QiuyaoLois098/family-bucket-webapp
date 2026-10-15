@@ -1211,13 +1211,17 @@
 }
 
 .vrbo-v2-showcase {
+  --design-w: 2160;
+  --design-h: 3840;
   --sc-blue: #0f51ec;
   --sc-cream: #f9f6f2;
   --sc-ink: #1a1a1a;
-  --sc-muted: #4a4a4a;
-  --sc-display: "Albra Grotesk", "Helvetica Neue", sans-serif;
-  --sc-ui: "Albra Grotesk", "Helvetica Neue", sans-serif;
-  --sc-pad: 4.6cqi;
+  --sc-muted: #6b6b6b;
+  --sc-loved: #e7f0ff;
+  --sc-highlights: #f4efe7;
+  --sc-display: var(--vrbo-v2-sans, "Albra Sans", "Helvetica Neue", sans-serif);
+  --sc-ui: var(--vrbo-v2-content, "Centra No2", "Helvetica Neue", sans-serif);
+  --sc-pad: 6.2cqw;
 
   container-type: size;
   position: absolute;
@@ -1225,13 +1229,12 @@
   display: grid;
   grid-template-rows:
     auto
-    17cqb
-    auto
-    minmax(12.5cqb, 1fr)
+    26cqh
+    minmax(0, 1fr)
     auto
     auto;
   overflow: hidden;
-  background: var(--sc-cream);
+  background: #ffffff;
   color: var(--sc-ink);
 }
 
@@ -1240,11 +1243,12 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 0.45cqb;
+  gap: 1.2cqh;
   height: var(--display-masthead-height);
   min-height: var(--display-masthead-height);
   max-height: var(--display-masthead-height);
-  padding: 2cqh var(--sc-pad) 1.6cqh;
+  /* Match shared left/chat masthead */
+  padding: 3.6cqh 6cqw 3.2cqh;
   background: var(--sc-blue);
   color: #ffffff;
   box-sizing: border-box;
@@ -1253,17 +1257,19 @@
 
 .vrbo-v2-showcase__logo {
   display: block;
-  width: 22cqw;
-  height: auto;
+  width: auto;
+  /* Match shared logo (137.7px @ 3840) */
+  height: calc(137.7 / var(--design-h) * 100cqh);
 }
 
 .vrbo-v2-showcase__headline {
-  margin: 0;
+  /* Match left chat trip title (.vrbo-v2-chat__trip) */
+  margin: 0.55cqh 0 0;
   max-width: none;
-  font-family: var(--sc-ui);
-  font-size: 2.6cqb;
-  font-weight: 400;
-  line-height: 1.15;
+  font-family: var(--vrbo-v2-sans);
+  font-size: 3.1cqh;
+  font-weight: 600;
+  line-height: 1.05;
   letter-spacing: -0.02em;
   color: #ffffff;
   white-space: nowrap;
@@ -1289,42 +1295,88 @@
 .vrbo-v2-showcase__body {
   display: flex;
   flex-direction: column;
-  gap: 1.5cqb;
-  padding: 1.7cqb var(--sc-pad) 1cqb;
+  gap: 2.8cqh;
+  min-height: 0;
+  padding: 3.2cqh var(--sc-pad) 2.2cqh;
+  background: #ffffff;
   overflow: hidden;
 }
 
-.vrbo-v2-showcase__title-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  column-gap: 2.8cqi;
-  align-items: start;
-}
-
-.vrbo-v2-showcase__eyebrow {
-  margin: 0 0 0.35em;
-  font-family: var(--sc-ui);
-  font-size: 1.45cqb;
-  font-weight: 600;
-  color: var(--sc-blue);
+.vrbo-v2-showcase__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85cqh;
+  min-width: 0;
+  flex: 0 0 auto;
 }
 
 .vrbo-v2-showcase__name {
   margin: 0;
-  font-family: var(--sc-display);
-  font-size: 4.2cqb;
-  font-weight: 600;
+  font-family: var(--sc-ui);
+  /* ~120px @ 3840 */
+  font-size: calc(120 / var(--design-h) * 100cqh);
+  font-weight: 700;
   line-height: 1.05;
   letter-spacing: -0.025em;
-  color: var(--sc-blue);
+  color: var(--sc-ink);
 }
 
-.vrbo-v2-showcase__location,
 .vrbo-v2-showcase__stats {
-  margin: 0.4em 0 0;
+  margin: 0;
   font-family: var(--sc-ui);
-  font-size: 1.45cqb;
-  line-height: 1.35;
+  /* ~56px @ 3840 */
+  font-size: calc(56 / var(--design-h) * 100cqh);
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--sc-muted);
+}
+
+.vrbo-v2-showcase__cards {
+  display: grid;
+  grid-template-columns: 0.92fr 1.08fr;
+  gap: 2.4cqw;
+  flex: 1 1 auto;
+  min-height: 0;
+  align-items: stretch;
+}
+
+.vrbo-v2-showcase__card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  padding: 2.4cqh 2.8cqw 2.6cqh;
+  border-radius: 2.6cqw;
+  box-sizing: border-box;
+}
+
+.vrbo-v2-showcase__card h4 {
+  margin: 0;
+  font-family: var(--sc-ui);
+  /* ~60px @ 3840 */
+  font-size: calc(60 / var(--design-h) * 100cqh);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--sc-ink);
+}
+
+.vrbo-v2-showcase__card--loved {
+  align-items: flex-start;
+  background: var(--sc-loved);
+}
+
+.vrbo-v2-showcase__card--highlights {
+  background: var(--sc-highlights);
+}
+
+.vrbo-v2-showcase__reviews {
+  margin: 0.45cqh 0 0;
+  font-family: var(--sc-ui);
+  /* ~44px @ 3840 */
+  font-size: calc(44 / var(--design-h) * 100cqh);
+  font-weight: 400;
+  line-height: 1.2;
   color: var(--sc-muted);
 }
 
@@ -1332,10 +1384,10 @@
   position: relative;
   display: grid;
   place-items: center;
-  width: 18cqi;
-  height: 18cqi;
-  margin-top: 0.1cqb;
-  margin-bottom: 1.15em;
+  /* ~240px @ 3840 — match reference wreath */
+  width: calc(240 / var(--design-h) * 100cqh);
+  height: calc(240 / var(--design-h) * 100cqh);
+  margin: auto 0 0;
   text-align: center;
 }
 
@@ -1347,24 +1399,11 @@
   width: 100%;
   height: 100%;
   margin: 0;
-  font-family: var(--sc-display);
-  font-size: 3cqb;
-  font-weight: 600;
-  line-height: 1;
-  color: var(--sc-blue);
-}
-
-.vrbo-v2-showcase__badge em {
-  position: absolute;
-  top: calc(100% + 0.15em);
-  left: 50%;
-  z-index: 1;
-  transform: translateX(-50%);
   font-family: var(--sc-ui);
-  font-size: 1.05cqb;
-  font-style: normal;
-  font-weight: 600;
-  white-space: nowrap;
+  /* ~108px @ 3840 */
+  font-size: calc(108 / var(--design-h) * 100cqh);
+  font-weight: 700;
+  line-height: 1;
   color: var(--sc-blue);
 }
 
@@ -1378,50 +1417,21 @@
   user-select: none;
 }
 
-.vrbo-v2-showcase__section {
-  min-height: 0;
-}
-
-.vrbo-v2-showcase__section h4 {
-  margin: 0 0 0.35em;
-  font-family: var(--sc-ui);
-  font-size: 1.6cqb;
-  font-weight: 600;
-  color: var(--sc-ink);
-}
-
 .vrbo-v2-showcase__highlights-text {
-  margin: 0;
-  font-family: var(--sc-display);
-  font-size: 2.05cqb;
-  font-weight: 600;
-  line-height: 1.3;
-  color: var(--sc-blue) !important;
-}
-
-.vrbo-v2-showcase__about-text {
-  margin: 0;
+  margin: 1.1cqh 0 0;
   font-family: var(--sc-ui);
-  font-size: 1.4cqb;
+  /* ~52px @ 3840 */
+  font-size: calc(52 / var(--design-h) * 100cqh);
   font-weight: 400;
-  line-height: 1.4;
-  color: rgba(26, 26, 26, 0.88);
-}
-
-.vrbo-v2-showcase__section p {
-  margin: 0;
-  font-family: var(--sc-ui);
-  font-size: clamp(0.62rem, 1.4cqb, 0.78rem);
-  line-height: 1.4;
-  color: rgba(26, 26, 26, 0.88);
+  line-height: 1.32;
+  color: var(--sc-ink);
 }
 
 .vrbo-v2-showcase__thumbs {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2.4cqi;
-  min-height: 0;
-  padding: 0.35cqb var(--sc-pad) 0;
+  gap: 2.4cqw;
+  padding: 0.6cqh var(--sc-pad) 0;
   touch-action: manipulation;
 }
 
@@ -1429,17 +1439,17 @@
   position: relative;
   display: block;
   width: 100%;
-  height: 100%;
-  min-height: 0;
+  aspect-ratio: 3 / 2;
   margin: 0;
   padding: 0;
-  border-radius: 1.3cqi;
+  border-radius: 1.8cqw;
   overflow: hidden;
-  border: 0.23cqi solid transparent;
+  border: 0.45cqw solid transparent;
   background: #d5dbe6;
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
 }
 
 .vrbo-v2-showcase__thumb:disabled {
@@ -1464,94 +1474,50 @@
 
 .vrbo-v2-showcase__thumb-badge {
   position: absolute;
-  top: 0.65cqi;
-  left: 0.65cqi;
+  top: 1.1cqw;
+  left: 1.1cqw;
   z-index: 1;
   display: grid;
   place-items: center;
-  min-width: 5.4cqi;
-  height: 4.4cqi;
-  padding: 0 0.45cqi;
-  border-radius: 0.55cqi;
+  width: calc(72 / var(--design-h) * 100cqh);
+  height: calc(72 / var(--design-h) * 100cqh);
+  border-radius: 50%;
   background: var(--sc-blue);
   color: #ffffff;
   font-family: var(--sc-ui);
-  font-size: 1.25cqb;
+  font-size: calc(34 / var(--design-h) * 100cqh);
   font-weight: 600;
   line-height: 1;
-}
-
-.vrbo-v2-showcase__thumb-meta {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.2cqb;
-  padding: 1.7cqb 0.75cqi 0.65cqb;
-  background: linear-gradient(180deg, transparent 0%, rgba(8, 14, 36, 0.88) 55%);
-  text-align: left;
-  color: #ffffff;
-  pointer-events: none;
-}
-
-.vrbo-v2-showcase__thumb-meta strong {
-  font-family: var(--sc-ui);
-  font-size: 1.2cqb;
-  font-weight: 600;
-  line-height: 1.15;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.vrbo-v2-showcase__thumb-meta em {
-  font-family: var(--sc-ui);
-  font-size: 1cqb;
-  font-style: normal;
-  font-weight: 400;
-  opacity: 0.95;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .vrbo-v2-showcase__actions {
   display: flex;
   flex-direction: column;
-  padding: 1.1cqb var(--sc-pad) 0.35cqb;
+  padding: 2.8cqh var(--sc-pad) 3.6cqh;
+  background: #ffffff;
 }
 
 .vrbo-v2-showcase__share {
   width: 100%;
-  border-radius: calc(var(--u) * 999);
-  padding: 1.35cqb 1.7cqi;
-  font-size: 1.9cqb;
-  line-height: 1.2;
-  cursor: pointer;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
   border: 0;
+  border-radius: 999px;
+  padding: 2.35cqh 2cqw;
   background: var(--sc-blue);
   color: #ffffff;
   font-family: var(--sc-ui);
+  /* ~76px @ 3840 */
+  font-size: calc(76 / var(--design-h) * 100cqh);
   font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .vrbo-v2-showcase__share:disabled {
   opacity: 0.72;
   cursor: default;
-}
-
-.vrbo-v2-showcase__disclaimer {
-  margin: 0;
-  padding: 0.35cqb var(--sc-pad) 1.1cqb;
-  text-align: center;
-  font-family: var(--sc-ui);
-  font-size: 1cqb;
-  color: rgba(26, 26, 26, 0.4);
 }
 
 /* Phone stay picker (unused on Display 2) */
