@@ -2546,20 +2546,20 @@ body:has(.vrbo-v2-device--phone.is-framed),
   /* Two phones side-by-side, same iPhone 15 aspect, fill available space. */
   width: min(
     calc((100vw - var(--iphone15-stage-pad-x) - var(--iphone15-gap)) / 2),
-    calc((100dvh - var(--iphone15-stage-pad-y)) * 393 / 852)
+    calc((100dvh - var(--iphone15-stage-pad-y)) * 1050 / 2274)
   );
   flex: 0 0 auto;
 }
 
 /*
- * iPhone 15 frame scales with available space while locking 393∶852.
+ * iPhone frame scales with available space while locking 1050∶2274 (Figma).
  * Corner radii use cqi (width-based) — plain % makes elliptical “capsule” corners
  * because horizontal % uses width and vertical % uses height.
  * Inner UI uses cqw/cqh against .vrbo-v2-iphone15__screen (container-type: size).
  */
 .vrbo-v2-iphone15 {
-  /* ~55pt corners on 393pt logical width */
-  --iphone15-ar: 393 / 852;
+  /* corners relative to 1050 design width */
+  --iphone15-ar: 1050 / 2274;
   --iphone15-bezel: 2.9%;
   --iphone15-radius: 14cqi;
   --iphone15-screen-radius: 11.5cqi;
@@ -2569,7 +2569,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
   flex-direction: column;
   align-items: center;
   gap: calc(var(--u) * 12);
-  width: min(100%, calc((100dvh - calc(var(--u) * 96)) * 393 / 852));
+  width: min(100%, calc((100dvh - calc(var(--u) * 96)) * 1050 / 2274));
   flex: 0 0 auto;
   max-height: none;
 }
@@ -2649,13 +2649,16 @@ body:has(.vrbo-v2-device--phone.is-framed),
 }
 
 .vrbo-v2-phone__screen {
+  /* Figma phone canvas 1050×2274 — calc(N / var(--phone-h) * 100cqh) or / var(--phone-w) * 100cqw */
+  --phone-w: 1050;
+  --phone-h: 2274;
   container-type: size;
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 100%;
   overflow: hidden;
-  border-radius: calc(var(--u) * 21);
+  border-radius: calc(21 / var(--phone-h) * 100cqh);
   background: #ffffff;
   color: var(--charcoal);
 }
@@ -2667,8 +2670,8 @@ body:has(.vrbo-v2-device--phone.is-framed),
   align-items: center;
   justify-content: center;
   /* Status safe-area under Dynamic Island — pushes header content down */
-  min-height: 4.2cqh;
-  padding: 1.6cqh 4.5cqw 0.25cqh;
+  min-height: calc(96 / var(--phone-h) * 100cqh);
+  padding: calc(36 / var(--phone-h) * 100cqh) calc(47 / var(--phone-w) * 100cqw) calc(6 / var(--phone-h) * 100cqh);
   background: var(--blue);
   color: #ffffff;
 }
@@ -2686,8 +2689,8 @@ body:has(.vrbo-v2-device--phone.is-framed),
   flex: 0 0 auto;
   display: flex;
   align-items: center;
-  gap: 2.4cqw;
-  padding: 0.35cqh 4.5cqw 1.1cqh;
+  gap: calc(25 / var(--phone-w) * 100cqw);
+  padding: calc(8 / var(--phone-h) * 100cqh) calc(47 / var(--phone-w) * 100cqw) calc(25 / var(--phone-h) * 100cqh);
   text-align: left;
   border-bottom: 0;
   background: var(--blue);
@@ -2697,12 +2700,12 @@ body:has(.vrbo-v2-device--phone.is-framed),
 .vrbo-v2-phone__group-avatar {
   display: block;
   flex: 0 0 auto;
-  width: 5.2cqh;
-  height: 5.2cqh;
+  width: calc(118 / var(--phone-h) * 100cqh);
+  height: calc(118 / var(--phone-h) * 100cqh);
   overflow: hidden;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.2);
-  outline: calc(var(--u) * 1.5) solid rgba(255, 255, 255, 0.32);
+  outline: calc(2 / var(--phone-h) * 100cqh) solid rgba(255, 255, 255, 0.32);
 }
 
 .vrbo-v2-phone__group-avatar img,
@@ -2716,7 +2719,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
 .vrbo-v2-phone__trip h3 {
   margin: 0;
   font-family: var(--vrbo-v2-sans);
-  font-size: 3.55cqh;
+  font-size: calc(81 / var(--phone-h) * 100cqh);
   font-weight: 600;
   color: #ffffff;
   line-height: 1.05;
@@ -2724,9 +2727,9 @@ body:has(.vrbo-v2-device--phone.is-framed),
 }
 
 .vrbo-v2-phone__trip p {
-  margin: 0.35cqh 0 0;
+  margin: calc(8 / var(--phone-h) * 100cqh) 0 0;
   font-family: var(--vrbo-v2-content);
-  font-size: 1.5cqh;
+  font-size: calc(34 / var(--phone-h) * 100cqh);
   font-weight: 400;
   color: rgba(255, 255, 255, 0.82);
 }
@@ -2735,9 +2738,9 @@ body:has(.vrbo-v2-device--phone.is-framed),
   flex: 0 0 auto;
   display: flex;
   flex-wrap: nowrap;
-  gap: 1.6cqw;
+  gap: calc(17 / var(--phone-w) * 100cqw);
   overflow-x: auto;
-  padding: 0.7cqh 4.2cqw 1.2cqh;
+  padding: calc(16 / var(--phone-h) * 100cqh) calc(44 / var(--phone-w) * 100cqw) calc(27 / var(--phone-h) * 100cqh);
   border-bottom: 0;
   background: #ffffff;
   scrollbar-width: none;
@@ -2750,11 +2753,11 @@ body:has(.vrbo-v2-device--phone.is-framed),
 .vrbo-v2-phone__member-chip {
   display: inline-flex;
   align-items: center;
-  gap: 1.4cqw;
+  gap: calc(15 / var(--phone-w) * 100cqw);
   flex: 0 0 auto;
-  max-width: 46cqw;
-  padding: 0.4cqh 2.4cqw 0.4cqh 0.9cqw;
-  border-radius: calc(var(--u) * 999);
+  max-width: calc(483 / var(--phone-w) * 100cqw);
+  padding: calc(9 / var(--phone-h) * 100cqh) calc(25 / var(--phone-w) * 100cqw) calc(9 / var(--phone-h) * 100cqh) calc(9 / var(--phone-w) * 100cqw);
+  border-radius: calc(999 / var(--phone-h) * 100cqh);
   background: #f0f2f5;
   color: var(--charcoal);
 }
@@ -2767,8 +2770,8 @@ body:has(.vrbo-v2-device--phone.is-framed),
 .vrbo-v2-phone__member-avatar {
   display: block;
   flex: 0 0 auto;
-  width: 3.2cqh;
-  height: 3.2cqh;
+  width: calc(73 / var(--phone-h) * 100cqh);
+  height: calc(73 / var(--phone-h) * 100cqh);
   overflow: hidden;
   border-radius: 50%;
   background: #ffffff;
@@ -2784,7 +2787,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
 .vrbo-v2-phone__member-chip em {
   font-style: normal;
   font-family: var(--vrbo-v2-content);
-  font-size: 1.45cqh;
+  font-size: calc(33 / var(--phone-h) * 100cqh);
   font-weight: 600;
   line-height: 1;
   white-space: nowrap;
@@ -2796,7 +2799,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: calc(var(--u) * 6);
+  gap: calc(6 / var(--phone-h) * 100cqh);
   flex: 0 0 auto;
   margin: 0;
   font-size: clamp(0.5rem, 0.62vw, 0.62rem);
@@ -2808,8 +2811,8 @@ body:has(.vrbo-v2-device--phone.is-framed),
 .vrbo-v2-phone__planner {
   display: inline-flex;
   align-items: center;
-  padding: calc(var(--u) * 3) calc(var(--u) * 8);
-  border-radius: calc(var(--u) * 999);
+  padding: calc(3 / var(--phone-h) * 100cqh) calc(8 / var(--phone-h) * 100cqh);
+  border-radius: calc(999 / var(--phone-h) * 100cqh);
   background: var(--blue);
   color: #ffffff;
   font-family: var(--vrbo-v2-sans);
@@ -2837,15 +2840,15 @@ body:has(.vrbo-v2-device--phone.is-framed),
 .vrbo-v2-phone__panel--select .vrbo-v2-phone__prompt {
   flex: 0 0 auto;
   min-height: 0;
-  margin: 0 3.6cqw;
-  padding: 1.35cqh 2.6cqw 1.15cqh;
+  margin: 0 calc(38 / var(--phone-w) * 100cqw);
+  padding: calc(31 / var(--phone-h) * 100cqh) calc(27 / var(--phone-w) * 100cqw) calc(26 / var(--phone-h) * 100cqh);
   border: 0;
-  border-radius: calc(var(--u) * 16);
+  border-radius: calc(16 / var(--phone-h) * 100cqh);
   background: #f6f1ea;
   overflow: visible;
   display: flex;
   flex-direction: column;
-  gap: 0.9cqh;
+  gap: calc(20 / var(--phone-h) * 100cqh);
 }
 
 .vrbo-v2-phone__panel--select .vrbo-v2-phone__prompt::-webkit-scrollbar {
@@ -2856,8 +2859,8 @@ body:has(.vrbo-v2-device--phone.is-framed),
   flex: 0 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 0.75cqh;
-  padding: 0.8cqh 3.5cqw 0.6cqh;
+  gap: calc(17 / var(--phone-h) * 100cqh);
+  padding: calc(18 / var(--phone-h) * 100cqh) calc(37 / var(--phone-w) * 100cqw) calc(14 / var(--phone-h) * 100cqh);
   background: #ffffff;
   border-top: 0;
 }
@@ -2866,7 +2869,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
   margin: 0;
   flex: 0 0 auto;
   font-family: var(--vrbo-v2-sans);
-  font-size: 2.25cqh;
+  font-size: calc(51 / var(--phone-h) * 100cqh);
   font-weight: 700;
   line-height: 1.15;
   color: #1b2440;
@@ -2878,14 +2881,14 @@ body:has(.vrbo-v2-device--phone.is-framed),
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-auto-rows: auto;
-  gap: 0.85cqh 1.5cqw;
+  gap: calc(19 / var(--phone-h) * 100cqh) calc(16 / var(--phone-w) * 100cqw);
   overflow: visible;
 }
 
 .vrbo-v2-phone__selected-hint {
   flex: 0 0 auto;
   margin: 0;
-  font-size: 1.45cqh;
+  font-size: calc(33 / var(--phone-h) * 100cqh);
   font-weight: 600;
   color: var(--blue);
   text-align: left;
@@ -2895,10 +2898,10 @@ body:has(.vrbo-v2-device--phone.is-framed),
   flex: 0 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 0.55cqh;
+  gap: calc(13 / var(--phone-h) * 100cqh);
   min-height: 0;
-  margin-top: 0.4cqh;
-  padding: 0.6cqh 3.6cqw 1.4cqh;
+  margin-top: calc(9 / var(--phone-h) * 100cqh);
+  padding: calc(14 / var(--phone-h) * 100cqh) calc(38 / var(--phone-w) * 100cqw) calc(32 / var(--phone-h) * 100cqh);
   background: #ffffff;
 }
 
@@ -2909,7 +2912,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
 
 .vrbo-v2-phone__draft-label {
   margin: 0;
-  font-size: 1.45cqh;
+  font-size: calc(33 / var(--phone-h) * 100cqh);
   font-weight: 500;
   color: var(--blue);
   text-align: right;
@@ -2932,32 +2935,32 @@ body:has(.vrbo-v2-device--phone.is-framed),
 .vrbo-v2-phone__composer.is-readonly {
   opacity: 0.7;
   pointer-events: none;
-  border-top: 1px solid rgba(32, 32, 32, 0.06);
+  border-top: calc(1 / var(--phone-h) * 100cqh) solid rgba(32, 32, 32, 0.06);
 }
 
 .vrbo-v2-phone__composer.is-readonly .vrbo-v2-phone__composer-add {
   display: grid;
   place-items: center;
   flex: 0 0 auto;
-  width: 4.6cqh;
-  height: 4.6cqh;
+  width: calc(105 / var(--phone-h) * 100cqh);
+  height: calc(105 / var(--phone-h) * 100cqh);
   border-radius: 50%;
   background: #e8ebf0;
   color: rgba(32, 32, 32, 0.45);
-  font-size: 2.8cqh;
+  font-size: calc(64 / var(--phone-h) * 100cqh);
   line-height: 1;
 }
 
 .vrbo-v2-phone__composer.is-readonly .vrbo-v2-phone__composer-row {
   align-items: center;
-  gap: 1.6cqw;
+  gap: calc(17 / var(--phone-w) * 100cqw);
 }
 
 .vrbo-v2-phone__composer.is-readonly .vrbo-v2-phone__composer-field {
-  min-height: 5.2cqh;
+  min-height: calc(118 / var(--phone-h) * 100cqh);
   max-height: none;
-  padding: 1cqh 2.8cqw;
-  border-radius: calc(var(--u) * 999);
+  padding: calc(23 / var(--phone-h) * 100cqh) calc(29 / var(--phone-w) * 100cqw);
+  border-radius: calc(999 / var(--phone-h) * 100cqh);
   background: #f3f5f8;
 }
 
@@ -2965,20 +2968,20 @@ body:has(.vrbo-v2-device--phone.is-framed),
   position: relative;
   flex: 1;
   min-width: 0;
-  min-height: 8.2cqh;
+  min-height: calc(186 / var(--phone-h) * 100cqh);
   max-height: none;
   overflow: visible;
-  padding: 1.3cqh 2.8cqw;
-  border: 1px solid rgba(32, 32, 32, 0.12);
-  border-radius: calc(var(--u) * 16);
+  padding: calc(30 / var(--phone-h) * 100cqh) calc(29 / var(--phone-w) * 100cqw);
+  border: calc(1 / var(--phone-h) * 100cqh) solid rgba(32, 32, 32, 0.12);
+  border-radius: calc(16 / var(--phone-h) * 100cqh);
   background: #ffffff;
   color: rgba(32, 32, 32, 0.4);
-  font-size: 1.6cqh;
+  font-size: calc(36 / var(--phone-h) * 100cqh);
   line-height: 1.35;
 }
 
 .vrbo-v2-phone__panel--select .vrbo-v2-phone__composer-field {
-  padding-bottom: 5.2cqh;
+  padding-bottom: calc(118 / var(--phone-h) * 100cqh);
 }
 
 .vrbo-v2-phone__composer-field.is-filled {
@@ -2987,7 +2990,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
 }
 
 .vrbo-v2-phone__draft-line {
-  margin: 0 0 0.55cqh;
+  margin: 0 0 calc(13 / var(--phone-h) * 100cqh);
 }
 
 .vrbo-v2-phone__draft-line:last-child {
@@ -2998,13 +3001,13 @@ body:has(.vrbo-v2-device--phone.is-framed),
   flex: 0 0 auto;
   display: grid;
   place-items: center;
-  width: 5.8cqh;
-  height: 5.8cqh;
+  width: calc(132 / var(--phone-h) * 100cqh);
+  height: calc(132 / var(--phone-h) * 100cqh);
   border: 0;
   border-radius: 50%;
   background: var(--blue);
   color: #ffffff;
-  font-size: 2.4cqh;
+  font-size: calc(55 / var(--phone-h) * 100cqh);
   font-weight: 700;
   line-height: 1;
   cursor: pointer;
@@ -3012,8 +3015,8 @@ body:has(.vrbo-v2-device--phone.is-framed),
 
 .vrbo-v2-phone__panel--select .vrbo-v2-phone__composer-send {
   position: absolute;
-  right: 1.6cqw;
-  bottom: 1.2cqh;
+  right: calc(17 / var(--phone-w) * 100cqw);
+  bottom: calc(27 / var(--phone-h) * 100cqh);
 }
 
 .vrbo-v2-phone__composer-send:disabled {
@@ -3024,9 +3027,9 @@ body:has(.vrbo-v2-device--phone.is-framed),
 .vrbo-v2-phone__continue {
   flex: 0 0 auto;
   margin: 0;
-  padding: 0.6cqh 4.5cqw 1cqh;
+  padding: calc(14 / var(--phone-h) * 100cqh) calc(47 / var(--phone-w) * 100cqw) calc(23 / var(--phone-h) * 100cqh);
   font-family: var(--vrbo-v2-content);
-  font-size: 1.75cqh;
+  font-size: calc(40 / var(--phone-h) * 100cqh);
   font-weight: 600;
   line-height: 1.3;
   color: var(--blue);
@@ -3039,8 +3042,8 @@ body:has(.vrbo-v2-device--phone.is-framed),
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 1.6cqh;
-  padding: 2cqh 4.5cqw 1.6cqh;
+  gap: calc(36 / var(--phone-h) * 100cqh);
+  padding: calc(45 / var(--phone-h) * 100cqh) calc(47 / var(--phone-w) * 100cqw) calc(36 / var(--phone-h) * 100cqh);
   scrollbar-width: none;
 }
 
@@ -3049,45 +3052,45 @@ body:has(.vrbo-v2-device--phone.is-framed),
 }
 
 .vrbo-v2-phone__feed.is-live {
-  gap: 1.4cqh;
+  gap: calc(32 / var(--phone-h) * 100cqh);
 }
 
 .vrbo-v2-phone__property {
   display: flex;
   flex-direction: column;
-  gap: 0.6cqh;
+  gap: calc(14 / var(--phone-h) * 100cqh);
   min-width: 0;
   width: 100%;
 }
 
 .vrbo-v2-phone__property .vrbo-v2-property {
   width: 100%;
-  border-radius: calc(var(--u) * 10);
-  box-shadow: 0 calc(var(--u) * 2) calc(var(--u) * 10) rgba(32, 32, 32, 0.08);
+  border-radius: calc(10 / var(--phone-h) * 100cqh);
+  box-shadow: 0 calc(2 / var(--phone-h) * 100cqh) calc(10 / var(--phone-h) * 100cqh) rgba(32, 32, 32, 0.08);
 }
 
 .vrbo-v2-phone__property .vrbo-v2-property__shared {
-  padding: 1cqh 2.8cqw 0;
-  font-size: 1.5cqh;
+  padding: calc(23 / var(--phone-h) * 100cqh) calc(29 / var(--phone-w) * 100cqw) 0;
+  font-size: calc(34 / var(--phone-h) * 100cqh);
 }
 
 .vrbo-v2-phone__property .vrbo-v2-property--chat .vrbo-v2-property__image {
-  margin: 0.8cqh 2.8cqw 0;
-  border-radius: calc(var(--u) * 8);
+  margin: calc(18 / var(--phone-h) * 100cqh) calc(29 / var(--phone-w) * 100cqw) 0;
+  border-radius: calc(8 / var(--phone-h) * 100cqh);
   aspect-ratio: 16 / 9;
 }
 
 .vrbo-v2-phone__property .vrbo-v2-property--chat .vrbo-v2-property__body {
-  gap: 0.4cqh;
-  padding: 1cqh 2.8cqw 1.2cqh;
+  gap: calc(9 / var(--phone-h) * 100cqh);
+  padding: calc(23 / var(--phone-h) * 100cqh) calc(29 / var(--phone-w) * 100cqw) calc(27 / var(--phone-h) * 100cqh);
 }
 
 .vrbo-v2-phone__property .vrbo-v2-property--chat .vrbo-v2-property__name {
-  font-size: 2.2cqh;
+  font-size: calc(50 / var(--phone-h) * 100cqh);
 }
 
 .vrbo-v2-phone__property .vrbo-v2-property__meta-line {
-  font-size: 1.55cqh;
+  font-size: calc(35 / var(--phone-h) * 100cqh);
   line-height: 1.3;
 }
 
@@ -3099,17 +3102,17 @@ body:has(.vrbo-v2-device--phone.is-framed),
   align-self: stretch;
   max-width: 100%;
   min-width: 0;
-  padding: 1.4cqh 3cqw;
-  border-radius: calc(var(--u) * 14);
-  border-bottom-left-radius: calc(var(--u) * 5);
+  padding: calc(32 / var(--phone-h) * 100cqh) calc(32 / var(--phone-w) * 100cqw);
+  border-radius: calc(14 / var(--phone-h) * 100cqh);
+  border-bottom-left-radius: calc(5 / var(--phone-h) * 100cqh);
   background: #ffffff;
   color: var(--charcoal);
-  box-shadow: 0 1px 0 rgba(32, 32, 32, 0.04);
+  box-shadow: 0 calc(1 / var(--phone-h) * 100cqh) 0 rgba(32, 32, 32, 0.04);
 }
 
 .vrbo-v2-phone__bubble.is-self {
-  border-radius: calc(var(--u) * 14);
-  border-bottom-right-radius: calc(var(--u) * 5);
+  border-radius: calc(14 / var(--phone-h) * 100cqh);
+  border-bottom-right-radius: calc(5 / var(--phone-h) * 100cqh);
   background: var(--blue);
   color: #ffffff;
   box-shadow: none;
@@ -3118,7 +3121,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
 .vrbo-v2-phone__msg {
   display: flex;
   align-items: flex-start;
-  gap: 1.6cqw;
+  gap: calc(17 / var(--phone-w) * 100cqw);
   align-self: flex-start;
   max-width: 96%;
 }
@@ -3136,12 +3139,12 @@ body:has(.vrbo-v2-device--phone.is-framed),
   display: grid;
   place-items: center;
   flex: 0 0 auto;
-  width: 3.8cqh;
-  height: 3.8cqh;
-  margin-top: 0.2cqh;
+  width: calc(86 / var(--phone-h) * 100cqh);
+  height: calc(86 / var(--phone-h) * 100cqh);
+  margin-top: calc(5 / var(--phone-h) * 100cqh);
   overflow: hidden;
   border-radius: 50%;
-  font-size: 1.5cqh;
+  font-size: calc(34 / var(--phone-h) * 100cqh);
   font-weight: 600;
   background: #ffffff;
 }
@@ -3151,9 +3154,9 @@ body:has(.vrbo-v2-device--phone.is-framed),
 }
 
 .vrbo-v2-phone__bubble-author {
-  margin: 0 0 0.5cqh;
+  margin: 0 0 calc(11 / var(--phone-h) * 100cqh);
   font-family: var(--vrbo-v2-sans);
-  font-size: 1.9cqh;
+  font-size: calc(43 / var(--phone-h) * 100cqh);
   font-weight: 600;
   color: var(--blue);
   letter-spacing: 0.02em;
@@ -3173,7 +3176,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
 .vrbo-v2-phone__bubble-text {
   margin: 0;
   font-family: var(--vrbo-v2-content);
-  font-size: 2.35cqh;
+  font-size: calc(53 / var(--phone-h) * 100cqh);
   line-height: 1.35;
   white-space: pre-line;
   color: #1a2a55;
@@ -3185,7 +3188,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
 
 .vrbo-v2-phone__typing {
   margin: 0;
-  font-size: 1.9cqh;
+  font-size: calc(43 / var(--phone-h) * 100cqh);
   color: rgba(32, 32, 32, 0.45);
 }
 
@@ -3195,8 +3198,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: 0.95cqh;
-  padding: 10cqh 14cqw;
+  padding: calc(227 / var(--phone-h) * 100cqh) calc(147 / var(--phone-w) * 100cqw);
   text-align: center;
   background: #ffffff;
 }
@@ -3210,8 +3212,8 @@ body:has(.vrbo-v2-device--phone.is-framed),
   flex: 0 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 1.7cqh;
-  padding: 0.55cqh 5cqw 2.1cqh;
+  gap: calc(39 / var(--phone-h) * 100cqh);
+  padding: calc(13 / var(--phone-h) * 100cqh) calc(52 / var(--phone-w) * 100cqw) calc(48 / var(--phone-h) * 100cqh);
   background: var(--blue);
   color: #ffffff;
 }
@@ -3219,14 +3221,14 @@ body:has(.vrbo-v2-device--phone.is-framed),
 .vrbo-v2-phone__join-head-row {
   display: flex;
   align-items: center;
-  gap: 2.6cqw;
+  gap: calc(27 / var(--phone-w) * 100cqw);
   text-align: left;
 }
 
 .vrbo-v2-phone__join-head h3 {
   margin: 0;
   font-family: var(--vrbo-v2-sans);
-  font-size: 3.15cqh;
+  font-size: calc(72 / var(--phone-h) * 100cqh);
   font-weight: 600;
   line-height: 1.05;
   letter-spacing: -0.02em;
@@ -3234,18 +3236,18 @@ body:has(.vrbo-v2-device--phone.is-framed),
 }
 
 .vrbo-v2-phone__join-head p {
-  margin: 1.55cqh 0 0;
+  margin: calc(35 / var(--phone-h) * 100cqh) 0 0;
   font-family: var(--vrbo-v2-content);
-  font-size: 1.5cqh;
+  font-size: calc(34 / var(--phone-h) * 100cqh);
   font-weight: 400;
   line-height: 1.25;
   color: rgba(255, 255, 255, 0.82);
 }
 
 .vrbo-v2-phone__join-head .vrbo-v2-phone__group-avatar {
-  width: 5cqh;
-  height: 5cqh;
-  outline: calc(var(--u) * 1.5) solid rgba(255, 255, 255, 0.4);
+  width: calc(114 / var(--phone-h) * 100cqh);
+  height: calc(114 / var(--phone-h) * 100cqh);
+  outline: calc(2 / var(--phone-h) * 100cqh) solid rgba(255, 255, 255, 0.4);
   background: rgba(255, 255, 255, 0.2);
 }
 
@@ -3256,7 +3258,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
 .vrbo-v2-phone__waiting {
   display: flex;
   flex-wrap: nowrap;
-  gap: 2.2cqw;
+  gap: calc(23 / var(--phone-w) * 100cqw);
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -3268,19 +3270,19 @@ body:has(.vrbo-v2-device--phone.is-framed),
 .vrbo-v2-phone__waiting-pill {
   display: inline-flex;
   align-items: center;
-  gap: 1.5cqw;
+  gap: calc(16 / var(--phone-w) * 100cqw);
   flex: 1 1 0;
   min-width: 0;
   max-width: none;
   justify-content: center;
   /* Match reference pill height (taller, more inner padding) */
-  padding: 1cqh 1.8cqw;
-  border-radius: calc(var(--u) * 999);
+  padding: calc(23 / var(--phone-h) * 100cqh) calc(19 / var(--phone-w) * 100cqw);
+  border-radius: calc(999 / var(--phone-h) * 100cqh);
   border: 0;
   background: rgba(255, 255, 255, 0.2);
   color: #ffffff;
   font-family: var(--vrbo-v2-content);
-  font-size: 1.45cqh;
+  font-size: calc(33 / var(--phone-h) * 100cqh);
   font-style: normal;
   font-weight: 300;
   letter-spacing: 0;
@@ -3296,10 +3298,10 @@ body:has(.vrbo-v2-device--phone.is-framed),
 
 .vrbo-v2-phone__waiting-dot {
   flex: 0 0 auto;
-  width: 2.85cqh;
-  height: 2.85cqh;
+  width: calc(65 / var(--phone-h) * 100cqh);
+  height: calc(65 / var(--phone-h) * 100cqh);
   border-radius: 50%;
-  border: 1.5px solid rgba(255, 255, 255, 0.5);
+  border: calc(1.5 / var(--phone-h) * 100cqh) solid rgba(255, 255, 255, 0.5);
   background: transparent;
 }
 
@@ -3312,21 +3314,21 @@ body:has(.vrbo-v2-device--phone.is-framed),
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.55cqh;
-  margin: 0 0 1.6cqh;
+  gap: calc(13 / var(--phone-h) * 100cqh);
+  margin: 0 0 calc(36 / var(--phone-h) * 100cqh);
 }
 
 .vrbo-v2-phone__join-avatar {
   display: grid;
   place-items: center;
   flex: 0 0 auto;
-  width: 7.4cqh;
-  height: 7.4cqh;
+  width: calc(168 / var(--phone-h) * 100cqh);
+  height: calc(168 / var(--phone-h) * 100cqh);
   overflow: hidden;
   border-radius: 50%;
   background: #d7ebfb;
-  box-shadow: 0 0 0 0.45cqh rgba(121, 207, 243, 0.16);
-  font-size: 2.4cqh;
+  box-shadow: 0 0 0 calc(10 / var(--phone-h) * 100cqh) rgba(121, 207, 243, 0.16);
+  font-size: calc(55 / var(--phone-h) * 100cqh);
   font-weight: 700;
   line-height: 1;
 }
@@ -3341,16 +3343,16 @@ body:has(.vrbo-v2-device--phone.is-framed),
 
 .vrbo-v2-phone__join-avatar-label {
   font-family: var(--vrbo-v2-content);
-  font-size: 16px;
+  font-size: calc(48 / var(--phone-h) * 100cqh);
   font-weight: 500;
   color: var(--blue);
-  padding-top: 12px;
+  padding-top: calc(12 / var(--phone-h) * 100cqh);
 }
 
 .vrbo-v2-phone__join h4 {
   margin: 0;
   font-family: var(--vrbo-v2-sans);
-  font-size: 3cqh;
+  font-size: calc(68 / var(--phone-h) * 100cqh);
   font-weight: 600;
   line-height: 1.12;
   color: var(--blue);
@@ -3358,31 +3360,32 @@ body:has(.vrbo-v2-device--phone.is-framed),
 }
 
 .vrbo-v2-phone__join p {
-  margin: 0;
-  max-width: 70cqw;
+  margin-top: 2.8cqh;
+  margin-bottom: 0;
+  max-width: calc(735 / var(--phone-w) * 100cqw);
   font-family: var(--vrbo-v2-content);
-  font-size: 1.4cqh;
+  font-size: calc(38 / var(--phone-h) * 100cqh);
   line-height: 1.35;
-  color: rgba(32, 32, 32, 0.48);
+  color: #63666E;
 }
 
 .vrbo-v2-phone__join-field {
   display: block;
   width: 100%;
-  max-width: 58cqw;
-  margin-top: 1.5cqh;
+  max-width: calc(609 / var(--phone-w) * 100cqw);
+  margin-top: calc(34 / var(--phone-h) * 100cqh);
 }
 
 .vrbo-v2-phone__join-field input {
   width: 100%;
   box-sizing: border-box;
-  padding: 1.25cqh 4cqw;
-  border: 0.18cqh solid rgba(15, 81, 236, 0.2);
-  border-radius: calc(var(--u) * 999);
+  padding: calc(28 / var(--phone-h) * 100cqh) calc(42 / var(--phone-w) * 100cqw);
+  border: calc(4 / var(--phone-h) * 100cqh) solid rgba(15, 81, 236, 0.2);
+  border-radius: calc(30 / var(--phone-h) * 100cqh);
   background: #ffffff;
   font-family: var(--vrbo-v2-content);
-  font-size: 1.5cqh;
-  color: var(--charcoal);
+  font-size: calc(34 / var(--phone-h) * 100cqh);
+  color: #616675;
   outline: none;
 }
 
@@ -3392,20 +3395,21 @@ body:has(.vrbo-v2-device--phone.is-framed),
 
 .vrbo-v2-phone__join-field input:focus {
   border-color: var(--blue);
-  box-shadow: 0 0 0 calc(var(--u) * 3) rgba(15, 81, 236, 0.1);
+  box-shadow: 0 0 0 calc(3 / var(--phone-h) * 100cqh) rgba(15, 81, 236, 0.1);
 }
 
 .vrbo-v2-phone__join-cta {
   width: auto;
-  min-width: 34cqw;
-  max-width: 60cqw;
-  height: 6cqh;
-  margin-top: 1.1cqh;
-  padding: 0 14cqw;
+  min-width: calc(357 / var(--phone-w) * 100cqw);
+  max-width: calc(630 / var(--phone-w) * 100cqw);
+  height: calc(136 / var(--phone-h) * 100cqh);
+  margin-top: calc(50 / var(--phone-h) * 100cqh);
+  padding: 0 calc(147 / var(--phone-w) * 100cqw);
   font-family: var(--vrbo-v2-content);
-  font-size: 1.8cqh;
-  font-weight: 600;
+  font-size: calc(41 / var(--phone-h) * 100cqh);
+  font-weight: 400;
 }
+
 
 .visually-hidden {
   position: absolute;
@@ -3421,7 +3425,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
 
 .vrbo-v2-phone__counter {
   margin: 0;
-  font-size: 1.8cqh;
+  font-size: calc(41 / var(--phone-h) * 100cqh);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: rgba(32, 32, 32, 0.45);
@@ -3432,34 +3436,34 @@ body:has(.vrbo-v2-device--phone.is-framed),
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 1.2cqh;
+  gap: calc(27 / var(--phone-h) * 100cqh);
   margin: auto 0;
-  padding: 2cqh 0;
+  padding: calc(45 / var(--phone-h) * 100cqh) 0;
 }
 
 .vrbo-v2-phone__done h4 {
   margin: 0;
   font-family: var(--vrbo-v2-sans);
-  font-size: 3.6cqh;
+  font-size: calc(82 / var(--phone-h) * 100cqh);
   font-weight: 600;
   color: var(--blue);
 }
 
 .vrbo-v2-phone__done p {
   margin: 0;
-  font-size: 2cqh;
+  font-size: calc(45 / var(--phone-h) * 100cqh);
   color: rgba(32, 32, 32, 0.55);
 }
 
 .vrbo-v2-phone__check {
   display: grid;
   place-items: center;
-  width: 10cqh;
-  height: 10cqh;
+  width: calc(227 / var(--phone-h) * 100cqh);
+  height: calc(227 / var(--phone-h) * 100cqh);
   border-radius: 50%;
   background: var(--blue);
   color: #ffffff;
-  font-size: 4.5cqh;
+  font-size: calc(102 / var(--phone-h) * 100cqh);
   animation: vrbo-v2-pop 0.5s ease;
 }
 
@@ -3478,9 +3482,9 @@ body:has(.vrbo-v2-device--phone.is-framed),
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 1cqh;
+  gap: calc(23 / var(--phone-h) * 100cqh);
   width: 100%;
-  margin: 0.6cqh 0 0;
+  margin: calc(14 / var(--phone-h) * 100cqh) 0 0;
   padding: 0;
   list-style: none;
 }
@@ -3488,18 +3492,18 @@ body:has(.vrbo-v2-device--phone.is-framed),
 .vrbo-v2-phone__picks li {
   display: flex;
   align-items: center;
-  gap: 2cqw;
-  padding: 1.5cqh 3cqw;
-  border-radius: calc(var(--u) * 999);
+  gap: calc(21 / var(--phone-w) * 100cqw);
+  padding: calc(34 / var(--phone-h) * 100cqh) calc(32 / var(--phone-w) * 100cqw);
+  border-radius: calc(999 / var(--phone-h) * 100cqh);
   background: #dce8ff;
   color: var(--blue);
-  font-size: 2.1cqh;
+  font-size: calc(48 / var(--phone-h) * 100cqh);
   font-weight: 500;
   text-align: left;
 }
 
 .vrbo-v2-phone__waiting {
-  font-size: 1.8cqh;
+  font-size: calc(41 / var(--phone-h) * 100cqh);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: rgba(32, 32, 32, 0.45);
