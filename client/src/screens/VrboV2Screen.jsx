@@ -220,6 +220,7 @@ function VrboDemo() {
                   propertyLookup={propertyLookup}
                   celebrating={celebrating}
                   joined={joined}
+                  submitted={submitted}
                   displayNames={displayNames}
                 />
               </div>
@@ -306,6 +307,7 @@ export function VrboLeftPage() {
               propertyLookup={propertyLookup}
               celebrating={state.celebrating}
               joined={state.joined}
+              submitted={state.submitted ?? {}}
               displayNames={state.displayNames ?? {}}
             />
           </ScaledDisplayCanvas>

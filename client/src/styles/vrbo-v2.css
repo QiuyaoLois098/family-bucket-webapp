@@ -522,8 +522,14 @@
 
 .vrbo-v2-chat__footer {
   flex: 0 0 auto;
+  position: relative;
   margin: auto 0 0;
   padding-bottom: 4.6cqh;
+  min-height: calc(2.4cqh * 2.5);
+}
+
+.vrbo-v2-chat__footer-text {
+  margin: 0;
   font-family: var(--vrbo-v2-content);
   font-size: 2.4cqh;
   font-weight: 500;
@@ -1371,11 +1377,15 @@
 
 .vrbo-v2-showcase__cards {
   display: grid;
-  grid-template-columns: 0.92fr 1.08fr;
+  /* 674px + 1158px @ 2160 design width */
+  grid-template-columns:
+    calc(674 / var(--design-w) * 100cqw)
+    calc(1158 / var(--design-w) * 100cqw);
   gap: 2.4cqw;
   flex: 1 1 auto;
   min-height: 0;
   align-items: stretch;
+  justify-content: space-between;
 }
 
 .vrbo-v2-showcase__card {
@@ -1393,18 +1403,21 @@
   margin: 0;
   font-family: var(--sc-ui);
   /* ~60px @ 3840 */
-  font-size: calc(60 / var(--design-h) * 100cqh);
-  font-weight: 700;
+  font-size: calc(56 / var(--design-h) * 100cqh);
+  font-weight: 500;
   line-height: 1.15;
   color: var(--sc-ink);
 }
 
 .vrbo-v2-showcase__card--loved {
   align-items: flex-start;
+  text-align: left;
   background: var(--sc-loved);
 }
 
 .vrbo-v2-showcase__card--highlights {
+  align-items: flex-start;
+  text-align: left;
   background: var(--sc-highlights);
 }
 
@@ -1412,37 +1425,40 @@
   margin: 0.45cqh 0 0;
   font-family: var(--sc-ui);
   /* ~44px @ 3840 */
-  font-size: calc(44 / var(--design-h) * 100cqh);
+  font-size: calc(56 / var(--design-h) * 100cqh);
   font-weight: 400;
   line-height: 1.2;
   color: var(--sc-muted);
 }
 
 .vrbo-v2-showcase__badge {
+  /* score.png = 512×192 — use aspect-ratio so wreath is not squashed */
   position: relative;
   display: grid;
   place-items: center;
-  /* ~240px @ 3840 — match reference wreath */
-  width: calc(240 / var(--design-h) * 100cqh);
-  height: calc(240 / var(--design-h) * 100cqh);
-  margin: auto 0 0;
+  align-self: center;
+  width: calc(450 / var(--design-w) * 100cqw);
+  max-width: 100%;
+  aspect-ratio: 512 / 192;
+  height: auto;
+  margin: auto 0 0.2cqh;
   text-align: center;
 }
 
 .vrbo-v2-showcase__badge strong {
   position: relative;
   z-index: 1;
-  display: grid;
-  place-items: center;
-  width: 100%;
-  height: 100%;
+  display: block;
+  width: auto;
+  height: auto;
   margin: 0;
   font-family: var(--sc-ui);
-  /* ~108px @ 3840 */
-  font-size: calc(108 / var(--design-h) * 100cqh);
-  font-weight: 700;
+  /* 144px @ 3840 */
+  font-size: calc(144 / var(--design-h) * 100cqh);
+  font-weight: 500;
   line-height: 1;
-  color: var(--sc-blue);
+  letter-spacing: -0.02em;
+  color: var(--sc-ink);
 }
 
 .vrbo-v2-showcase__badge-ring {
@@ -1451,6 +1467,7 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+  object-position: center;
   pointer-events: none;
   user-select: none;
 }

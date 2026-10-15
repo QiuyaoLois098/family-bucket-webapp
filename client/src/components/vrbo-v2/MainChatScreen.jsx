@@ -33,6 +33,7 @@ export default function MainChatScreen({
   propertyLookup,
   celebrating,
   joined = {},
+  submitted = {},
   displayNames = {},
 }) {
   const feedRef = useRef(null);
@@ -52,6 +53,8 @@ export default function MainChatScreen({
     (user) => user.role === "guest" && Boolean(joined[user.id]),
   ).length;
   const guestsWaiting = Math.max(0, guestTotal - guestsJoined);
+  const anyoneSubmitted = Object.values(submitted).some(Boolean);
+  const showPickupFooter = guestsWaiting > 0 && !anyoneSubmitted;
   const plannerLabel = copy.chat.groupPlannerLabel || "Primary planner";
   // Intro matches reference: list everyone; after joins, show who is in the trip.
   const peopleLine =
@@ -158,17 +161,35 @@ export default function MainChatScreen({
           </AnimatePresence>
         </div>
 
-        <p className="vrbo-v2-chat__footer">
-          {guestsWaiting > 0 ? (
-            <>
-              Pick up a phone
-              <br />
-              and join the conversation
-            </>
-          ) : (
-            copy.chat.footerPlanning || copy.chat.footer
-          )}
-        </p>
+        <div className="vrbo-v2-chat__footer">
+          <AnimatePresence mode="wait" initial={false}>
+            {showPickupFooter ? (
+              <motion.p
+                key="pickup"
+                className="vrbo-v2-chat__footer-text"
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.55, ease: "easeOut" }}
+              >
+                Pick up a phone
+                <br />
+                and join the conversation
+              </motion.p>
+            ) : (
+              <motion.p
+                key="planning"
+                className="vrbo-v2-chat__footer-text"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.45, ease: "easeOut" }}
+              >
+                {copy.chat.footerPlanning || copy.chat.footer}
+              </motion.p>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );
