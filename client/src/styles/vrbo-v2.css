@@ -1213,8 +1213,9 @@
 .vrbo-v2-showcase {
   --design-w: 2160;
   --design-h: 3840;
-  /* Hero height in design px @ 3840 — change this number to resize the image band */
+  /* Heights in design px @ 3840 — change these to resize bands */
   --sc-hero-h: 1230;
+  --sc-body-h: 850;
   --sc-blue: #0f51ec;
   --sc-cream: #f9f6f2;
   --sc-ink: #1a1a1a;
@@ -1225,20 +1226,32 @@
   --sc-ui: var(--vrbo-v2-content, "Centra No2", "Helvetica Neue", sans-serif);
   --sc-pad: 6.2cqw;
 
+  /* Overlap amount: hero tucks under masthead so scale() can't open a seam */
+  --sc-seam-overlap: 12;
   container-type: size;
   position: absolute;
   inset: 0;
   display: grid;
-  /* Row 2 is auto so hero's own height wins (not a fixed grid track). */
   grid-template-rows:
     auto
     auto
-    minmax(0, 1fr)
     auto
     auto;
+  row-gap: 0;
+  column-gap: 0;
   overflow: hidden;
   background: #ffffff;
   color: var(--sc-ink);
+}
+
+/* Masthead + hero share one grid cell / flex stack (no track boundary between them). */
+.vrbo-v2-showcase__top {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
 }
 
 .vrbo-v2-showcase__masthead {
@@ -1247,15 +1260,19 @@
   align-items: flex-start;
   justify-content: flex-start;
   gap: 1.2cqh;
+  flex: 0 0 auto;
   height: var(--display-masthead-height);
   min-height: var(--display-masthead-height);
   max-height: var(--display-masthead-height);
+  margin: 0;
   /* Match shared left/chat masthead */
   padding: 3.6cqh 6cqw 3.2cqh;
   background: var(--sc-blue);
   color: #ffffff;
   box-sizing: border-box;
   overflow: hidden;
+  position: relative;
+  z-index: 2;
 }
 
 .vrbo-v2-showcase__logo {
@@ -1279,18 +1296,23 @@
 }
 
 .vrbo-v2-showcase__hero {
+  position: relative;
+  z-index: 1;
   width: 100%;
-  height: calc(var(--sc-hero-h) / var(--design-h) * 100cqh);
-  min-height: calc(var(--sc-hero-h) / var(--design-h) * 100cqh);
-  max-height: calc(var(--sc-hero-h) / var(--design-h) * 100cqh);
+  /* Pull up under masthead; grow height by same amount so visible photo size stays --sc-hero-h */
+  margin: calc(var(--sc-seam-overlap) / var(--design-h) * -100cqh) 0 0;
+  height: calc((var(--sc-hero-h) + var(--sc-seam-overlap)) / var(--design-h) * 100cqh);
+  min-height: calc((var(--sc-hero-h) + var(--sc-seam-overlap)) / var(--design-h) * 100cqh);
+  max-height: calc((var(--sc-hero-h) + var(--sc-seam-overlap)) / var(--design-h) * 100cqh);
   overflow: hidden;
-  background: #d5dbe6;
+  background: var(--stay-image-fallback, #d5dbe6);
 }
 
 .vrbo-v2-showcase__hero img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center top;
   display: block;
 }
 
@@ -1306,11 +1328,16 @@
 .vrbo-v2-showcase__body {
   display: flex;
   flex-direction: column;
-  gap: 2.8cqh;
-  min-height: 0;
-  padding: 2.6cqh var(--sc-pad) 2.2cqh;
+  gap: 1.5cqh;
+  height: calc(var(--sc-body-h) / var(--design-h) * 100cqh);
+  min-height: calc(var(--sc-body-h) / var(--design-h) * 100cqh);
+  max-height: calc(var(--sc-body-h) / var(--design-h) * 100cqh);
+  padding: 1.8cqh var(--sc-pad) 1.2cqh;
+  box-sizing: border-box;
   background: #ffffff;
   overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 
 .vrbo-v2-showcase__heading {
@@ -1443,6 +1470,7 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 2.4cqw;
   padding: 0.6cqh var(--sc-pad) 0;
+  background: #ffffff;
   touch-action: manipulation;
 }
 
@@ -1476,6 +1504,7 @@
   height: 100%;
   overflow: hidden;
   pointer-events: none;
+  background: var(--stay-image-fallback, #d5dbe6);
 }
 
 .vrbo-v2-showcase__thumb-img img {

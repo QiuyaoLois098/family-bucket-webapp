@@ -4,7 +4,11 @@ import copy from "../../data/vrbo-v2/copy.json";
 function StayImage({ property, className }) {
   const [failed, setFailed] = useState(false);
   return (
-    <div className={className} style={{ background: property.gradient }}>
+    <div
+      className={className}
+      /* Use CSS var — inline background overrides stylesheet and hides seam fixes. */
+      style={{ "--stay-image-fallback": property.gradient }}
+    >
       {failed ? null : (
         <img
           src={property.image}
@@ -87,17 +91,19 @@ export function StayShowcase({
 
   return (
     <div className={`vrbo-v2-showcase${shared ? " is-shared" : ""}`}>
-      <header className="vrbo-v2-showcase__masthead">
-        <img
-          className="vrbo-v2-showcase__logo"
-          src="/logo/Vrbo_Logo_Sail_RGB.png"
-          alt="Vrbo"
-          draggable={false}
-        />
-        <p className="vrbo-v2-showcase__headline">{buildResultsHeadline(priorities)}</p>
-      </header>
-
-      <StayImage property={property} className="vrbo-v2-showcase__hero" />
+      {/* One stack so hero can overlap masthead bottom — no grid-track seam */}
+      <div className="vrbo-v2-showcase__top">
+        <header className="vrbo-v2-showcase__masthead">
+          <img
+            className="vrbo-v2-showcase__logo"
+            src="/logo/Vrbo_Logo_Sail_RGB.png"
+            alt="Vrbo"
+            draggable={false}
+          />
+          <p className="vrbo-v2-showcase__headline">{buildResultsHeadline(priorities)}</p>
+        </header>
+        <StayImage property={property} className="vrbo-v2-showcase__hero" />
+      </div>
 
       <div className="vrbo-v2-showcase__body">
         <div className="vrbo-v2-showcase__heading">
