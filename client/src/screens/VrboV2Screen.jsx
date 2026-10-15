@@ -263,6 +263,25 @@ function VrboDemo() {
 }
 
 const VRBO_LEFT1_REF = "/images/Vrbo-Images/example/left1.png";
+const VRBO_RIGHT_REFS = {
+  waiting: "/images/Vrbo-Images/example/vrbo-r/1.png",
+  summary: "/images/Vrbo-Images/example/vrbo-r/2.png",
+  stay: "/images/Vrbo-Images/example/vrbo-r/3.png",
+  locked: "/images/Vrbo-Images/example/vrbo-r/4.png",
+};
+
+function vrboRightReference(stage, { celebrating = false, selectedPropertyId = null } = {}) {
+  if (celebrating || selectedPropertyId) {
+    return { src: VRBO_RIGHT_REFS.locked, caption: "Reference · locked in" };
+  }
+  if (stage === "summary") {
+    return { src: VRBO_RIGHT_REFS.summary, caption: "Reference · summary" };
+  }
+  if (stage === "results") {
+    return { src: VRBO_RIGHT_REFS.stay, caption: "Reference · stay" };
+  }
+  return { src: VRBO_RIGHT_REFS.waiting, caption: "Reference · waiting" };
+}
 
 /** Display 1 · Organizer chat + same-size design reference (phone-style compare). */
 export function VrboLeftPage() {
@@ -311,26 +330,47 @@ export function VrboLeftPage() {
   );
 }
 
-/** Display 2 · Output / search — receives sessionId; does not start the session. */
+/** Display 2 · Output / search + same-size design reference (like /vrbo-left). */
 export function VrboRightPage() {
   const { state, allSubmitted, actions } = useVrboV2Session({ syncOnly: true });
+  const reference = vrboRightReference(state.stage, {
+    celebrating: state.celebrating,
+    selectedPropertyId: state.selectedPropertyId,
+  });
 
   return (
     <div className="vrbo-v2-device vrbo-v2-device--display">
       <RestartControl onReset={actions.reset} />
-      <div className="vrbo-v2-device__stage vrbo-v2-device__stage--display">
-        <ScaledDisplayCanvas>
-          <RankingScreen
-            stage={state.stage}
-            summaryText={state.summaryText}
-            results={state.results}
-            priorities={state.priorities}
-            allSubmitted={allSubmitted}
-            previewPropertyId={state.previewPropertyId}
-            selectedPropertyId={state.selectedPropertyId}
-            actions={actions}
-          />
-        </ScaledDisplayCanvas>
+      <div className="vrbo-v2-device__stage vrbo-v2-device__stage--display-compare">
+        <div className="vrbo-v2-displayFrame">
+          <ScaledDisplayCanvas>
+            <RankingScreen
+              stage={state.stage}
+              summaryText={state.summaryText}
+              results={state.results}
+              priorities={state.priorities}
+              allSubmitted={allSubmitted}
+              previewPropertyId={state.previewPropertyId}
+              selectedPropertyId={state.selectedPropertyId}
+              actions={actions}
+            />
+          </ScaledDisplayCanvas>
+          <p className="vrbo-v2-displayFrame__caption">Live · search</p>
+        </div>
+        <div className="vrbo-v2-displayFrame">
+          <div
+            className="vrbo-v2-displayHd vrbo-v2-displayHd--reference"
+            aria-label={`${CANVAS_W}×${CANVAS_H} reference`}
+          >
+            <img
+              className="vrbo-v2-displayHd__reference"
+              src={reference.src}
+              alt="Vrbo right design reference"
+              draggable={false}
+            />
+          </div>
+          <p className="vrbo-v2-displayFrame__caption">{reference.caption}</p>
+        </div>
       </div>
     </div>
   );

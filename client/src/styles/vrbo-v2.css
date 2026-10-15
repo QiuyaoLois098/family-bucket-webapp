@@ -726,6 +726,9 @@
 /* ---------- display 2 · ranking + results ---------- */
 
 .vrbo-v2-rank {
+  /* Design canvas — convert Figma/px specs with: calc(N / var(--design-h) * 100cqh) */
+  --design-w: 2160;
+  --design-h: 3840;
   position: relative;
   height: 100%;
   background: var(--warm-white);
@@ -733,6 +736,8 @@
 }
 
 .vrbo-v2-summary {
+  --design-w: 2160;
+  --design-h: 3840;
   position: absolute;
   inset: 0;
   display: flex;
@@ -785,9 +790,8 @@
 
 .vrbo-v2-summary__title {
   margin: 0 0 3.2cqh;
-  max-width: 14ch;
   font-family: var(--vrbo-v2-sans);
-  font-size: 4.6cqh;
+  font-size: calc(132 / var(--design-h) * 100cqh);
   font-weight: 600;
   line-height: 1.12;
   letter-spacing: -0.02em;
@@ -825,7 +829,7 @@
   margin: 0;
   flex: 0 0 auto;
   font-family: var(--vrbo-v2-content);
-  font-size: 1.85cqh;
+  font-size: calc(72 / var(--design-h) * 100cqh);
   font-weight: 500;
   line-height: 1.2;
   letter-spacing: -0.01em;
@@ -1018,21 +1022,20 @@
   display: flex;
   align-items: flex-start;
   min-height: 0;
-  padding: 2cqh 4.6cqw 0;
+  padding: 4cqh 7cqw 0;
   background: transparent;
   box-sizing: border-box;
 }
 
 .vrbo-v2-rank__hero-top .vrbo-v2-rank__brand-logo {
   margin: 0;
-  width: 22cqw;
 }
 
 .vrbo-v2-rank__hero-mid {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 3.4cqh 6cqw 12cqh;
+  justify-content: left;
+  padding: 3.4cqh 7cqw 12cqh;
   background: transparent;
 }
 
@@ -1040,7 +1043,7 @@
   margin: 0;
   max-width: 14ch;
   font-family: var(--vrbo-v2-sans);
-  font-size: 5.2cqh;
+  font-size: calc(180 / var(--design-h) * 100cqh);
   font-weight: 600;
   line-height: 1.12;
   letter-spacing: -0.02em;
@@ -1121,8 +1124,8 @@
 
 .vrbo-v2-rank__brand-logo {
   display: block;
-  width: 12cqw;
-  height: auto;
+  width: auto;
+  height: calc(137.7 / var(--design-h) * 100cqh);
   margin-bottom: 1cqh;
   mix-blend-mode: screen;
 }
@@ -2321,29 +2324,15 @@ body:has(.vrbo-v2-stage),
   background: #000000;
 }
 
-/* /vrbo-left: live + reference side-by-side (same pattern as iPhone compare). */
-.vrbo-v2-device__stage--display-compare {
-  --display-gap: clamp(20px, 2.4vw, 36px);
-  --display-stage-pad-x: clamp(20px, 3vw, 48px);
-  --display-stage-pad-y: clamp(24px, 4vh, 48px);
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--display-gap);
-  padding: var(--display-stage-pad-y) var(--display-stage-pad-x);
-  box-sizing: border-box;
-  overflow: auto;
-  background: #000000;
-}
-
 .vrbo-v2-displayFrame {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
   min-width: 0;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
   flex: 0 0 auto;
 }
 
@@ -2354,14 +2343,6 @@ body:has(.vrbo-v2-stage),
   font-weight: 500;
   letter-spacing: 0.02em;
   color: rgba(255, 255, 255, 0.72);
-}
-
-.vrbo-v2-device__stage--display-compare .vrbo-v2-displayHd {
-  width: min(
-    calc((100vw - var(--display-stage-pad-x) * 2 - var(--display-gap)) / 2),
-    calc((100dvh - var(--display-stage-pad-y) * 2 - 28px) * 9 / 16)
-  );
-  height: auto;
 }
 
 /*
@@ -2477,6 +2458,33 @@ body:has(.vrbo-v2-device--phone.is-framed),
   padding: calc(var(--u) * 28) calc(var(--u) * 18) calc(var(--u) * 36);
   box-sizing: border-box;
   overflow: auto;
+}
+
+/* Must follow .vrbo-v2-device__stage so grid/flex overrides win (same specificity). */
+.vrbo-v2-device__stage--display-compare {
+  --display-gap: clamp(20px, 2.4vw, 36px);
+  --display-stage-pad-x: clamp(20px, 3vw, 48px);
+  --display-stage-pad-y: clamp(24px, 4vh, 48px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+  gap: var(--display-gap);
+  padding: var(--display-stage-pad-y) var(--display-stage-pad-x);
+  box-sizing: border-box;
+  overflow: hidden;
+  background: #000000;
+}
+
+.vrbo-v2-device__stage--display-compare .vrbo-v2-displayHd {
+  width: min(
+    100%,
+    calc((100vw - var(--display-stage-pad-x) * 2 - var(--display-gap)) / 2),
+    calc((100dvh - var(--display-stage-pad-y) * 2 - 28px) * 9 / 16)
+  );
+  height: auto;
+  max-height: calc(100dvh - var(--display-stage-pad-y) * 2 - 28px);
+  aspect-ratio: 9 / 16;
 }
 
 .vrbo-v2-device__stage--compare {
