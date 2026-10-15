@@ -115,9 +115,9 @@ function PhoneHeader({ subtitle, children = null }) {
 }
 
 function authorLabel(user, { isSelf = false } = {}) {
-  if (isSelf) return `${user.name} · You`;
+  if (isSelf) return user.name;
   if (user.role === "coordinator") {
-    return `${user.name} · ${user.roleLabel || copy.chat.groupPlannerLabel || "Group planner"}`;
+    return `${user.name} · ${user.roleLabel || copy.chat.groupPlannerLabel || "Primary planner"}`;
   }
   return user.name;
 }
@@ -135,7 +135,15 @@ function PhoneBubble({ user, text, isSelf = false }) {
   );
 }
 
-function MessageFeed({ messages, typing, userById, propertyLookup, live = false, selfId }) {
+function MessageFeed({
+  messages,
+  typing,
+  userById,
+  propertyLookup,
+  live = false,
+  selfId,
+  afterMessages = null,
+}) {
   const feedRef = useRef(null);
   const visibleMessages = live
     ? messages ?? []
@@ -145,7 +153,7 @@ function MessageFeed({ messages, typing, userById, propertyLookup, live = false,
     const node = feedRef.current;
     if (!node) return;
     node.scrollTo({ top: node.scrollHeight, behavior: "smooth" });
-  }, [messages?.length, typing?.length, live]);
+  }, [messages?.length, typing?.length, live, afterMessages]);
 
   return (
     <div className={`vrbo-v2-phone__feed ${live ? "is-live" : ""}`} ref={feedRef}>
@@ -176,6 +184,7 @@ function MessageFeed({ messages, typing, userById, propertyLookup, live = false,
         );
       })}
       {typing?.length ? <p className="vrbo-v2-phone__typing">{copy.phone.idleSubtitle}</p> : null}
+      {afterMessages}
     </div>
   );
 }
@@ -190,7 +199,12 @@ function ReadonlyComposer() {
         <div className="vrbo-v2-phone__composer-field">
           <span>{copy.phone.watchPlaceholder}</span>
         </div>
-        <button type="button" className="vrbo-v2-phone__composer-send" disabled aria-label={copy.phone.watchPlaceholder}>
+        <button
+          type="button"
+          className="vrbo-v2-phone__composer-send"
+          disabled
+          aria-label={copy.phone.watchPlaceholder}
+        >
           ↑
         </button>
       </div>
@@ -411,8 +425,10 @@ export default function GuestPhone({
                   propertyLookup={propertyLookup}
                   selfId={user.id}
                   live
+                  afterMessages={
+                    <p className="vrbo-v2-phone__continue">{copy.phone.continueCta}</p>
+                  }
                 />
-                <p className="vrbo-v2-phone__continue">{copy.phone.continueCta}</p>
                 <ReadonlyComposer />
               </motion.div>
             ) : null}
