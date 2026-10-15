@@ -40,7 +40,7 @@ export default function App() {
     <>
       <ProjectMenu hideOnPaths={DEVICE_PATHS} />
       <HyperionDevOverlay heartbeat={heartbeat} />
-      {/* TEMP — delete with ./debug/DebugHeightGuide.jsx */}
+      {/* TEMP — delete with ./debug/DebugHeightGuide.jsx; gated by VRBO_UI.heightGuide */}
       <DebugHeightGuide />
       <Routes>
         <Route path="/" element={<PreviewScreen />} />

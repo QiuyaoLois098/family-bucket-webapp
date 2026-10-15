@@ -2589,6 +2589,20 @@ body:has(.vrbo-v2-device--phone.is-framed),
   overflow: auto;
 }
 
+.vrbo-v2-device__stage--display-live {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  overflow: hidden;
+  background: #000000;
+}
+
+.vrbo-v2-device__stage--display-live .vrbo-v2-displayHd {
+  width: min(100vw, calc(100dvh * 9 / 16));
+  height: min(100dvh, calc(100vw * 16 / 9));
+  max-height: 100dvh;
+}
+
 /* Must follow .vrbo-v2-device__stage so grid/flex overrides win (same specificity). */
 .vrbo-v2-device__stage--display-compare {
   --display-gap: clamp(20px, 2.4vw, 36px);

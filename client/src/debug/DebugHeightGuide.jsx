@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { VRBO_UI } from "../config/vrboUi.js";
 
 /**
  * TEMP debug overlay — delete this whole file when done.
- * Toggle: set ENABLE = false, or press `g` to show/hide.
+ * Toggle: VRBO_UI.heightGuide in config/vrboUi.js, or press `g` when enabled.
  * Drag the magenta line vertically to compare heights.
  */
-export const ENABLE = true;
+export const ENABLE = VRBO_UI.heightGuide;
 
 const LINE = "#e11d8f";
 const STORAGE_KEY = "debug-height-guide-y";

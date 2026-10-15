@@ -8,6 +8,7 @@ import copy from "../data/vrbo-v2/copy.json";
 import preferences from "../data/vrbo-v2/preferences.json";
 import properties from "../data/vrbo-v2/properties.json";
 import users from "../data/vrbo-v2/users.json";
+import { VRBO_UI } from "../config/vrboUi.js";
 import useLandscapeGate from "../hooks/useLandscapeGate.js";
 import useVrboIphoneWebApp from "../hooks/useVrboIphoneWebApp.js";
 import useVrboSessionStartOnActivity from "../hooks/useVrboSessionStartOnActivity.js";
@@ -298,7 +299,7 @@ function vrboRightReference(stage, { celebrating = false, selectedPropertyId = n
   return { src: VRBO_RIGHT_REFS.waiting, caption: "Reference · waiting" };
 }
 
-/** Display 1 · Organizer chat + same-size design reference (phone-style compare). */
+/** Display 1 · Organizer chat (+ optional design reference when VRBO_UI.compareLayout). */
 export function VrboLeftPage() {
   const { state, actions } = useVrboV2Session({ syncOnly: true });
   const propertyLookup = usePropertyLookup(state.results);
@@ -307,24 +308,36 @@ export function VrboLeftPage() {
   // First page reference; swap by stage later as more comps land.
   const referenceSrc = VRBO_LEFT1_REF;
   const referenceCaption = "Reference · intro";
+  const live = (
+    <ScaledDisplayCanvas>
+      <MainChatScreen
+        messages={state.messages}
+        typing={state.typing}
+        userById={userById}
+        propertyLookup={propertyLookup}
+        celebrating={state.celebrating}
+        joined={state.joined}
+        submitted={state.submitted ?? {}}
+        displayNames={state.displayNames ?? {}}
+      />
+    </ScaledDisplayCanvas>
+  );
+
+  if (!VRBO_UI.compareLayout) {
+    return (
+      <div className="vrbo-v2-device vrbo-v2-device--display">
+        <RestartControl onReset={actions.reset} />
+        <div className="vrbo-v2-device__stage vrbo-v2-device__stage--display-live">{live}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="vrbo-v2-device vrbo-v2-device--display">
       <RestartControl onReset={actions.reset} />
       <div className="vrbo-v2-device__stage vrbo-v2-device__stage--display-compare">
         <div className="vrbo-v2-displayFrame">
-          <ScaledDisplayCanvas>
-            <MainChatScreen
-              messages={state.messages}
-              typing={state.typing}
-              userById={userById}
-              propertyLookup={propertyLookup}
-              celebrating={state.celebrating}
-              joined={state.joined}
-              submitted={state.submitted ?? {}}
-              displayNames={state.displayNames ?? {}}
-            />
-          </ScaledDisplayCanvas>
+          {live}
           <p className="vrbo-v2-displayFrame__caption">Live · chat</p>
         </div>
         <div className="vrbo-v2-displayFrame">
@@ -346,31 +359,43 @@ export function VrboLeftPage() {
   );
 }
 
-/** Display 2 · Output / search + same-size design reference (like /vrbo-left). */
+/** Display 2 · Output / search (+ optional design reference when VRBO_UI.compareLayout). */
 export function VrboRightPage() {
   const { state, allSubmitted, actions } = useVrboV2Session({ syncOnly: true });
   const reference = vrboRightReference(state.stage, {
     celebrating: state.celebrating,
     selectedPropertyId: state.selectedPropertyId,
   });
+  const live = (
+    <ScaledDisplayCanvas>
+      <RankingScreen
+        stage={state.stage}
+        summaryText={state.summaryText}
+        results={state.results}
+        priorities={state.priorities}
+        allSubmitted={allSubmitted}
+        previewPropertyId={state.previewPropertyId}
+        selectedPropertyId={state.selectedPropertyId}
+        actions={actions}
+      />
+    </ScaledDisplayCanvas>
+  );
+
+  if (!VRBO_UI.compareLayout) {
+    return (
+      <div className="vrbo-v2-device vrbo-v2-device--display">
+        <RestartControl onReset={actions.reset} />
+        <div className="vrbo-v2-device__stage vrbo-v2-device__stage--display-live">{live}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="vrbo-v2-device vrbo-v2-device--display">
       <RestartControl onReset={actions.reset} />
       <div className="vrbo-v2-device__stage vrbo-v2-device__stage--display-compare">
         <div className="vrbo-v2-displayFrame">
-          <ScaledDisplayCanvas>
-            <RankingScreen
-              stage={state.stage}
-              summaryText={state.summaryText}
-              results={state.results}
-              priorities={state.priorities}
-              allSubmitted={allSubmitted}
-              previewPropertyId={state.previewPropertyId}
-              selectedPropertyId={state.selectedPropertyId}
-              actions={actions}
-            />
-          </ScaledDisplayCanvas>
+          {live}
           <p className="vrbo-v2-displayFrame__caption">Live · search</p>
         </div>
         <div className="vrbo-v2-displayFrame">
@@ -392,9 +417,7 @@ export function VrboRightPage() {
   );
 }
 
-/** Guest phone page — full bleed by default; `?frame=1` nests UI in iPhone 15 ratio.
- *  Sarah also shows a same-size reference UI beside the live phone when framed.
- */
+/** Guest phone page — full bleed unless VRBO_UI.compareLayout + `?frame=1`. */
 export function GuestPhonePage({ guestId }) {
   const [params, setParams] = useSearchParams();
   const frameParam = params.get("frame") ?? params.get("iphone");
@@ -402,8 +425,9 @@ export function GuestPhonePage({ guestId }) {
     typeof window !== "undefined" &&
     (window.matchMedia("(display-mode: standalone)").matches ||
       window.navigator.standalone === true);
-  // Desktop preview can show the iPhone chrome; home-screen / Guided Access is always full bleed.
+  // Compare / iPhone chrome only when debug compare is on (never in standalone).
   const framed =
+    VRBO_UI.compareLayout &&
     !standalone &&
     (frameParam === "1" || (guestId === "sarah" && frameParam !== "0"));
   const webApp = VRBO_IPHONE_WEBAPP[guestId];
@@ -483,7 +507,7 @@ export function GuestPhonePage({ guestId }) {
     <div
       className={`vrbo-v2-device vrbo-v2-device--phone${framed ? " is-framed" : ""}`}
     >
-      {standalone ? null : (
+      {VRBO_UI.compareLayout && !standalone ? (
         <button
           type="button"
           className="vrbo-v2-device__frame-toggle"
@@ -492,7 +516,7 @@ export function GuestPhonePage({ guestId }) {
         >
           {framed ? "Full screen" : "iPhone 15 frame"}
         </button>
-      )}
+      ) : null}
 
       {framed ? (
         <div
