@@ -255,8 +255,9 @@ export class VrboV2Session extends EventEmitter {
     return "abandoned";
   }
 
-  /** Final celebration page: 30s with no interaction → auto restart. */
+  /** Final celebration page: idle → auto restart. Disabled when timeout is 0. */
   checkCelebrationTimeout() {
+    if (!config.vrboCelebrationTimeoutMs || config.vrboCelebrationTimeoutMs <= 0) return;
     if (!this.state.celebrating) return;
     if (!this.state.hyperionSessionId) return;
     if (Date.now() - this.lastInteractionAt < config.vrboCelebrationTimeoutMs) return;

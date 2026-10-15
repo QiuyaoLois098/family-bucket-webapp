@@ -22,8 +22,8 @@ export const config = {
   imageSize: process.env.OPENAI_IMAGE_SIZE || "1024x1536",
   /** Set to 0 (or INACTIVITY_TIMEOUT_MS=0) to disable auto-reset while styling. */
   inactivityTimeoutMs: Number(process.env.INACTIVITY_TIMEOUT_MS || 0),
-  /** Vrbo celebration finale: auto-restart after this idle period. */
-  vrboCelebrationTimeoutMs: Number(process.env.VRBO_CELEBRATION_TIMEOUT_MS || 30000),
+  /** Vrbo celebration finale: auto-restart after this idle period. Set 0 to disable. */
+  vrboCelebrationTimeoutMs: Number(process.env.VRBO_CELEBRATION_TIMEOUT_MS || 0),
   revealHoldMs: Number(process.env.REVEAL_HOLD_MS || 4000),
   /** Hold on building screens after luggage pull before itinerary. */
   buildingHoldMs: Number(process.env.BUILDING_HOLD_MS || 4000),

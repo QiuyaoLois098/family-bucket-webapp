@@ -1213,6 +1213,8 @@
 .vrbo-v2-showcase {
   --design-w: 2160;
   --design-h: 3840;
+  /* Hero height in design px @ 3840 — change this number to resize the image band */
+  --sc-hero-h: 1243.76;
   --sc-blue: #0f51ec;
   --sc-cream: #f9f6f2;
   --sc-ink: #1a1a1a;
@@ -1227,9 +1229,10 @@
   position: absolute;
   inset: 0;
   display: grid;
+  /* Row 2 is auto so hero's own height wins (not a fixed grid track). */
   grid-template-rows:
     auto
-    26cqh
+    auto
     minmax(0, 1fr)
     auto
     auto;
@@ -1277,12 +1280,20 @@
 
 .vrbo-v2-showcase__hero {
   width: 100%;
-  min-height: 0;
+  height: calc(var(--sc-hero-h) / var(--design-h) * 100cqh);
+  min-height: calc(var(--sc-hero-h) / var(--design-h) * 100cqh);
+  max-height: calc(var(--sc-hero-h) / var(--design-h) * 100cqh);
   overflow: hidden;
   background: #d5dbe6;
 }
 
-.vrbo-v2-showcase__hero img,
+.vrbo-v2-showcase__hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .vrbo-v2-showcase__thumb-img img,
 .vrbo-v2-picker__hero img,
 .vrbo-v2-picker__thumb-img img {
@@ -1498,18 +1509,19 @@
 }
 
 .vrbo-v2-showcase__share {
+  /* Match summary Search button (.vrbo-v2-summary__search) */
   width: 100%;
+  margin: 0;
   border: 0;
   border-radius: 999px;
-  padding: 2.35cqh 2cqw;
-  background: var(--sc-blue);
+  padding: 2cqh 2cqw;
+  background: var(--blue, var(--sc-blue));
   color: #ffffff;
-  font-family: var(--sc-ui);
-  /* ~76px @ 3840 */
-  font-size: calc(76 / var(--design-h) * 100cqh);
-  font-weight: 600;
-  line-height: 1.15;
+  font-family: var(--vrbo-v2-content);
+  font-size: calc(80 / var(--design-h) * 100cqh);
+  font-weight: 400;
   letter-spacing: -0.01em;
+  line-height: 1;
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
