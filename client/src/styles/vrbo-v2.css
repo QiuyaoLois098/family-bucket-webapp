@@ -2095,7 +2095,7 @@
 .vrbo-v2-property__chat-row {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   gap: 1.6cqw;
   min-width: 0;
 }
@@ -2122,7 +2122,8 @@
   flex: 1 1 auto;
   min-width: 0;
   gap: 0.55cqh;
-  padding: 0.1cqh 0 0;
+  padding: 0;
+  justify-content: center;
 }
 
 .vrbo-v2-property--chat .vrbo-v2-property__name {
@@ -3129,7 +3130,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
   gap: calc(28 / var(--phone-h) * 100cqh);
   padding: calc(36 / var(--phone-h) * 100cqh) calc(40 / var(--phone-w) * 100cqw) calc(24 / var(--phone-h) * 100cqh);
   scrollbar-width: none;
-  background: #f7f4f0;
+  background: white;
 }
 
 .vrbo-v2-phone__panel--select .vrbo-v2-phone__feed {
@@ -3151,7 +3152,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
 
 .vrbo-v2-phone__property .vrbo-v2-property--chat {
   width: 100%;
-  gap: calc(18 / var(--phone-h) * 100cqh);
+  gap: calc(36 / var(--phone-h) * 100cqh);
   padding: 0;
   background: transparent;
   box-shadow: none;
@@ -3161,7 +3162,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
   padding: calc(32 / var(--phone-h) * 100cqh) calc(32 / var(--phone-w) * 100cqw);
   border: calc(2 / var(--phone-h) * 100cqh) solid rgba(40, 72, 140, 0.14);
   border-radius: calc(48 / var(--phone-h) * 100cqh);
-  background: #f3f2ee;
+  background: #f5f2f4;
 }
 
 .vrbo-v2-phone__property .vrbo-v2-property__chat-row {
@@ -3184,7 +3185,8 @@ body:has(.vrbo-v2-device--phone.is-framed),
 
 .vrbo-v2-phone__property .vrbo-v2-property--chat .vrbo-v2-property__body {
   gap: calc(12 / var(--phone-h) * 100cqh);
-  padding: calc(2 / var(--phone-h) * 100cqh) 0 0;
+  padding: 0;
+  justify-content: center;
 }
 
 .vrbo-v2-phone__property .vrbo-v2-property--chat .vrbo-v2-property__name {
@@ -3218,7 +3220,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
   padding: calc(28 / var(--phone-h) * 100cqh) calc(32 / var(--phone-w) * 100cqw);
   border-radius: calc(28 / var(--phone-h) * 100cqh);
   border-bottom-left-radius: calc(10 / var(--phone-h) * 100cqh);
-  background: #ebe4da;
+  background: #faf6f1;
   color: var(--charcoal);
   box-shadow: none;
 }
