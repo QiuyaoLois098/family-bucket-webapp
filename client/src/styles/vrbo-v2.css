@@ -1496,7 +1496,14 @@
 }
 
 .vrbo-v2-showcase__thumb.is-active {
-  border-color: var(--sc-blue);
+  /* Inner white ring (border) + outer blue ring (box-shadow) */
+  border-color: #ffffff;
+  box-shadow: 0 0 0 0.5cqw var(--sc-blue);
+}
+
+.vrbo-v2-showcase__thumb.is-active .vrbo-v2-showcase__thumb-badge {
+  background: #ffffff;
+  color: var(--sc-blue);
 }
 
 .vrbo-v2-showcase__thumb-img {
