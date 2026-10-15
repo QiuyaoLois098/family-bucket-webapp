@@ -228,6 +228,7 @@ export default function GuestPhone({
   typing,
   userById,
   propertyLookup,
+  selectedPropertyId = null,
   onJoin,
   onToggle,
   onSubmit,
@@ -426,7 +427,9 @@ export default function GuestPhone({
                   selfId={user.id}
                   live
                   afterMessages={
-                    <p className="vrbo-v2-phone__continue">{copy.phone.continueCta}</p>
+                    selectedPropertyId ? null : (
+                      <p className="vrbo-v2-phone__continue">{copy.phone.continueCta}</p>
+                    )
                   }
                 />
                 <ReadonlyComposer />

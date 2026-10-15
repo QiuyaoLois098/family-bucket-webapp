@@ -170,6 +170,7 @@ function VrboDemo() {
       typing={typing}
       userById={userById}
       propertyLookup={propertyLookup}
+      selectedPropertyId={selectedPropertyId}
       onJoin={actions.joinGuest}
       onToggle={actions.togglePreference}
       onSubmit={actions.submitGuest}
@@ -268,6 +269,7 @@ const VRBO_IPHONE_REFS = {
   join: "/images/Vrbo-Images/example/vrbo-iphone/avatar.png",
   chat: "/images/Vrbo-Images/example/vrbo-iphone/2.png",
   submitted: "/images/Vrbo-Images/example/vrbo-iphone/3.png",
+  hotel: "/images/Vrbo-Images/example/vrbo-iphone/4.png",
 };
 const VRBO_RIGHT_REFS = {
   waiting: "/images/Vrbo-Images/example/vrbo-r/1.png",
@@ -403,6 +405,8 @@ export function GuestPhonePage({ guestId }) {
     results,
     displayNames = {},
     runId = 0,
+    selectedPropertyId = null,
+    celebrating = false,
   } = state;
   const guest = guests.find((user) => user.id === guestId);
   const propertyLookup = usePropertyLookup(results);
@@ -428,6 +432,7 @@ export function GuestPhonePage({ guestId }) {
       typing={typing}
       userById={userById}
       propertyLookup={propertyLookup}
+      selectedPropertyId={selectedPropertyId}
       onJoin={actions.joinGuest}
       onToggle={actions.togglePreference}
       onSubmit={actions.submitGuest}
@@ -452,11 +457,13 @@ export function GuestPhonePage({ guestId }) {
 
   const showReference = framed && guestId === "sarah";
   const iphoneReference =
-    Boolean(submitted[guest.id]) || stage === "summary" || stage === "results"
-      ? { src: VRBO_IPHONE_REFS.submitted, caption: "Reference · submitted" }
-      : Boolean(joined[guest.id])
-        ? { src: VRBO_IPHONE_REFS.chat, caption: "Reference · chat" }
-        : { src: VRBO_IPHONE_REFS.join, caption: "Reference · join" };
+    celebrating || selectedPropertyId
+      ? { src: VRBO_IPHONE_REFS.hotel, caption: "Reference · hotel" }
+      : Boolean(submitted[guest.id]) || stage === "summary" || stage === "results"
+        ? { src: VRBO_IPHONE_REFS.submitted, caption: "Reference · submitted" }
+        : Boolean(joined[guest.id])
+          ? { src: VRBO_IPHONE_REFS.chat, caption: "Reference · chat" }
+          : { src: VRBO_IPHONE_REFS.join, caption: "Reference · join" };
 
   return (
     <div

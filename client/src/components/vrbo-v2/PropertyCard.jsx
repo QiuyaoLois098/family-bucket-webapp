@@ -17,8 +17,8 @@ function PropertyImage({ property }) {
 }
 
 function chatMetaLine(property) {
-  const highlights = (property.highlights ?? []).slice(0, 2);
-  return [property.bedrooms, property.sleeps, ...highlights].filter(Boolean).join(" · ");
+  const price = property.nightly ? `${property.nightly} / night` : null;
+  return [property.bedrooms, property.sleeps, price].filter(Boolean).join(" · ");
 }
 
 export default function PropertyCard({
@@ -44,14 +44,20 @@ export default function PropertyCard({
     .join(" ");
 
   if (variant === "chat") {
+    const blurb = property.description || property.highlightsText || property.about;
     return (
       <div className={className}>
-        <p className="vrbo-v2-property__shared">{copy.chat.sharedCard}</p>
-        <PropertyImage property={property} />
-        <div className="vrbo-v2-property__body">
-          <h4 className="vrbo-v2-property__name">{property.name}</h4>
-          <p className="vrbo-v2-property__meta-line">{chatMetaLine(property)}</p>
+        <div className="vrbo-v2-property__chat-card">
+          <div className="vrbo-v2-property__chat-row">
+            <PropertyImage property={property} />
+            <div className="vrbo-v2-property__body">
+              <h4 className="vrbo-v2-property__name">{property.name}</h4>
+              <p className="vrbo-v2-property__meta-line">{chatMetaLine(property)}</p>
+              {blurb ? <p className="vrbo-v2-property__description">{blurb}</p> : null}
+            </div>
+          </div>
         </div>
+        <p className="vrbo-v2-property__shared">{copy.chat.sharedCard}</p>
       </div>
     );
   }
