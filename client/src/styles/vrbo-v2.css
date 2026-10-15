@@ -1432,11 +1432,12 @@
 }
 
 .vrbo-v2-showcase__badge {
-  /* score.png = 512×192 — use aspect-ratio so wreath is not squashed */
+  /* Keep exact original size (450 × 512/192). Only change alignment. */
   position: relative;
   display: grid;
-  place-items: center;
-  align-self: center;
+  justify-items: start;
+  align-items: end;
+  align-self: flex-start;
   width: calc(450 / var(--design-w) * 100cqw);
   max-width: 100%;
   aspect-ratio: 512 / 192;
@@ -1449,7 +1450,8 @@
   position: relative;
   z-index: 1;
   display: block;
-  width: auto;
+  /* Same width as the letterboxed wreath so 9.8 stays centered in it */
+  width: calc(336.5 / 450 * 100%);
   height: auto;
   margin: 0;
   font-family: var(--sc-ui);
@@ -1458,6 +1460,7 @@
   font-weight: 500;
   line-height: 1;
   letter-spacing: -0.02em;
+  text-align: center;
   color: var(--sc-ink);
 }
 
@@ -1467,7 +1470,8 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  object-position: center;
+  /* Same scale as before; only pin to left edge */
+  object-position: left center;
   pointer-events: none;
   user-select: none;
 }
