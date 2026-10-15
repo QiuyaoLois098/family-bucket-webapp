@@ -48,26 +48,6 @@ function PhoneAvatar({ user, className = "vrbo-v2-phone__avatar" }) {
   );
 }
 
-function MemberChips({ members, selfId }) {
-  if (!members.length) return null;
-  return (
-    <div className="vrbo-v2-phone__members" aria-label="People in this trip">
-      {members.map((member) => {
-        const isYou = member.id === selfId;
-        return (
-          <span
-            key={member.id}
-            className={`vrbo-v2-phone__member-chip${isYou ? " is-you" : ""}`}
-          >
-            <PhoneAvatar user={member} className="vrbo-v2-phone__member-avatar" />
-            <em>{isYou ? `${member.name} · You` : member.name}</em>
-          </span>
-        );
-      })}
-    </div>
-  );
-}
-
 function WaitingPills({ guestList, joinedMap, displayNames }) {
   return (
     <div className="vrbo-v2-phone__waiting" aria-label="Guests joining">
@@ -87,6 +67,45 @@ function WaitingPills({ guestList, joinedMap, displayNames }) {
         );
       })}
     </div>
+  );
+}
+
+/** Same pill row as join Waiting… — used for joined members in chat phases. */
+function MemberPills({ members, selfId }) {
+  if (!members.length) return null;
+  return (
+    <div className="vrbo-v2-phone__waiting" aria-label="People in this trip">
+      {members.map((member) => {
+        const isYou = member.id === selfId;
+        return (
+          <span
+            key={member.id}
+            className={`vrbo-v2-phone__waiting-pill${isYou ? " is-you" : " is-joined"}`}
+          >
+            <PhoneAvatar user={member} className="vrbo-v2-phone__waiting-avatar" />
+            {member.name}
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+
+/** Shared blue header + pill row (tuned on join) — same on every phone phase. */
+function PhoneHeader({ subtitle, children = null }) {
+  return (
+    <header className="vrbo-v2-phone__join-head">
+      <div className="vrbo-v2-phone__join-head-row">
+        <span className="vrbo-v2-phone__group-avatar" aria-hidden="true">
+          <img src="/images/Vrbo-Images/Properties/ohana-beach-house.jpg" alt="" />
+        </span>
+        <div>
+          <h3>{chatScript.groupTitle}</h3>
+          <p>{subtitle}</p>
+        </div>
+      </div>
+      {children}
+    </header>
   );
 }
 
@@ -252,47 +271,27 @@ export default function GuestPhone({
     onJoin(user.id, draftName.trim());
   };
 
+  const headerSubtitle =
+    phase === "join" || phase === "closed" ? joinMeta : tripSubtitle;
+
   const screen = (
-        <div className={`vrbo-v2-phone__screen${phase === "join" || phase === "closed" ? " is-joining" : ""}`}>
+        <div className="vrbo-v2-phone__screen">
           <div className="vrbo-v2-phone__chrome">
             <span className="vrbo-v2-phone__time">9:41</span>
             <span className="vrbo-v2-phone__notch" aria-hidden="true" />
           </div>
 
-          {phase === "join" || phase === "closed" ? (
-            <header className="vrbo-v2-phone__join-head">
-              <div className="vrbo-v2-phone__join-head-row">
-                <span className="vrbo-v2-phone__group-avatar" aria-hidden="true">
-                  <img
-                    src="/images/Vrbo-Images/Properties/ohana-beach-house.jpg"
-                    alt=""
-                  />
-                </span>
-                <div>
-                  <h3>{chatScript.groupTitle}</h3>
-                  <p>{joinMeta}</p>
-                </div>
-              </div>
+          <PhoneHeader subtitle={headerSubtitle}>
+            {phase === "join" || phase === "closed" ? (
               <WaitingPills
                 guestList={guests}
                 joinedMap={joinedMap}
                 displayNames={displayNames}
               />
-            </header>
-          ) : (
-            <>
-              <header className="vrbo-v2-phone__trip">
-                <span className="vrbo-v2-phone__group-avatar" aria-hidden="true">
-                  <img src="/images/Vrbo-Images/Avatars/jamie.png" alt="" />
-                </span>
-                <div>
-                  <h3>{chatScript.groupTitle}</h3>
-                  <p>{tripSubtitle}</p>
-                </div>
-              </header>
-              {showMemberChips ? <MemberChips members={chipMembers} selfId={user.id} /> : null}
-            </>
-          )}
+            ) : showMemberChips ? (
+              <MemberPills members={chipMembers} selfId={user.id} />
+            ) : null}
+          </PhoneHeader>
 
           <AnimatePresence mode="wait" initial={false}>
             {phase === "idle" ? (

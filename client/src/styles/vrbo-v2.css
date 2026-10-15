@@ -3293,16 +3293,42 @@ body:has(.vrbo-v2-device--phone.is-framed),
 }
 
 .vrbo-v2-phone__waiting-pill.is-joined {
-  background: rgba(255, 255, 255, 0.32);
+  background: rgba(255, 255, 255, 0.22);
 }
 
-.vrbo-v2-phone__waiting-dot {
+/* Current user chip (chat) — white pill on blue header */
+.vrbo-v2-phone__waiting-pill.is-you {
+  background: #ffffff;
+  color: var(--blue);
+}
+
+.vrbo-v2-phone__waiting-dot,
+.vrbo-v2-phone__waiting-avatar {
   flex: 0 0 auto;
   width: calc(65 / var(--phone-h) * 100cqh);
   height: calc(65 / var(--phone-h) * 100cqh);
   border-radius: 50%;
+}
+
+.vrbo-v2-phone__waiting-dot {
   border: calc(1.5 / var(--phone-h) * 100cqh) solid rgba(255, 255, 255, 0.5);
   background: transparent;
+}
+
+.vrbo-v2-phone__waiting-avatar {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.25);
+  font-size: calc(22 / var(--phone-h) * 100cqh);
+  font-weight: 600;
+}
+
+.vrbo-v2-phone__waiting-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .vrbo-v2-phone__waiting-pill.is-joined .vrbo-v2-phone__waiting-dot {

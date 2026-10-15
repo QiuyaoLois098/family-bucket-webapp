@@ -264,7 +264,10 @@ function VrboDemo() {
 }
 
 const VRBO_LEFT1_REF = "/images/Vrbo-Images/example/vrbo-l/left1.png";
-const VRBO_IPHONE_REF = "/images/Vrbo-Images/example/vrbo-iphone/avatar.png";
+const VRBO_IPHONE_REFS = {
+  join: "/images/Vrbo-Images/example/vrbo-iphone/avatar.png",
+  chat: "/images/Vrbo-Images/example/vrbo-iphone/2.png",
+};
 const VRBO_RIGHT_REFS = {
   waiting: "/images/Vrbo-Images/example/vrbo-r/1.png",
   summary: "/images/Vrbo-Images/example/vrbo-r/2.png",
@@ -447,6 +450,12 @@ export function GuestPhonePage({ guestId }) {
   };
 
   const showReference = framed && guestId === "sarah";
+  const iphoneReferenceSrc = Boolean(joined[guest.id])
+    ? VRBO_IPHONE_REFS.chat
+    : VRBO_IPHONE_REFS.join;
+  const iphoneReferenceCaption = Boolean(joined[guest.id])
+    ? "Reference · chat"
+    : "Reference · join";
 
   return (
     <div
@@ -477,12 +486,12 @@ export function GuestPhonePage({ guestId }) {
               <div className="vrbo-v2-iphone15__bezel vrbo-v2-iphone15__bezel--reference">
                 <img
                   className="vrbo-v2-iphone15__reference"
-                  src={VRBO_IPHONE_REF}
+                  src={iphoneReferenceSrc}
                   alt="Reference UI"
                   draggable={false}
                 />
               </div>
-              <p className="vrbo-v2-iphone15__caption">Reference · iPhone 15</p>
+              <p className="vrbo-v2-iphone15__caption">{iphoneReferenceCaption}</p>
             </div>
           ) : null}
         </div>
