@@ -263,7 +263,8 @@ function VrboDemo() {
   );
 }
 
-const VRBO_LEFT1_REF = "/images/Vrbo-Images/example/left1.png";
+const VRBO_LEFT1_REF = "/images/Vrbo-Images/example/vrbo-l/left1.png";
+const VRBO_IPHONE_REF = "/images/Vrbo-Images/example/vrbo-iphone/avatar.png";
 const VRBO_RIGHT_REFS = {
   waiting: "/images/Vrbo-Images/example/vrbo-r/1.png",
   summary: "/images/Vrbo-Images/example/vrbo-r/2.png",
@@ -476,7 +477,7 @@ export function GuestPhonePage({ guestId }) {
               <div className="vrbo-v2-iphone15__bezel vrbo-v2-iphone15__bezel--reference">
                 <img
                   className="vrbo-v2-iphone15__reference"
-                  src="/images/Vrbo-Images/example/avatar.png"
+                  src={VRBO_IPHONE_REF}
                   alt="Reference UI"
                   draggable={false}
                 />

@@ -2666,25 +2666,20 @@ body:has(.vrbo-v2-device--phone.is-framed),
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 3.4cqh;
-  padding: 0.7cqh 4.5cqw 0.2cqh;
+  /* Status safe-area under Dynamic Island — pushes header content down */
+  min-height: 4.2cqh;
+  padding: 1.6cqh 4.5cqw 0.25cqh;
+  background: var(--blue);
+  color: #ffffff;
 }
 
 .vrbo-v2-phone__time {
-  position: absolute;
-  left: 5.2cqw;
-  font-family: var(--vrbo-v2-content);
-  font-size: 1.7cqh;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  color: var(--charcoal);
+  /* Reference crop has no clock — keep layout space via chrome only */
+  display: none;
 }
 
 .vrbo-v2-phone__notch {
-  width: 22cqw;
-  height: 1.45cqh;
-  border-radius: calc(var(--u) * 999);
-  background: #1a1a1a;
+  display: none;
 }
 
 .vrbo-v2-phone__trip {
@@ -2692,10 +2687,11 @@ body:has(.vrbo-v2-device--phone.is-framed),
   display: flex;
   align-items: center;
   gap: 2.4cqw;
-  padding: 0.7cqh 4.2cqw 0.5cqh;
+  padding: 0.35cqh 4.5cqw 1.1cqh;
   text-align: left;
   border-bottom: 0;
-  background: #ffffff;
+  background: var(--blue);
+  color: #ffffff;
 }
 
 .vrbo-v2-phone__group-avatar {
@@ -2705,7 +2701,8 @@ body:has(.vrbo-v2-device--phone.is-framed),
   height: 5.2cqh;
   overflow: hidden;
   border-radius: 50%;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.2);
+  outline: calc(var(--u) * 1.5) solid rgba(255, 255, 255, 0.32);
 }
 
 .vrbo-v2-phone__group-avatar img,
@@ -2721,7 +2718,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
   font-family: var(--vrbo-v2-sans);
   font-size: 3.55cqh;
   font-weight: 600;
-  color: var(--blue);
+  color: #ffffff;
   line-height: 1.05;
   letter-spacing: -0.02em;
 }
@@ -2731,7 +2728,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
   font-family: var(--vrbo-v2-content);
   font-size: 1.5cqh;
   font-weight: 400;
-  color: rgba(32, 32, 32, 0.5);
+  color: rgba(255, 255, 255, 0.82);
 }
 
 .vrbo-v2-phone__members {
@@ -3209,23 +3206,12 @@ body:has(.vrbo-v2-device--phone.is-framed),
   background: #ffffff;
 }
 
-.vrbo-v2-phone__screen.is-joining .vrbo-v2-phone__chrome {
-  min-height: 4cqh;
-  padding-top: 1cqh;
-  padding-bottom: 0.55cqh;
-  background: var(--blue);
-  color: #ffffff;
-}
-
-.vrbo-v2-phone__screen.is-joining .vrbo-v2-phone__time {
-  color: rgba(255, 255, 255, 0.92);
-}
-
 .vrbo-v2-phone__join-head {
   flex: 0 0 auto;
   display: flex;
   flex-direction: column;
-  padding: 2cqh 5cqw;
+  gap: 1.7cqh;
+  padding: 0.55cqh 5cqw 2.1cqh;
   background: var(--blue);
   color: #ffffff;
 }
@@ -3248,7 +3234,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
 }
 
 .vrbo-v2-phone__join-head p {
-  margin: 1cqh 0;
+  margin: 1.55cqh 0 0;
   font-family: var(--vrbo-v2-content);
   font-size: 1.5cqh;
   font-weight: 400;
@@ -3259,7 +3245,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
 .vrbo-v2-phone__join-head .vrbo-v2-phone__group-avatar {
   width: 5cqh;
   height: 5cqh;
-  outline: calc(var(--u) * 1.5) solid rgba(255, 255, 255, 0.32);
+  outline: calc(var(--u) * 1.5) solid rgba(255, 255, 255, 0.4);
   background: rgba(255, 255, 255, 0.2);
 }
 
@@ -3287,15 +3273,16 @@ body:has(.vrbo-v2-device--phone.is-framed),
   min-width: 0;
   max-width: none;
   justify-content: center;
-  padding: 1cqh;
+  /* Match reference pill height (taller, more inner padding) */
+  padding: 1cqh 1.8cqw;
   border-radius: calc(var(--u) * 999);
   border: 0;
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.2);
   color: #ffffff;
   font-family: var(--vrbo-v2-content);
   font-size: 1.45cqh;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 300;
   letter-spacing: 0;
   text-transform: none;
   white-space: nowrap;
@@ -3304,15 +3291,15 @@ body:has(.vrbo-v2-device--phone.is-framed),
 }
 
 .vrbo-v2-phone__waiting-pill.is-joined {
-  background: rgba(255, 255, 255, 0.34);
+  background: rgba(255, 255, 255, 0.32);
 }
 
 .vrbo-v2-phone__waiting-dot {
   flex: 0 0 auto;
-  width: 3cqh;
-  height: 3cqh;
+  width: 2.85cqh;
+  height: 2.85cqh;
   border-radius: 50%;
-  border: 0.5px solid rgba(255, 255, 255, 0.9);
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
   background: transparent;
 }
 
@@ -3333,8 +3320,8 @@ body:has(.vrbo-v2-device--phone.is-framed),
   display: grid;
   place-items: center;
   flex: 0 0 auto;
-  width: 7.2cqh;
-  height: 7.2cqh;
+  width: 7.4cqh;
+  height: 7.4cqh;
   overflow: hidden;
   border-radius: 50%;
   background: #d7ebfb;
@@ -3354,9 +3341,10 @@ body:has(.vrbo-v2-device--phone.is-framed),
 
 .vrbo-v2-phone__join-avatar-label {
   font-family: var(--vrbo-v2-content);
-  font-size: 1.2cqh;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 500;
   color: var(--blue);
+  padding-top: 12px;
 }
 
 .vrbo-v2-phone__join h4 {
@@ -3511,7 +3499,6 @@ body:has(.vrbo-v2-device--phone.is-framed),
 }
 
 .vrbo-v2-phone__waiting {
-  margin-top: 1cqh;
   font-size: 1.8cqh;
   letter-spacing: 0.08em;
   text-transform: uppercase;
