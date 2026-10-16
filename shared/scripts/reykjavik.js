@@ -58,67 +58,67 @@ const reykjavik = {
       title: "Welcome to Iceland",
       description:
         "Land at Keflavík, settle into Reykjavík, and enjoy the spring evening light over the harbor.",
-      image: "/images/Expedia-images/03-itinerary/it1.png",
+      image: "/images/Expedia-images/itinerary/iceland/welcome-iceland.jpg",
     },
     "into-the-lava-tunnel": {
       title: "Into the Lava Tunnel",
       description:
         "Explore Raufarhólshellir with a guide, helmets, and headlamps beneath the lava fields.",
-      image: "/images/Expedia-images/03-itinerary/it2.png",
+      image: "/images/Expedia-images/itinerary/iceland/into-the-lava-tunnel.jpg",
     },
     "along-the-lighthouse-shore": {
       title: "Along the Lighthouse Shore",
       description:
         "Explore the shore near Grótta Lighthouse and look for eider ducks and oystercatchers.",
-      image: "/images/Expedia-images/03-itinerary/it3.png",
+      image: "/images/Expedia-images/itinerary/iceland/along-the-lighthouse-shore.jpg",
     },
     "above-the-valley": {
       title: "Above the Valley",
       description:
         "Ride Mega Zipline Iceland above the Reykjadalur valley, subject to age and operating conditions.",
-      image: "/images/Expedia-images/03-itinerary/it4.png",
+      image: "/images/Expedia-images/itinerary/iceland/above-the-valley.png",
     },
     "view-from-mt-esja": {
       title: "A View from Mt. Esja",
       description:
         "Explore a suitable Mt. Esja trail for city views, adapting the walk to April conditions.",
-      image: "/images/Expedia-images/03-itinerary/it4.png",
+      image: "/images/Expedia-images/itinerary/iceland/view-from-mt-esja.png",
     },
     "golden-circle-easily": {
       title: "The Golden Circle, Easily",
       description:
         "Take a coach tour to Þingvellir, Gullfoss, and the Geysir area, with big views along the way.",
-      image: "/images/Expedia-images/03-itinerary/it2.png",
+      image: "/images/Expedia-images/itinerary/iceland/golden-circle-easily.jpg",
     },
     "warm-pool-afternoon": {
       title: "A Warm Pool Afternoon",
       description:
         "Spend an easy afternoon at Laugardalslaug, with geothermal pools, hot tubs, and a waterslide.",
-      image: "/images/Expedia-images/03-itinerary/it3.png",
+      image: "/images/Expedia-images/itinerary/iceland/warm-pool-afternoon.jpg",
     },
     "lunch-by-the-harbor": {
       title: "Lunch by the Harbor",
       description:
         "Enjoy fish and chips at Kaffivagninn, with fishing boats and harbor views nearby.",
-      image: "/images/Expedia-images/03-itinerary/it4.png",
+      image: "/images/Expedia-images/itinerary/iceland/lunch-by-the-harbor.png",
     },
     "slower-seaside-day": {
       title: "A Slower Seaside Day",
       description:
         "Picnic near Grótta Lighthouse and watch seabirds, checking the tide before any causeway walk.",
-      image: "/images/Expedia-images/03-itinerary/it4.png",
+      image: "/images/Expedia-images/itinerary/iceland/slower-seaside-day.jpg",
     },
     "one-last-coastal-view": {
       title: "One Last Coastal View",
       description:
         "Enjoy one last view of Reykjavík’s coast before heading to the airport for your flight home.",
-      image: "/images/Expedia-images/03-itinerary/it5.png",
+      image: "/images/Expedia-images/itinerary/iceland/one-last-coastal-view.png",
     },
     "quiet-coastal-farewell": {
       title: "A Quiet Coastal Farewell",
       description:
         "Take in one last coastal view before checking out and heading to the airport.",
-      image: "/images/Expedia-images/03-itinerary/it5.png",
+      image: "/images/Expedia-images/itinerary/iceland/quiet-coastal-farewell.png",
     },
   },
 
