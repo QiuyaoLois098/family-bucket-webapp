@@ -28,92 +28,143 @@ const reykjavik = {
     image: "/images/Expedia-images/destinations/iceland.png",
   },
 
+  /**
+   * Arrangement (design board):
+   *   Day 1 — shared welcome
+   *   Days 2–3 — Q2 order swap (adventure: lava↔lighthouse; relax: Golden Circle↔pools)
+   *   Day 4 — Q3 add-on (or softer default when Q3 skipped)
+   *   Day 5 — branch ending
+   */
   itinerary: {
     headline: "Five days built for your family",
     meta: "Reykjavík · Apr 6 – 11",
-    summary: "Harbor walks, hot pools, and easy day trips",
+    summary: "Lava tunnels, lighthouse shores, warm pools, and harbor days",
   },
 
   dayModules: {
-    "harbor-arrival": {
-      title: "Harbor arrival",
+    "welcome-iceland": {
+      title: "Welcome to Iceland",
       description:
-        "Check in, walk the waterfront, and warm up with something sweet downtown.",
+        "Land at Keflavík, settle into Reykjavík, and enjoy the spring evening light over the harbor.",
       image: "/images/Expedia-images/03-itinerary/it1.png",
     },
-    "golden-circle": {
-      title: "Golden Circle highlights",
+    "into-the-lava-tunnel": {
+      title: "Into the Lava Tunnel",
       description:
-        "A family-paced day of geysers, waterfalls, and plenty of photo stops.",
+        "Explore Raufarhólshellir with a guide, helmets, and headlamps beneath the lava fields.",
       image: "/images/Expedia-images/03-itinerary/it2.png",
     },
-    "hot-pool-afternoon": {
-      title: "Hot pool afternoon",
+    "along-the-lighthouse-shore": {
+      title: "Along the Lighthouse Shore",
       description:
-        "Soak together and let everyone choose their own pace in the warm water.",
+        "Explore the shore near Grótta Lighthouse and look for eider ducks and oystercatchers.",
       image: "/images/Expedia-images/03-itinerary/it3.png",
     },
-    "city-wander": {
-      title: "City wander",
-      description: "Colorful streets, a museum stop, and dinner somewhere cozy.",
+    "above-the-valley": {
+      title: "Above the Valley",
+      description:
+        "Ride Mega Zipline Iceland above the Reykjadalur valley, subject to age and operating conditions.",
       image: "/images/Expedia-images/03-itinerary/it4.png",
     },
-    "shoreline-walk": {
-      title: "One last shoreline walk",
-      description: "A final look across the bay before you head home.",
+    "view-from-mt-esja": {
+      title: "A View from Mt. Esja",
+      description:
+        "Explore a suitable Mt. Esja trail for city views, adapting the walk to April conditions.",
+      image: "/images/Expedia-images/03-itinerary/it4.png",
+    },
+    "golden-circle-easily": {
+      title: "The Golden Circle, Easily",
+      description:
+        "Take a coach tour to Þingvellir, Gullfoss, and the Geysir area, with big views along the way.",
+      image: "/images/Expedia-images/03-itinerary/it2.png",
+    },
+    "warm-pool-afternoon": {
+      title: "A Warm Pool Afternoon",
+      description:
+        "Spend an easy afternoon at Laugardalslaug, with geothermal pools, hot tubs, and a waterslide.",
+      image: "/images/Expedia-images/03-itinerary/it3.png",
+    },
+    "lunch-by-the-harbor": {
+      title: "Lunch by the Harbor",
+      description:
+        "Enjoy fish and chips at Kaffivagninn, with fishing boats and harbor views nearby.",
+      image: "/images/Expedia-images/03-itinerary/it4.png",
+    },
+    "slower-seaside-day": {
+      title: "A Slower Seaside Day",
+      description:
+        "Picnic near Grótta Lighthouse and watch seabirds, checking the tide before any causeway walk.",
+      image: "/images/Expedia-images/03-itinerary/it4.png",
+    },
+    "one-last-coastal-view": {
+      title: "One Last Coastal View",
+      description:
+        "Enjoy one last view of Reykjavík’s coast before heading to the airport for your flight home.",
+      image: "/images/Expedia-images/03-itinerary/it5.png",
+    },
+    "quiet-coastal-farewell": {
+      title: "A Quiet Coastal Farewell",
+      description:
+        "Take in one last coastal view before checking out and heading to the airport.",
       image: "/images/Expedia-images/03-itinerary/it5.png",
     },
   },
 
   itineraryPaths: {
     default: [
-      "harbor-arrival",
-      "golden-circle",
-      "hot-pool-afternoon",
-      "city-wander",
-      "shoreline-walk",
+      "welcome-iceland",
+      "into-the-lava-tunnel",
+      "along-the-lighthouse-shore",
+      "view-from-mt-esja",
+      "one-last-coastal-view",
     ],
+    // Adventure · lava first · no Q3
     "a1-1|a2-1": [
-      "harbor-arrival",
-      "golden-circle",
-      "hot-pool-afternoon",
-      "city-wander",
-      "shoreline-walk",
+      "welcome-iceland",
+      "into-the-lava-tunnel",
+      "along-the-lighthouse-shore",
+      "view-from-mt-esja",
+      "one-last-coastal-view",
     ],
+    // Adventure · lighthouse first · zipline
     "a1-1|a2-2|a3-1": [
-      "harbor-arrival",
-      "hot-pool-afternoon",
-      "golden-circle",
-      "city-wander",
-      "shoreline-walk",
+      "welcome-iceland",
+      "along-the-lighthouse-shore",
+      "into-the-lava-tunnel",
+      "above-the-valley",
+      "one-last-coastal-view",
     ],
+    // Adventure · lighthouse first · Mt. Esja
     "a1-1|a2-2|a3-2": [
-      "harbor-arrival",
-      "golden-circle",
-      "city-wander",
-      "hot-pool-afternoon",
-      "shoreline-walk",
+      "welcome-iceland",
+      "along-the-lighthouse-shore",
+      "into-the-lava-tunnel",
+      "view-from-mt-esja",
+      "one-last-coastal-view",
     ],
+    // Relax · Golden Circle first · harbor lunch
     "a1-2|a2-3|a3-3": [
-      "harbor-arrival",
-      "city-wander",
-      "hot-pool-afternoon",
-      "golden-circle",
-      "shoreline-walk",
+      "welcome-iceland",
+      "golden-circle-easily",
+      "warm-pool-afternoon",
+      "lunch-by-the-harbor",
+      "quiet-coastal-farewell",
     ],
+    // Relax · Golden Circle first · seaside picnic
     "a1-2|a2-3|a3-4": [
-      "harbor-arrival",
-      "hot-pool-afternoon",
-      "city-wander",
-      "golden-circle",
-      "shoreline-walk",
+      "welcome-iceland",
+      "golden-circle-easily",
+      "warm-pool-afternoon",
+      "slower-seaside-day",
+      "quiet-coastal-farewell",
     ],
+    // Relax · warm pools first · no Q3
     "a1-2|a2-4": [
-      "harbor-arrival",
-      "hot-pool-afternoon",
-      "golden-circle",
-      "city-wander",
-      "shoreline-walk",
+      "welcome-iceland",
+      "warm-pool-afternoon",
+      "golden-circle-easily",
+      "slower-seaside-day",
+      "quiet-coastal-farewell",
     ],
   },
 
