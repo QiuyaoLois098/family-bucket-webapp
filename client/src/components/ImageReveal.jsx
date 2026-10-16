@@ -1,10 +1,16 @@
 import { getBlurPx, getRevealScale } from "@shared/index.js";
 import { getDestination } from "@shared/destinations.js";
+import {
+  getDestinationScript,
+  resolveDisplayImage,
+} from "@shared/scripts/index.js";
 import { useCrossfadeImage } from "../hooks/useCrossfadeImage.js";
 
 export default function ImageReveal({ state }) {
   const destination = getDestination(state.destination);
-  const url = state.imageUrl || destination?.image;
+  const script = getDestinationScript(state.destination);
+  const fromScript = resolveDisplayImage(script, state, destination);
+  const url = fromScript || state.imageUrl || destination?.image;
   const { shown, next, nextVisible } = useCrossfadeImage(url);
   const done = state.phase === "planning" || state.phase === "reveal" || state.phase === "itinerary";
   const blur = done ? 0 : getBlurPx(state.answers.length);
@@ -39,7 +45,11 @@ export default function ImageReveal({ state }) {
             <>
               <p className="image-reveal__product">AI Activity Planner</p>
               <h2>{place}</h2>
-              <p className="image-reveal__status">Starting with what&apos;s already booked...</p>
+              <p className="image-reveal__status">
+                {state.phase === "questions"
+                  ? "Planning your family trip..."
+                  : "Starting with what's already booked..."}
+              </p>
             </>
           )}
         </div>

@@ -13,6 +13,7 @@
  *   tripTitle — top line on briefing / Q&A pages
  *   intro / introChip — briefing page before q1
  *   memoryCard — building / memory reveal card
+ *   displayImages — right-screen art during briefing / Q&A
  *   dayModules / itinerary / itineraryPaths — finale 5-day schedule
  *   replyMsg / aiReplyMsg / aiReplyChip — after selecting an answer
  */
@@ -36,7 +37,18 @@ const southLakeTahoe = {
     title: "South Lake Tahoe",
     duration: "5 days",
     footer: "Created with AI Activity Planner",
-    image: "/images/Expedia-images/destinations/lake-tahoe.png",
+    image: "/images/Expedia-images/destination-view/tahoe.jpg",
+  },
+
+  /** Right screen images during briefing / Q&A (keyed by step) */
+  displayImages: {
+    briefing: "/images/Expedia-images/destination-view/tahoe.jpg",
+    q1: "/images/Expedia-images/destination-view/tahoe.jpg",
+    "q2-1": "/images/Expedia-images/destination-view/tahoe.jpg",
+    "q2-2": "/images/Expedia-images/destination-view/tahoe.jpg",
+    "q3-1": "/images/Expedia-images/destination-view/tahoe.jpg",
+    "q3-2": "/images/Expedia-images/destination-view/tahoe.jpg",
+    default: "/images/Expedia-images/destination-view/tahoe.jpg",
   },
 
   /**

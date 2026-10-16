@@ -26,7 +26,18 @@ const asheville = {
     title: "Asheville",
     duration: "5 days",
     footer: "Created with AI Activity Planner",
-    image: "/images/Expedia-images/destinations/asheville.png",
+    image: "/images/Expedia-images/destination-view/asheville.png",
+  },
+
+  /** Right screen images during briefing / Q&A (keyed by step) */
+  displayImages: {
+    briefing: "/images/Expedia-images/destination-view/asheville.png",
+    q1: "/images/Expedia-images/destination-view/asheville.png",
+    "q2-1": "/images/Expedia-images/destination-view/asheville.png",
+    "q2-2": "/images/Expedia-images/destination-view/asheville.png",
+    "q3-1": "/images/Expedia-images/destination-view/asheville.png",
+    "q3-2": "/images/Expedia-images/destination-view/asheville.png",
+    default: "/images/Expedia-images/destination-view/asheville.png",
   },
 
   /**

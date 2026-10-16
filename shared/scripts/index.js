@@ -100,6 +100,34 @@ const FALLBACK_DAY_IMAGES = [
 ];
 
 /**
+ * Right-screen image during briefing / Q&A from script.displayImages.
+ * Keys: briefing | q1 | q2-1 | q2-2 | q3-1 | q3-2 | default
+ * Returns null when the caller should keep using state.imageUrl (post-Q&A).
+ */
+export function resolveDisplayImage(script, state = {}, destination = null) {
+  const images = script?.displayImages || {};
+  const fallback =
+    images.default ||
+    script?.memoryCard?.image ||
+    destination?.heroImage ||
+    destination?.image ||
+    null;
+  const phase = state.phase;
+  const questionId = state.currentQuestionId;
+
+  if (phase === "briefing") {
+    return images.briefing || fallback;
+  }
+
+  if (phase === "questions") {
+    if (questionId && images[questionId]) return images[questionId];
+    return images.default || images.briefing || fallback;
+  }
+
+  return null;
+}
+
+/**
  * Resolve the finale schedule from a destination script + answer path.
  * Path key = answerIds joined by "|"; falls back to itineraryPaths.default.
  */

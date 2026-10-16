@@ -26,7 +26,18 @@ const sedona = {
     title: "Sedona",
     duration: "5 days",
     footer: "Created with AI Activity Planner",
-    image: "/images/Expedia-images/destinations/sedona.png",
+    image: "/images/Expedia-images/destination-view/sedona.png",
+  },
+
+  /** Right screen images during briefing / Q&A (keyed by step) */
+  displayImages: {
+    briefing: "/images/Expedia-images/destination-view/sedona.png",
+    q1: "/images/Expedia-images/destination-view/sedona.png",
+    "q2-1": "/images/Expedia-images/destination-view/sedona.png",
+    "q2-2": "/images/Expedia-images/destination-view/sedona.png",
+    "q3-1": "/images/Expedia-images/destination-view/sedona.png",
+    "q3-2": "/images/Expedia-images/destination-view/sedona.png",
+    default: "/images/Expedia-images/destination-view/sedona.png",
   },
 
   /**
