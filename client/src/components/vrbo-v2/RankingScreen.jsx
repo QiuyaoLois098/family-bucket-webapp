@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
+import chatScript from "../../data/vrbo-v2/chatScript.json";
 import copy from "../../data/vrbo-v2/copy.json";
+import properties from "../../data/vrbo-v2/properties.json";
 import users from "../../data/vrbo-v2/users.json";
 import { StayShowcase } from "./StayViews.jsx";
 
-const FINALE_LOCKED_SRC = "/images/Vrbo-Images/example/vrbo-r/4.png";
+const FINALE_BG_SRC = "/images/Vrbo-Images/final-bg.jpg";
 const TYPEWRITER_MS = 28;
+
+const propertyById = new Map(properties.map((property) => [property.id, property]));
 
 function useTypewriter(text, msPerChar = TYPEWRITER_MS) {
   const [shown, setShown] = useState("");
@@ -166,15 +170,57 @@ function ResultsPanel({
   );
 }
 
-function FinaleLockedPanel() {
+function resolveSelectedProperty(selectedPropertyId, results = []) {
+  if (selectedPropertyId == null) return null;
+  const fromResults = results.find((entry) => entry.property?.id === selectedPropertyId);
+  if (fromResults?.property) return fromResults.property;
+  return propertyById.get(selectedPropertyId) ?? null;
+}
+
+function buildChatParticipantNames(displayNames = {}) {
+  // Full chat cast (Jamie + guests), with optional display-name overrides.
+  const names = users.map((user) => displayNames[user.id] || user.name);
+  return names.length ? names.join(", ") : chatScript.groupSubtitle;
+}
+
+function FinaleLockedPanel({
+  selectedPropertyId,
+  results = [],
+  displayNames = {},
+}) {
+  const property = resolveSelectedProperty(selectedPropertyId, results);
+  const namesLine = buildChatParticipantNames(displayNames);
+  const title = chatScript.groupTitle;
+  const hotelAlt = property?.name ? `${property.name}` : title;
+
   return (
-    <div className="vrbo-v2-rank__finale vrbo-v2-rank__panel--enter" aria-label="Trip locked in">
-      <img
-        className="vrbo-v2-rank__finale-img"
-        src={FINALE_LOCKED_SRC}
-        alt="Hawaii Trip 2027 locked in"
-        draggable={false}
-      />
+    <div
+      className="vrbo-v2-rank__finale vrbo-v2-rank__panel--enter"
+      aria-label={`${title} locked in`}
+      style={{ "--finale-bg": `url("${FINALE_BG_SRC}")` }}
+    >
+      <div className="vrbo-v2-rank__finale-stage">
+        <div className="vrbo-v2-rank__finale-card">
+          {property?.image ? (
+            <img
+              className="vrbo-v2-rank__finale-hotel"
+              src={property.image}
+              alt={hotelAlt}
+              draggable={false}
+            />
+          ) : (
+            <div
+              className="vrbo-v2-rank__finale-hotel vrbo-v2-rank__finale-hotel--fallback"
+              style={property?.gradient ? { background: property.gradient } : undefined}
+              aria-hidden="true"
+            />
+          )}
+        </div>
+        <div className="vrbo-v2-rank__finale-copy">
+          <h2 className="vrbo-v2-rank__finale-title">{title}</h2>
+          <p className="vrbo-v2-rank__finale-names">{namesLine}</p>
+        </div>
+      </div>
     </div>
   );
 }
@@ -195,7 +241,11 @@ export default function RankingScreen({
   if (celebrating) {
     return (
       <div className="vrbo-v2-rank vrbo-v2-rank--finale">
-        <FinaleLockedPanel />
+        <FinaleLockedPanel
+          selectedPropertyId={selectedPropertyId}
+          results={results}
+          displayNames={displayNames}
+        />
       </div>
     );
   }

@@ -100,19 +100,19 @@ try {
       throw "No displays detected."
     }
 
-    # Windows display numbers: 2 → vrbo-left, 3 → vrbo-right.
-    $monitorLeft = Get-ScreenByDisplayNumber -Screens $screens -Number 2
-    $monitorRight = Get-ScreenByDisplayNumber -Screens $screens -Number 3
-    if (-not $monitorLeft) { throw "Display 2 not found. Connected: $($screens.DeviceName -join ', ')" }
-    if (-not $monitorRight) { throw "Display 3 not found. Connected: $($screens.DeviceName -join ', ')" }
+    # Windows display numbers: 2 → vrbo-right, 3 → vrbo-left (reversed vs Expedia).
+    $monitorForRight = Get-ScreenByDisplayNumber -Screens $screens -Number 2
+    $monitorForLeft = Get-ScreenByDisplayNumber -Screens $screens -Number 3
+    if (-not $monitorForRight) { throw "Display 2 not found. Connected: $($screens.DeviceName -join ', ')" }
+    if (-not $monitorForLeft) { throw "Display 3 not found. Connected: $($screens.DeviceName -join ', ')" }
 
     return @{
-      Monitor2 = $monitorLeft.Bounds
-      Monitor3 = $monitorRight.Bounds
+      Monitor2 = $monitorForRight.Bounds
+      Monitor3 = $monitorForLeft.Bounds
       Count    = $screens.Count
       Labels   = @{
-        Monitor2 = $monitorLeft.DeviceName
-        Monitor3 = $monitorRight.DeviceName
+        Monitor2 = $monitorForRight.DeviceName
+        Monitor3 = $monitorForLeft.DeviceName
       }
     }
   }
@@ -183,16 +183,16 @@ try {
   $monitors = Get-MonitorBounds
   $m2 = $monitors.Monitor2
   $m3 = $monitors.Monitor3
-  Write-Step ("Monitor 2 ({0}): {1}x{2} at {3},{4} → vrbo-left" -f $monitors.Labels.Monitor2, $m2.Width, $m2.Height, $m2.X, $m2.Y)
-  Write-Step ("Monitor 3 ({0}): {1}x{2} at {3},{4} → vrbo-right" -f $monitors.Labels.Monitor3, $m3.Width, $m3.Height, $m3.X, $m3.Y)
+  Write-Step ("Monitor 2 ({0}): {1}x{2} at {3},{4} → vrbo-right" -f $monitors.Labels.Monitor2, $m2.Width, $m2.Height, $m2.X, $m2.Y)
+  Write-Step ("Monitor 3 ({0}): {1}x{2} at {3},{4} → vrbo-left" -f $monitors.Labels.Monitor3, $m3.Width, $m3.Height, $m3.X, $m3.Y)
 
   Start-DevServerIfNeeded
 
-  Write-Step "Opening vrbo-left on monitor 2 (kiosk)..."
-  Start-KioskWindow -Browser $browser -Url $LeftUrl -UserDataDir $LeftProfile -Bounds $monitors.Monitor2
+  Write-Step "Opening vrbo-right on monitor 2 (kiosk)..."
+  Start-KioskWindow -Browser $browser -Url $RightUrl -UserDataDir $RightProfile -Bounds $monitors.Monitor2
   Start-Sleep -Milliseconds 700
-  Write-Step "Opening vrbo-right on monitor 3 (kiosk)..."
-  Start-KioskWindow -Browser $browser -Url $RightUrl -UserDataDir $RightProfile -Bounds $monitors.Monitor3
+  Write-Step "Opening vrbo-left on monitor 3 (kiosk)..."
+  Start-KioskWindow -Browser $browser -Url $LeftUrl -UserDataDir $LeftProfile -Bounds $monitors.Monitor3
 
   Write-Step "Done. Press Esc in a kiosk window to exit that window."
   exit 0
