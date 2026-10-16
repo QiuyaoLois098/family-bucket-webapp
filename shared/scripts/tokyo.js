@@ -16,6 +16,7 @@ const tokyo = {
     title: "Tokyo Family Garden Hotel",
     subtitle: "Tokyo, Japan · April 6–11 · Confirmed",
     chipText: "Booked · Expedia",
+    image: "/images/Expedia-images/options/tokyo/intro.jpg",
   },
   /** Building phase — left memory card */
   memoryCard: {
@@ -56,67 +57,67 @@ const tokyo = {
       title: "Welcome to Tokyo",
       description:
         "Settle into Tokyo and take an easy evening stroll beneath the city’s spring trees.",
-      image: "/images/Expedia-images/03-itinerary/it1.png",
+      image: "/images/Expedia-images/itinerary/tokyo/welcome-tokyo.jpg",
     },
     "up-in-the-treetops": {
       title: "Up in the Treetops",
       description:
         "Try Forest Adventure Yokohama’s ropes and bridges on a course suited to your family.",
-      image: "/images/Expedia-images/03-itinerary/it2.png",
+      image: "/images/Expedia-images/itinerary/tokyo/up-in-the-treetops.jpg",
     },
     "out-to-okutama": {
       title: "Out to Okutama",
       description:
         "Make a day trip to Lake Shiromaru for a beginner kayak lesson on calm, jade-green water.",
-      image: "/images/Expedia-images/03-itinerary/it3.png",
+      image: "/images/Expedia-images/itinerary/tokyo/out-to-okutama.jpg",
     },
     "picnic-by-the-pond": {
       title: "A Picnic by the Pond",
       description:
         "Picnic in Inokashira Park and look for koi and turtles around the pond.",
-      image: "/images/Expedia-images/03-itinerary/it4.png",
+      image: "/images/Expedia-images/itinerary/tokyo/picnic-by-the-pond.jpg",
     },
     "day-on-mt-takao": {
       title: "A Day on Mt. Takao",
       description:
         "Take the train to Takaosanguchi and explore Mt. Takao’s Trail 1 at your family’s pace.",
-      image: "/images/Expedia-images/03-itinerary/it4.png",
+      image: "/images/Expedia-images/itinerary/tokyo/day-on-mt-takao.png",
     },
     "down-the-sumida": {
       title: "Down the Sumida, Slowly",
       description:
         "Board the Hotaluna at Asakusa and enjoy Tokyo’s riverside skyline from the water.",
-      image: "/images/Expedia-images/03-itinerary/it2.png",
+      image: "/images/Expedia-images/itinerary/tokyo/down-the-sumida.jpg",
     },
     "spring-garden-stroll": {
       title: "A Spring Garden Stroll",
       description:
         "Spend an easy afternoon on Shinjuku Gyoen’s lawns, looking for late-blooming cherry blossoms.",
-      image: "/images/Expedia-images/03-itinerary/it3.png",
+      image: "/images/Expedia-images/itinerary/tokyo/spring-garden-stroll.jpg",
     },
     "sushi-for-the-family": {
       title: "Sushi for the Family",
       description:
         "Try conveyor-belt sushi at Kura Sushi Harajuku, with udon and fries for less adventurous eaters.",
-      image: "/images/Expedia-images/03-itinerary/it4.png",
+      image: "/images/Expedia-images/itinerary/tokyo/sushi-for-the-family.png",
     },
     "slower-park-day": {
       title: "A Slower Park Day",
       description:
         "Picnic in Inokashira Park, pedal a swan boat, and look for koi and turtles by the pond.",
-      image: "/images/Expedia-images/03-itinerary/it4.png",
+      image: "/images/Expedia-images/itinerary/tokyo/slower-park-day.jpg",
     },
     "one-last-tokyo-morning": {
       title: "One Last Tokyo Morning",
       description:
         "Enjoy a final morning in Tokyo before heading to the airport for your flight home.",
-      image: "/images/Expedia-images/03-itinerary/it5.png",
+      image: "/images/Expedia-images/itinerary/tokyo/one-last-tokyo-morning.jpg",
     },
     "gentle-city-farewell": {
       title: "A Gentle City Farewell",
       description:
         "Take one last easy city stroll before checking out and heading to the airport.",
-      image: "/images/Expedia-images/03-itinerary/it5.png",
+      image: "/images/Expedia-images/itinerary/tokyo/gentle-city-farewell.jpg",
     },
   },
 
@@ -228,7 +229,7 @@ const tokyo = {
       text: "Try something adventurous",
       subtitle: "Treetop challenges, mountain kayaking, and roadside go-karts.",
       chipText: "",
-      image: "/images/Expedia-images/options/q1_1.png",
+      image: "/images/Expedia-images/options/tokyo/a1-1.jpg",
       replyMsg:
         "We love getting outside—the kids can’t wait to try a treetop course and kayak in Tokyo’s mountains.",
       aiReplyMsg: "",
@@ -239,7 +240,7 @@ const tokyo = {
       text: "Take it slow",
       subtitle: "River views, garden strolls, and family-friendly sushi.",
       chipText: "",
-      image: "/images/Expedia-images/options/q1_2.png",
+      image: "/images/Expedia-images/options/tokyo/a1-2.jpg",
       replyMsg:
         "We’d like to take it slow—river views, spring gardens, and sushi the kids can try sound perfect.",
       aiReplyMsg: "",
@@ -251,7 +252,7 @@ const tokyo = {
       text: "Forest Adventure Yokohama",
       subtitle: "Take on forest ropes and bridges near Yokohama.",
       chipText: "From Google Maps",
-      image: "/images/Expedia-images/options/q2-ropes-1.png",
+      image: "/images/Expedia-images/options/tokyo/a2-1.jpg",
       replyMsg:
         "Let's start with Forest Adventure Yokohama—the kids can't wait to hit the treetops!",
       aiReplyMsg:
@@ -263,7 +264,7 @@ const tokyo = {
       text: "Lake Shiromaru kayak lesson",
       subtitle: "Learn to paddle through emerald waters in Okutama.",
       chipText: "From Google Maps",
-      image: "/images/Expedia-images/options/q2-kayak-1.png",
+      image: "/images/Expedia-images/options/tokyo/a2-2.jpg",
       replyMsg:
         "Let's start with Lake Shiromaru—the kids can't wait to paddle!",
       aiReplyMsg:
@@ -276,7 +277,7 @@ const tokyo = {
       text: "Sumida River cruise",
       subtitle: "Cruise from Asakusa toward Odaiba Marine Park.",
       chipText: "Expedia · Bookable",
-      image: "/images/Expedia-images/options/q3-lake.png",
+      image: "/images/Expedia-images/options/tokyo/a2-3.jpg",
       replyMsg:
         "Let's start with the Sumida River cruise—the kids will love being out on the water!",
       aiReplyMsg:
@@ -288,7 +289,7 @@ const tokyo = {
       text: "Shinjuku Gyoen gardens",
       subtitle: "Enjoy vast lawns and late-blooming cherry trees.",
       chipText: "From Google Maps",
-      image: "/images/Expedia-images/options/q1_2.png",
+      image: "/images/Expedia-images/options/tokyo/a2-4.jpg",
       replyMsg:
         "Let's start with Shinjuku Gyoen—the kids can ease into Tokyo among the spring trees!",
       aiReplyMsg:
@@ -301,7 +302,7 @@ const tokyo = {
       text: "A picnic by the pond",
       subtitle: "A relaxed afternoon with water and spring trees.",
       chipText: "",
-      image: "/images/Expedia-images/options/q3-lake.png",
+      image: "/images/Expedia-images/options/tokyo/a3-1.jpg",
       replyMsg: "Which park would you recommend for a relaxed family afternoon?",
       aiReplyMsg:
         "Inokashira Park is a great fit: enjoy a picnic beneath the spring trees and look for koi and turtles around the pond.",
@@ -309,6 +310,7 @@ const tokyo = {
         title: "Inokashira Park afternoon",
         subtitle: "Picnic, koi, and spring trees",
         chipText: "From Google Maps",
+        image: "/images/Expedia-images/options/tokyo/a3-1.jpg",
       },
       nextQuestionId: null,
     },
@@ -317,7 +319,7 @@ const tokyo = {
       text: "A mountain trail day",
       subtitle: "An easy family walk with big views.",
       chipText: "",
-      image: "/images/Expedia-images/options/q3-hike.png",
+      image: "/images/Expedia-images/options/tokyo/a3-2.png",
       replyMsg: "Which mountain trail would you recommend for a family outing?",
       aiReplyMsg:
         "Mt. Takao’s Trail 1 is the family-walk option in your plan. Take the Keio Line from Shinjuku to Takaosanguchi, then start at the mountain’s base.",
@@ -325,6 +327,7 @@ const tokyo = {
         title: "Mt. Takao Trail 1",
         subtitle: "Family walk from Takaosanguchi",
         chipText: "From Google Maps",
+        image: "/images/Expedia-images/options/tokyo/a3-2.png",
       },
       nextQuestionId: null,
     },
@@ -333,7 +336,7 @@ const tokyo = {
       text: "An easy sushi outing",
       subtitle: "Casual conveyor-belt sushi the kids can try.",
       chipText: "",
-      image: "/images/Expedia-images/options/q1_2.png",
+      image: "/images/Expedia-images/options/tokyo/a3-3.png",
       replyMsg: "Can you recommend somewhere casual for the kids to try sushi?",
       aiReplyMsg:
         "Try Kura Sushi Harajuku for conveyor-belt sushi and familiar sides like udon and fries, plus the Bikkura-pon prize game.",
@@ -341,6 +344,7 @@ const tokyo = {
         title: "Kura Sushi Harajuku",
         subtitle: "Conveyor-belt sushi and kids’ sides",
         chipText: "From Google Maps",
+        image: "/images/Expedia-images/options/tokyo/a3-3.png",
       },
       nextQuestionId: null,
     },
@@ -349,7 +353,7 @@ const tokyo = {
       text: "A picnic by the pond",
       subtitle: "A relaxed afternoon with water and spring trees.",
       chipText: "",
-      image: "/images/Expedia-images/options/q3-lake.png",
+      image: "/images/Expedia-images/options/tokyo/a3-4.jpg",
       replyMsg: "Which park would you recommend for a relaxed family afternoon?",
       aiReplyMsg:
         "Inokashira Park is a great fit: enjoy a picnic, try a swan boat on the pond, and look for koi and turtles beneath the spring trees.",
@@ -357,6 +361,7 @@ const tokyo = {
         title: "Inokashira Park afternoon",
         subtitle: "Picnic, swan boats, and spring trees",
         chipText: "From Google Maps",
+        image: "/images/Expedia-images/options/tokyo/a3-4.jpg",
       },
       nextQuestionId: null,
     },
