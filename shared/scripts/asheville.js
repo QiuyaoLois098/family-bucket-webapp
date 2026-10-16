@@ -29,94 +29,137 @@ const asheville = {
     image: "/images/Expedia-images/destinations/asheville.png",
   },
 
+  /**
+   * Arrangement (design board):
+   *   Day 1 — shared welcome
+   *   Days 2–3 — Q2 order swap (adventure: kayak↔Navitat; relax: trolley↔gardens)
+   *   Day 4 — Q3 add-on (riverside picnic shared; or default when Q3 skipped)
+   *   Day 5 — branch ending
+   */
   itinerary: {
     headline: "Five days built for your family",
     meta: "Asheville · Apr 6 – 11",
-    summary: "Trails, porches, and campfire stories in the Blue Ridge",
+    summary: "River paddles, treetops, gardens, and Blue Ridge views",
   },
 
   dayModules: {
-    "settle-in": {
-      title: "Settle in",
+    "welcome-mountains": {
+      title: "Welcome to the Mountains",
       description:
-        "Arrive at the cabin, unpack slowly, and take a short walk before dinner.",
+        "Arrive in Asheville, settle into your downtown hotel, and take in the spring views of the Blue Ridge.",
       image: "/images/Expedia-images/03-itinerary/it1.png",
     },
-    "trail-creek": {
-      title: "Trail above the creek",
+    "onto-the-water": {
+      title: "Onto the Water",
       description:
-        "An easy leaf-strewn path with stops wherever the kids want to explore.",
+        "Paddle along the French Broad River on a guided family kayak tour.",
       image: "/images/Expedia-images/03-itinerary/it2.png",
     },
-    "town-afternoon": {
-      title: "Town afternoon",
+    "above-the-trees": {
+      title: "Above the Trees",
       description:
-        "Browse downtown Asheville for snacks, crafts, and a long lunch.",
+        "Explore Navitat’s treetop course and zip through the Blue Ridge forest.",
       image: "/images/Expedia-images/03-itinerary/it3.png",
     },
-    "porch-day": {
-      title: "Porch day",
+    "gentle-forest-walk": {
+      title: "A Gentle Forest Walk",
       description:
-        "A slow day on the porch with games, books, and mountain air.",
+        "Bent Creek Forest is a 15-minute drive — perfect for a woodland walk before dinner.",
       image: "/images/Expedia-images/03-itinerary/it4.png",
     },
-    "firepit-stories": {
-      title: "Firepit stories",
+    "riverside-picnic": {
+      title: "A Riverside Picnic",
       description:
-        "Build the fire before the cold settles. Sparks lift into the pines.",
+        "Enjoy a riverside picnic, a short walk past wildflowers, and local wildlife.",
+      image: "/images/Expedia-images/03-itinerary/it4.png",
+    },
+    "easy-look-around": {
+      title: "An Easy Look Around",
+      description:
+        "Ride the Gray Line trolley past Asheville’s sights, hopping off to explore.",
+      image: "/images/Expedia-images/03-itinerary/it2.png",
+    },
+    "slow-garden-stroll": {
+      title: "A Slow Garden Stroll",
+      description:
+        "Stroll along flat paths among native wildflowers at the Botanical Gardens.",
+      image: "/images/Expedia-images/03-itinerary/it3.png",
+    },
+    "southern-family-meal": {
+      title: "A Southern Family Meal",
+      description:
+        "Enjoy a relaxed Southern meal at Biscuit Head, with biscuits and homemade jams.",
+      image: "/images/Expedia-images/03-itinerary/it4.png",
+    },
+    "blue-ridge-one-last-time": {
+      title: "Blue Ridge. One Last Time.",
+      description:
+        "Take in one last Blue Ridge view and a breath of mountain air before heading home.",
+      image: "/images/Expedia-images/03-itinerary/it5.png",
+    },
+    "one-last-overlook": {
+      title: "One Last Overlook",
+      description:
+        "Take in one final Blue Ridge overlook, enjoying the mountain views before heading home.",
       image: "/images/Expedia-images/03-itinerary/it5.png",
     },
   },
 
   itineraryPaths: {
     default: [
-      "settle-in",
-      "trail-creek",
-      "town-afternoon",
-      "porch-day",
-      "firepit-stories",
+      "welcome-mountains",
+      "onto-the-water",
+      "above-the-trees",
+      "gentle-forest-walk",
+      "blue-ridge-one-last-time",
     ],
+    // Adventure · kayak first · no Q3
     "a1-1|a2-1": [
-      "settle-in",
-      "trail-creek",
-      "town-afternoon",
-      "porch-day",
-      "firepit-stories",
+      "welcome-mountains",
+      "onto-the-water",
+      "above-the-trees",
+      "riverside-picnic",
+      "blue-ridge-one-last-time",
     ],
+    // Adventure · Navitat first · forest walk
     "a1-1|a2-2|a3-1": [
-      "settle-in",
-      "town-afternoon",
-      "trail-creek",
-      "porch-day",
-      "firepit-stories",
+      "welcome-mountains",
+      "above-the-trees",
+      "onto-the-water",
+      "gentle-forest-walk",
+      "blue-ridge-one-last-time",
     ],
+    // Adventure · Navitat first · riverside picnic
     "a1-1|a2-2|a3-2": [
-      "settle-in",
-      "trail-creek",
-      "porch-day",
-      "town-afternoon",
-      "firepit-stories",
+      "welcome-mountains",
+      "above-the-trees",
+      "onto-the-water",
+      "riverside-picnic",
+      "blue-ridge-one-last-time",
     ],
+    // Relax · trolley first · Southern meal
     "a1-2|a2-3|a3-3": [
-      "settle-in",
-      "porch-day",
-      "town-afternoon",
-      "trail-creek",
-      "firepit-stories",
+      "welcome-mountains",
+      "easy-look-around",
+      "slow-garden-stroll",
+      "southern-family-meal",
+      "one-last-overlook",
     ],
+    // Relax · trolley first · riverside picnic
     "a1-2|a2-3|a3-2": [
-      "settle-in",
-      "town-afternoon",
-      "porch-day",
-      "trail-creek",
-      "firepit-stories",
+      "welcome-mountains",
+      "easy-look-around",
+      "slow-garden-stroll",
+      "riverside-picnic",
+      "one-last-overlook",
     ],
+    // Relax · gardens first · no Q3
     "a1-2|a2-4": [
-      "settle-in",
-      "porch-day",
-      "trail-creek",
-      "town-afternoon",
-      "firepit-stories",
+      "welcome-mountains",
+      "slow-garden-stroll",
+      "easy-look-around",
+      "riverside-picnic",
+      "one-last-overlook",
     ],
   },
 
