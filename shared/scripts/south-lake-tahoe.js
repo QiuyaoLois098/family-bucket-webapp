@@ -2,12 +2,10 @@
  * South Lake Tahoe branching Q&A script.
  *
  * Tree:
- *   q1 → a1-1 → q2-1 → a2-1 (end)
- *                    → a2-2 → q3-1 → a3-1 (end)
- *                                  → a3-2 (end, shared)
- *        a1-2 → q2-2 → a2-3 → q3-2 → a3-3 (end)
- *                                  → a3-2 (end, shared)
- *                    → a2-4 (end)
+ *   q1 → a1-1 → q2-1 → a2-1 → q3-1 → a3-1 | a3-2
+ *                    → a2-2 → q3-1 → a3-1 | a3-2
+ *        a1-2 → q2-2 → a2-3 → q3-2 → a3-3 | a3-2
+ *                    → a2-4 → q3-2 → a3-3 | a3-2
  *
  * Script fields:
  *   tripTitle — top line on briefing / Q&A pages
@@ -144,8 +142,16 @@ const southLakeTahoe = {
       "easy-family-hike",
       "one-last-paddle",
     ],
-    // Adventure · kayak first · no Q3
-    "a1-1|a2-1": [
+    // Adventure · kayak first · family hike
+    "a1-1|a2-1|a3-1": [
+      "welcome-lake",
+      "onto-the-water",
+      "ropes-in-the-pines",
+      "easy-family-hike",
+      "one-last-paddle",
+    ],
+    // Adventure · kayak first · more lake time
+    "a1-1|a2-1|a3-2": [
       "welcome-lake",
       "onto-the-water",
       "ropes-in-the-pines",
@@ -184,8 +190,16 @@ const southLakeTahoe = {
       "slower-shoreline-day",
       "one-last-lake-morning",
     ],
-    // Relax · Kings Beach first · no Q3
-    "a1-2|a2-4": [
+    // Relax · Kings Beach first · dinner
+    "a1-2|a2-4|a3-3": [
+      "welcome-lake",
+      "quiet-beach-afternoon",
+      "onto-the-water-slowly",
+      "dinner-by-the-lake",
+      "one-last-lake-morning",
+    ],
+    // Relax · Kings Beach first · more lake time
+    "a1-2|a2-4|a3-2": [
       "welcome-lake",
       "quiet-beach-afternoon",
       "onto-the-water-slowly",
@@ -256,7 +270,7 @@ const southLakeTahoe = {
         "Let's start with the Guided Kayak Tour on Emerald Bay—the kids can't wait to get on the water!",
       aiReplyMsg:
         "Perfect—I'll start with kayaking on Emerald Bay, then add the Tahoe City ropes course the next day to round out your itinerary.",
-      nextQuestionId: null,
+      nextQuestionId: "q3-1",
     },
     "a2-2": {
       id: "a2-2",
@@ -293,7 +307,7 @@ const southLakeTahoe = {
         "Let's start with Kings Beach—the kids can ease into the trip by the water!",
       aiReplyMsg:
         "Perfect—I'll start with Kings Beach, then add the M.S. Dixie II cruise the next day to round out your easygoing itinerary.",
-      nextQuestionId: null,
+      nextQuestionId: "q3-2",
     },
 
     "a3-1": {
@@ -309,6 +323,7 @@ const southLakeTahoe = {
         title: "Van Sickle Bi-State Park",
         subtitle: "8 min from your hotel",
         chipText: "From Google Maps",
+        image: "/images/Expedia-images/options/q3-vansickle.png",
       },
       nextQuestionId: null,
     },

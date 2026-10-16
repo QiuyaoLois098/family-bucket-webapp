@@ -124,8 +124,16 @@ const laFortuna = {
       "onto-lake-arenal",
       "one-last-volcano-view",
     ],
-    // Adventure · zipline first · no Q3
-    "a1-1|a2-1": [
+    // Adventure · zipline first · lake paddle
+    "a1-1|a2-1|a3-1": [
+      "welcome-rainforest",
+      "above-the-rainforest",
+      "across-the-lava-fields",
+      "onto-lake-arenal",
+      "one-last-volcano-view",
+    ],
+    // Adventure · zipline first · slower jungle
+    "a1-1|a2-1|a3-2": [
       "welcome-rainforest",
       "above-the-rainforest",
       "across-the-lava-fields",
@@ -164,8 +172,16 @@ const laFortuna = {
       "slower-jungle-day",
       "quiet-arenal-morning",
     ],
-    // Relax · hot springs first · no Q3
-    "a1-2|a2-4": [
+    // Relax · hot springs first · meal
+    "a1-2|a2-4|a3-3": [
+      "welcome-rainforest",
+      "warm-soak-afternoon",
+      "down-the-river-slowly",
+      "meal-below-arenal",
+      "quiet-arenal-morning",
+    ],
+    // Relax · hot springs first · slower jungle
+    "a1-2|a2-4|a3-2": [
       "welcome-rainforest",
       "warm-soak-afternoon",
       "down-the-river-slowly",
@@ -236,7 +252,7 @@ const laFortuna = {
         "Let's start with the zipline—the kids can't wait to see the rainforest from above!",
       aiReplyMsg:
         "Perfect—I'll start with Arenal EcoGlide, then add the Arenal 1968 lava trails the next day.",
-      nextQuestionId: null,
+      nextQuestionId: "q3-1",
     },
     "a2-2": {
       id: "a2-2",
@@ -273,7 +289,7 @@ const laFortuna = {
         "Let's start with the hot springs—a warm soak sounds perfect for everyone!",
       aiReplyMsg:
         "Perfect—I'll start with Baldi Hot Springs, then add the Peñas Blancas safari float the next day.",
-      nextQuestionId: null,
+      nextQuestionId: "q3-2",
     },
 
     "a3-1": {

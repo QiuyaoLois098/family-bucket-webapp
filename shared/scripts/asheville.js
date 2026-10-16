@@ -124,8 +124,16 @@ const asheville = {
       "gentle-forest-walk",
       "blue-ridge-one-last-time",
     ],
-    // Adventure · kayak first · no Q3
-    "a1-1|a2-1": [
+    // Adventure · kayak first · forest walk
+    "a1-1|a2-1|a3-1": [
+      "welcome-mountains",
+      "onto-the-water",
+      "above-the-trees",
+      "gentle-forest-walk",
+      "blue-ridge-one-last-time",
+    ],
+    // Adventure · kayak first · riverside picnic
+    "a1-1|a2-1|a3-2": [
       "welcome-mountains",
       "onto-the-water",
       "above-the-trees",
@@ -164,8 +172,16 @@ const asheville = {
       "riverside-picnic",
       "one-last-overlook",
     ],
-    // Relax · gardens first · no Q3
-    "a1-2|a2-4": [
+    // Relax · gardens first · Southern meal
+    "a1-2|a2-4|a3-3": [
+      "welcome-mountains",
+      "slow-garden-stroll",
+      "easy-look-around",
+      "southern-family-meal",
+      "one-last-overlook",
+    ],
+    // Relax · gardens first · riverside picnic
+    "a1-2|a2-4|a3-2": [
       "welcome-mountains",
       "slow-garden-stroll",
       "easy-look-around",
@@ -236,7 +252,7 @@ const asheville = {
         "Let's start with the French Broad River kayak tour—the kids can't wait to get on the water!",
       aiReplyMsg:
         "Perfect—I'll start with kayaking on the French Broad River, then add Navitat the next day to round out your itinerary.",
-      nextQuestionId: null,
+      nextQuestionId: "q3-1",
     },
     "a2-2": {
       id: "a2-2",
@@ -273,7 +289,7 @@ const asheville = {
         "Let's start with the gardens—the kids can ease into the trip among the flowers!",
       aiReplyMsg:
         "Perfect—I'll start with the Botanical Gardens, then add the Gray Line trolley the next day to round out your easygoing itinerary.",
-      nextQuestionId: null,
+      nextQuestionId: "q3-2",
     },
 
     "a3-1": {

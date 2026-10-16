@@ -61,7 +61,7 @@ export function answerToOption(answer) {
           title: chip.title,
           meta: chip.subtitle,
           badge: chip.chipText,
-          image: answer.image,
+          image: chip.image || answer.image,
         }
       : null,
     nextQuestionId: answer.nextQuestionId ?? null,

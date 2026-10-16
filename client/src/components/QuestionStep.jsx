@@ -19,8 +19,8 @@ const TYPE_PAUSE_AFTER_MS = 320;
 /**
  * Unified question flow (all questions = 2 options):
  * type prompt → then hint / cards stagger → select → fade out →
- * answer confirm (bubble → AI → optional card → Thinking) → fade → next
- * Terminal answer → fade out → reveal finale
+ * answer confirm (bubble → AI → optional place card → Thinking) → fade → next
+ * Terminal answer → same confirm with place card (no Thinking) → reveal finale
  */
 export default function QuestionStep({
   currentQuestion,
@@ -181,15 +181,8 @@ export default function QuestionStep({
     setLocked(true);
     setExiting(true);
 
-    // Terminal answer: fade → reveal finale (AnswerFinaleStep plays the confirm).
-    if (isLast) {
-      timerRef.current = setTimeout(() => {
-        confirmingRef.current = false;
-        onAnswer(questionRef, optionId, { advance: true });
-      }, REVEAL_FADE_MS);
-      return;
-    }
-
+    // Mid + terminal answers share the same reply bridge (bubble → AI → place card).
+    // Terminal skips "Thinking" and advances into reveal after holding on the card.
     timerRef.current = setTimeout(() => {
       setBridge({ bubbleText, aiText, placeCard, optionId });
       setBridgeStep(0);
@@ -210,8 +203,12 @@ export default function QuestionStep({
         t += REVEAL_FADE_MS;
       }
 
-      bridgeTimersRef.current.push(setTimeout(() => setBridgeStep(4), t));
-      t += THINKING_HOLD_MS;
+      if (!isLast) {
+        bridgeTimersRef.current.push(setTimeout(() => setBridgeStep(4), t));
+        t += THINKING_HOLD_MS;
+      } else {
+        t += placeCard ? THINKING_HOLD_MS : REVEAL_STAGGER_MS;
+      }
 
       bridgeTimersRef.current.push(
         setTimeout(() => {

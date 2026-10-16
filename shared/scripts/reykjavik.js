@@ -129,8 +129,16 @@ const reykjavik = {
       "view-from-mt-esja",
       "one-last-coastal-view",
     ],
-    // Adventure · lava first · no Q3
-    "a1-1|a2-1": [
+    // Adventure · lava first · zipline
+    "a1-1|a2-1|a3-1": [
+      "welcome-iceland",
+      "into-the-lava-tunnel",
+      "along-the-lighthouse-shore",
+      "above-the-valley",
+      "one-last-coastal-view",
+    ],
+    // Adventure · lava first · Mt. Esja
+    "a1-1|a2-1|a3-2": [
       "welcome-iceland",
       "into-the-lava-tunnel",
       "along-the-lighthouse-shore",
@@ -169,8 +177,16 @@ const reykjavik = {
       "slower-seaside-day",
       "quiet-coastal-farewell",
     ],
-    // Relax · warm pools first · no Q3
-    "a1-2|a2-4": [
+    // Relax · warm pools first · harbor lunch
+    "a1-2|a2-4|a3-3": [
+      "welcome-iceland",
+      "warm-pool-afternoon",
+      "golden-circle-easily",
+      "lunch-by-the-harbor",
+      "quiet-coastal-farewell",
+    ],
+    // Relax · warm pools first · seaside picnic
+    "a1-2|a2-4|a3-4": [
       "welcome-iceland",
       "warm-pool-afternoon",
       "golden-circle-easily",
@@ -241,7 +257,7 @@ const reykjavik = {
         "Let's start with the lava tunnel—the kids can't wait to explore underground!",
       aiReplyMsg:
         "Perfect—I'll start with Raufarhólshellir lava tunnel, then add the Grótta coastline the next day.",
-      nextQuestionId: null,
+      nextQuestionId: "q3-1",
     },
     "a2-2": {
       id: "a2-2",
@@ -278,7 +294,7 @@ const reykjavik = {
         "Let's start with the warm pools—a gentle afternoon sounds just right after traveling!",
       aiReplyMsg:
         "Perfect—I'll start with Laugardalslaug's warm pools, then add the Golden Circle tour the next day.",
-      nextQuestionId: null,
+      nextQuestionId: "q3-2",
     },
 
     "a3-1": {
