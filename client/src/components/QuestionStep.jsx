@@ -5,6 +5,7 @@ import {
   getDestinationScript,
   questionToUi,
   getAnswer,
+  answerToOption,
 } from "@shared/scripts/index.js";
 import ExpediaBrandBar from "./ExpediaBrandBar.jsx";
 
@@ -20,12 +21,14 @@ const TYPE_PAUSE_AFTER_MS = 320;
  * Unified question flow (all questions = 2 options):
  * type prompt → then hint / cards stagger → select → fade out →
  * answer confirm (bubble → AI → optional place card → Thinking) → fade → next
- * Terminal answer → same confirm with place card (no Thinking) → reveal finale
+ * Terminal: settle on place card, advance (right → luggage; left stays put)
  */
 export default function QuestionStep({
   currentQuestion,
   currentQuestionId,
   destinationId,
+  finaleAnswerId = null,
+  holdReply = false,
   onAnswer,
 }) {
   const [pendingId, setPendingId] = useState(null);
@@ -45,6 +48,10 @@ export default function QuestionStep({
   const bridgeTimersRef = useRef([]);
   const typeTimerRef = useRef(null);
   const confirmingRef = useRef(false);
+  const bridgeRef = useRef(null);
+  const finaleAnswerRef = useRef(finaleAnswerId);
+  finaleAnswerRef.current = finaleAnswerId;
+  bridgeRef.current = bridge;
 
   const script = getDestinationScript(destinationId);
   const question = script
@@ -118,6 +125,31 @@ export default function QuestionStep({
   };
 
   useEffect(() => {
+    // Reveal/luggage: keep settled reply on screen (do not reset Q&A).
+    if (holdReply) {
+      if (bridgeRef.current) return undefined;
+
+      const answerId = finaleAnswerRef.current;
+      const option = script
+        ? answerToOption(getAnswer(script, answerId))
+        : resolveAnswerOption(QUESTIONS[QUESTIONS.length - 1], answerId) ||
+          QUESTIONS[QUESTIONS.length - 1]?.options?.[0];
+      if (!option) return undefined;
+
+      setLocked(true);
+      setExiting(false);
+      setBridgeExiting(false);
+      setBridge({
+        bubbleText: option.youSay || "",
+        aiText: option.aiSay || null,
+        placeCard: option.answerCard || null,
+        optionId: option.id,
+      });
+      setBridgeStep(option.answerCard ? 3 : option.aiSay ? 2 : 1);
+      confirmingRef.current = true;
+      return undefined;
+    }
+
     if (confirmingRef.current) return undefined;
 
     clearTimeout(timerRef.current);
@@ -140,10 +172,11 @@ export default function QuestionStep({
       clearRevealTimers();
       clearTypeTimer();
     };
+    // finaleAnswerId intentionally omitted — locking an answer must not reset the question
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentQuestion, currentQuestionId, destinationId]);
+  }, [currentQuestion, currentQuestionId, destinationId, holdReply]);
 
-  if (!question) return null;
+  if (!question && !bridge) return null;
 
   const destination = getDestination(destinationId);
   const tripPlace = destination?.tripLabel || destination?.shortTitle || "Your trip";
@@ -206,22 +239,30 @@ export default function QuestionStep({
       if (!isLast) {
         bridgeTimersRef.current.push(setTimeout(() => setBridgeStep(4), t));
         t += THINKING_HOLD_MS;
-      } else {
-        t += placeCard ? THINKING_HOLD_MS : REVEAL_STAGGER_MS;
+
+        bridgeTimersRef.current.push(
+          setTimeout(() => {
+            setBridgeExiting(true);
+            bridgeTimersRef.current.push(
+              setTimeout(() => {
+                confirmingRef.current = false;
+                setBridge(null);
+                setBridgeStep(0);
+                setBridgeExiting(false);
+                onAnswer(questionRef, optionId, { advance: true });
+              }, REVEAL_FADE_MS),
+            );
+          }, t),
+        );
+        return;
       }
 
+      // Terminal: keep reply visible; only phase→reveal flips the right screen to luggage.
+      t += placeCard ? REVEAL_FADE_MS : 40;
       bridgeTimersRef.current.push(
         setTimeout(() => {
-          setBridgeExiting(true);
-          bridgeTimersRef.current.push(
-            setTimeout(() => {
-              confirmingRef.current = false;
-              setBridge(null);
-              setBridgeStep(0);
-              setBridgeExiting(false);
-              onAnswer(questionRef, optionId, { advance: true });
-            }, REVEAL_FADE_MS),
-          );
+          confirmingRef.current = true;
+          onAnswer(questionRef, optionId, { advance: true });
         }, t),
       );
     }, REVEAL_FADE_MS);
@@ -325,7 +366,7 @@ export default function QuestionStep({
               ) : null}
             </h2>
             <p className={`question__pick-hint${showHint ? " is-revealed" : ""}`}>
-              {question.pickHint || "(Pick 1 option)"}
+              {question?.pickHint || "(Pick 1 option)"}
             </p>
           </div>
 

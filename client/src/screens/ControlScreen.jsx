@@ -2,7 +2,6 @@ import { ScreenChrome } from "../components/ScreenChrome.jsx";
 import DestinationPicker from "../components/DestinationPicker.jsx";
 import BriefingStep from "../components/BriefingStep.jsx";
 import QuestionStep from "../components/QuestionStep.jsx";
-import AnswerFinaleStep from "../components/AnswerFinaleStep.jsx";
 import BuildingMemoryStep from "../components/BuildingMemoryStep.jsx";
 import ItinerarySchedule from "../components/ItinerarySchedule.jsx";
 
@@ -11,8 +10,16 @@ export default function ControlScreen() {
     <ScreenChrome role="control">
       {({ state, actions }) => {
         const phase = state.phase === "idle" ? "destination" : state.phase;
-        const finaleActive =
-          phase === "reveal" || phase === "building" || phase === "itinerary";
+        // Keep the Q&A panel through reveal so the settled reply doesn't remount.
+        const qaActive =
+          phase === "briefing" || phase === "questions" || phase === "reveal";
+        const afterActive = phase === "building" || phase === "itinerary";
+        const stepQuestionId =
+          phase === "reveal"
+            ? state.answeredQuestionIds?.[state.answeredQuestionIds.length - 1] ||
+              null
+            : state.currentQuestionId;
+
         return (
           <main className={`screen screen--control phase-${phase}`}>
             <div className="screen__grain" />
@@ -28,8 +35,8 @@ export default function ControlScreen() {
               ) : null}
             </section>
             <section
-              className={`panel ${phase === "briefing" || phase === "questions" ? "is-active" : ""}`}
-              inert={phase !== "briefing" && phase !== "questions" ? "" : undefined}
+              className={`panel ${qaActive ? "is-active" : ""}`}
+              inert={!qaActive ? "" : undefined}
             >
               {phase === "briefing" ? (
                 <BriefingStep
@@ -38,26 +45,24 @@ export default function ControlScreen() {
                   onContinue={actions.beginQuestions}
                 />
               ) : null}
-              {phase === "questions" ? (
+              {phase === "questions" || phase === "reveal" ? (
                 <QuestionStep
-                  key={`${state.destination}-${state.currentQuestionId || state.currentQuestion}`}
+                  key={`${state.destination}-${stepQuestionId || state.currentQuestion}`}
                   currentQuestion={state.currentQuestion}
-                  currentQuestionId={state.currentQuestionId}
+                  currentQuestionId={stepQuestionId}
                   destinationId={state.destination}
+                  finaleAnswerId={
+                    state.answers?.[state.answers.length - 1] || null
+                  }
+                  holdReply={phase === "reveal"}
                   onAnswer={actions.answer}
                 />
               ) : null}
             </section>
             <section
-              className={`panel ${finaleActive ? "is-active" : ""}`}
-              inert={!finaleActive ? "" : undefined}
+              className={`panel ${afterActive ? "is-active" : ""}`}
+              inert={!afterActive ? "" : undefined}
             >
-              {phase === "reveal" ? (
-                <AnswerFinaleStep
-                  destinationId={state.destination}
-                  answers={state.answers}
-                />
-              ) : null}
               {phase === "building" ? (
                 <BuildingMemoryStep destinationId={state.destination} />
               ) : null}
