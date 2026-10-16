@@ -1,0 +1,25 @@
+---
+description: Never commit, branch, push, or use GitHub unless the user explicitly asks
+alwaysApply: true
+---
+
+# No git / GitHub without explicit ask
+
+This has already been violated more than once. Do not repeat.
+
+**Default: do not touch git write ops or GitHub.**
+
+Forbidden unless the user explicitly requests that exact action in the **current** message:
+
+- `git commit`, amend, stash pop onto shared history as a substitute for commit
+- `git push` / `git pull` / `git fetch`
+- creating or switching to agent-made branches (`checkout -b`, Cursor auto-branches)
+- `gh pr create` / merge / any remote PR workflow
+- force-push, hard reset, rebase onto main without ask
+
+Allowed without ask:
+
+- Edit workspace files the user requested
+- Read-only `git status` / `diff` / `log` only when needed for the coding task
+
+Never “finish” a task by committing or opening a PR. Never use the user’s GitHub proactively.

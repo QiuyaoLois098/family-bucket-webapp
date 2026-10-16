@@ -1259,15 +1259,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.2cqh;
-  max-width: 18ch;
+  gap: 1.8cqh;
+  /* Explicit width — max-width alone shrink-wraps to text in a centered flex parent. */
+  width: 78%;
+  max-width: 78%;
+  box-sizing: border-box;
   text-align: center;
-  padding: 4cqh;
+  padding: 4cqh 6%;
 }
 
 .vrbo-v2-rank__hero-loading h2 {
   margin: 0;
-  max-width: 16ch;
+  width: 100%;
+  max-width: none;
   font-family: var(--vrbo-v2-sans);
   font-size: 3.8cqh;
   font-weight: 700;
@@ -1277,11 +1281,17 @@
 
 .vrbo-v2-rank__hero-loading .vrbo-v2-rank__lede {
   margin: 0;
+  width: 100%;
+  max-width: none;
+  font-size: 2.2cqh;
+  line-height: 1.35;
   color: rgba(255, 255, 255, 0.88);
 }
 
 .vrbo-v2-rank__hero-loading .vrbo-v2-rank__hint {
   margin: 0;
+  width: 100%;
+  font-size: 1.8cqh;
   color: rgba(255, 255, 255, 0.65);
 }
 
