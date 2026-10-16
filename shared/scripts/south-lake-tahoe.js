@@ -65,67 +65,67 @@ const southLakeTahoe = {
     summary: "Kayaking, ropes, family hikes, and time by the lake",
   },
 
-  /** Reusable one-day modules */
+  /** Reusable one-day modules (images: /images/Expedia-images/itinerary/tahoe/) */
   dayModules: {
     "welcome-lake": {
       title: "Welcome to the Lake",
       description:
         "Arrive in Reno, settle into your lakefront hotel, and watch the sunset over the Sierra.",
-      image: "/images/Expedia-images/03-itinerary/it1.png",
+      image: "/images/Expedia-images/itinerary/tahoe/welcome-lake.jpg",
     },
     "onto-the-water": {
       title: "Onto the Water",
       description:
-        "Clear-bottom kayaking on Emerald Bay—paddle into the cove together and take in the shoreline from the water.",
-      image: "/images/Expedia-images/03-itinerary/it2.png",
+        "Paddle across Emerald Bay and spot fish through the clear-bottom kayak.",
+      image: "/images/Expedia-images/itinerary/tahoe/onto-the-water.jpg",
     },
     "ropes-in-the-pines": {
       title: "Ropes in the Pines",
       description:
-        "Take on Tahoe City’s treetop ropes course, with plenty of spots to cheer each other on.",
-      image: "/images/Expedia-images/03-itinerary/it3.png",
+        "Climb Tahoe City’s treetop ropes course among the pines.",
+      image: "/images/Expedia-images/itinerary/tahoe/ropes-in-the-pines.jpg",
     },
     "easy-family-hike": {
       title: "An Easy Family Hike",
       description:
-        "Van Sickle Bi-State Park is a short drive from your hotel—an easy trail with lake views before dinner.",
-      image: "/images/Expedia-images/03-itinerary/it4.png",
+        "Van Sickle Bi-State Park is an 8-minute drive—perfect for a family hike before dinner.",
+      image: "/images/Expedia-images/itinerary/tahoe/easy-family-hike.jpg",
     },
     "slower-shoreline-day": {
       title: "A Slower Shoreline Day",
       description:
-        "A lakeside picnic, an easy paddle near the beach, and time to watch for wildlife along the shore.",
-      image: "/images/Expedia-images/03-itinerary/it4.png",
+        "Enjoy a lakeside picnic, an easy paddle near the beach, and local wildlife.",
+      image: "/images/Expedia-images/itinerary/tahoe/slower-shoreline-day.jpg",
     },
     "onto-the-water-slowly": {
       title: "Onto the Water, Slowly",
       description:
-        "Ride the M.S. Dixie II from Zephyr Cove to Emerald Bay—paddlewheel views without the paddling.",
-      image: "/images/Expedia-images/03-itinerary/it2.png",
+        "Cruise from Zephyr Cove to Emerald Bay aboard the M.S. Dixie II.",
+      image: "/images/Expedia-images/itinerary/tahoe/onto-the-water-slowly.jpg",
     },
     "quiet-beach-afternoon": {
       title: "A Quiet Beach Afternoon",
       description:
-        "Ease into Kings Beach—calm, shallow water where the kids can wade and everyone can slow down.",
-      image: "/images/Expedia-images/03-itinerary/it3.png",
+        "Wade in calm, shallow water during an easy Kings Beach afternoon.",
+      image: "/images/Expedia-images/itinerary/tahoe/quiet-beach-afternoon.jpg",
     },
     "dinner-by-the-lake": {
       title: "Dinner by the Lake",
       description:
-        "Sunnyside’s lakeside deck for a family meal—kids’ menu, fish tacos, and Hula Pie with a view.",
-      image: "/images/Expedia-images/03-itinerary/it4.png",
+        "Enjoy a family meal on Sunnyside’s lakeside deck, with a kids’ menu and lake views.",
+      image: "/images/Expedia-images/itinerary/tahoe/dinner-by-the-lake.jpg",
     },
     "one-last-paddle": {
       title: "One Last Paddle",
       description:
-        "Spend a final morning on the lake soaking in the views before you head home.",
-      image: "/images/Expedia-images/03-itinerary/it5.png",
+        "Spend one last morning on the lake, soaking in the views and fresh air before heading home.",
+      image: "/images/Expedia-images/itinerary/tahoe/one-last-paddle.jpg",
     },
     "one-last-lake-morning": {
       title: "One Last Lake Morning",
       description:
-        "A final quiet morning by the water before checkout—easy, unhurried, and lake-first.",
-      image: "/images/Expedia-images/03-itinerary/it5.png",
+        "Take in one final quiet morning by the lake, enjoying the calm views before checking out.",
+      image: "/images/Expedia-images/itinerary/tahoe/one-last-lake-morning.jpg",
     },
   },
 
