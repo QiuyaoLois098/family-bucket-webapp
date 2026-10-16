@@ -1,10 +1,10 @@
 /**
- * Sedona branching Q&A script (same tree as South Lake Tahoe).
+ * Sedona branching Q&A script.
  *
- *   q1 → a1-1 → q2-1 → a2-1 (end)
- *                    → a2-2 → q3-1 → a3-1 / a3-2
+ *   q1 → a1-1 → q2-1 → a2-1 → q3-1 → a3-1 / a3-2
+ *                    → a2-2 → q3-1
  *        a1-2 → q2-2 → a2-3 → q3-2 → a3-3 / a3-2 (shared)
- *                    → a2-4 (end)
+ *                    → a2-4 → q3-2
  */
 const sedona = {
   destinationId: "sedona",
@@ -12,9 +12,9 @@ const sedona = {
 
   /** Shown on the briefing page before q1 */
   intro:
-    "We're heading to Sedona from April 6–11. Our flights from Seattle to Phoenix are booked, and we're staying here.",
+    "We're heading to Sedona from April 6–11. Our flights from Minneapolis to Phoenix are booked, and we're staying here.",
   introChip: {
-    title: "Red Rock Family Lodge",
+    title: "Sky Rock Sedona Lodge",
     subtitle: "Sedona, AZ · April 6–11 · Confirmed",
     chipText: "Booked · Expedia",
   },
@@ -27,22 +27,22 @@ const sedona = {
     },
     "q2-1": {
       id: "q2-1",
-      text: "I found two options your family might love. Which adventure should come first?",
+      text: "Red rocks or treetops? Which adventure should come first?",
       answerIds: ["a2-1", "a2-2"],
     },
     "q2-2": {
       id: "q2-2",
-      text: "I found two calm options your family might love. Which comes first?",
+      text: "A trolley ride or a village stroll? Which comes first?",
       answerIds: ["a2-3", "a2-4"],
     },
     "q3-1": {
       id: "q3-1",
-      text: "What should we add around those adventures?",
+      text: "What else would your family like to explore?",
       answerIds: ["a3-1", "a3-2"],
     },
     "q3-2": {
       id: "q3-2",
-      text: "What should we add around this slower trip?",
+      text: "What would round out your slower trip?",
       answerIds: ["a3-3", "a3-2"],
     },
   },
@@ -51,120 +51,120 @@ const sedona = {
     "a1-1": {
       id: "a1-1",
       text: "Try something adventurous",
-      subtitle: "Red-rock hikes, jeep views, and vortex trails.",
+      subtitle: "Red rock trails, jeep tours, and dusty paths.",
       chipText: "",
       image: "/images/Expedia-images/options/q1_1.png",
       replyMsg:
-        "We love the outdoors—the kids are dying to hike the red rocks and try a jeep outing near Sedona over spring break.",
-      aiReplyMsg: "A little adventure it is!",
+        "We love the outdoors—the kids can’t wait to explore Sedona’s red rock trails and maybe a jeep tour too.",
+      aiReplyMsg: "",
       nextQuestionId: "q2-1",
     },
     "a1-2": {
       id: "a1-2",
       text: "Take it slow",
-      subtitle: "Overlooks, easy strolls, and sunset views.",
+      subtitle: "Valley views, slow strolls, and good food.",
       chipText: "",
       image: "/images/Expedia-images/options/q1_2.png",
       replyMsg:
-        "We'd like to take it slow—overlooks, easy strolls, and sunset views sound perfect for our family.",
-      aiReplyMsg: "Taking it slow it is!",
+        "We’d like to take it slow—valley views, shaded courtyards, and good food sound perfect for our family.",
+      aiReplyMsg: "",
       nextQuestionId: "q2-2",
     },
 
     "a2-1": {
       id: "a2-1",
-      text: "Cathedral Rock viewpoint hike",
-      subtitle: "A short scenic climb with big red-rock views.",
+      text: "Bell Rock family walk",
+      subtitle: "Follow a family path below massive red rocks.",
       chipText: "From Google Maps",
       image: "/images/Expedia-images/options/q3-hike.png",
       replyMsg:
-        "Let's start with Cathedral Rock—the kids can't wait to see those red rocks up close!",
+        "Let's start with Bell Rock—the kids can't wait to explore the red-rock trails!",
       aiReplyMsg:
-        "Perfect—I'll start with Cathedral Rock, then add a jeep overlook the next day to round out your itinerary.",
-      nextQuestionId: null,
+        "Perfect—I'll start with Bell Rock Pathway, then add Flagstaff Extreme's treetop course the next day.",
+      nextQuestionId: "q3-1",
     },
     "a2-2": {
       id: "a2-2",
-      text: "Pink Jeep scenic tour",
-      subtitle: "Off-road views without a long hike.",
-      chipText: "Expedia · Bookable",
+      text: "Flagstaff treetop challenge",
+      subtitle: "Climb ropes and bridges among the ponderosa pines.",
+      chipText: "From Google Maps",
       image: "/images/Expedia-images/options/q2-ropes-1.png",
       replyMsg:
-        "Let's start with a Pink Jeep tour—the kids can't wait to ride through the desert!",
+        "Let's start with Flagstaff Extreme—the kids can't wait to tackle the treetop course!",
       aiReplyMsg:
-        "Perfect—I'll start with the Pink Jeep tour, then add an easy red-rock walk the next day to round out your itinerary.",
+        "Perfect—I'll start with Flagstaff Extreme's treetop course, then add Bell Rock Pathway the next day.",
       nextQuestionId: "q3-1",
     },
 
     "a2-3": {
       id: "a2-3",
-      text: "Airport Mesa sunset",
-      subtitle: "An easy overlook for golden-hour photos.",
-      chipText: "From Google Maps",
+      text: "Sedona Trolley tour",
+      subtitle: "See Sedona's landmarks with short photo stops.",
+      chipText: "Expedia Exclusive",
       image: "/images/Expedia-images/options/q3-lake.png",
       replyMsg:
-        "Let's start with Airport Mesa at sunset—the kids will love the colors!",
+        "Let's start with the trolley—a relaxed introduction to Sedona sounds just right!",
       aiReplyMsg:
-        "Perfect—I'll start with Airport Mesa, then add a calm creek stroll the next day to round out your easygoing itinerary.",
+        "Perfect—I'll start with the Sedona Trolley, then add a Tlaquepaque village stroll the next day.",
       nextQuestionId: "q3-2",
     },
     "a2-4": {
       id: "a2-4",
-      text: "Oak Creek Canyon picnic",
-      subtitle: "Shade, water, and a slow afternoon outdoors.",
+      text: "Tlaquepaque village stroll",
+      subtitle: "Explore shaded courtyards, galleries, and craft shops.",
       chipText: "From Google Maps",
       image: "/images/Expedia-images/options/q1_2.png",
       replyMsg:
-        "Let's start with an Oak Creek picnic—the kids can ease into the trip by the water!",
+        "Let's start with Tlaquepaque—the kids can explore while we browse the courtyards!",
       aiReplyMsg:
-        "Perfect—I'll start with Oak Creek, then add a sunset overlook the next day to round out your easygoing itinerary.",
-      nextQuestionId: null,
+        "Perfect—I'll start with Tlaquepaque's courtyards, then add the Sedona Trolley the next day.",
+      nextQuestionId: "q3-2",
     },
 
     "a3-1": {
       id: "a3-1",
-      text: "A nearby family hike",
-      subtitle: "An easy trail close to the hotel, before dinner",
+      text: "A guided river paddle",
+      subtitle: "Admire cliffs from the Verde River.",
       chipText: "",
-      image: "/images/Expedia-images/options/q3-hike.png",
-      replyMsg: "Can we add an easy family hike near our hotel?",
+      image: "/images/Expedia-images/options/q2-kayak-1.png",
+      replyMsg: "Can you recommend a river adventure to add to our trip?",
       aiReplyMsg:
-        "Bell Rock Pathway is a short drive away, so it’s easy to fit in a family hike before dinner.",
+        "Try the guided Verde River kayak tour with Clarkdale—a family-friendly float past cottonwoods and canyon walls.",
       aiReplyChip: {
-        title: "Bell Rock Pathway",
-        subtitle: "Short drive from your hotel",
-        chipText: "From Google Maps",
+        title: "Verde River guided kayak",
+        subtitle: "A guided paddle near Clarkdale",
+        chipText: "Expedia Exclusive",
       },
       nextQuestionId: null,
     },
     "a3-2": {
       id: "a3-2",
-      text: "More time under the stars",
-      subtitle: "A slower evening with wide desert skies.",
+      text: "A creekside picnic",
+      subtitle: "Make time for water, shade, and canyon views.",
       chipText: "",
       image: "/images/Expedia-images/options/q3-lake.png",
-      replyMsg: "Can we add more time for stargazing?",
+      replyMsg: "Where would you recommend a slower afternoon by the water?",
       aiReplyMsg:
-        "Absolutely—I’ll leave an open evening near camp so everyone can slow down and watch the sky.",
+        "Try a picnic beside Oak Creek for a slower afternoon after your adventures. Settle into the shade, enjoy the red-rock views, and watch for hawks overhead.",
       aiReplyChip: {
-        title: "Desert stargazing evening",
-        subtitle: "Blankets, quiet, and big sky",
+        title: "Oak Creek family picnic",
+        subtitle: "Water, shade, and views together",
         chipText: "From Google Maps",
       },
       nextQuestionId: null,
     },
     "a3-3": {
       id: "a3-3",
-      text: "Family dinner with a view",
-      subtitle: "Casual plates and red-rock scenery.",
+      text: "A relaxed family breakfast",
+      subtitle: "Find a casual spot with choices for the kids.",
       chipText: "",
       image: "/images/Expedia-images/options/q1_2.png",
-      replyMsg: "Can we add a family dinner with a view?",
+      replyMsg: "Can you recommend a casual breakfast spot the kids will like?",
       aiReplyMsg:
-        "Elote Cafe is a crowd-pleaser—bold flavors, shareable plates, and an easy family vibe.",
+        "Try Coffee Pot Restaurant for a relaxed family meal, with plenty of omelet choices and a dedicated kids' menu.",
       aiReplyChip: {
-        title: "Elote Cafe",
-        subtitle: "Family dinner with Sedona flavor",
+        title: "Coffee Pot Restaurant",
+        subtitle: "Omelets and a dedicated kids' menu",
         chipText: "From Google Maps",
       },
       nextQuestionId: null,
