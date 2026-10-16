@@ -7,6 +7,14 @@ export {
   resolveAnswerOption,
   isValidAnswer,
 } from "./questions.js";
+export {
+  DESTINATION_SCRIPTS,
+  getDestinationScript,
+  getQuestion,
+  getAnswer,
+  getQuestionAnswers,
+  getStartQuestion,
+} from "./scripts/index.js";
 import { DESTINATIONS } from "./destinations.js";
 import { BLUR_LEVELS, REVEAL_VISIBLE } from "./questions.js";
 
