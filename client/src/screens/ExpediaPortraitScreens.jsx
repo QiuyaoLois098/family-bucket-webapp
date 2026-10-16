@@ -13,6 +13,7 @@ const BUILDING_LEFT_REF = "/images/Expedia-images/example/building-left.png";
 const ITINERARY_REF = "/images/Expedia-images/example/itinerary.png";
 const LUGGAGE_REF = "/images/Expedia-images/example/luggage.png";
 const BUILDING_RIGHT_REF = "/images/Expedia-images/example/building-right.png";
+const RIGHT_IDLE_REF = "/images/Expedia-images/example/right/1.png";
 
 /** Family Bucket screens in a locked 2160×3840 (9∶16) stage, like /vrbo-left. */
 
@@ -114,7 +115,7 @@ function rightReference(phase) {
   if (phase === "itinerary") {
     return { src: ITINERARY_REF, caption: "Reference · itinerary" };
   }
-  return { src: DESTINATION_REF, caption: "Reference · idle" };
+  return { src: RIGHT_IDLE_REF, caption: "Reference · idle" };
 }
 
 /** Screen A · Control — prod full-bleed; `compareLayout` = live + reference. */
