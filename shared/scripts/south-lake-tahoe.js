@@ -34,7 +34,7 @@ const southLakeTahoe = {
     eyebrow: "Your personalized family itinerary",
     title: "South Lake Tahoe",
     duration: "5 days",
-    footer: "Created with AI Activity Planner",
+    footer: "Created with Activity Planner",
     image: "/images/Expedia-images/destination-view/tahoe.jpg",
   },
 

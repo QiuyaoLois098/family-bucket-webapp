@@ -6,7 +6,7 @@ const DEFAULT_MEMORY_CARD = {
   headline: "Your next family memory awaits",
   eyebrow: "Your personalized family itinerary",
   duration: "5 days",
-  footer: "Created with AI Activity Planner",
+  footer: "Created with Activity Planner",
 };
 
 /**

@@ -25,7 +25,7 @@ const asheville = {
     eyebrow: "Your personalized family itinerary",
     title: "Asheville",
     duration: "5 days",
-    footer: "Created with AI Activity Planner",
+    footer: "Created with Activity Planner",
     image: "/images/Expedia-images/destination-view/asheville.png",
   },
 

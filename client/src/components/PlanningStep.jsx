@@ -10,7 +10,7 @@ export default function PlanningStep({ destinationId }) {
       <ExpediaBrandBar />
 
       <div className="planning__body">
-        <p className="planning__eyebrow">AI Activity Planner</p>
+        <p className="planning__eyebrow">Activity Planner</p>
         <h1>
           Bringing your
           <br />

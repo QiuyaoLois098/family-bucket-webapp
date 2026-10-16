@@ -1,7 +1,7 @@
 import "../styles/expedia-brandbar.css";
 
 /** Shared Expedia header used on every Family Bucket screen. */
-export default function ExpediaBrandBar({ product = "AI Activity Planner" }) {
+export default function ExpediaBrandBar({ product = "Activity Planner" }) {
   return (
     <header className="expedia-brandbar">
       <img

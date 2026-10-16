@@ -43,7 +43,7 @@ export default function ImageReveal({ state }) {
             <h2>Your family adventure is ready.</h2>
           ) : (
             <>
-              <p className="image-reveal__product">AI Activity Planner</p>
+              <p className="image-reveal__product">Activity Planner</p>
               <h2>{place}</h2>
               <p className="image-reveal__status">
                 {state.phase === "questions"

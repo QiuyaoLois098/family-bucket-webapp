@@ -23,7 +23,7 @@ const tokyo = {
     eyebrow: "Your personalized family itinerary",
     title: "Tokyo",
     duration: "5 days",
-    footer: "Created with AI Activity Planner",
+    footer: "Created with Activity Planner",
     image: "/images/Expedia-images/destination-view/tokyo.jpg",
   },
 
