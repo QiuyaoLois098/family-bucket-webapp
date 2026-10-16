@@ -923,6 +923,27 @@
   overflow: hidden;
 }
 
+.vrbo-v2-summary__box-text.is-typing::after {
+  content: "";
+  display: inline-block;
+  width: 0.07em;
+  height: 0.95em;
+  margin-left: 0.12em;
+  background: currentColor;
+  vertical-align: -0.08em;
+  animation: vrbo-v2-summary-caret 0.85s step-end infinite;
+}
+
+@keyframes vrbo-v2-summary-caret {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
 .vrbo-v2-summary--compact .vrbo-v2-summary__box-text {
   font-size: 2.1cqh;
 }
@@ -3823,5 +3844,10 @@ body:has(.vrbo-v2-device--phone.is-framed),
   .vrbo-v2-confetti,
   .vrbo-v2-rank__spinner {
     display: none;
+  }
+
+  .vrbo-v2-summary__box-text.is-typing::after {
+    animation: none;
+    opacity: 0;
   }
 }

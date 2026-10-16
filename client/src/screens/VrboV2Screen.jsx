@@ -424,17 +424,18 @@ export function VrboRightPage({ compareLayout = false } = {}) {
   );
 }
 
-/** Guest phone page — full bleed unless VRBO_UI.compareLayout + `?frame=1`. */
-export function GuestPhonePage({ guestId }) {
+/** Guest phone page — prod full bleed; `compareLayout` = live + reference. */
+export function GuestPhonePage({ guestId, compareLayout = false } = {}) {
   const [params, setParams] = useSearchParams();
   const frameParam = params.get("frame") ?? params.get("iphone");
   const standalone =
     typeof window !== "undefined" &&
     (window.matchMedia("(display-mode: standalone)").matches ||
       window.navigator.standalone === true);
+  const compare = compareLayout || VRBO_UI.compareLayout;
   // Compare / iPhone chrome only when debug compare is on (never in standalone).
   const framed =
-    VRBO_UI.compareLayout &&
+    compare &&
     !standalone &&
     (frameParam === "1" || (guestId === "sarah" && frameParam !== "0"));
   const webApp = VRBO_IPHONE_WEBAPP[guestId];
@@ -513,7 +514,7 @@ export function GuestPhonePage({ guestId }) {
     <div
       className={`vrbo-v2-device vrbo-v2-device--phone${framed ? " is-framed" : ""}`}
     >
-      {VRBO_UI.compareLayout && !standalone ? (
+      {compare && !standalone ? (
         <button
           type="button"
           className="vrbo-v2-device__frame-toggle"

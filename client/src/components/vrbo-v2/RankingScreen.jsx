@@ -1,8 +1,43 @@
+import { useEffect, useState } from "react";
 import copy from "../../data/vrbo-v2/copy.json";
 import users from "../../data/vrbo-v2/users.json";
 import { StayShowcase } from "./StayViews.jsx";
 
 const FINALE_LOCKED_SRC = "/images/Vrbo-Images/example/vrbo-r/4.png";
+const TYPEWRITER_MS = 28;
+
+function useTypewriter(text, msPerChar = TYPEWRITER_MS) {
+  const [shown, setShown] = useState("");
+
+  useEffect(() => {
+    const full = text ?? "";
+    if (!full) {
+      setShown("");
+      return undefined;
+    }
+
+    const reduceMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+
+    if (reduceMotion) {
+      setShown(full);
+      return undefined;
+    }
+
+    setShown("");
+    let i = 0;
+    const id = window.setInterval(() => {
+      i += 1;
+      setShown(full.slice(0, i));
+      if (i >= full.length) window.clearInterval(id);
+    }, msPerChar);
+
+    return () => window.clearInterval(id);
+  }, [text, msPerChar]);
+
+  return shown;
+}
 
 function formatListeningLine(names) {
   if (names.length === 0) return "Listening...";
@@ -60,6 +95,8 @@ export function SummaryPanel({
   displayNames = {},
 }) {
   const listeningLine = buildListeningLine(joined, displayNames);
+  const typedText = useTypewriter(summaryText);
+  const isTyping = Boolean(summaryText) && typedText.length < summaryText.length;
 
   return (
     <div className={`vrbo-v2-summary ${compact ? "vrbo-v2-summary--compact" : ""} vrbo-v2-rank__panel--enter`}>
@@ -74,9 +111,19 @@ export function SummaryPanel({
       <div className="vrbo-v2-summary__body">
         <h2 className="vrbo-v2-summary__title">{copy.summary.title}</h2>
 
-        <div className="vrbo-v2-summary__box" role="textbox" aria-readonly="true">
+        <div
+          className="vrbo-v2-summary__box"
+          role="textbox"
+          aria-readonly="true"
+          aria-label={summaryText}
+        >
           <p className="vrbo-v2-summary__box-label">{copy.summary.boxLabel}</p>
-          <p className="vrbo-v2-summary__box-text">{summaryText}</p>
+          <p
+            className={`vrbo-v2-summary__box-text${isTyping ? " is-typing" : ""}`}
+            aria-hidden={Boolean(summaryText)}
+          >
+            {typedText}
+          </p>
         </div>
 
         <p className="vrbo-v2-summary__listening">

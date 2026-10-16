@@ -28,6 +28,7 @@ const DEVICE_PATHS = new Set([
   "/vrbo-left-dev",
   "/vrbo-right-dev",
   "/vrbo-ip1",
+  "/vrbo-ip1-dev",
   "/vrbo-ip2",
   "/vrbo-ip3",
   "/vrbo-ba",
@@ -55,6 +56,10 @@ export default function App() {
         <Route path="/vrbo-left-dev" element={<VrboLeftPage compareLayout />} />
         <Route path="/vrbo-right-dev" element={<VrboRightPage compareLayout />} />
         <Route path="/vrbo-ip1" element={<GuestPhonePage guestId="sarah" />} />
+        <Route
+          path="/vrbo-ip1-dev"
+          element={<GuestPhonePage guestId="sarah" compareLayout />}
+        />
         <Route path="/vrbo-ip2" element={<GuestPhonePage guestId="alex" />} />
         <Route path="/vrbo-ip3" element={<GuestPhonePage guestId="chris" />} />
         <Route path="/sarah" element={<Navigate to="/vrbo-ip1" replace />} />

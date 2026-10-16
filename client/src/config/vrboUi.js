@@ -1,6 +1,6 @@
 /**
  * Vrbo UI defaults for production device URLs.
- * Dev compare + pink guideline: use /vrbo-left-dev and /vrbo-right-dev.
+ * Dev compare + pink guideline: /vrbo-left-dev, /vrbo-right-dev, /vrbo-ip1-dev.
  */
 export const VRBO_UI = {
   /** Magenta height guideline on prod routes (dev routes force this on). */
@@ -16,6 +16,7 @@ export const VRBO_UI = {
 export const VRBO_DEV_COMPARE_PATHS = new Set([
   "/vrbo-left-dev",
   "/vrbo-right-dev",
+  "/vrbo-ip1-dev",
 ]);
 
 export function isVrboDevComparePath(pathname) {
