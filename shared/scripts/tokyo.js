@@ -27,108 +27,159 @@ const tokyo = {
     image: "/images/Expedia-images/destinations/tokyo.png",
   },
 
+  /**
+   * Arrangement (design board):
+   *   Day 1 — shared welcome
+   *   Days 2–3 — Q2 order swap (adventure: treetops↔kayak; relax: cruise↔gardens)
+   *   Day 4 — Q3 add-on
+   *   Day 5 — branch ending
+   */
   itinerary: {
     headline: "Five days built for your family",
     meta: "Tokyo · Apr 6 – 11",
-    summary: "Neighborhoods, parks, and easy evenings made for everyone",
+    summary: "Treetops, gardens, river views, and easy city days",
   },
 
   dayModules: {
-    "arrive-settle": {
-      title: "Arrive & settle",
+    "welcome-tokyo": {
+      title: "Welcome to Tokyo",
       description:
-        "Check in, walk a nearby street, and keep the first night simple.",
+        "Settle into Tokyo and take an easy evening stroll beneath the city’s spring trees.",
       image: "/images/Expedia-images/03-itinerary/it1.png",
     },
-    "park-morning": {
-      title: "Park morning",
+    "up-in-the-treetops": {
+      title: "Up in the Treetops",
       description:
-        "A garden or park stroll, then an afternoon break back at the hotel.",
+        "Try Forest Adventure Yokohama’s ropes and bridges on a course suited to your family.",
       image: "/images/Expedia-images/03-itinerary/it2.png",
     },
-    "neighborhood-day": {
-      title: "Neighborhood day",
+    "out-to-okutama": {
+      title: "Out to Okutama",
       description:
-        "Let everyone pick a snack stop while you wander a lively district.",
+        "Make a day trip to Lake Shiromaru for a beginner kayak lesson on calm, jade-green water.",
       image: "/images/Expedia-images/03-itinerary/it3.png",
     },
-    "skyline-evening": {
-      title: "Skyline evening",
+    "picnic-by-the-pond": {
+      title: "A Picnic by the Pond",
       description:
-        "Catch the city lights from a viewpoint, then a relaxed dinner.",
+        "Picnic in Inokashira Park and look for koi and turtles around the pond.",
       image: "/images/Expedia-images/03-itinerary/it4.png",
     },
-    "one-last-stroll": {
-      title: "One last stroll",
+    "day-on-mt-takao": {
+      title: "A Day on Mt. Takao",
       description:
-        "A final walk under the blossoms or neon before you head home.",
+        "Take the train to Takaosanguchi and explore Mt. Takao’s Trail 1 at your family’s pace.",
+      image: "/images/Expedia-images/03-itinerary/it4.png",
+    },
+    "down-the-sumida": {
+      title: "Down the Sumida, Slowly",
+      description:
+        "Board the Hotaluna at Asakusa and enjoy Tokyo’s riverside skyline from the water.",
+      image: "/images/Expedia-images/03-itinerary/it2.png",
+    },
+    "spring-garden-stroll": {
+      title: "A Spring Garden Stroll",
+      description:
+        "Spend an easy afternoon on Shinjuku Gyoen’s lawns, looking for late-blooming cherry blossoms.",
+      image: "/images/Expedia-images/03-itinerary/it3.png",
+    },
+    "sushi-for-the-family": {
+      title: "Sushi for the Family",
+      description:
+        "Try conveyor-belt sushi at Kura Sushi Harajuku, with udon and fries for less adventurous eaters.",
+      image: "/images/Expedia-images/03-itinerary/it4.png",
+    },
+    "slower-park-day": {
+      title: "A Slower Park Day",
+      description:
+        "Picnic in Inokashira Park, pedal a swan boat, and look for koi and turtles by the pond.",
+      image: "/images/Expedia-images/03-itinerary/it4.png",
+    },
+    "one-last-tokyo-morning": {
+      title: "One Last Tokyo Morning",
+      description:
+        "Enjoy a final morning in Tokyo before heading to the airport for your flight home.",
+      image: "/images/Expedia-images/03-itinerary/it5.png",
+    },
+    "gentle-city-farewell": {
+      title: "A Gentle City Farewell",
+      description:
+        "Take one last easy city stroll before checking out and heading to the airport.",
       image: "/images/Expedia-images/03-itinerary/it5.png",
     },
   },
 
   itineraryPaths: {
     default: [
-      "arrive-settle",
-      "park-morning",
-      "neighborhood-day",
-      "skyline-evening",
-      "one-last-stroll",
+      "welcome-tokyo",
+      "up-in-the-treetops",
+      "out-to-okutama",
+      "picnic-by-the-pond",
+      "one-last-tokyo-morning",
     ],
+    // Adventure · treetops first · picnic
     "a1-1|a2-1|a3-1": [
-      "arrive-settle",
-      "park-morning",
-      "skyline-evening",
-      "neighborhood-day",
-      "one-last-stroll",
+      "welcome-tokyo",
+      "up-in-the-treetops",
+      "out-to-okutama",
+      "picnic-by-the-pond",
+      "one-last-tokyo-morning",
     ],
+    // Adventure · treetops first · Mt. Takao
     "a1-1|a2-1|a3-2": [
-      "arrive-settle",
-      "park-morning",
-      "neighborhood-day",
-      "skyline-evening",
-      "one-last-stroll",
+      "welcome-tokyo",
+      "up-in-the-treetops",
+      "out-to-okutama",
+      "day-on-mt-takao",
+      "one-last-tokyo-morning",
     ],
+    // Adventure · kayak first · picnic
     "a1-1|a2-2|a3-1": [
-      "arrive-settle",
-      "neighborhood-day",
-      "park-morning",
-      "skyline-evening",
-      "one-last-stroll",
+      "welcome-tokyo",
+      "out-to-okutama",
+      "up-in-the-treetops",
+      "picnic-by-the-pond",
+      "one-last-tokyo-morning",
     ],
+    // Adventure · kayak first · Mt. Takao
     "a1-1|a2-2|a3-2": [
-      "arrive-settle",
-      "park-morning",
-      "neighborhood-day",
-      "skyline-evening",
-      "one-last-stroll",
+      "welcome-tokyo",
+      "out-to-okutama",
+      "up-in-the-treetops",
+      "day-on-mt-takao",
+      "one-last-tokyo-morning",
     ],
+    // Relax · cruise first · sushi
     "a1-2|a2-3|a3-3": [
-      "arrive-settle",
-      "neighborhood-day",
-      "skyline-evening",
-      "park-morning",
-      "one-last-stroll",
+      "welcome-tokyo",
+      "down-the-sumida",
+      "spring-garden-stroll",
+      "sushi-for-the-family",
+      "gentle-city-farewell",
     ],
+    // Relax · cruise first · slower park day
     "a1-2|a2-3|a3-4": [
-      "arrive-settle",
-      "neighborhood-day",
-      "park-morning",
-      "skyline-evening",
-      "one-last-stroll",
+      "welcome-tokyo",
+      "down-the-sumida",
+      "spring-garden-stroll",
+      "slower-park-day",
+      "gentle-city-farewell",
     ],
+    // Relax · gardens first · sushi
     "a1-2|a2-4|a3-3": [
-      "arrive-settle",
-      "skyline-evening",
-      "neighborhood-day",
-      "park-morning",
-      "one-last-stroll",
+      "welcome-tokyo",
+      "spring-garden-stroll",
+      "down-the-sumida",
+      "sushi-for-the-family",
+      "gentle-city-farewell",
     ],
+    // Relax · gardens first · slower park day
     "a1-2|a2-4|a3-4": [
-      "arrive-settle",
-      "park-morning",
-      "skyline-evening",
-      "neighborhood-day",
-      "one-last-stroll",
+      "welcome-tokyo",
+      "spring-garden-stroll",
+      "down-the-sumida",
+      "slower-park-day",
+      "gentle-city-farewell",
     ],
   },
 
