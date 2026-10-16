@@ -9,7 +9,8 @@ const reykjavik = {
   destinationId: "reykjavik",
   startQuestionId: "q1",
 
-  /** Shown on the briefing page before q1 */
+  /** Shown on the briefing / Q&A pages */
+  tripTitle: "Reykjavík · Apr 6 – 11",
   intro:
     "We're heading to Reykjavík from April 6–11. Our flights from Seattle to Keflavík are booked, and we're staying here.",
   introChip: {

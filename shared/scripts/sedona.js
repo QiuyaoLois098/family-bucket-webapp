@@ -10,7 +10,8 @@ const sedona = {
   destinationId: "sedona",
   startQuestionId: "q1",
 
-  /** Shown on the briefing page before q1 */
+  /** Shown on the briefing / Q&A pages */
+  tripTitle: "Sedona · Apr 6 – 11",
   intro:
     "We're heading to Sedona from April 6–11. Our flights from Minneapolis to Phoenix are booked, and we're staying here.",
   introChip: {

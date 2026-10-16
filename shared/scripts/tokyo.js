@@ -8,7 +8,8 @@ const tokyo = {
   destinationId: "tokyo",
   startQuestionId: "q1",
 
-  /** Shown on the briefing page before q1 */
+  /** Shown on the briefing / Q&A pages */
+  tripTitle: "Tokyo · Apr 6 – 11",
   intro:
     "We're heading to Tokyo from April 6–11. Our flights from Los Angeles to Tokyo are booked, and we're staying here.",
   introChip: {

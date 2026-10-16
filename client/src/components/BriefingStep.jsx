@@ -21,6 +21,8 @@ export default function BriefingStep({ destinationId, onContinue }) {
   const script = getDestinationScript(destinationId);
   const tripPlace = destination?.tripLabel || destination?.shortTitle || "your trip";
   const tripDates = destination?.dates || DEFAULT_DATES;
+  const tripTitle =
+    script?.tripTitle || `${tripPlace} · ${tripDates}`;
   const thumb = destination?.image || destination?.heroImage;
 
   const intro =
@@ -52,9 +54,7 @@ export default function BriefingStep({ destinationId, onContinue }) {
       <ExpediaBrandBar />
 
       <div className="question__trip">
-        <p className="question__trip-line">
-          {tripPlace} · {tripDates}
-        </p>
+        <p className="question__trip-line">{tripTitle}</p>
         <p className="question__follow-up">Follow up</p>
       </div>
 

@@ -10,6 +10,7 @@
  *                    → a2-4 (end)
  *
  * Script fields:
+ *   tripTitle — top line on briefing / Q&A pages
  *   intro / introChip — briefing page before q1
  *   replyMsg / aiReplyMsg / aiReplyChip — after selecting an answer
  */
@@ -17,7 +18,8 @@ const southLakeTahoe = {
   destinationId: "south-lake-tahoe",
   startQuestionId: "q1",
 
-  /** Shown on the briefing page before q1 */
+  /** Shown on the briefing / Q&A pages */
+  tripTitle: "South Lake Tahoe · Apr 6 – 11",
   intro:
     "We're heading to South Lake Tahoe from April 6–11. Our flights from Seattle to Reno are booked, and we're staying here.",
   introChip: {
