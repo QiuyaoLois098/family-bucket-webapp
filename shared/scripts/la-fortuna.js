@@ -29,93 +29,137 @@ const laFortuna = {
     image: "/images/Expedia-images/destinations/costa-rica.png",
   },
 
+  /**
+   * Arrangement (design board):
+   *   Day 1 — shared welcome
+   *   Days 2–3 — Q2 order swap (adventure: zipline↔lava; relax: float↔hot springs)
+   *   Day 4 — Q3 add-on (slower jungle shared; or default when Q3 skipped)
+   *   Day 5 — branch ending
+   */
   itinerary: {
     headline: "Five days built for your family",
     meta: "La Fortuna · Apr 6 – 11",
-    summary: "Rainforest walks, hot springs, and volcano views",
+    summary: "Rainforest canopy, lava trails, warm pools, and volcano views",
   },
 
   dayModules: {
-    "arrive-volcano": {
-      title: "Arrive under the volcano",
+    "welcome-rainforest": {
+      title: "Welcome to the Rainforest",
       description:
-        "Settle in, stretch your legs, and catch your first view of Arenal before dinner.",
+        "Arrive via San José, settle into La Fortuna, and watch the clouds drift around Arenal Volcano.",
       image: "/images/Expedia-images/03-itinerary/it1.png",
     },
-    "rainforest-morning": {
-      title: "Rainforest morning",
+    "above-the-rainforest": {
+      title: "Above the Rainforest",
       description:
-        "An easy trail through the forest with stops for wildlife and snacks.",
+        "Try Arenal EcoGlide’s zipline circuit for a new view through the rainforest canopy.",
       image: "/images/Expedia-images/03-itinerary/it2.png",
     },
-    "hot-springs-afternoon": {
-      title: "Hot springs afternoon",
+    "across-the-lava-fields": {
+      title: "Across the Lava Fields",
       description:
-        "Soak together in warm pools while the kids splash nearby.",
+        "Explore Arenal 1968’s Lava Flow trail through the landscape left by the volcano’s eruption.",
       image: "/images/Expedia-images/03-itinerary/it3.png",
     },
-    "town-treats": {
-      title: "Town & treats",
+    "onto-lake-arenal": {
+      title: "Onto Lake Arenal",
       description:
-        "Browse La Fortuna for fruit stands, ice cream, and a slow lunch.",
+        "Join a guided morning paddle on Lake Arenal and take in the volcano across the water.",
       image: "/images/Expedia-images/03-itinerary/it4.png",
     },
-    "one-last-look": {
-      title: "One last look",
-      description: "A final volcano viewpoint before you pack up for home.",
+    "slower-jungle-day": {
+      title: "A Slower Jungle Day",
+      description:
+        "Enjoy a picnic with Arenal in view, a short rainforest walk, and time to look for wildlife.",
+      image: "/images/Expedia-images/03-itinerary/it4.png",
+    },
+    "down-the-river-slowly": {
+      title: "Down the River, Slowly",
+      description:
+        "Float the Peñas Blancas with a naturalist, watching for monkeys, toucans, and sloths.",
+      image: "/images/Expedia-images/03-itinerary/it2.png",
+    },
+    "warm-soak-afternoon": {
+      title: "A Warm Soak Afternoon",
+      description:
+        "Relax in Baldi Hot Springs’ naturally heated pools, with a dedicated area for the kids.",
+      image: "/images/Expedia-images/03-itinerary/it3.png",
+    },
+    "meal-below-arenal": {
+      title: "A Meal Below Arenal",
+      description:
+        "Enjoy a family meal at Que Rico Arenal, with volcano views and options for the kids.",
+      image: "/images/Expedia-images/03-itinerary/it4.png",
+    },
+    "one-last-volcano-view": {
+      title: "One Last Volcano View",
+      description:
+        "Take one last look at Arenal before the drive back to San José and your flight home.",
+      image: "/images/Expedia-images/03-itinerary/it5.png",
+    },
+    "quiet-arenal-morning": {
+      title: "A Quiet Arenal Morning",
+      description:
+        "Enjoy a final peaceful morning beneath Arenal before checking out and heading to San José.",
       image: "/images/Expedia-images/03-itinerary/it5.png",
     },
   },
 
   itineraryPaths: {
     default: [
-      "arrive-volcano",
-      "rainforest-morning",
-      "hot-springs-afternoon",
-      "town-treats",
-      "one-last-look",
+      "welcome-rainforest",
+      "above-the-rainforest",
+      "across-the-lava-fields",
+      "onto-lake-arenal",
+      "one-last-volcano-view",
     ],
+    // Adventure · zipline first · no Q3
     "a1-1|a2-1": [
-      "arrive-volcano",
-      "rainforest-morning",
-      "hot-springs-afternoon",
-      "town-treats",
-      "one-last-look",
+      "welcome-rainforest",
+      "above-the-rainforest",
+      "across-the-lava-fields",
+      "slower-jungle-day",
+      "one-last-volcano-view",
     ],
+    // Adventure · lava first · lake paddle
     "a1-1|a2-2|a3-1": [
-      "arrive-volcano",
-      "hot-springs-afternoon",
-      "rainforest-morning",
-      "town-treats",
-      "one-last-look",
+      "welcome-rainforest",
+      "across-the-lava-fields",
+      "above-the-rainforest",
+      "onto-lake-arenal",
+      "one-last-volcano-view",
     ],
+    // Adventure · lava first · slower jungle
     "a1-1|a2-2|a3-2": [
-      "arrive-volcano",
-      "rainforest-morning",
-      "town-treats",
-      "hot-springs-afternoon",
-      "one-last-look",
+      "welcome-rainforest",
+      "across-the-lava-fields",
+      "above-the-rainforest",
+      "slower-jungle-day",
+      "one-last-volcano-view",
     ],
+    // Relax · safari float first · meal
     "a1-2|a2-3|a3-3": [
-      "arrive-volcano",
-      "hot-springs-afternoon",
-      "town-treats",
-      "rainforest-morning",
-      "one-last-look",
+      "welcome-rainforest",
+      "down-the-river-slowly",
+      "warm-soak-afternoon",
+      "meal-below-arenal",
+      "quiet-arenal-morning",
     ],
+    // Relax · safari float first · slower jungle
     "a1-2|a2-3|a3-2": [
-      "arrive-volcano",
-      "town-treats",
-      "hot-springs-afternoon",
-      "rainforest-morning",
-      "one-last-look",
+      "welcome-rainforest",
+      "down-the-river-slowly",
+      "warm-soak-afternoon",
+      "slower-jungle-day",
+      "quiet-arenal-morning",
     ],
+    // Relax · hot springs first · no Q3
     "a1-2|a2-4": [
-      "arrive-volcano",
-      "hot-springs-afternoon",
-      "rainforest-morning",
-      "town-treats",
-      "one-last-look",
+      "welcome-rainforest",
+      "warm-soak-afternoon",
+      "down-the-river-slowly",
+      "slower-jungle-day",
+      "quiet-arenal-morning",
     ],
   },
 
