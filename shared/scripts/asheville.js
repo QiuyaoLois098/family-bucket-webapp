@@ -29,6 +29,97 @@ const asheville = {
     image: "/images/Expedia-images/destinations/asheville.png",
   },
 
+  itinerary: {
+    headline: "Five days built for your family",
+    meta: "Asheville · Apr 6 – 11",
+    summary: "Trails, porches, and campfire stories in the Blue Ridge",
+  },
+
+  dayModules: {
+    "settle-in": {
+      title: "Settle in",
+      description:
+        "Arrive at the cabin, unpack slowly, and take a short walk before dinner.",
+      image: "/images/Expedia-images/03-itinerary/it1.png",
+    },
+    "trail-creek": {
+      title: "Trail above the creek",
+      description:
+        "An easy leaf-strewn path with stops wherever the kids want to explore.",
+      image: "/images/Expedia-images/03-itinerary/it2.png",
+    },
+    "town-afternoon": {
+      title: "Town afternoon",
+      description:
+        "Browse downtown Asheville for snacks, crafts, and a long lunch.",
+      image: "/images/Expedia-images/03-itinerary/it3.png",
+    },
+    "porch-day": {
+      title: "Porch day",
+      description:
+        "A slow day on the porch with games, books, and mountain air.",
+      image: "/images/Expedia-images/03-itinerary/it4.png",
+    },
+    "firepit-stories": {
+      title: "Firepit stories",
+      description:
+        "Build the fire before the cold settles. Sparks lift into the pines.",
+      image: "/images/Expedia-images/03-itinerary/it5.png",
+    },
+  },
+
+  itineraryPaths: {
+    default: [
+      "settle-in",
+      "trail-creek",
+      "town-afternoon",
+      "porch-day",
+      "firepit-stories",
+    ],
+    "a1-1|a2-1": [
+      "settle-in",
+      "trail-creek",
+      "town-afternoon",
+      "porch-day",
+      "firepit-stories",
+    ],
+    "a1-1|a2-2|a3-1": [
+      "settle-in",
+      "town-afternoon",
+      "trail-creek",
+      "porch-day",
+      "firepit-stories",
+    ],
+    "a1-1|a2-2|a3-2": [
+      "settle-in",
+      "trail-creek",
+      "porch-day",
+      "town-afternoon",
+      "firepit-stories",
+    ],
+    "a1-2|a2-3|a3-3": [
+      "settle-in",
+      "porch-day",
+      "town-afternoon",
+      "trail-creek",
+      "firepit-stories",
+    ],
+    "a1-2|a2-3|a3-2": [
+      "settle-in",
+      "town-afternoon",
+      "porch-day",
+      "trail-creek",
+      "firepit-stories",
+    ],
+    "a1-2|a2-4": [
+      "settle-in",
+      "porch-day",
+      "trail-creek",
+      "town-afternoon",
+      "firepit-stories",
+    ],
+  },
+
   questions: {
     q1: {
       id: "q1",

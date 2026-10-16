@@ -61,7 +61,12 @@ export default function ControlScreen() {
               {phase === "building" ? (
                 <BuildingMemoryStep destinationId={state.destination} />
               ) : null}
-              {phase === "itinerary" ? <ItinerarySchedule /> : null}
+              {phase === "itinerary" ? (
+                <ItinerarySchedule
+                  destinationId={state.destination}
+                  answers={state.answers}
+                />
+              ) : null}
             </section>
           </main>
         );

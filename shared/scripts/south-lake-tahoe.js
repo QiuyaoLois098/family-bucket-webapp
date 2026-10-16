@@ -13,6 +13,7 @@
  *   tripTitle — top line on briefing / Q&A pages
  *   intro / introChip — briefing page before q1
  *   memoryCard — building / memory reveal card
+ *   dayModules / itinerary / itineraryPaths — finale 5-day schedule
  *   replyMsg / aiReplyMsg / aiReplyChip — after selecting an answer
  */
 const southLakeTahoe = {
@@ -36,6 +37,149 @@ const southLakeTahoe = {
     duration: "5 days",
     footer: "Created with AI Activity Planner",
     image: "/images/Expedia-images/destinations/lake-tahoe.png",
+  },
+
+  /**
+   * Finale schedule header.
+   *
+   * Arrangement (see design board):
+   *   Day 1 — shared welcome
+   *   Days 2–3 — Q2 order swap (adventure: kayak↔ropes; relax: cruise↔beach)
+   *   Day 4 — Q3 add-on (or slower-shoreline when Q3 is skipped)
+   *   Day 5 — branch ending (adventure paddle vs relax lake morning)
+   */
+  itinerary: {
+    headline: "Five days built for your family",
+    meta: "South Lake Tahoe · Apr 6 – 11",
+    summary: "Kayaking, ropes, family hikes, and time by the lake",
+  },
+
+  /** Reusable one-day modules */
+  dayModules: {
+    "welcome-lake": {
+      title: "Welcome to the Lake",
+      description:
+        "Arrive in Reno, settle into your lakefront hotel, and watch the sunset over the Sierra.",
+      image: "/images/Expedia-images/03-itinerary/it1.png",
+    },
+    "onto-the-water": {
+      title: "Onto the Water",
+      description:
+        "Clear-bottom kayaking on Emerald Bay—paddle into the cove together and take in the shoreline from the water.",
+      image: "/images/Expedia-images/03-itinerary/it2.png",
+    },
+    "ropes-in-the-pines": {
+      title: "Ropes in the Pines",
+      description:
+        "Take on Tahoe City’s treetop ropes course, with plenty of spots to cheer each other on.",
+      image: "/images/Expedia-images/03-itinerary/it3.png",
+    },
+    "easy-family-hike": {
+      title: "An Easy Family Hike",
+      description:
+        "Van Sickle Bi-State Park is a short drive from your hotel—an easy trail with lake views before dinner.",
+      image: "/images/Expedia-images/03-itinerary/it4.png",
+    },
+    "slower-shoreline-day": {
+      title: "A Slower Shoreline Day",
+      description:
+        "A lakeside picnic, an easy paddle near the beach, and time to watch for wildlife along the shore.",
+      image: "/images/Expedia-images/03-itinerary/it4.png",
+    },
+    "onto-the-water-slowly": {
+      title: "Onto the Water, Slowly",
+      description:
+        "Ride the M.S. Dixie II from Zephyr Cove to Emerald Bay—paddlewheel views without the paddling.",
+      image: "/images/Expedia-images/03-itinerary/it2.png",
+    },
+    "quiet-beach-afternoon": {
+      title: "A Quiet Beach Afternoon",
+      description:
+        "Ease into Kings Beach—calm, shallow water where the kids can wade and everyone can slow down.",
+      image: "/images/Expedia-images/03-itinerary/it3.png",
+    },
+    "dinner-by-the-lake": {
+      title: "Dinner by the Lake",
+      description:
+        "Sunnyside’s lakeside deck for a family meal—kids’ menu, fish tacos, and Hula Pie with a view.",
+      image: "/images/Expedia-images/03-itinerary/it4.png",
+    },
+    "one-last-paddle": {
+      title: "One Last Paddle",
+      description:
+        "Spend a final morning on the lake soaking in the views before you head home.",
+      image: "/images/Expedia-images/03-itinerary/it5.png",
+    },
+    "one-last-lake-morning": {
+      title: "One Last Lake Morning",
+      description:
+        "A final quiet morning by the water before checkout—easy, unhurried, and lake-first.",
+      image: "/images/Expedia-images/03-itinerary/it5.png",
+    },
+  },
+
+  /**
+   * Answer path → [Day1, Day2, Day3, Day4, Day5].
+   * Q1 = adventure (a1-1) vs relax (a1-2)
+   * Q2 = which activity comes first on Days 2–3
+   * Q3 = Day 4 add-on; if the path ends at Q2, Day 4 defaults to slower-shoreline-day
+   */
+  itineraryPaths: {
+    default: [
+      "welcome-lake",
+      "onto-the-water",
+      "ropes-in-the-pines",
+      "easy-family-hike",
+      "one-last-paddle",
+    ],
+    // Adventure · kayak first · no Q3
+    "a1-1|a2-1": [
+      "welcome-lake",
+      "onto-the-water",
+      "ropes-in-the-pines",
+      "slower-shoreline-day",
+      "one-last-paddle",
+    ],
+    // Adventure · ropes first · family hike
+    "a1-1|a2-2|a3-1": [
+      "welcome-lake",
+      "ropes-in-the-pines",
+      "onto-the-water",
+      "easy-family-hike",
+      "one-last-paddle",
+    ],
+    // Adventure · ropes first · more lake time
+    "a1-1|a2-2|a3-2": [
+      "welcome-lake",
+      "ropes-in-the-pines",
+      "onto-the-water",
+      "slower-shoreline-day",
+      "one-last-paddle",
+    ],
+    // Relax · cruise first · dinner
+    "a1-2|a2-3|a3-3": [
+      "welcome-lake",
+      "onto-the-water-slowly",
+      "quiet-beach-afternoon",
+      "dinner-by-the-lake",
+      "one-last-lake-morning",
+    ],
+    // Relax · cruise first · more lake time
+    "a1-2|a2-3|a3-2": [
+      "welcome-lake",
+      "onto-the-water-slowly",
+      "quiet-beach-afternoon",
+      "slower-shoreline-day",
+      "one-last-lake-morning",
+    ],
+    // Relax · Kings Beach first · no Q3
+    "a1-2|a2-4": [
+      "welcome-lake",
+      "quiet-beach-afternoon",
+      "onto-the-water-slowly",
+      "slower-shoreline-day",
+      "one-last-lake-morning",
+    ],
   },
 
   questions: {

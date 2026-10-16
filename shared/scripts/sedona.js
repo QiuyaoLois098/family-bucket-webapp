@@ -29,6 +29,107 @@ const sedona = {
     image: "/images/Expedia-images/destinations/sedona.png",
   },
 
+  itinerary: {
+    headline: "Five days built for your family",
+    meta: "Sedona · Apr 6 – 11",
+    summary: "Red earth by day, and a sky that rewrites the night",
+  },
+
+  dayModules: {
+    "first-light": {
+      title: "First light on the rocks",
+      description: "Settle in and watch the mesas catch the evening light.",
+      image: "/images/Expedia-images/03-itinerary/it1.png",
+    },
+    "red-rock-walk": {
+      title: "Easy red-rock walk",
+      description: "A short scenic walk with stops for photos and water.",
+      image: "/images/Expedia-images/03-itinerary/it2.png",
+    },
+    "shade-stillness": {
+      title: "Shade and stillness",
+      description: "A slower day near camp — games, reading, and cool drinks.",
+      image: "/images/Expedia-images/03-itinerary/it3.png",
+    },
+    "sunset-overlook": {
+      title: "Sunset overlook",
+      description: "Head out as the temperature drops and shadows lengthen.",
+      image: "/images/Expedia-images/03-itinerary/it4.png",
+    },
+    "whole-sky": {
+      title: "The whole sky",
+      description:
+        "Blankets and stargazing before you leave. The Milky Way does the rest.",
+      image: "/images/Expedia-images/03-itinerary/it5.png",
+    },
+  },
+
+  itineraryPaths: {
+    default: [
+      "first-light",
+      "red-rock-walk",
+      "shade-stillness",
+      "sunset-overlook",
+      "whole-sky",
+    ],
+    "a1-1|a2-1|a3-1": [
+      "first-light",
+      "red-rock-walk",
+      "sunset-overlook",
+      "shade-stillness",
+      "whole-sky",
+    ],
+    "a1-1|a2-1|a3-2": [
+      "first-light",
+      "red-rock-walk",
+      "shade-stillness",
+      "sunset-overlook",
+      "whole-sky",
+    ],
+    "a1-1|a2-2|a3-1": [
+      "first-light",
+      "sunset-overlook",
+      "red-rock-walk",
+      "shade-stillness",
+      "whole-sky",
+    ],
+    "a1-1|a2-2|a3-2": [
+      "first-light",
+      "shade-stillness",
+      "red-rock-walk",
+      "sunset-overlook",
+      "whole-sky",
+    ],
+    "a1-2|a2-3|a3-3": [
+      "first-light",
+      "shade-stillness",
+      "sunset-overlook",
+      "red-rock-walk",
+      "whole-sky",
+    ],
+    "a1-2|a2-3|a3-2": [
+      "first-light",
+      "shade-stillness",
+      "red-rock-walk",
+      "sunset-overlook",
+      "whole-sky",
+    ],
+    "a1-2|a2-4|a3-3": [
+      "first-light",
+      "sunset-overlook",
+      "shade-stillness",
+      "red-rock-walk",
+      "whole-sky",
+    ],
+    "a1-2|a2-4|a3-2": [
+      "first-light",
+      "shade-stillness",
+      "sunset-overlook",
+      "red-rock-walk",
+      "whole-sky",
+    ],
+  },
+
   questions: {
     q1: {
       id: "q1",

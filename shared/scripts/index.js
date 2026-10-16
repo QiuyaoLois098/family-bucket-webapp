@@ -89,3 +89,48 @@ export function isValidScriptAnswer(script, questionId, answerId) {
   const question = getQuestion(script, questionId);
   return Boolean(question?.answerIds?.includes(answerId) && getAnswer(script, answerId));
 }
+
+const ITINERARY_DAY_COUNT = 5;
+const FALLBACK_DAY_IMAGES = [
+  "/images/Expedia-images/03-itinerary/it1.png",
+  "/images/Expedia-images/03-itinerary/it2.png",
+  "/images/Expedia-images/03-itinerary/it3.png",
+  "/images/Expedia-images/03-itinerary/it4.png",
+  "/images/Expedia-images/03-itinerary/it5.png",
+];
+
+/**
+ * Resolve the finale schedule from a destination script + answer path.
+ * Path key = answerIds joined by "|"; falls back to itineraryPaths.default.
+ */
+export function resolveItinerarySchedule(script, answerIds = []) {
+  const header = script?.itinerary || {};
+  const modules = script?.dayModules || {};
+  const paths = script?.itineraryPaths || {};
+  const pathKey = (Array.isArray(answerIds) ? answerIds : [])
+    .filter(Boolean)
+    .join("|");
+  const moduleIds =
+    (pathKey && paths[pathKey]) ||
+    paths.default ||
+    Object.keys(modules).slice(0, ITINERARY_DAY_COUNT);
+
+  const days = Array.from({ length: ITINERARY_DAY_COUNT }, (_, index) => {
+    const moduleId = moduleIds[index];
+    const mod = (moduleId && modules[moduleId]) || {};
+    return {
+      id: moduleId || `day-${index + 1}`,
+      dayLabel: `Day ${index + 1}`,
+      title: mod.title || `Day ${index + 1}`,
+      description: mod.description || "",
+      image: mod.image || FALLBACK_DAY_IMAGES[index],
+    };
+  });
+
+  return {
+    headline: header.headline || "Five days built for your family",
+    meta: header.meta || script?.tripTitle || "",
+    summary: header.summary || "",
+    days,
+  };
+}

@@ -27,6 +27,111 @@ const tokyo = {
     image: "/images/Expedia-images/destinations/tokyo.png",
   },
 
+  itinerary: {
+    headline: "Five days built for your family",
+    meta: "Tokyo · Apr 6 – 11",
+    summary: "Neighborhoods, parks, and easy evenings made for everyone",
+  },
+
+  dayModules: {
+    "arrive-settle": {
+      title: "Arrive & settle",
+      description:
+        "Check in, walk a nearby street, and keep the first night simple.",
+      image: "/images/Expedia-images/03-itinerary/it1.png",
+    },
+    "park-morning": {
+      title: "Park morning",
+      description:
+        "A garden or park stroll, then an afternoon break back at the hotel.",
+      image: "/images/Expedia-images/03-itinerary/it2.png",
+    },
+    "neighborhood-day": {
+      title: "Neighborhood day",
+      description:
+        "Let everyone pick a snack stop while you wander a lively district.",
+      image: "/images/Expedia-images/03-itinerary/it3.png",
+    },
+    "skyline-evening": {
+      title: "Skyline evening",
+      description:
+        "Catch the city lights from a viewpoint, then a relaxed dinner.",
+      image: "/images/Expedia-images/03-itinerary/it4.png",
+    },
+    "one-last-stroll": {
+      title: "One last stroll",
+      description:
+        "A final walk under the blossoms or neon before you head home.",
+      image: "/images/Expedia-images/03-itinerary/it5.png",
+    },
+  },
+
+  itineraryPaths: {
+    default: [
+      "arrive-settle",
+      "park-morning",
+      "neighborhood-day",
+      "skyline-evening",
+      "one-last-stroll",
+    ],
+    "a1-1|a2-1|a3-1": [
+      "arrive-settle",
+      "park-morning",
+      "skyline-evening",
+      "neighborhood-day",
+      "one-last-stroll",
+    ],
+    "a1-1|a2-1|a3-2": [
+      "arrive-settle",
+      "park-morning",
+      "neighborhood-day",
+      "skyline-evening",
+      "one-last-stroll",
+    ],
+    "a1-1|a2-2|a3-1": [
+      "arrive-settle",
+      "neighborhood-day",
+      "park-morning",
+      "skyline-evening",
+      "one-last-stroll",
+    ],
+    "a1-1|a2-2|a3-2": [
+      "arrive-settle",
+      "park-morning",
+      "neighborhood-day",
+      "skyline-evening",
+      "one-last-stroll",
+    ],
+    "a1-2|a2-3|a3-3": [
+      "arrive-settle",
+      "neighborhood-day",
+      "skyline-evening",
+      "park-morning",
+      "one-last-stroll",
+    ],
+    "a1-2|a2-3|a3-4": [
+      "arrive-settle",
+      "neighborhood-day",
+      "park-morning",
+      "skyline-evening",
+      "one-last-stroll",
+    ],
+    "a1-2|a2-4|a3-3": [
+      "arrive-settle",
+      "skyline-evening",
+      "neighborhood-day",
+      "park-morning",
+      "one-last-stroll",
+    ],
+    "a1-2|a2-4|a3-4": [
+      "arrive-settle",
+      "park-morning",
+      "skyline-evening",
+      "neighborhood-day",
+      "one-last-stroll",
+    ],
+  },
+
   questions: {
     q1: {
       id: "q1",

@@ -1,70 +1,43 @@
+import {
+  getDestinationScript,
+  resolveItinerarySchedule,
+} from "@shared/scripts/index.js";
 import ExpediaBrandBar from "./ExpediaBrandBar.jsx";
 
-/** Fixed finale card copy — do not invent or replace. */
-const FIXED_CARDS = [
-  {
-    title: "Beach discovery",
-    description:
-      "Explore Espadilla Norte after check-in; spot shorebirds together. Dinner at Soda Mar Azul, known for Costa Rican home cooking by Espadilla.",
-  },
-  {
-    title: "Spot wild wonders",
-    description:
-      "A guided Manuel Antonio park walk, with kids choosing what to look for. Lunch at Sendero Tico, a local-style soda near the park entrance.",
-  },
-  {
-    title: "Catch a first wave",
-    description:
-      "A private family surf lesson at Espadilla. Back to the hotel to rest. Lunch at La Olla Tica, a casual spot for local flavors near Espadilla.",
-  },
-  {
-    title: "Paddle & discover",
-    description:
-      "Explore Damas mangroves by guided kayak, with an adult paddling alongside. Dinner at Casa Quereña in Quepos, a welcoming spot for traditional Costa Rican cooking.",
-  },
-  {
-    title: "One last seaside stop",
-    description:
-      "After breakfast in Quepos, let the kids pick one last waterfront stop before your transfer. Breakfast at Café del Malecón, a traditional Costa Rican café by Quepos' waterfront.",
-  },
-];
+/**
+ * Control (left) finale schedule — 5 days from destination script modules.
+ */
+export default function ItinerarySchedule({ destinationId, answers = [] }) {
+  const script = getDestinationScript(destinationId);
+  const schedule = resolveItinerarySchedule(script, answers);
 
-const FIXED_HEADLINE = "Five days built for your family";
-const FIXED_META = "South Lake Tahoe · Jun 15 – 20";
-const FIXED_SUMMARY = "Kayaking, ropes, family hikes, and time by the lake";
-
-const FIXED_THUMBS = [
-  "/images/Expedia-images/03-itinerary/it1.png",
-  "/images/Expedia-images/03-itinerary/it2.png",
-  "/images/Expedia-images/03-itinerary/it3.png",
-  "/images/Expedia-images/03-itinerary/it4.png",
-  "/images/Expedia-images/03-itinerary/it5.png",
-];
-
-export default function ItinerarySchedule() {
   return (
     <div className="schedule">
       <ExpediaBrandBar />
 
       <div className="schedule__intro">
-        <h1 className="schedule__headline">{FIXED_HEADLINE}</h1>
-        <p className="schedule__meta">{FIXED_META}</p>
-        <p className="schedule__summary">{FIXED_SUMMARY}</p>
+        <h1 className="schedule__headline">{schedule.headline}</h1>
+        {schedule.meta ? <p className="schedule__meta">{schedule.meta}</p> : null}
+        {schedule.summary ? (
+          <p className="schedule__summary">{schedule.summary}</p>
+        ) : null}
       </div>
 
       <ol className="schedule__list">
-        {FIXED_CARDS.map((card, index) => (
-          <li key={`day-${index + 1}`} className="schedule__card">
+        {schedule.days.map((day) => (
+          <li key={day.id} className="schedule__card">
             <div
               className="schedule__thumb"
-              style={{ backgroundImage: `url(${FIXED_THUMBS[index]})` }}
+              style={
+                day.image ? { backgroundImage: `url(${day.image})` } : undefined
+              }
               role="img"
               aria-hidden="true"
             />
             <div className="schedule__body">
-              <p className="schedule__day">Day {index + 1}</p>
-              <h3 className="schedule__title">{card.title}</h3>
-              <p className="schedule__copy">{card.description}</p>
+              <p className="schedule__day">{day.dayLabel}</p>
+              <h3 className="schedule__title">{day.title}</h3>
+              <p className="schedule__copy">{day.description}</p>
             </div>
           </li>
         ))}

@@ -28,6 +28,95 @@ const reykjavik = {
     image: "/images/Expedia-images/destinations/iceland.png",
   },
 
+  itinerary: {
+    headline: "Five days built for your family",
+    meta: "Reykjavík · Apr 6 – 11",
+    summary: "Harbor walks, hot pools, and easy day trips",
+  },
+
+  dayModules: {
+    "harbor-arrival": {
+      title: "Harbor arrival",
+      description:
+        "Check in, walk the waterfront, and warm up with something sweet downtown.",
+      image: "/images/Expedia-images/03-itinerary/it1.png",
+    },
+    "golden-circle": {
+      title: "Golden Circle highlights",
+      description:
+        "A family-paced day of geysers, waterfalls, and plenty of photo stops.",
+      image: "/images/Expedia-images/03-itinerary/it2.png",
+    },
+    "hot-pool-afternoon": {
+      title: "Hot pool afternoon",
+      description:
+        "Soak together and let everyone choose their own pace in the warm water.",
+      image: "/images/Expedia-images/03-itinerary/it3.png",
+    },
+    "city-wander": {
+      title: "City wander",
+      description: "Colorful streets, a museum stop, and dinner somewhere cozy.",
+      image: "/images/Expedia-images/03-itinerary/it4.png",
+    },
+    "shoreline-walk": {
+      title: "One last shoreline walk",
+      description: "A final look across the bay before you head home.",
+      image: "/images/Expedia-images/03-itinerary/it5.png",
+    },
+  },
+
+  itineraryPaths: {
+    default: [
+      "harbor-arrival",
+      "golden-circle",
+      "hot-pool-afternoon",
+      "city-wander",
+      "shoreline-walk",
+    ],
+    "a1-1|a2-1": [
+      "harbor-arrival",
+      "golden-circle",
+      "hot-pool-afternoon",
+      "city-wander",
+      "shoreline-walk",
+    ],
+    "a1-1|a2-2|a3-1": [
+      "harbor-arrival",
+      "hot-pool-afternoon",
+      "golden-circle",
+      "city-wander",
+      "shoreline-walk",
+    ],
+    "a1-1|a2-2|a3-2": [
+      "harbor-arrival",
+      "golden-circle",
+      "city-wander",
+      "hot-pool-afternoon",
+      "shoreline-walk",
+    ],
+    "a1-2|a2-3|a3-3": [
+      "harbor-arrival",
+      "city-wander",
+      "hot-pool-afternoon",
+      "golden-circle",
+      "shoreline-walk",
+    ],
+    "a1-2|a2-3|a3-4": [
+      "harbor-arrival",
+      "hot-pool-afternoon",
+      "city-wander",
+      "golden-circle",
+      "shoreline-walk",
+    ],
+    "a1-2|a2-4": [
+      "harbor-arrival",
+      "hot-pool-afternoon",
+      "golden-circle",
+      "city-wander",
+      "shoreline-walk",
+    ],
+  },
+
   questions: {
     q1: {
       id: "q1",

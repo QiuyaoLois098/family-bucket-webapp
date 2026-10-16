@@ -29,6 +29,96 @@ const laFortuna = {
     image: "/images/Expedia-images/destinations/costa-rica.png",
   },
 
+  itinerary: {
+    headline: "Five days built for your family",
+    meta: "La Fortuna · Apr 6 – 11",
+    summary: "Rainforest walks, hot springs, and volcano views",
+  },
+
+  dayModules: {
+    "arrive-volcano": {
+      title: "Arrive under the volcano",
+      description:
+        "Settle in, stretch your legs, and catch your first view of Arenal before dinner.",
+      image: "/images/Expedia-images/03-itinerary/it1.png",
+    },
+    "rainforest-morning": {
+      title: "Rainforest morning",
+      description:
+        "An easy trail through the forest with stops for wildlife and snacks.",
+      image: "/images/Expedia-images/03-itinerary/it2.png",
+    },
+    "hot-springs-afternoon": {
+      title: "Hot springs afternoon",
+      description:
+        "Soak together in warm pools while the kids splash nearby.",
+      image: "/images/Expedia-images/03-itinerary/it3.png",
+    },
+    "town-treats": {
+      title: "Town & treats",
+      description:
+        "Browse La Fortuna for fruit stands, ice cream, and a slow lunch.",
+      image: "/images/Expedia-images/03-itinerary/it4.png",
+    },
+    "one-last-look": {
+      title: "One last look",
+      description: "A final volcano viewpoint before you pack up for home.",
+      image: "/images/Expedia-images/03-itinerary/it5.png",
+    },
+  },
+
+  itineraryPaths: {
+    default: [
+      "arrive-volcano",
+      "rainforest-morning",
+      "hot-springs-afternoon",
+      "town-treats",
+      "one-last-look",
+    ],
+    "a1-1|a2-1": [
+      "arrive-volcano",
+      "rainforest-morning",
+      "hot-springs-afternoon",
+      "town-treats",
+      "one-last-look",
+    ],
+    "a1-1|a2-2|a3-1": [
+      "arrive-volcano",
+      "hot-springs-afternoon",
+      "rainforest-morning",
+      "town-treats",
+      "one-last-look",
+    ],
+    "a1-1|a2-2|a3-2": [
+      "arrive-volcano",
+      "rainforest-morning",
+      "town-treats",
+      "hot-springs-afternoon",
+      "one-last-look",
+    ],
+    "a1-2|a2-3|a3-3": [
+      "arrive-volcano",
+      "hot-springs-afternoon",
+      "town-treats",
+      "rainforest-morning",
+      "one-last-look",
+    ],
+    "a1-2|a2-3|a3-2": [
+      "arrive-volcano",
+      "town-treats",
+      "hot-springs-afternoon",
+      "rainforest-morning",
+      "one-last-look",
+    ],
+    "a1-2|a2-4": [
+      "arrive-volcano",
+      "hot-springs-afternoon",
+      "rainforest-morning",
+      "town-treats",
+      "one-last-look",
+    ],
+  },
+
   questions: {
     q1: {
       id: "q1",
