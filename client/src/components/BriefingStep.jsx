@@ -1,20 +1,12 @@
 import { useEffect, useState } from "react";
 import { getDestination } from "@shared/destinations.js";
+import { getDestinationScript } from "@shared/scripts/index.js";
 import ExpediaBrandBar from "./ExpediaBrandBar.jsx";
 
-const DEFAULT_DATES = "Jun 15 – 20";
+const DEFAULT_DATES = "Apr 6 – 11";
 const FADE_MS = 650;
 const STAGGER_MS = 750;
 const THINKING_HOLD_MS = 2000;
-
-const LODGE_BY_DESTINATION = {
-  "la-fortuna": "Arenal Family Lodge",
-  "south-lake-tahoe": "Sierra Shore Family Lodge",
-  asheville: "Blue Ridge Family Lodge",
-  reykjavik: "Harbor Light Family Lodge",
-  sedona: "Red Rock Family Lodge",
-  tokyo: "Sakura Family Lodge",
-};
 
 /**
  * bubble → stay → Thinking… (right after card) → fade out → question 1.
@@ -26,15 +18,22 @@ export default function BriefingStep({ destinationId, onContinue }) {
   const [exiting, setExiting] = useState(false);
 
   const destination = getDestination(destinationId);
+  const script = getDestinationScript(destinationId);
   const tripPlace = destination?.tripLabel || destination?.shortTitle || "your trip";
   const tripDates = destination?.dates || DEFAULT_DATES;
-  const shortTitle = destination?.shortTitle || tripPlace;
-  const lodgeName = LODGE_BY_DESTINATION[destinationId] || "Family Lodge";
-  const thumb = destination?.image;
+  const thumb = destination?.image || destination?.heroImage;
+
+  const intro =
+    script?.intro ||
+    `We're heading to ${tripPlace} from April 6–11. Our flights are booked, and we're staying here.`;
+  const introChip = script?.introChip || {
+    title: "Family Lodge",
+    subtitle: `${destination?.shortTitle || tripPlace} · April 6–11 · Confirmed`,
+    chipText: "Booked · Expedia",
+  };
 
   useEffect(() => {
     const stayAt = 40 + STAGGER_MS;
-    // Thinking as soon as the gray card has come into view
     const thinkingAt = stayAt + FADE_MS;
     const exitAt = thinkingAt + THINKING_HOLD_MS;
     const timers = [
@@ -66,8 +65,7 @@ export default function BriefingStep({ destinationId, onContinue }) {
         <div
           className={`briefing__bubble${showBubble && !exiting ? " is-visible" : ""}`}
         >
-          We&apos;re heading to {tripPlace} from April 6–11. Our flights from
-          Seattle to Reno are booked, and we&apos;re staying here.
+          {intro}
         </div>
 
         <div className={`briefing__stay${showStay && !exiting ? " is-visible" : ""}`}>
@@ -78,11 +76,9 @@ export default function BriefingStep({ destinationId, onContinue }) {
             aria-hidden="true"
           />
           <div className="briefing__stay-copy">
-            <p className="briefing__stay-name">{lodgeName}</p>
-            <p className="briefing__stay-meta">
-              {shortTitle} · April 6–11 · Confirmed
-            </p>
-            <span className="briefing__stay-badge">Booked · Expedia</span>
+            <p className="briefing__stay-name">{introChip.title}</p>
+            <p className="briefing__stay-meta">{introChip.subtitle}</p>
+            <span className="briefing__stay-badge">{introChip.chipText}</span>
           </div>
         </div>
 

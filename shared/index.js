@@ -14,6 +14,10 @@ export {
   getAnswer,
   getQuestionAnswers,
   getStartQuestion,
+  answerToOption,
+  questionToUi,
+  defaultScriptAnswerId,
+  isValidScriptAnswer,
 } from "./scripts/index.js";
 import { DESTINATIONS } from "./destinations.js";
 import { BLUR_LEVELS, REVEAL_VISIBLE } from "./questions.js";
@@ -34,6 +38,11 @@ export const INITIAL_STATE = {
   destination: null,
   offeredDestinations: [],
   answers: [],
+  /** Parallel to answers: question id for each locked answer */
+  answeredQuestionIds: [],
+  /** Active question node id in the destination script tree */
+  currentQuestionId: null,
+  /** Step index (0-based) for blur / hyperion */
   currentQuestion: 0,
   imageUrl: null,
   imageReady: false,

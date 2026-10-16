@@ -40,8 +40,9 @@ export default function ControlScreen() {
               ) : null}
               {phase === "questions" ? (
                 <QuestionStep
-                  key={state.destination || "questions"}
+                  key={`${state.destination}-${state.currentQuestionId || state.currentQuestion}`}
                   currentQuestion={state.currentQuestion}
+                  currentQuestionId={state.currentQuestionId}
                   destinationId={state.destination}
                   onAnswer={actions.answer}
                 />

@@ -109,7 +109,8 @@ export function registerSockets(io) {
     });
     socket.on("experience:beginQuestions", () => session.beginQuestions());
     socket.on("experience:answer", (payload) => {
-      session.answerQuestion(payload?.questionIndex, payload?.answerId, false, {
+      const questionRef = payload?.questionId ?? payload?.questionIndex;
+      session.answerQuestion(questionRef, payload?.answerId, false, {
         advance: payload?.advance !== false,
       });
     });

@@ -9,6 +9,15 @@ const reykjavik = {
   destinationId: "reykjavik",
   startQuestionId: "q1",
 
+  /** Shown on the briefing page before q1 */
+  intro:
+    "We're heading to Reykjavík from April 6–11. Our flights from Seattle to Keflavík are booked, and we're staying here.",
+  introChip: {
+    title: "Harbor Light Family Lodge",
+    subtitle: "Reykjavík, Iceland · April 6–11 · Confirmed",
+    chipText: "Booked · Expedia",
+  },
+
   questions: {
     q1: {
       id: "q1",

@@ -9,14 +9,22 @@
  *                                  → a3-2 (end, shared)
  *                    → a2-4 (end)
  *
- * Answer fields:
- *   replyMsg     — user bubble after selecting this answer
- *   aiReplyMsg   — AI response after that selection
- *   aiReplyChip  — optional card under AI reply { title, subtitle, chipText }
+ * Script fields:
+ *   intro / introChip — briefing page before q1
+ *   replyMsg / aiReplyMsg / aiReplyChip — after selecting an answer
  */
 const southLakeTahoe = {
   destinationId: "south-lake-tahoe",
   startQuestionId: "q1",
+
+  /** Shown on the briefing page before q1 */
+  intro:
+    "We're heading to South Lake Tahoe from April 6–11. Our flights from Seattle to Reno are booked, and we're staying here.",
+  introChip: {
+    title: "Sierra Shore Family Lodge",
+    subtitle: "South Lake Tahoe, CA · April 6–11 · Confirmed",
+    chipText: "Booked · Expedia",
+  },
 
   questions: {
     q1: {

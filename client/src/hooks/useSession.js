@@ -36,8 +36,13 @@ export function useSession({ syncOnly = false } = {}) {
       selectDestination: (destinationId) =>
         getSocket().emit("experience:selectDestination", { destinationId }),
       beginQuestions: () => getSocket().emit("experience:beginQuestions"),
-      answer: (questionIndex, answerId, { advance = true } = {}) =>
-        getSocket().emit("experience:answer", { questionIndex, answerId, advance }),
+      answer: (questionRef, answerId, { advance = true } = {}) =>
+        getSocket().emit("experience:answer", {
+          questionId: typeof questionRef === "string" ? questionRef : undefined,
+          questionIndex: typeof questionRef === "number" ? questionRef : undefined,
+          answerId,
+          advance,
+        }),
       goBack: () => getSocket().emit("experience:back"),
       shake: () => getSocket().emit("experience:shake"),
       reset: () => getSocket().emit("experience:reset"),

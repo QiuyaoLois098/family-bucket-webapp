@@ -3,6 +3,14 @@ import { EventEmitter } from "events";
 import { INITIAL_STATE, PHASES, pickRandomDestinations } from "../../shared/index.js";
 import { DESTINATIONS, getDestination } from "../../shared/destinations.js";
 import { QUESTIONS, defaultAnswerId, isValidAnswer } from "../../shared/questions.js";
+import {
+  getDestinationScript,
+  getQuestion,
+  getAnswer,
+  getQuestionAnswers,
+  defaultScriptAnswerId,
+  isValidScriptAnswer,
+} from "../../shared/scripts/index.js";
 import { config } from "./config.js";
 import {
   HYPERION_STATIONS,
@@ -260,11 +268,15 @@ export class ExperienceSession extends EventEmitter {
     this.emitDestinationChoiceMade(dest);
 
     this.quiet();
+    const script = getDestinationScript(dest.id);
+
     this.set(
       {
         phase: PHASES.BRIEFING,
         destination: dest.id,
         answers: [],
+        answeredQuestionIds: [],
+        currentQuestionId: script?.startQuestionId ?? null,
         currentQuestion: 0,
         imageUrl: dest.image,
         imageReady: false,
@@ -285,7 +297,17 @@ export class ExperienceSession extends EventEmitter {
     if (!this.canAcceptInput(force)) return;
     if (this.state.phase !== PHASES.BRIEFING) return;
     this.quiet();
-    this.set({ phase: PHASES.QUESTIONS, currentQuestion: 0 }, "begin-questions");
+    const script = getDestinationScript(this.state.destination);
+    this.set(
+      {
+        phase: PHASES.QUESTIONS,
+        currentQuestion: 0,
+        currentQuestionId: script?.startQuestionId ?? "q1",
+        answers: [],
+        answeredQuestionIds: [],
+      },
+      "begin-questions",
+    );
   }
 
   /**
@@ -339,16 +361,32 @@ export class ExperienceSession extends EventEmitter {
 
   /**
    * Hyperion fbl_choice_made — once per newly locked answer.
-   * step / question_id = 1..3; choice_id = "1-a", "1-b", …
+   * step / question_id = 1..n; choice_id = "1-a", "1-b", …
    */
-  emitChoiceMade(questionIndex, answerId) {
-    const question = QUESTIONS[questionIndex];
-    const optionIndex = question?.options.findIndex((option) => option.id === answerId);
-    const option = optionIndex >= 0 ? question.options[optionIndex] : null;
-    if (!question || !option) return;
+  emitChoiceMade(questionId, answerId, stepIndex) {
+    const script = getDestinationScript(this.state.destination);
+    let questionLabel = "";
+    let choiceLabel = answerId;
+    let optionIndex = 0;
 
-    const step = questionIndex + 1;
-    const choiceLetter = String.fromCharCode(97 + optionIndex); // a, b, c…
+    if (script) {
+      const question = getQuestion(script, questionId);
+      const answers = getQuestionAnswers(script, questionId);
+      optionIndex = answers.findIndex((item) => item.id === answerId);
+      const answer = optionIndex >= 0 ? answers[optionIndex] : getAnswer(script, answerId);
+      questionLabel = question?.text || "";
+      choiceLabel = answer?.text || answerId;
+    } else {
+      const question = QUESTIONS[stepIndex];
+      optionIndex = question?.options.findIndex((option) => option.id === answerId) ?? 0;
+      const option = optionIndex >= 0 ? question?.options[optionIndex] : null;
+      if (!question || !option) return;
+      questionLabel = question.prompt;
+      choiceLabel = option.label;
+    }
+
+    const step = stepIndex + 1;
+    const choiceLetter = String.fromCharCode(97 + Math.max(0, optionIndex));
     const sessionId = this.state.hyperionSessionId || this.startHyperionSession();
 
     sendHyperionEvent({
@@ -360,9 +398,9 @@ export class ExperienceSession extends EventEmitter {
         device: FBL_INTERACTIVE.label,
         step,
         question_id: step,
-        question_label: question.prompt,
+        question_label: questionLabel,
         choice_id: `${step}-${choiceLetter}`,
-        choice_label: option.label,
+        choice_label: choiceLabel,
         screen: `question${step}`,
       },
     })
@@ -382,10 +420,77 @@ export class ExperienceSession extends EventEmitter {
       });
   }
 
-  answerQuestion(questionIndex, answerId, force = false, { advance = true } = {}) {
+  /**
+   * @param {string|number} questionRef — script question id, or legacy numeric index
+   */
+  answerQuestion(questionRef, answerId, force = false, { advance = true } = {}) {
     this.touch();
     if (!this.canAcceptInput(force)) return;
     if (this.state.phase !== PHASES.QUESTIONS) return;
+
+    const script = getDestinationScript(this.state.destination);
+    const stepIndex = this.state.currentQuestion ?? 0;
+
+    if (script) {
+      const questionId =
+        typeof questionRef === "string" ? questionRef : this.state.currentQuestionId;
+      if (questionId !== this.state.currentQuestionId) return;
+      if (!isValidScriptAnswer(script, questionId, answerId)) return;
+
+      const lockedId = this.state.answers[stepIndex];
+      if (lockedId && lockedId !== answerId) return;
+
+      const isNewChoice = !lockedId;
+      const answers = lockedId ? this.state.answers : [...this.state.answers, answerId];
+      const answeredQuestionIds = lockedId
+        ? this.state.answeredQuestionIds
+        : [...(this.state.answeredQuestionIds || []), questionId];
+
+      if (isNewChoice) {
+        this.emitChoiceMade(questionId, answerId, stepIndex);
+      }
+
+      if (!advance) {
+        if (!lockedId) {
+          this.touch();
+          this.set({ answers, answeredQuestionIds }, `answer-lock-${questionId}`);
+        }
+        return;
+      }
+
+      this.quiet();
+      const nextQuestionId = getAnswer(script, answerId)?.nextQuestionId ?? null;
+
+      if (!nextQuestionId) {
+        this.set(
+          {
+            answers,
+            answeredQuestionIds,
+            currentQuestion: answers.length,
+            currentQuestionId: null,
+            phase: PHASES.REVEAL,
+            itineraryStatus: "generating",
+          },
+          "answer-final",
+        );
+        this.startItineraryGeneration();
+        return;
+      }
+
+      this.set(
+        {
+          answers,
+          answeredQuestionIds,
+          currentQuestion: answers.length,
+          currentQuestionId: nextQuestionId,
+        },
+        `answer-${nextQuestionId}`,
+      );
+      return;
+    }
+
+    // Legacy linear QUESTIONS fallback
+    const questionIndex = typeof questionRef === "number" ? questionRef : stepIndex;
     if (questionIndex !== this.state.currentQuestion) return;
 
     const question = QUESTIONS[questionIndex];
@@ -399,7 +504,7 @@ export class ExperienceSession extends EventEmitter {
     const answers = lockedId ? this.state.answers : [...this.state.answers, answerId];
 
     if (isNewChoice) {
-      this.emitChoiceMade(questionIndex, answerId);
+      this.emitChoiceMade(questionIndex, answerId, questionIndex);
     }
 
     if (!advance) {
@@ -418,6 +523,7 @@ export class ExperienceSession extends EventEmitter {
         {
           answers,
           currentQuestion: nextIndex,
+          currentQuestionId: null,
           phase: PHASES.REVEAL,
           itineraryStatus: "generating",
         },
@@ -431,6 +537,7 @@ export class ExperienceSession extends EventEmitter {
       {
         answers,
         currentQuestion: nextIndex,
+        currentQuestionId: null,
       },
       `answer-${nextIndex}`,
     );
@@ -442,26 +549,31 @@ export class ExperienceSession extends EventEmitter {
     if (this.state.phase !== PHASES.QUESTIONS) return;
 
     this.quiet();
+    const script = getDestinationScript(this.state.destination);
+    const stepIndex = this.state.currentQuestion ?? 0;
 
     // Answer locked for current question but not advanced yet — unlock only.
-    if (this.state.answers.length > this.state.currentQuestion) {
+    if (this.state.answers.length > stepIndex) {
       this.set(
         {
-          answers: this.state.answers.slice(0, this.state.currentQuestion),
+          answers: this.state.answers.slice(0, stepIndex),
+          answeredQuestionIds: (this.state.answeredQuestionIds || []).slice(0, stepIndex),
         },
         "unlock-answer",
       );
       return;
     }
 
-    if (this.state.currentQuestion <= 0) {
+    if (stepIndex <= 0) {
       this.imageJobId += 1;
       this.set(
         {
           phase: PHASES.DESTINATION,
           destination: null,
           answers: [],
+          answeredQuestionIds: [],
           currentQuestion: 0,
+          currentQuestionId: null,
           imageUrl: null,
           imageReady: false,
           imageSource: null,
@@ -474,10 +586,19 @@ export class ExperienceSession extends EventEmitter {
       return;
     }
 
+    const prevAnswered = this.state.answeredQuestionIds || [];
+    const answers = this.state.answers.slice(0, -1);
+    const answeredQuestionIds = prevAnswered.slice(0, -1);
+    const reopenId = script
+      ? prevAnswered[answers.length] || script.startQuestionId
+      : null;
+
     this.set(
       {
-        answers: this.state.answers.slice(0, -1),
-        currentQuestion: this.state.currentQuestion - 1,
+        answers,
+        answeredQuestionIds,
+        currentQuestion: answers.length,
+        currentQuestionId: reopenId,
       },
       "back-question",
     );
@@ -595,6 +716,12 @@ export class ExperienceSession extends EventEmitter {
     }
 
     if (phase === PHASES.QUESTIONS) {
+      const script = getDestinationScript(this.state.destination);
+      if (script && this.state.currentQuestionId) {
+        const answerId = defaultScriptAnswerId(script, this.state.currentQuestionId);
+        this.answerQuestion(this.state.currentQuestionId, answerId, true);
+        return;
+      }
       const question = QUESTIONS[this.state.currentQuestion];
       this.answerQuestion(this.state.currentQuestion, defaultAnswerId(question), true);
       return;
@@ -669,15 +796,33 @@ export class ExperienceSession extends EventEmitter {
     const dest = getDestination(destId);
     if (!dest) return;
 
-    const answers =
-      this.state.answers?.length === QUESTIONS.length
-        ? this.state.answers
-        : QUESTIONS.map((question) => defaultAnswerId(question));
+    const script = getDestinationScript(destId);
+    let answers = this.state.answers;
+    let answeredQuestionIds = this.state.answeredQuestionIds || [];
+    if (script) {
+      if (!answers?.length) {
+        // Seed a short path: start → first answer → follow next until end
+        answers = [];
+        answeredQuestionIds = [];
+        let qid = script.startQuestionId;
+        for (let i = 0; i < 6 && qid; i += 1) {
+          const aid = defaultScriptAnswerId(script, qid);
+          if (!aid) break;
+          answers.push(aid);
+          answeredQuestionIds.push(qid);
+          qid = getAnswer(script, aid)?.nextQuestionId ?? null;
+        }
+      }
+    } else if (answers?.length !== QUESTIONS.length) {
+      answers = QUESTIONS.map((question) => defaultAnswerId(question));
+    }
 
     const seeded = {
       destination: destId,
       answers,
-      currentQuestion: QUESTIONS.length,
+      answeredQuestionIds,
+      currentQuestion: answers.length,
+      currentQuestionId: null,
       imageUrl: dest.image,
       imageReady: true,
       imageSource: "fallback",

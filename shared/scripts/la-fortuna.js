@@ -10,6 +10,15 @@ const laFortuna = {
   destinationId: "la-fortuna",
   startQuestionId: "q1",
 
+  /** Shown on the briefing page before q1 */
+  intro:
+    "We're heading to La Fortuna from April 6–11. Our flights from Seattle to Liberia are booked, and we're staying here.",
+  introChip: {
+    title: "Arenal Family Lodge",
+    subtitle: "La Fortuna, Costa Rica · April 6–11 · Confirmed",
+    chipText: "Booked · Expedia",
+  },
+
   questions: {
     q1: {
       id: "q1",

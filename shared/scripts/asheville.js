@@ -10,6 +10,15 @@ const asheville = {
   destinationId: "asheville",
   startQuestionId: "q1",
 
+  /** Shown on the briefing page before q1 */
+  intro:
+    "We're heading to Asheville from April 6–11. Our flights from Chicago to Asheville are booked, and we're staying here.",
+  introChip: {
+    title: "Blue Ridge Family Lodge",
+    subtitle: "Asheville, NC · April 6–11 · Confirmed",
+    chipText: "Booked · Expedia",
+  },
+
   questions: {
     q1: {
       id: "q1",
@@ -23,17 +32,17 @@ const asheville = {
     },
     "q2-2": {
       id: "q2-2",
-      text: "I found two calm options your family might love. Which comes first?",
+      text: "I found two options your family might love. Which outing should come first?",
       answerIds: ["a2-3", "a2-4"],
     },
     "q3-1": {
       id: "q3-1",
-      text: "What should we add around those adventures?",
+      text: "How would you like to slow things down?",
       answerIds: ["a3-1", "a3-2"],
     },
     "q3-2": {
       id: "q3-2",
-      text: "What should we add around this slower trip?",
+      text: "How should we round out your mountain getaway?",
       answerIds: ["a3-3", "a3-2"],
     },
   },
@@ -42,120 +51,120 @@ const asheville = {
     "a1-1": {
       id: "a1-1",
       text: "Try something adventurous",
-      subtitle: "Waterfalls, zip lines, and Blue Ridge hikes.",
+      subtitle: "River paddles, treetop ziplines, and forest walks.",
       chipText: "",
       image: "/images/Expedia-images/options/q1_1.png",
       replyMsg:
-        "We love the outdoors—the kids are dying to chase waterfalls and try a zip line near Asheville over spring break.",
-      aiReplyMsg: "A little adventure it is!",
+        "We love the outdoors—the kids can’t wait to paddle the French Broad and try Asheville’s treetop ziplines this spring.",
+      aiReplyMsg: "",
       nextQuestionId: "q2-1",
     },
     "a1-2": {
       id: "a1-2",
       text: "Take it slow",
-      subtitle: "Porch time, easy town strolls, and good food.",
+      subtitle: "Mountain views, easy outings, and good food.",
       chipText: "",
       image: "/images/Expedia-images/options/q1_2.png",
       replyMsg:
-        "We'd like to take it slow—porch time, easy town strolls, and good food sound perfect for our family.",
-      aiReplyMsg: "Taking it slow it is!",
+        "We’d like to take it slow—mountain views, easy outings, and good food sound perfect for our family.",
+      aiReplyMsg: "",
       nextQuestionId: "q2-2",
     },
 
     "a2-1": {
       id: "a2-1",
-      text: "Looking Glass Falls walk",
-      subtitle: "An easy waterfall stop in Pisgah National Forest.",
-      chipText: "From Google Maps",
+      text: "French Broad River kayak",
+      subtitle: "A guided paddle on the French Broad River.",
+      chipText: "Expedia · Bestseller",
       image: "/images/Expedia-images/options/q2-kayak-1.png",
       replyMsg:
-        "Let's start with Looking Glass Falls—the kids can't wait to see a real waterfall!",
+        "Let's start with the French Broad River kayak tour—the kids can't wait to get on the water!",
       aiReplyMsg:
-        "Perfect—I'll start with Looking Glass Falls, then add a Blue Ridge Parkway overlook the next day to round out your itinerary.",
+        "Perfect—I'll start with kayaking on the French Broad River, then add Navitat the next day to round out your itinerary.",
       nextQuestionId: null,
     },
     "a2-2": {
       id: "a2-2",
-      text: "Navitat zip-line adventure",
-      subtitle: "Tree-to-tree zip lines in the Blue Ridge.",
-      chipText: "Expedia · Bookable",
+      text: "Navitat treetop adventure",
+      subtitle: "Treetop ziplines and ropes in the Blue Ridge.",
+      chipText: "From Google Maps",
       image: "/images/Expedia-images/options/q2-ropes-1.png",
       replyMsg:
-        "Let's start with the Navitat zip-line adventure—the kids can't wait to fly through the trees!",
+        "Let's start with Navitat's treetop ziplines—the kids can't wait to soar through the trees!",
       aiReplyMsg:
-        "Perfect—I'll start with Navitat, then add a waterfall stop the next day to round out your itinerary.",
+        "Perfect—I'll start with the Navitat treetop adventure, then add French Broad River kayaking the next day to round out your itinerary.",
       nextQuestionId: "q3-1",
     },
 
     "a2-3": {
       id: "a2-3",
-      text: "Biltmore Conservatory stroll",
-      subtitle: "Gardens and greenhouse wandering at an easy pace.",
-      chipText: "Expedia · Bookable",
+      text: "Gray Line trolley tour",
+      subtitle: "A narrated trolley ride around Asheville.",
+      chipText: "Expedia · Bestseller",
       image: "/images/Expedia-images/options/q3-lake.png",
       replyMsg:
-        "Let's start with the Biltmore Conservatory—the kids will love the gardens!",
+        "Let's start with the Gray Line trolley—the kids will love seeing the sights around town!",
       aiReplyMsg:
-        "Perfect—I'll start with the Biltmore Conservatory, then add a downtown Asheville stroll the next day to round out your easygoing itinerary.",
+        "Perfect—I'll start with the Gray Line trolley, then add the Botanical Gardens the next day to round out your easygoing itinerary.",
       nextQuestionId: "q3-2",
     },
     "a2-4": {
       id: "a2-4",
-      text: "River Arts District afternoon",
-      subtitle: "Studios, snacks, and a calm riverside wander.",
+      text: "Botanical Gardens stroll",
+      subtitle: "Five garden paths and native wildflowers.",
       chipText: "From Google Maps",
       image: "/images/Expedia-images/options/q1_2.png",
       replyMsg:
-        "Let's start with the River Arts District—the kids can ease into the trip with snacks and studios!",
+        "Let's start with the gardens—the kids can ease into the trip among the flowers!",
       aiReplyMsg:
-        "Perfect—I'll start with the River Arts District, then add a Biltmore gardens hour the next day to round out your easygoing itinerary.",
+        "Perfect—I'll start with the Botanical Gardens, then add the Gray Line trolley the next day to round out your easygoing itinerary.",
       nextQuestionId: null,
     },
 
     "a3-1": {
       id: "a3-1",
-      text: "A nearby family hike",
-      subtitle: "An easy trail close to the cabin, before dinner",
+      text: "A gentle forest walk",
+      subtitle: "An easy woodland trail, with time to explore.",
       chipText: "",
       image: "/images/Expedia-images/options/q3-hike.png",
-      replyMsg: "Can we add an easy family hike near our cabin?",
+      replyMsg: "Can we add a gentle forest walk before dinner?",
       aiReplyMsg:
-        "Craggy Gardens is about a short drive up the Parkway, so it’s easy to fit in a family hike before dinner.",
+        "Bent Creek Experimental Forest is about a 15-minute drive from your hotel, so it’s easy to fit in a forest walk before dinner.",
       aiReplyChip: {
-        title: "Craggy Gardens",
-        subtitle: "Short drive on the Parkway",
+        title: "Bent Creek Experimental Forest",
+        subtitle: "15 min drive from your hotel",
         chipText: "From Google Maps",
       },
       nextQuestionId: null,
     },
     "a3-2": {
       id: "a3-2",
-      text: "More time on the porch",
-      subtitle: "A slower afternoon with mountain air and downtime.",
+      text: "A riverside picnic",
+      subtitle: "An unhurried picnic with a short riverside walk.",
       chipText: "",
       image: "/images/Expedia-images/options/q3-lake.png",
-      replyMsg: "Can we add more porch and downtime?",
+      replyMsg: "Can we add a picnic by the river?",
       aiReplyMsg:
-        "Absolutely—I’ll leave an open afternoon back at the cabin so everyone can slow down between outings.",
+        "Amboy Riverfront Park is a great fit for a slower afternoon, with a shady spot for a picnic and an easy walk along the French Broad River Greenway.",
       aiReplyChip: {
-        title: "Cabin porch afternoon",
-        subtitle: "Games, snacks, and mountain air",
+        title: "Amboy Riverfront Park",
+        subtitle: "Riverside picnic and an easy greenway walk",
         chipText: "From Google Maps",
       },
       nextQuestionId: null,
     },
     "a3-3": {
       id: "a3-3",
-      text: "Family dinner downtown",
-      subtitle: "Easy options near Pack Square for the kids.",
+      text: "A Southern family meal",
+      subtitle: "Biscuits, homemade jams, and local favorites.",
       chipText: "",
       image: "/images/Expedia-images/options/q1_2.png",
-      replyMsg: "Can we add a family dinner downtown?",
+      replyMsg: "Can we try a Southern meal with the kids?",
       aiReplyMsg:
-        "Early Girl Eatery is a great fit—casual plates, kid-friendly sides, and an easy walk from downtown.",
+        "Biscuit Head has Southern biscuits, homemade jams, and easy options for the whole family.",
       aiReplyChip: {
-        title: "Early Girl Eatery",
-        subtitle: "Casual family dinner downtown",
+        title: "Biscuit Head",
+        subtitle: "Southern biscuits and homemade jams",
         chipText: "From Google Maps",
       },
       nextQuestionId: null,

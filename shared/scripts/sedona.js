@@ -10,6 +10,15 @@ const sedona = {
   destinationId: "sedona",
   startQuestionId: "q1",
 
+  /** Shown on the briefing page before q1 */
+  intro:
+    "We're heading to Sedona from April 6–11. Our flights from Seattle to Phoenix are booked, and we're staying here.",
+  introChip: {
+    title: "Red Rock Family Lodge",
+    subtitle: "Sedona, AZ · April 6–11 · Confirmed",
+    chipText: "Booked · Expedia",
+  },
+
   questions: {
     q1: {
       id: "q1",

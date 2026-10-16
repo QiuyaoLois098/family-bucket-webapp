@@ -1,5 +1,6 @@
 import { QUESTIONS } from "../../shared/questions.js";
 import { getDestination } from "../../shared/destinations.js";
+import { getDestinationScript, getAnswer } from "../../shared/scripts/index.js";
 
 const DEFAULT_DAY_COUNT = 5;
 
@@ -58,8 +59,13 @@ export function buildImagePrompt({ destination, answers }) {
     dest?.imagePromptBase ||
     "Cinematic premium travel photography of an aspirational destination. Editorial, photorealistic, no people, no text.";
 
+  const script = getDestinationScript(destination);
   const hints = answers
     .map((answerId, index) => {
+      if (script) {
+        const answer = getAnswer(script, answerId);
+        return answer?.text || answer?.subtitle;
+      }
       const question = QUESTIONS[index];
       const option = question?.options.find((item) => item.id === answerId);
       return option?.promptHint;
@@ -80,11 +86,16 @@ Do NOT include: identifiable people, family portraits, faces, text, captions, wa
 
 export function buildItineraryPrompt({ destination, answers }) {
   const dest = getDestination(destination);
+  const script = getDestinationScript(destination);
   const answerLines = answers
     .map((answerId, index) => {
+      if (script) {
+        const answer = getAnswer(script, answerId);
+        return answer?.text || answerId;
+      }
       const question = QUESTIONS[index];
       const option = question?.options.find((item) => item.id === answerId);
-      return `${question.prompt} ${option?.label || answerId}`;
+      return `${question?.prompt || ""} ${option?.label || answerId}`;
     })
     .join("\n");
 

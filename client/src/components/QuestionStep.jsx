@@ -1,10 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { QUESTIONS, resolveAnswerOption } from "@shared/questions.js";
 import { getDestination } from "@shared/destinations.js";
+import {
+  getDestinationScript,
+  questionToUi,
+  getAnswer,
+} from "@shared/scripts/index.js";
 import ExpediaBrandBar from "./ExpediaBrandBar.jsx";
 
 const SELECT_HOLD_MS = 520;
-const DEFAULT_DATES = "Jun 15 – 20";
+const DEFAULT_DATES = "Apr 6 – 11";
 const REVEAL_FADE_MS = 650;
 const REVEAL_STAGGER_MS = 750;
 const THINKING_HOLD_MS = 2000;
@@ -15,10 +20,11 @@ const TYPE_PAUSE_AFTER_MS = 320;
  * Unified question flow (all questions = 2 options):
  * type prompt → then hint / cards stagger → select → fade out →
  * answer confirm (bubble → AI → optional card → Thinking) → fade → next
- * Q3 → fade out → reveal finale (luggage on right)
+ * Terminal answer → fade out → reveal finale
  */
 export default function QuestionStep({
   currentQuestion,
+  currentQuestionId,
   destinationId,
   onAnswer,
 }) {
@@ -40,7 +46,11 @@ export default function QuestionStep({
   const typeTimerRef = useRef(null);
   const confirmingRef = useRef(false);
 
-  const question = QUESTIONS[currentQuestion];
+  const script = getDestinationScript(destinationId);
+  const question = script
+    ? questionToUi(script, currentQuestionId)
+    : QUESTIONS[currentQuestion];
+  const questionRef = script ? currentQuestionId : currentQuestion;
   const options = question?.options || [];
 
   const clearRevealTimers = () => {
@@ -73,7 +83,6 @@ export default function QuestionStep({
     confirmingRef.current = false;
 
     const full = promptText || "";
-    // Show prompt shell immediately, then type character-by-character.
     setRevealStep(1);
 
     if (!full) {
@@ -97,7 +106,6 @@ export default function QuestionStep({
 
       clearTypeTimer();
       setPromptDone(true);
-      // Only after the question finishes typing: hint, then cards.
       for (let step = 2; step <= 2 + optionCount; step += 1) {
         revealTimersRef.current.push(
           setTimeout(
@@ -133,7 +141,7 @@ export default function QuestionStep({
       clearTypeTimer();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentQuestion, destinationId]);
+  }, [currentQuestion, currentQuestionId, destinationId]);
 
   if (!question) return null;
 
@@ -141,20 +149,28 @@ export default function QuestionStep({
   const tripPlace = destination?.tripLabel || destination?.shortTitle || "Your trip";
   const tripDates = destination?.dates || DEFAULT_DATES;
 
-  /**
-   * Shared answer confirm:
-   * Q1 uses bridgeBubble + Thinking only (01-answer)
-   * Q2/Q3 use youSay + aiSay (+ optional place card)
-   */
+  const resolveOption = (optionId) => {
+    if (script) {
+      return options.find((item) => item.id === optionId) || null;
+    }
+    return resolveAnswerOption(question, optionId);
+  };
+
   const runAnswerConfirm = (optionId) => {
-    const option = resolveAnswerOption(question, optionId);
+    const option = resolveOption(optionId);
     const useBridgeBubble = Boolean(question.bridgeBubble);
     const bubbleText = useBridgeBubble
       ? question.bridgeBubble
       : option?.youSay || "";
     const aiText = useBridgeBubble ? null : option?.aiSay || null;
     const placeCard = useBridgeBubble ? null : option?.answerCard || null;
-    const isLast = currentQuestion === QUESTIONS.length - 1;
+
+    const nextQuestionId = script
+      ? getAnswer(script, optionId)?.nextQuestionId ?? null
+      : currentQuestion < QUESTIONS.length - 1
+        ? currentQuestion + 1
+        : null;
+    const isLast = nextQuestionId == null;
 
     clearTimeout(timerRef.current);
     clearBridgeTimers();
@@ -164,11 +180,11 @@ export default function QuestionStep({
     setLocked(true);
     setExiting(true);
 
-    // Q3: fade out → reveal finale (left answer + right luggage). Don't double-play confirm.
+    // Terminal answer: fade → reveal finale (AnswerFinaleStep plays the confirm).
     if (isLast) {
       timerRef.current = setTimeout(() => {
         confirmingRef.current = false;
-        onAnswer(currentQuestion, optionId, { advance: true });
+        onAnswer(questionRef, optionId, { advance: true });
       }, REVEAL_FADE_MS);
       return;
     }
@@ -205,7 +221,7 @@ export default function QuestionStep({
               setBridge(null);
               setBridgeStep(0);
               setBridgeExiting(false);
-              onAnswer(currentQuestion, optionId, { advance: true });
+              onAnswer(questionRef, optionId, { advance: true });
             }, REVEAL_FADE_MS),
           );
         }, t),
@@ -220,7 +236,7 @@ export default function QuestionStep({
 
     setLocked(true);
     setPendingId(optionId);
-    onAnswer(currentQuestion, optionId, { advance: false });
+    onAnswer(questionRef, optionId, { advance: false });
 
     clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
@@ -323,7 +339,7 @@ export default function QuestionStep({
               const revealed = revealStep >= 3 + index && !exiting;
               return (
                 <button
-                  key={`${currentQuestion}-${option.id}`}
+                  key={`${questionRef}-${option.id}`}
                   type="button"
                   role="listitem"
                   className={`question__option${selected ? " is-selected" : ""}${

@@ -9,6 +9,15 @@ const tokyo = {
   destinationId: "tokyo",
   startQuestionId: "q1",
 
+  /** Shown on the briefing page before q1 */
+  intro:
+    "We're heading to Tokyo from April 6–11. Our flights from Seattle to Tokyo are booked, and we're staying here.",
+  introChip: {
+    title: "Sakura Family Lodge",
+    subtitle: "Tokyo, Japan · April 6–11 · Confirmed",
+    chipText: "Booked · Expedia",
+  },
+
   questions: {
     q1: {
       id: "q1",
