@@ -508,12 +508,14 @@ body:has(.expedia-portrait),
 
 .expedia-portrait__frame {
   position: relative;
-  width: min(100vw, calc(100dvh * 9 / 16));
-  height: min(100dvh, calc(100vw * 16 / 9));
+  width: min(100%, calc(100dvh * 9 / 16));
+  max-height: 100%;
   aspect-ratio: 9 / 16;
+  height: auto;
   overflow: hidden;
   container-type: size;
-  background: #ffffff;
+  /* Match letterbox; iframe cover-scale hides any 1px rounding gap. */
+  background: #000000;
   box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
 }
 

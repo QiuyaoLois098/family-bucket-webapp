@@ -135,6 +135,9 @@ try {
       New-Item -ItemType Directory -Path $UserDataDir | Out-Null
     }
 
+    # Oversize slightly — Chrome kiosk + DPI scaling often leaves a 1px edge gap.
+    $w = [Math]::Max(1, $Bounds.Width + 4)
+    $h = [Math]::Max(1, $Bounds.Height + 4)
     $argList = @(
       "--user-data-dir=$UserDataDir",
       "--new-window",
@@ -144,7 +147,7 @@ try {
       "--disable-features=TranslateUI",
       "--autoplay-policy=no-user-gesture-required",
       "--window-position=$($Bounds.X),$($Bounds.Y)",
-      "--window-size=$($Bounds.Width),$($Bounds.Height)",
+      "--window-size=$w,$h",
       "--kiosk",
       $Url
     )

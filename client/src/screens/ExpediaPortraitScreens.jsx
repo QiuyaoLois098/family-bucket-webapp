@@ -27,7 +27,11 @@ function PortraitFrame({ title, src, className = "" }) {
 
     const fit = () => {
       const width = node.clientWidth || 1;
-      setScale(width / CANVAS_W);
+      const height = node.clientHeight || 1;
+      // Cover the frame (not just width-fit) so subpixel rounding can't leave a
+      // 1px white strip on the right/bottom edge of the locked canvas.
+      const next = Math.max(width / CANVAS_W, height / CANVAS_H);
+      setScale(next * 1.002);
     };
 
     fit();
