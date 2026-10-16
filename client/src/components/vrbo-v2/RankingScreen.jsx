@@ -1,7 +1,22 @@
 import copy from "../../data/vrbo-v2/copy.json";
+import users from "../../data/vrbo-v2/users.json";
 import { StayShowcase } from "./StayViews.jsx";
 
 const FINALE_LOCKED_SRC = "/images/Vrbo-Images/example/vrbo-r/4.png";
+
+function formatListeningLine(names) {
+  if (names.length === 0) return "Listening...";
+  if (names.length === 1) return `Listening to ${names[0]}...`;
+  if (names.length === 2) return `Listening to ${names[0]} and ${names[1]}...`;
+  return `Listening to ${names.slice(0, -1).join(", ")}, and ${names[names.length - 1]}...`;
+}
+
+function buildListeningLine(joined = {}, displayNames = {}) {
+  const names = users
+    .filter((user) => user.role === "coordinator" || Boolean(joined[user.id]))
+    .map((user) => displayNames[user.id] || user.name);
+  return formatListeningLine(names);
+}
 
 function WaitingPanel({ ready }) {
   return (
@@ -37,7 +52,15 @@ function WaitingPanel({ ready }) {
   );
 }
 
-export function SummaryPanel({ summaryText, onSearch, compact = false }) {
+export function SummaryPanel({
+  summaryText,
+  onSearch,
+  compact = false,
+  joined = {},
+  displayNames = {},
+}) {
+  const listeningLine = buildListeningLine(joined, displayNames);
+
   return (
     <div className={`vrbo-v2-summary ${compact ? "vrbo-v2-summary--compact" : ""} vrbo-v2-rank__panel--enter`}>
       <header className="vrbo-v2-summary__masthead">
@@ -62,7 +85,7 @@ export function SummaryPanel({ summaryText, onSearch, compact = false }) {
             <i />
             <i />
           </span>
-          {copy.summary.listening}
+          {listeningLine}
         </p>
 
         <div className="vrbo-v2-summary__spacer" aria-hidden="true" />
@@ -118,6 +141,8 @@ export default function RankingScreen({
   previewPropertyId,
   selectedPropertyId,
   celebrating = false,
+  joined = {},
+  displayNames = {},
   actions,
 }) {
   if (celebrating) {
@@ -135,7 +160,13 @@ export default function RankingScreen({
       ) : null}
 
       {stage === "summary" ? (
-        <SummaryPanel key="summary" summaryText={summaryText} onSearch={actions.searchStays} />
+        <SummaryPanel
+          key="summary"
+          summaryText={summaryText}
+          onSearch={actions.searchStays}
+          joined={joined}
+          displayNames={displayNames}
+        />
       ) : null}
 
       {stage === "results" ? (

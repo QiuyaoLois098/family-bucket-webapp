@@ -1,8 +1,8 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import HyperionDevOverlay from "./components/HyperionDevOverlay.jsx";
 import ProjectMenu from "./components/ProjectMenu.jsx";
-/* TEMP — delete DebugHeightGuide import + <DebugHeightGuide /> when done */
 import DebugHeightGuide from "./debug/DebugHeightGuide.jsx";
+import { isVrboDevComparePath } from "./config/vrboUi.js";
 import ControlScreen from "./screens/ControlScreen.jsx";
 import DisplayScreen from "./screens/DisplayScreen.jsx";
 import ExpediaBaScreen from "./screens/ExpediaBaScreen.jsx";
@@ -25,6 +25,8 @@ const DEVICE_PATHS = new Set([
   "/expedia-right",
   "/vrbo-left",
   "/vrbo-right",
+  "/vrbo-left-dev",
+  "/vrbo-right-dev",
   "/vrbo-ip1",
   "/vrbo-ip2",
   "/vrbo-ip3",
@@ -35,13 +37,14 @@ const DEVICE_PATHS = new Set([
 
 export default function App() {
   const heartbeat = useHyperionHeartbeat();
+  const { pathname } = useLocation();
+  const heightGuide = isVrboDevComparePath(pathname);
 
   return (
     <>
       <ProjectMenu hideOnPaths={DEVICE_PATHS} />
       <HyperionDevOverlay heartbeat={heartbeat} />
-      {/* TEMP — delete with ./debug/DebugHeightGuide.jsx; gated by VRBO_UI.heightGuide */}
-      <DebugHeightGuide />
+      <DebugHeightGuide enabled={heightGuide} />
       <Routes>
         <Route path="/" element={<PreviewScreen />} />
         <Route path="/expedia-left" element={<ExpediaLeftPage />} />
@@ -49,6 +52,8 @@ export default function App() {
         <Route path="/vrbo-v2" element={<VrboV2Screen />} />
         <Route path="/vrbo-left" element={<VrboLeftPage />} />
         <Route path="/vrbo-right" element={<VrboRightPage />} />
+        <Route path="/vrbo-left-dev" element={<VrboLeftPage compareLayout />} />
+        <Route path="/vrbo-right-dev" element={<VrboRightPage compareLayout />} />
         <Route path="/vrbo-ip1" element={<GuestPhonePage guestId="sarah" />} />
         <Route path="/vrbo-ip2" element={<GuestPhonePage guestId="alex" />} />
         <Route path="/vrbo-ip3" element={<GuestPhonePage guestId="chris" />} />

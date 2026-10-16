@@ -246,6 +246,8 @@ function VrboDemo() {
                   previewPropertyId={previewPropertyId}
                   selectedPropertyId={selectedPropertyId}
                   celebrating={celebrating}
+                  joined={joined}
+                  displayNames={displayNames}
                   actions={actions}
                 />
               </div>
@@ -299,8 +301,8 @@ function vrboRightReference(stage, { celebrating = false, selectedPropertyId = n
   return { src: VRBO_RIGHT_REFS.waiting, caption: "Reference · waiting" };
 }
 
-/** Display 1 · Organizer chat (+ optional design reference when VRBO_UI.compareLayout). */
-export function VrboLeftPage() {
+/** Display 1 · Organizer chat. Prod = full-bleed; `compareLayout` = live + reference. */
+export function VrboLeftPage({ compareLayout = false } = {}) {
   const { state, actions } = useVrboV2Session({ syncOnly: true });
   const propertyLookup = usePropertyLookup(state.results);
   useVrboSessionStartOnActivity(actions.startSession);
@@ -323,7 +325,7 @@ export function VrboLeftPage() {
     </ScaledDisplayCanvas>
   );
 
-  if (!VRBO_UI.compareLayout) {
+  if (!compareLayout) {
     return (
       <div className="vrbo-v2-device vrbo-v2-device--display">
         <RestartControl onReset={actions.reset} />
@@ -359,8 +361,8 @@ export function VrboLeftPage() {
   );
 }
 
-/** Display 2 · Output / search (+ optional design reference when VRBO_UI.compareLayout). */
-export function VrboRightPage() {
+/** Display 2 · Output / search. Prod = full-bleed; `compareLayout` = live + reference. */
+export function VrboRightPage({ compareLayout = false } = {}) {
   const { state, allSubmitted, actions } = useVrboV2Session({ syncOnly: true });
   const reference = vrboRightReference(state.stage, {
     celebrating: state.celebrating,
@@ -377,12 +379,14 @@ export function VrboRightPage() {
         previewPropertyId={state.previewPropertyId}
         selectedPropertyId={state.selectedPropertyId}
         celebrating={state.celebrating}
+        joined={state.joined}
+        displayNames={state.displayNames ?? {}}
         actions={actions}
       />
     </ScaledDisplayCanvas>
   );
 
-  if (!VRBO_UI.compareLayout) {
+  if (!compareLayout) {
     return (
       <div className="vrbo-v2-device vrbo-v2-device--display">
         <RestartControl onReset={actions.reset} />

@@ -21,6 +21,8 @@ export const PROJECTS = [
       pathname.startsWith("/vrbo-v2") ||
       pathname === "/vrbo-left" ||
       pathname === "/vrbo-right" ||
+      pathname === "/vrbo-left-dev" ||
+      pathname === "/vrbo-right-dev" ||
       pathname === "/vrbo-ip1" ||
       pathname === "/vrbo-ip2" ||
       pathname === "/vrbo-ip3" ||

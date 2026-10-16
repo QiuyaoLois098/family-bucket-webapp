@@ -47,13 +47,31 @@ export default function MainChatScreen({
     (user) => user.role === "coordinator" || Boolean(joined[user.id]),
   );
   const typingUsers = typing.map((id) => namedUserById[id]).filter(Boolean);
-  const guestTotal = Object.values(namedUserById).filter((user) => user.role === "guest").length;
-  const guestsJoined = Object.values(namedUserById).filter(
-    (user) => user.role === "guest" && Boolean(joined[user.id]),
-  ).length;
+  const guestUsers = Object.values(namedUserById).filter((user) => user.role === "guest");
+  const guestTotal = guestUsers.length;
+  const guestsJoined = guestUsers.filter((user) => Boolean(joined[user.id])).length;
   const guestsWaiting = Math.max(0, guestTotal - guestsJoined);
   const anyoneSubmitted = Object.values(submitted).some(Boolean);
   const showPickupFooter = guestsWaiting > 0 && !anyoneSubmitted;
+  // After Jamie's intro, before anyone submits: stacked guest avatars + "..."
+  const hasJamieIntro = (messages ?? []).some(
+    (message) =>
+      message.phase === "intro" ||
+      (message.authorId === "jamie" &&
+        message.kind !== "property" &&
+        !message.preferenceIds?.length &&
+        message.phase !== "finale"),
+  );
+  const hasPreferenceOrFinale = (messages ?? []).some(
+    (message) =>
+      message.phase === "preference" ||
+      message.phase === "finale" ||
+      message.kind === "property",
+  );
+  const showIdleTyping =
+    hasJamieIntro && !hasPreferenceOrFinale && !anyoneSubmitted && !celebrating;
+  const idleTypingUsers = guestUsers.slice(0, 2);
+  const typingRowUsers = typingUsers.length ? typingUsers : showIdleTyping ? idleTypingUsers : [];
   const plannerLabel = copy.chat.groupPlannerLabel || "Primary planner";
   const peopleLine =
     guestsWaiting > 0
@@ -76,7 +94,7 @@ export default function MainChatScreen({
     if (!node) return;
     // Instant pin — never animate scroll (fights paint of new bubbles).
     node.scrollTop = node.scrollHeight;
-  }, [messages.length, typing.length]);
+  }, [messages.length, typing.length, showIdleTyping]);
 
   return (
     <div className={`vrbo-v2-chat ${celebrating ? "is-celebrating" : ""}`}>
@@ -125,10 +143,10 @@ export default function MainChatScreen({
             );
           })}
 
-          {typingUsers.length ? (
+          {typingRowUsers.length ? (
             <div key="typing" className="vrbo-v2-chat__typing is-enter">
               <div className="vrbo-v2-chat__typing-avatars" aria-hidden="true">
-                {typingUsers.slice(0, 3).map((user) => (
+                {typingRowUsers.slice(0, 3).map((user) => (
                   <Avatar key={user.id} user={user} className="vrbo-v2-chat__typing-avatar" />
                 ))}
               </div>

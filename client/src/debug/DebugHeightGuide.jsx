@@ -1,19 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { VRBO_UI } from "../config/vrboUi.js";
 
 /**
- * TEMP debug overlay — delete this whole file when done.
- * Toggle: VRBO_UI.heightGuide in config/vrboUi.js, or press `g` when enabled.
- * Drag the magenta line vertically to compare heights.
+ * Magenta height guideline for /vrbo-*-dev compare layouts.
+ * Press `g` to show/hide when enabled.
  */
-export const ENABLE = VRBO_UI.heightGuide;
-
 const LINE = "#e11d8f";
 const STORAGE_KEY = "debug-height-guide-y";
 
-export default function DebugHeightGuide() {
-  const [visible, setVisible] = useState(ENABLE);
+export default function DebugHeightGuide({ enabled = false }) {
+  const [visible, setVisible] = useState(enabled);
   const [y, setY] = useState(() => {
     const saved = Number(sessionStorage.getItem(STORAGE_KEY));
     if (Number.isFinite(saved) && saved >= 0) return saved;
@@ -22,7 +18,11 @@ export default function DebugHeightGuide() {
   const dragging = useRef(false);
 
   useEffect(() => {
-    if (!ENABLE) return undefined;
+    setVisible(enabled);
+  }, [enabled]);
+
+  useEffect(() => {
+    if (!enabled) return undefined;
 
     const onKey = (event) => {
       if (event.key === "g" || event.key === "G") {
@@ -42,7 +42,7 @@ export default function DebugHeightGuide() {
 
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [visible]);
+  }, [enabled, visible]);
 
   useEffect(() => {
     sessionStorage.setItem(STORAGE_KEY, String(y));
@@ -67,7 +67,7 @@ export default function DebugHeightGuide() {
     };
   }, [visible]);
 
-  if (!ENABLE || !visible) return null;
+  if (!enabled || !visible) return null;
 
   return createPortal(
     <div
@@ -101,7 +101,6 @@ export default function DebugHeightGuide() {
           pointerEvents: "none",
         }}
       />
-      {/* Wider hit area */}
       <div
         style={{
           position: "absolute",
