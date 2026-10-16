@@ -1,9 +1,8 @@
 /**
  * Tokyo branching Q&A script.
  *
- * Same Q1/Q2 branching as Tahoe, but four distinct a3 answers:
- *   q3-1 → a3-1, a3-2
- *   q3-2 → a3-3, a3-4
+ *   q1 → a1-1 → q2-1 → a2-1/a2-2 → q3-1 → a3-1, a3-2
+ *        a1-2 → q2-2 → a2-3/a2-4 → q3-2 → a3-3, a3-4
  */
 const tokyo = {
   destinationId: "tokyo",
@@ -11,9 +10,9 @@ const tokyo = {
 
   /** Shown on the briefing page before q1 */
   intro:
-    "We're heading to Tokyo from April 6–11. Our flights from Seattle to Tokyo are booked, and we're staying here.",
+    "We're heading to Tokyo from April 6–11. Our flights from Los Angeles to Tokyo are booked, and we're staying here.",
   introChip: {
-    title: "Sakura Family Lodge",
+    title: "Tokyo Family Garden Hotel",
     subtitle: "Tokyo, Japan · April 6–11 · Confirmed",
     chipText: "Booked · Expedia",
   },
@@ -26,22 +25,22 @@ const tokyo = {
     },
     "q2-1": {
       id: "q2-1",
-      text: "I found two options your family might love. Which adventure should come first?",
+      text: "Treetops or a mountain kayak? Which outing should come first?",
       answerIds: ["a2-1", "a2-2"],
     },
     "q2-2": {
       id: "q2-2",
-      text: "I found two calm options your family might love. Which comes first?",
+      text: "River views or spring gardens? Which comes first?",
       answerIds: ["a2-3", "a2-4"],
     },
     "q3-1": {
       id: "q3-1",
-      text: "What should we add around those adventures?",
+      text: "What else would your family like to explore?",
       answerIds: ["a3-1", "a3-2"],
     },
     "q3-2": {
       id: "q3-2",
-      text: "What should we add around this slower trip?",
+      text: "What would round out your slower trip?",
       answerIds: ["a3-3", "a3-4"],
     },
   },
@@ -50,136 +49,136 @@ const tokyo = {
     "a1-1": {
       id: "a1-1",
       text: "Try something adventurous",
-      subtitle: "Neighborhoods, towers, and lively city days.",
+      subtitle: "Treetop challenges, mountain kayaking, and roadside go-karts.",
       chipText: "",
       image: "/images/Expedia-images/options/q1_1.png",
       replyMsg:
-        "We love exploring—the kids are dying to see Tokyo’s skyline and try a big city day over spring break.",
-      aiReplyMsg: "A little adventure it is!",
+        "We love getting outside—the kids can’t wait to try a treetop course and kayak in Tokyo’s mountains.",
+      aiReplyMsg: "",
       nextQuestionId: "q2-1",
     },
     "a1-2": {
       id: "a1-2",
       text: "Take it slow",
-      subtitle: "Parks, temples, and easy food stops.",
+      subtitle: "River views, garden strolls, and family-friendly sushi.",
       chipText: "",
       image: "/images/Expedia-images/options/q1_2.png",
       replyMsg:
-        "We'd like to take it slow—parks, temples, and easy food stops sound perfect for our family.",
-      aiReplyMsg: "Taking it slow it is!",
+        "We’d like to take it slow—river views, spring gardens, and sushi the kids can try sound perfect.",
+      aiReplyMsg: "",
       nextQuestionId: "q2-2",
     },
 
     "a2-1": {
       id: "a2-1",
-      text: "teamLab Planets",
-      subtitle: "Immersive art rooms the whole family can wander.",
-      chipText: "Expedia · Bookable",
-      image: "/images/Expedia-images/options/q2-kayak-1.png",
+      text: "Forest Adventure Yokohama",
+      subtitle: "Take on forest ropes and bridges near Yokohama.",
+      chipText: "From Google Maps",
+      image: "/images/Expedia-images/options/q2-ropes-1.png",
       replyMsg:
-        "Let's start with teamLab Planets—the kids can't wait to walk through the lights!",
+        "Let's start with Forest Adventure Yokohama—the kids can't wait to hit the treetops!",
       aiReplyMsg:
-        "Perfect—I'll start with teamLab Planets, then add a Shibuya lookout the next day to round out your itinerary.",
-      nextQuestionId: null,
+        "Perfect—I'll start with Forest Adventure Yokohama, then add Lake Shiromaru kayak lesson the next day.",
+      nextQuestionId: "q3-1",
     },
     "a2-2": {
       id: "a2-2",
-      text: "Shibuya Sky",
-      subtitle: "Open-air views over the scramble and skyline.",
-      chipText: "Expedia · Bookable",
-      image: "/images/Expedia-images/options/q2-ropes-1.png",
+      text: "Lake Shiromaru kayak lesson",
+      subtitle: "Learn to paddle through emerald waters in Okutama.",
+      chipText: "From Google Maps",
+      image: "/images/Expedia-images/options/q2-kayak-1.png",
       replyMsg:
-        "Let's start with Shibuya Sky—the kids can't wait to see the city from above!",
+        "Let's start with Lake Shiromaru—the kids can't wait to paddle!",
       aiReplyMsg:
-        "Perfect—I'll start with Shibuya Sky, then add teamLab the next day to round out your itinerary.",
+        "Perfect—I'll start with Lake Shiromaru, then add Forest Adventure Yokohama the next day.",
       nextQuestionId: "q3-1",
     },
 
     "a2-3": {
       id: "a2-3",
-      text: "Ueno Park afternoon",
-      subtitle: "Ponds, paths, and an easy outdoor pace.",
-      chipText: "From Google Maps",
+      text: "Sumida River cruise",
+      subtitle: "Cruise from Asakusa toward Odaiba Marine Park.",
+      chipText: "Expedia · Bookable",
       image: "/images/Expedia-images/options/q3-lake.png",
       replyMsg:
-        "Let's start with Ueno Park—the kids will love the open space!",
+        "Let's start with the Sumida River cruise—the kids will love being out on the water!",
       aiReplyMsg:
-        "Perfect—I'll start with Ueno Park, then add a quiet temple stop the next day to round out your easygoing itinerary.",
+        "Perfect—I'll start with the Sumida River cruise, then add Shinjuku Gyoen gardens the next day.",
       nextQuestionId: "q3-2",
     },
     "a2-4": {
       id: "a2-4",
-      text: "Senso-ji temple visit",
-      subtitle: "Incense, gates, and a gentle neighborhood wander.",
+      text: "Shinjuku Gyoen gardens",
+      subtitle: "Enjoy vast lawns and late-blooming cherry trees.",
       chipText: "From Google Maps",
       image: "/images/Expedia-images/options/q1_2.png",
       replyMsg:
-        "Let's start with Senso-ji—the kids can ease into Tokyo with snacks and temple gates!",
+        "Let's start with Shinjuku Gyoen—the kids can ease into Tokyo among the spring trees!",
       aiReplyMsg:
-        "Perfect—I'll start with Senso-ji, then add a park afternoon the next day to round out your easygoing itinerary.",
-      nextQuestionId: null,
+        "Perfect—I'll start with Shinjuku Gyoen, then add the Sumida River cruise the next day.",
+      nextQuestionId: "q3-2",
     },
 
     "a3-1": {
       id: "a3-1",
-      text: "A nearby family stroll",
-      subtitle: "An easy walk close to the hotel, before dinner",
+      text: "A picnic by the pond",
+      subtitle: "A relaxed afternoon with water and spring trees.",
       chipText: "",
-      image: "/images/Expedia-images/options/q3-hike.png",
-      replyMsg: "Can we add an easy family stroll near our hotel?",
+      image: "/images/Expedia-images/options/q3-lake.png",
+      replyMsg: "Which park would you recommend for a relaxed family afternoon?",
       aiReplyMsg:
-        "Imperial Palace East Gardens is a short ride away, so it’s easy to fit in a family walk before dinner.",
+        "Inokashira Park is a great fit: enjoy a picnic beneath the spring trees and look for koi and turtles around the pond.",
       aiReplyChip: {
-        title: "Imperial Palace East Gardens",
-        subtitle: "Short ride from your hotel",
+        title: "Inokashira Park afternoon",
+        subtitle: "Picnic, koi, and spring trees",
         chipText: "From Google Maps",
       },
       nextQuestionId: null,
     },
     "a3-2": {
       id: "a3-2",
-      text: "More time for snacks",
-      subtitle: "A slower afternoon hopping easy food stops.",
+      text: "A mountain trail day",
+      subtitle: "An easy family walk with big views.",
       chipText: "",
-      image: "/images/Expedia-images/options/q3-lake.png",
-      replyMsg: "Can we add more time for snacks around the city?",
+      image: "/images/Expedia-images/options/q3-hike.png",
+      replyMsg: "Which mountain trail would you recommend for a family outing?",
       aiReplyMsg:
-        "Absolutely—I’ll leave an open afternoon in a food-friendly neighborhood so everyone can graze at their own pace.",
+        "Mt. Takao’s Trail 1 is the family-walk option in your plan. Take the Keio Line from Shinjuku to Takaosanguchi, then start at the mountain’s base.",
       aiReplyChip: {
-        title: "Neighborhood snack crawl",
-        subtitle: "Easy bites for the whole family",
+        title: "Mt. Takao Trail 1",
+        subtitle: "Family walk from Takaosanguchi",
         chipText: "From Google Maps",
       },
       nextQuestionId: null,
     },
     "a3-3": {
       id: "a3-3",
-      text: "Family dinner with a city view",
-      subtitle: "Casual plates and skyline lights.",
+      text: "An easy sushi outing",
+      subtitle: "Casual conveyor-belt sushi the kids can try.",
       chipText: "",
       image: "/images/Expedia-images/options/q1_2.png",
-      replyMsg: "Can we add a family dinner with a city view?",
+      replyMsg: "Can you recommend somewhere casual for the kids to try sushi?",
       aiReplyMsg:
-        "Tokyo Skytree Town has plenty of kid-friendly dinner options with big-city energy nearby.",
+        "Try Kura Sushi Harajuku for conveyor-belt sushi and familiar sides like udon and fries, plus the Bikkura-pon prize game.",
       aiReplyChip: {
-        title: "Tokyo Skytree Town dining",
-        subtitle: "Family meal near the lights",
+        title: "Kura Sushi Harajuku",
+        subtitle: "Conveyor-belt sushi and kids’ sides",
         chipText: "From Google Maps",
       },
       nextQuestionId: null,
     },
     "a3-4": {
       id: "a3-4",
-      text: "More time in a park",
-      subtitle: "A slower afternoon with open space to roam.",
+      text: "A picnic by the pond",
+      subtitle: "A relaxed afternoon with water and spring trees.",
       chipText: "",
       image: "/images/Expedia-images/options/q3-lake.png",
-      replyMsg: "Can we add more park time?",
+      replyMsg: "Which park would you recommend for a relaxed family afternoon?",
       aiReplyMsg:
-        "Yoyogi Park is a great fit for a slower afternoon—open lawns, people-watching, and room for the kids to run.",
+        "Inokashira Park is a great fit: enjoy a picnic, try a swan boat on the pond, and look for koi and turtles beneath the spring trees.",
       aiReplyChip: {
-        title: "Yoyogi Park afternoon",
-        subtitle: "Open lawns and easy wandering",
+        title: "Inokashira Park afternoon",
+        subtitle: "Picnic, swan boats, and spring trees",
         chipText: "From Google Maps",
       },
       nextQuestionId: null,
