@@ -27,6 +27,7 @@ const southLakeTahoe = {
     title: "Sierra Shore Family Lodge",
     subtitle: "South Lake Tahoe, CA · April 6–11 · Confirmed",
     chipText: "Booked · Expedia",
+    image: "/images/Expedia-images/options/tahoe/intro.jpg",
   },
   /** Building phase — left memory card */
   memoryCard: {
@@ -242,7 +243,7 @@ const southLakeTahoe = {
       text: "Try something adventurous",
       subtitle: "Kayaking, ropes courses, and family hikes.",
       chipText: "",
-      image: "/images/Expedia-images/options/q1_1.png",
+      image: "/images/Expedia-images/options/tahoe/a1-1.jpg",
       replyMsg:
         "We love the outdoors—the kids are dying to try kayaking and a ropes course near South Lake Tahoe over spring break.",
       aiReplyMsg: "A little adventure it is!",
@@ -253,7 +254,7 @@ const southLakeTahoe = {
       text: "Take it slow",
       subtitle: "Calm lake views, easy outings, and good food.",
       chipText: "",
-      image: "/images/Expedia-images/options/q1_2.png",
+      image: "/images/Expedia-images/options/tahoe/a1-2.jpg",
       replyMsg:
         "We'd like to take it slow—calm lake views, easy outings, and good food sound perfect for our family.",
       aiReplyMsg: "Taking it slow it is!",
@@ -265,7 +266,7 @@ const southLakeTahoe = {
       text: "Emerald Bay guided kayak",
       subtitle: "Clear-bottom kayaking on Emerald Bay.",
       chipText: "Expedia · Bookable",
-      image: "/images/Expedia-images/options/q2-kayak-1.png",
+      image: "/images/Expedia-images/options/tahoe/a2-1.jpg",
       replyMsg:
         "Let's start with the Guided Kayak Tour on Emerald Bay—the kids can't wait to get on the water!",
       aiReplyMsg:
@@ -277,7 +278,7 @@ const southLakeTahoe = {
       text: "Tahoe City ropes course",
       subtitle: "Take on a treetop ropes course in Tahoe City.",
       chipText: "From Google Maps",
-      image: "/images/Expedia-images/options/q2-ropes-1.png",
+      image: "/images/Expedia-images/options/tahoe/a2-2.jpg",
       replyMsg:
         "Let's start with the Tahoe City ropes course—the kids can't wait to climb through the treetops!",
       aiReplyMsg:
@@ -290,7 +291,7 @@ const southLakeTahoe = {
       text: "M.S. Dixie II scenic cruise",
       subtitle: "Paddlewheel boat cruise from Zephyr Cove to Emerald Bay.",
       chipText: "Expedia · Bookable",
-      image: "/images/Expedia-images/options/q3-lake.png",
+      image: "/images/Expedia-images/options/tahoe/a2-3.jpg",
       replyMsg:
         "Let's start with the M.S. Dixie II cruise—the kids will love being out on the lake!",
       aiReplyMsg:
@@ -302,7 +303,7 @@ const southLakeTahoe = {
       text: "Kings Beach afternoon",
       subtitle: "Calm, shallow water for the kids to wade.",
       chipText: "From Google Maps",
-      image: "/images/Expedia-images/options/q2-kayak-1.png",
+      image: "/images/Expedia-images/options/tahoe/a2-4.jpg",
       replyMsg:
         "Let's start with Kings Beach—the kids can ease into the trip by the water!",
       aiReplyMsg:
@@ -315,7 +316,7 @@ const southLakeTahoe = {
       text: "A nearby family hike",
       subtitle: "An easy trail close to the hotel, before dinner",
       chipText: "",
-      image: "/images/Expedia-images/options/q3-hike.png",
+      image: "/images/Expedia-images/options/tahoe/a3-1.jpg",
       replyMsg: "Can we add an easy family hike near our hotel?",
       aiReplyMsg:
         "Van Sickle Bi-State Park is about an 8-minute drive from your hotel, so it’s easy to fit in a family hike before dinner.",
@@ -323,7 +324,7 @@ const southLakeTahoe = {
         title: "Van Sickle Bi-State Park",
         subtitle: "8 min from your hotel",
         chipText: "From Google Maps",
-        image: "/images/Expedia-images/options/q3-vansickle.png",
+        image: "/images/Expedia-images/options/tahoe/r3-1.png",
       },
       nextQuestionId: null,
     },
@@ -332,7 +333,7 @@ const southLakeTahoe = {
       text: "More time by the lake",
       subtitle: "A slower afternoon with lake views by the water.",
       chipText: "",
-      image: "/images/Expedia-images/options/q3-lake.png",
+      image: "/images/Expedia-images/options/tahoe/a3-2.jpg",
       replyMsg: "Can we add more time by the lake?",
       aiReplyMsg:
         "Sand Harbor is a great fit for a slower afternoon, with a lakeside picnic, an easy paddle near the beach, and local wildlife.",
@@ -340,6 +341,7 @@ const southLakeTahoe = {
         title: "Sand Harbor shoreline afternoon",
         subtitle: "Lakeside picnic, paddle, and wildlife.",
         chipText: "From Google Maps",
+        image: "/images/Expedia-images/options/tahoe/r3-2.png",
       },
       nextQuestionId: null,
     },
@@ -348,7 +350,7 @@ const southLakeTahoe = {
       text: "Family dinner by the lake",
       subtitle: "Lake views and easy options for the kids.",
       chipText: "",
-      image: "/images/Expedia-images/options/q1_2.png",
+      image: "/images/Expedia-images/options/tahoe/a3-3.jpg",
       replyMsg: "Can we add a family dinner with a lake view?",
       aiReplyMsg:
         "Sunnyside Restaurant & Lodge has a lakeside deck, kids’ menu, fish tacos, and Hula Pie.",
@@ -356,6 +358,7 @@ const southLakeTahoe = {
         title: "Sunnyside Restaurant & Lodge",
         subtitle: "Family meal with lake views",
         chipText: "From Google Maps",
+        image: "/images/Expedia-images/options/tahoe/r3-3.png",
       },
       nextQuestionId: null,
     },

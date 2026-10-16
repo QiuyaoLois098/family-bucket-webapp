@@ -23,7 +23,8 @@ export default function BriefingStep({ destinationId, onContinue }) {
   const tripDates = destination?.dates || DEFAULT_DATES;
   const tripTitle =
     script?.tripTitle || `${tripPlace} · ${tripDates}`;
-  const thumb = destination?.image || destination?.heroImage;
+  const thumb =
+    script?.introChip?.image || destination?.image || destination?.heroImage;
 
   const intro =
     script?.intro ||
