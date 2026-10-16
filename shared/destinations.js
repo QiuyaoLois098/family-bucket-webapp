@@ -1,15 +1,15 @@
 export const DESTINATIONS = [
   {
-    id: "san-diego",
-    title: "Sunset by the beach in San Diego",
-    shortTitle: "San Diego, CA",
-    tripLabel: "San Diego",
+    id: "la-fortuna",
+    title: "Rainforest mornings in La Fortuna",
+    shortTitle: "La Fortuna, Costa Rica",
+    tripLabel: "La Fortuna",
     dates: "Jun 15 – 20",
-    location: "California",
-    invitation: "Golden hour along a Pacific shoreline.",
-    image: "/images/Expedia-images/destination-chips/sandiego.png",
+    location: "Costa Rica",
+    invitation: "Volcano views, rainforest air, and easy days outdoors.",
+    image: "/images/Expedia-images/destination-chips/costa-rica.jpg",
     gallery: [
-      "/images/Expedia-images/destination-chips/sandiego.png",
+      "/images/Expedia-images/destination-chips/costa-rica.jpg",
       "/images/Expedia-images/options/q1_2.png",
       "/images/Expedia-images/options/q2-1.png",
       "/images/Expedia-images/options/q1_1.png",
@@ -17,45 +17,45 @@ export const DESTINATIONS = [
     ],
     crops: ["center 40%", "center 70%", "left center", "right 30%", "center 50%"],
     palette: {
-      wash: "linear-gradient(180deg, #191e3b 0%, #4a7aa0 55%, #ffffff 100%)",
+      wash: "linear-gradient(180deg, #191e3b 0%, #2f7a4a 55%, #ffffff 100%)",
       accent: "#fddb32",
     },
     imagePromptBase:
-      "Cinematic premium travel photograph of a San Diego beach at sunset: palm silhouettes, wet sand reflecting molten sky, Pacific water turning gold. Editorial Expedia family campaign quality, no text, no logos.",
+      "Cinematic premium travel photograph of Arenal Volcano in La Fortuna, Costa Rica: lush green rainforest, clear sky, volcanic peak. Editorial Expedia family campaign quality, no text, no logos.",
     fallbackItinerary: {
-      title: "Your Family Escape to San Diego",
-      subtitle: "Beach light, easy days, and a trip made for everyone",
+      title: "Your Family Escape to La Fortuna",
+      subtitle: "Rainforest walks, hot springs, and volcano views",
       headline: "Five days built for your family",
       moments: [
         {
           time: "Day 1",
-          title: "Beach discovery",
+          title: "Arrive under the volcano",
           description:
-            "Settle in and walk the shoreline together. Dinner somewhere casual near the water.",
+            "Settle in, stretch your legs, and catch your first view of Arenal before dinner.",
         },
         {
           time: "Day 2",
-          title: "Tide pools & parks",
+          title: "Rainforest morning",
           description:
-            "Explore tide pools or Balboa Park at an easy pace, with stops whenever the kids need them.",
+            "An easy trail through the forest with stops for wildlife and snacks.",
         },
         {
           time: "Day 3",
-          title: "Catch a first wave",
+          title: "Hot springs afternoon",
           description:
-            "A family-friendly surf or beach day, then downtime back at the hotel.",
+            "Soak together in warm pools while the kids splash nearby.",
         },
         {
           time: "Day 4",
-          title: "Harbor afternoon",
+          title: "Town & treats",
           description:
-            "Stroll the harbor, grab ice cream, and let everyone pick one small adventure.",
+            "Browse La Fortuna for fruit stands, ice cream, and a slow lunch.",
         },
         {
           time: "Day 5",
-          title: "One last seaside stop",
+          title: "One last look",
           description:
-            "A final morning by the water before you head home.",
+            "A final volcano viewpoint before you pack up for home.",
         },
       ],
     },
@@ -68,9 +68,9 @@ export const DESTINATIONS = [
     dates: "Jun 15 – 20",
     location: "California",
     invitation: "Clear water, pine air, and a day made for everyone.",
-    image: "/images/Expedia-images/destination-chips/taho.png",
+    image: "/images/Expedia-images/destination-chips/lake-tahoe.jpg",
     gallery: [
-      "/images/Expedia-images/destination-chips/taho.png",
+      "/images/Expedia-images/destination-chips/lake-tahoe.jpg",
       "/images/memories/drive.png",
       "/images/memories/food.jpg",
       "/images/memories/forest.png",
@@ -128,9 +128,9 @@ export const DESTINATIONS = [
     dates: "Jun 15 – 20",
     location: "North Carolina",
     invitation: "Woodsmoke, mountain air, and a sky full of quiet.",
-    image: "/images/Expedia-images/destination-chips/asheville.png",
+    image: "/images/Expedia-images/destination-chips/asheville.jpg",
     gallery: [
-      "/images/Expedia-images/destination-chips/asheville.png",
+      "/images/Expedia-images/destination-chips/asheville.jpg",
       "/images/memories/forest.png",
       "/images/memories/food.jpg",
       "/images/memories/drive.png",
@@ -141,7 +141,7 @@ export const DESTINATIONS = [
       accent: "#fddb32",
     },
     imagePromptBase:
-      "Cinematic premium travel photograph of an Asheville cabin evening: campfire glow, timber porch, Blue Ridge forest, soft twilight. Editorial family travel, no text, no logos.",
+      "Cinematic premium travel photograph of Blue Ridge mountains near Asheville: misty layered ridges, soft daylight, forest canopy. Editorial family travel, no text, no logos.",
     fallbackItinerary: {
       title: "Your Family Escape to Asheville",
       subtitle: "Trails, porches, and campfire stories in the Blue Ridge",
@@ -181,61 +181,61 @@ export const DESTINATIONS = [
     },
   },
   {
-    id: "new-braunfels",
-    title: "River days in New Braunfels",
-    shortTitle: "New Braunfels, TX",
-    tripLabel: "New Braunfels",
+    id: "reykjavik",
+    title: "Northern light evenings in Reykjavík",
+    shortTitle: "Reykjavík, Iceland",
+    tripLabel: "Reykjavík",
     dates: "Jun 15 – 20",
-    location: "Texas",
-    invitation: "River light, easy outings, and time outdoors together.",
-    image: "/images/Expedia-images/destination-chips/newbrounfels.png",
+    location: "Iceland",
+    invitation: "Coastal color, wide skies, and days that feel otherworldly.",
+    image: "/images/Expedia-images/destination-chips/iceland.jpg",
     gallery: [
-      "/images/Expedia-images/destination-chips/newbrounfels.png",
+      "/images/Expedia-images/destination-chips/iceland.jpg",
       "/images/memories/drive.png",
       "/images/memories/food.jpg",
       "/images/memories/forest.png",
     ],
     crops: ["center 35%", "center 60%", "left 20%", "right 40%"],
     palette: {
-      wash: "linear-gradient(180deg, #191e3b 0%, #4a7aa0 48%, #fddb32 100%)",
+      wash: "linear-gradient(180deg, #191e3b 0%, #5a7fa8 48%, #fddb32 100%)",
       accent: "#4a7aa0",
     },
     imagePromptBase:
-      "Cinematic premium travel photograph of a Texas Hill Country outdoor family day near New Braunfels: open sky, riverbanks, warm daylight. Editorial family travel, no text, no logos.",
+      "Cinematic premium travel photograph of Reykjavík harbor at dusk: colorful coastal buildings, snowy mountains across the water, soft northern light. Editorial family travel, no text, no logos.",
     fallbackItinerary: {
-      title: "Your Family Escape to New Braunfels",
-      subtitle: "River floats, easy hikes, and unhurried evenings",
+      title: "Your Family Escape to Reykjavík",
+      subtitle: "Harbor walks, hot pools, and easy day trips",
       headline: "Five days built for your family",
       moments: [
         {
           time: "Day 1",
-          title: "Arrive & unwind",
+          title: "Harbor arrival",
           description:
-            "Check in, stretch your legs, and find a simple dinner nearby.",
+            "Check in, walk the waterfront, and warm up with something sweet downtown.",
         },
         {
           time: "Day 2",
-          title: "River morning",
+          title: "Golden Circle highlights",
           description:
-            "Spend the morning by the water — float, splash, or sit on the bank.",
+            "A family-paced day of geysers, waterfalls, and plenty of photo stops.",
         },
         {
           time: "Day 3",
-          title: "Hill Country walk",
+          title: "Hot pool afternoon",
           description:
-            "An easy outdoor walk with wide views and plenty of snack breaks.",
+            "Soak together and let everyone choose their own pace in the warm water.",
         },
         {
           time: "Day 4",
-          title: "Town stroll",
+          title: "City wander",
           description:
-            "Explore local shops and grab something sweet in the afternoon.",
+            "Colorful streets, a museum stop, and dinner somewhere cozy.",
         },
         {
           time: "Day 5",
-          title: "One last outdoor hour",
+          title: "One last shoreline walk",
           description:
-            "A final easy outing before you pack up for home.",
+            "A final look across the bay before you head home.",
         },
       ],
     },
@@ -248,9 +248,9 @@ export const DESTINATIONS = [
     dates: "Jun 15 – 20",
     location: "Arizona",
     invitation: "Red rock, wide sky, and a silence that goes on forever.",
-    image: "/images/Expedia-images/destination-chips/sedona.png",
+    image: "/images/Expedia-images/destination-chips/sedona.jpg",
     gallery: [
-      "/images/Expedia-images/destination-chips/sedona.png",
+      "/images/Expedia-images/destination-chips/sedona.jpg",
       "/images/memories/drive.png",
       "/images/memories/food.jpg",
       "/images/memories/forest.png",
@@ -261,7 +261,7 @@ export const DESTINATIONS = [
       accent: "#fddb32",
     },
     imagePromptBase:
-      "Cinematic premium travel photograph of Sedona: red sandstone formations, warm late-afternoon light, glamping tent, immense sky. Editorial Southwest family travel, no text, no logos.",
+      "Cinematic premium travel photograph of Sedona: red sandstone formations, warm late-afternoon light, immense sky. Editorial Southwest family travel, no text, no logos.",
     fallbackItinerary: {
       title: "Your Family Escape to Sedona",
       subtitle: "Red earth by day, and a sky that rewrites the night",
@@ -301,61 +301,61 @@ export const DESTINATIONS = [
     },
   },
   {
-    id: "orlando",
-    title: "A family week in Orlando",
-    shortTitle: "Orlando, FL",
-    tripLabel: "Orlando",
+    id: "tokyo",
+    title: "City lights and cherry blossoms in Tokyo",
+    shortTitle: "Tokyo, Japan",
+    tripLabel: "Tokyo",
     dates: "Jun 15 – 20",
-    location: "Florida",
-    invitation: "Shared days, bright streets, and memories you plan together.",
-    image: "/images/Expedia-images/destination-chips/orlando.png",
+    location: "Japan",
+    invitation: "Neon evenings, quiet gardens, and food the whole family will chase.",
+    image: "/images/Expedia-images/destination-chips/tokyo.jpg",
     gallery: [
-      "/images/Expedia-images/destination-chips/orlando.png",
+      "/images/Expedia-images/destination-chips/tokyo.jpg",
       "/images/Expedia-images/options/q1_1.png",
       "/images/Expedia-images/options/q2-1.png",
       "/images/Expedia-images/options/q3-1.png",
     ],
     crops: ["center 25%", "center 60%", "right center", "left 20%"],
     palette: {
-      wash: "linear-gradient(180deg, #191e3b 0%, #4a7aa0 48%, #fddb32 100%)",
+      wash: "linear-gradient(180deg, #191e3b 0%, #6a4a78 48%, #fddb32 100%)",
       accent: "#4a7aa0",
     },
     imagePromptBase:
-      "Cinematic premium travel photograph of an Orlando family day: charming resort streetscape, warm daylight, colorful architecture. Editorial family travel campaign, no text, no logos.",
+      "Cinematic premium travel photograph of Tokyo at twilight: cherry blossoms in the foreground, city skyline and Tokyo Tower glowing beyond. Editorial family travel campaign, no text, no logos.",
     fallbackItinerary: {
-      title: "Your Family Escape to Orlando",
-      subtitle: "Parks, pools, and easy evenings made for everyone",
+      title: "Your Family Escape to Tokyo",
+      subtitle: "Neighborhoods, parks, and easy evenings made for everyone",
       headline: "Five days built for your family",
       moments: [
         {
           time: "Day 1",
-          title: "Arrive & explore",
+          title: "Arrive & settle",
           description:
-            "Check in, walk the resort pathways, and keep the first night easy.",
+            "Check in, walk a nearby street, and keep the first night simple.",
         },
         {
           time: "Day 2",
           title: "Park morning",
           description:
-            "A focused morning outing, then an afternoon break back at the hotel.",
+            "A garden or park stroll, then an afternoon break back at the hotel.",
         },
         {
           time: "Day 3",
-          title: "Pool day",
+          title: "Neighborhood day",
           description:
-            "Slow morning by the pool with snacks and no fixed agenda.",
+            "Let everyone pick a snack stop while you wander a lively district.",
         },
         {
           time: "Day 4",
-          title: "Another adventure",
+          title: "Skyline evening",
           description:
-            "Let the kids help choose the day’s main stop — park, show, or stroll.",
+            "Catch the city lights from a viewpoint, then a relaxed dinner.",
         },
         {
           time: "Day 5",
           title: "One last stroll",
           description:
-            "A final walk through the colorful streets before you head home.",
+            "A final walk under the blossoms or neon before you head home.",
         },
       ],
     },

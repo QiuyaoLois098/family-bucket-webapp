@@ -33,9 +33,7 @@ export default function DestinationPicker({ onSelect, offeredIds }) {
       <div className="destinations__intro">
         <h2>Find your family&apos;s next trip</h2>
         <p className="destinations__lede">
-          Choose a destination and start
-          <br />
-          making memories together.
+          Choose a destination and start making memories together.
         </p>
       </div>
 
@@ -61,6 +59,8 @@ export default function DestinationPicker({ onSelect, offeredIds }) {
           );
         })}
       </div>
+
+      <p className="destinations__hint">Tap a destination to begin</p>
     </div>
   );
 }

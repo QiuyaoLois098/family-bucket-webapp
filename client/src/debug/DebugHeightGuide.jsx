@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 /**
- * Magenta height guideline for /vrbo-*-dev compare layouts.
+ * Magenta height guideline for /vrbo-*-dev and /expedia-*-dev compare layouts.
  * Press `g` to show/hide when enabled.
  */
 const LINE = "#e11d8f";

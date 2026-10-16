@@ -8,12 +8,12 @@ const STAGGER_MS = 750;
 const THINKING_HOLD_MS = 2000;
 
 const LODGE_BY_DESTINATION = {
-  "san-diego": "Pacific Crest Family Lodge",
+  "la-fortuna": "Arenal Family Lodge",
   "south-lake-tahoe": "Sierra Shore Family Lodge",
   asheville: "Blue Ridge Family Lodge",
-  "new-braunfels": "Hill Country Family Lodge",
+  reykjavik: "Harbor Light Family Lodge",
   sedona: "Red Rock Family Lodge",
-  orlando: "Sunshine Family Lodge",
+  tokyo: "Sakura Family Lodge",
 };
 
 /**

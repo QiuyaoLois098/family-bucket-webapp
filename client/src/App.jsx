@@ -2,7 +2,7 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import HyperionDevOverlay from "./components/HyperionDevOverlay.jsx";
 import ProjectMenu from "./components/ProjectMenu.jsx";
 import DebugHeightGuide from "./debug/DebugHeightGuide.jsx";
-import { isVrboDevComparePath } from "./config/vrboUi.js";
+import { isDevComparePath } from "./config/vrboUi.js";
 import ControlScreen from "./screens/ControlScreen.jsx";
 import DisplayScreen from "./screens/DisplayScreen.jsx";
 import ExpediaBaScreen from "./screens/ExpediaBaScreen.jsx";
@@ -23,6 +23,8 @@ import VrboV2Screen, {
 const DEVICE_PATHS = new Set([
   "/expedia-left",
   "/expedia-right",
+  "/expedia-left-dev",
+  "/expedia-right-dev",
   "/vrbo-left",
   "/vrbo-right",
   "/vrbo-left-dev",
@@ -39,7 +41,7 @@ const DEVICE_PATHS = new Set([
 export default function App() {
   const heartbeat = useHyperionHeartbeat();
   const { pathname } = useLocation();
-  const heightGuide = isVrboDevComparePath(pathname);
+  const heightGuide = isDevComparePath(pathname);
 
   return (
     <>
@@ -50,6 +52,14 @@ export default function App() {
         <Route path="/" element={<PreviewScreen />} />
         <Route path="/expedia-left" element={<ExpediaLeftPage />} />
         <Route path="/expedia-right" element={<ExpediaRightPage />} />
+        <Route
+          path="/expedia-left-dev"
+          element={<ExpediaLeftPage compareLayout />}
+        />
+        <Route
+          path="/expedia-right-dev"
+          element={<ExpediaRightPage compareLayout />}
+        />
         <Route path="/vrbo-v2" element={<VrboV2Screen />} />
         <Route path="/vrbo-left" element={<VrboLeftPage />} />
         <Route path="/vrbo-right" element={<VrboRightPage />} />

@@ -10,6 +10,8 @@ export const PROJECTS = [
       pathname.startsWith("/display") ||
       pathname === "/expedia-left" ||
       pathname === "/expedia-right" ||
+      pathname === "/expedia-left-dev" ||
+      pathname === "/expedia-right-dev" ||
       pathname === "/expedia-ba",
   },
   {

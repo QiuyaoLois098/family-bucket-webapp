@@ -31,7 +31,7 @@
   justify-content: flex-start;
   gap: 0;
   min-height: 0;
-  padding: calc(var(--u) * 80) calc(var(--u) * 80) 4.2%;
+  padding: calc(var(--u) * 80) calc(var(--u) * 80) calc(var(--u) * 64);
   background: #ffffff;
   color: #191e3b;
 }
@@ -122,7 +122,7 @@
 
 .destinations__intro {
   flex: 0 0 auto;
-  margin-top: calc(var(--u) * 200);
+  margin-top: calc(var(--u) * 180);
   max-width: none;
   text-align: center;
 }
@@ -139,14 +139,14 @@
 }
 
 .destinations__lede {
-  margin: calc(100cqi * 28 / var(--design-w)) auto 0;
-  max-width: 18em;
+  margin: calc(100cqi * 14 / var(--design-w)) auto 0;
+  max-width: 20em;
   font-family: var(--sans);
   font-size: calc(100cqi * 34 / var(--design-w));
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.35;
   letter-spacing: -0.01em;
-  color: #191e3b;
+  color: #5c6478;
 }
 
 .destinations__grid {
@@ -157,6 +157,18 @@
   flex: 0 0 auto;
   align-content: start;
   min-height: 0;
+}
+
+.destinations__hint {
+  flex: 0 0 auto;
+  margin: auto 0 0;
+  padding-top: calc(var(--u) * 48);
+  text-align: center;
+  font-family: var(--sans);
+  font-size: calc(100cqi * 22 / var(--design-w));
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .destination-card {
@@ -186,9 +198,9 @@
   transition: transform 0.5s ease;
 }
 
-.destination-card__image--san-diego,
-.destination-card__image--sedona {
-  background-position: center 72%;
+.destination-card__image--sedona,
+.destination-card__image--la-fortuna {
+  background-position: center 60%;
 }
 
 .destination-card__veil {
@@ -207,11 +219,11 @@
   position: absolute;
   left: calc(var(--u) * 8);
   right: calc(var(--u) * 8);
-  bottom: calc(100cqi * 36 / var(--design-w));
+  bottom: calc(100cqi * 28 / var(--design-w));
   z-index: 1;
   font-family: var(--ui);
-  font-weight: 500;
-  font-size: calc(100cqi * 34 / var(--design-w));
+  font-weight: 700;
+  font-size: calc(100cqi * 30 / var(--design-w));
   line-height: 1.15;
   letter-spacing: 0.01em;
   text-shadow: 0 1px calc(var(--u) * 10) rgba(25, 30, 59, 0.55);
@@ -228,7 +240,7 @@
   inset: 0;
   z-index: 3;
   box-sizing: border-box;
-  border: calc(var(--u) * 4) solid #191e3b;
+  border: calc(var(--u) * 4) solid #1668e3;
   border-radius: inherit;
   pointer-events: none;
 }

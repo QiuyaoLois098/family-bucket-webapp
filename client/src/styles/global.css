@@ -404,7 +404,8 @@ button {
 }
 
 /*
- * /expedia-left · /expedia-right
+ * /expedia-left · /expedia-right (prod full-bleed)
+ * /expedia-left-dev · /expedia-right-dev (live + reference)
  * Locked 2160×3840 (9∶16) letterbox — same idea as /vrbo-left.
  * Inner iframe is the design canvas so existing vh-based styles keep working.
  */
