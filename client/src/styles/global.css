@@ -345,8 +345,7 @@ button {
 }
 
 .expedia-portrait .expedia-restart,
-.preview .expedia-restart,
-.expedia-ba .expedia-restart {
+.preview .expedia-restart {
   background: rgba(255, 255, 255, 0.95);
 }
 

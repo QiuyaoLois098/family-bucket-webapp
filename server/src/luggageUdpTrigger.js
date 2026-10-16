@@ -2,39 +2,51 @@ import { PHASES } from "../../shared/index.js";
 
 /**
  * Hardware luggage sensor → Expedia reveal advance.
- * ESP32 sends UTF-8: "luggage status: 0" | "luggage status: 1"
- * On 0 → 1 while phase === reveal, same as clicking the luggage up-arrow (session.shake).
+ * Any UDP packet while phase === reveal schedules session.shake()
+ * (same as the luggage up-arrow), after a short hold.
  */
-const STATUS_RE = /luggage\s*status\s*[:=]\s*([01])/i;
+const ADVANCE_DELAY_MS = 1000;
 
 export function createLuggageUdpTrigger(session) {
-  let lastStatus = null;
+  let pendingAdvance = null;
 
-  function handlePacket(packet) {
-    const text = typeof packet === "string" ? packet : packet?.text;
-    if (!text) return;
-
-    const match = String(text).match(STATUS_RE);
-    if (!match) return;
-
-    const status = Number(match[1]);
-    const prev = lastStatus;
-    lastStatus = status;
-
-    if (prev === 0 && status === 1) {
-      if (session.state.phase !== PHASES.REVEAL) {
-        console.log(
-          `[luggage-udp] 0→1 ignored (phase=${session.state.phase}, need reveal/luggage)`,
-        );
-        return;
-      }
-      console.log("[luggage-udp] 0→1 → shake (advance luggage → building)");
-      session.shake();
+  function clearPending() {
+    if (pendingAdvance != null) {
+      clearTimeout(pendingAdvance);
+      pendingAdvance = null;
     }
   }
 
+  function handlePacket(packet) {
+    const text = typeof packet === "string" ? packet : packet?.text;
+    // Ignore empty / whitespace-only datagrams.
+    if (text == null || !String(text).trim()) return;
+
+    if (session.state.phase !== PHASES.REVEAL) {
+      return;
+    }
+    if (pendingAdvance != null) {
+      return;
+    }
+
+    console.log(
+      `[luggage-udp] packet → shake in ${ADVANCE_DELAY_MS}ms (advance luggage → building)`,
+    );
+    pendingAdvance = setTimeout(() => {
+      pendingAdvance = null;
+      if (session.state.phase !== PHASES.REVEAL) {
+        console.log(
+          `[luggage-udp] delayed shake skipped (phase=${session.state.phase})`,
+        );
+        return;
+      }
+      console.log("[luggage-udp] delayed shake → building");
+      session.shake();
+    }, ADVANCE_DELAY_MS);
+  }
+
   function reset() {
-    lastStatus = null;
+    clearPending();
   }
 
   return { handlePacket, reset };

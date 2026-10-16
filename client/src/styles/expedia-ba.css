@@ -1,0 +1,62 @@
+/* /expedia-ba — self-contained BA remote (no product --u / shared classes) */
+
+html:has(.eba),
+body:has(.eba),
+#root:has(.eba) {
+  margin: 0;
+  min-height: 100%;
+  background: #f4f5f7;
+}
+
+.eba {
+  box-sizing: border-box;
+  min-height: 100dvh;
+  margin: 0;
+  padding: 48px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  gap: 28px;
+  background: #f4f5f7;
+}
+
+.eba__btn {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 48px 32px;
+  border: 3px solid transparent;
+  border-radius: 28px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: clamp(2rem, 8vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.eba__btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.eba__btn--reveal {
+  background: #fddb00;
+  border-color: #fddb00;
+  color: #191e3b;
+}
+
+.eba__btn--restart {
+  background: #191e3b;
+  border-color: #191e3b;
+  color: #ffffff;
+}
+
+.eba__btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
