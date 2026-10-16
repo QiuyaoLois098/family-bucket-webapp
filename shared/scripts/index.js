@@ -1,7 +1,17 @@
+import asheville from "./asheville.js";
+import laFortuna from "./la-fortuna.js";
+import reykjavik from "./reykjavik.js";
+import sedona from "./sedona.js";
 import southLakeTahoe from "./south-lake-tahoe.js";
+import tokyo from "./tokyo.js";
 
 export const DESTINATION_SCRIPTS = {
   "south-lake-tahoe": southLakeTahoe,
+  asheville,
+  sedona,
+  "la-fortuna": laFortuna,
+  tokyo,
+  reykjavik,
 };
 
 export function getDestinationScript(destinationId) {
