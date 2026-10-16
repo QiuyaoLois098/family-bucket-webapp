@@ -14,6 +14,7 @@ import PreviewScreen from "./screens/PreviewScreen.jsx";
 import UdpScreen from "./screens/UdpScreen.jsx";
 import VrboBaScreen from "./screens/VrboBaScreen.jsx";
 import useHyperionHeartbeat from "./hooks/useHyperionHeartbeat.js";
+import useVrboFixedViewport from "./hooks/useVrboFixedViewport.js";
 import VrboV2Screen, {
   GuestPhonePage,
   VrboLeftPage,
@@ -38,10 +39,20 @@ const DEVICE_PATHS = new Set([
   "/udp",
 ]);
 
+/** Prod kiosk routes: no page zoom / no document scroll. */
+const VRBO_FIXED_VIEWPORT_PATHS = new Set([
+  "/vrbo-left",
+  "/vrbo-right",
+  "/vrbo-ip1",
+  "/vrbo-ip2",
+  "/vrbo-ip3",
+]);
+
 export default function App() {
   const heartbeat = useHyperionHeartbeat();
   const { pathname } = useLocation();
   const heightGuide = isDevComparePath(pathname);
+  useVrboFixedViewport(VRBO_FIXED_VIEWPORT_PATHS.has(pathname));
 
   return (
     <>

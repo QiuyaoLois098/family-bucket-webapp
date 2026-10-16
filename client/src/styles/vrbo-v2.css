@@ -2549,11 +2549,42 @@ body:has(.vrbo-v2-stage),
   background: #000000;
 }
 
-/* Standalone / Guided Access: blue fills under the status bar + notch */
+/* /vrbo-left|/vrbo-right|/vrbo-ip* — fixed page: no document scroll / rubber-band. */
+html.vrbo-kiosk-lock,
+html.vrbo-kiosk-lock body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+  position: fixed;
+  inset: 0;
+}
+
+html.vrbo-kiosk-lock #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+
+/*
+ * Standalone / Guided Access phone pages:
+ * Keep page chrome white so the home-indicator strip is never brand-blue.
+ * Top notch/status still reads blue via .vrbo-v2-phone__chrome + theme-color.
+ */
 html:has(.vrbo-v2-device--phone:not(.is-framed)),
 body:has(.vrbo-v2-device--phone:not(.is-framed)),
 #root:has(.vrbo-v2-device--phone:not(.is-framed)) {
-  background: var(--blue, #0f51ec);
+  background: #ffffff;
+}
+
+html.vrbo-kiosk-lock:has(.vrbo-v2-device--phone:not(.is-framed)),
+html.vrbo-kiosk-lock:has(.vrbo-v2-device--phone:not(.is-framed)) body,
+html.vrbo-kiosk-lock:has(.vrbo-v2-device--phone:not(.is-framed)) #root {
+  background: #ffffff;
 }
 
 .vrbo-v2-device {
@@ -2575,7 +2606,13 @@ body:has(.vrbo-v2-device--phone:not(.is-framed)),
 }
 
 .vrbo-v2-device--phone:not(.is-framed) {
-  background: var(--blue, #0f51ec);
+  background: #ffffff;
+  /* iOS PWA: fill the real screen (100dvh alone can leave a bottom gap). */
+  height: 100%;
+  min-height: 100%;
+  min-height: -webkit-fill-available;
+  min-height: 100dvh;
+  min-height: 100svh;
 }
 
 /*
@@ -2733,11 +2770,21 @@ body:has(.vrbo-v2-device--phone:not(.is-framed)),
   background: #ffffff;
 }
 
+.vrbo-v2-device--phone:not(.is-framed) > .vrbo-v2-phone,
+.vrbo-v2-device--phone:not(.is-framed) > .vrbo-v2-phone--bare {
+  min-height: 100%;
+}
+
 .vrbo-v2-device--phone .vrbo-v2-phone__screen {
   width: 100%;
   height: 100%;
   border-radius: 0;
   background: #ffffff;
+}
+
+.vrbo-v2-device--phone:not(.is-framed) .vrbo-v2-phone__screen {
+  min-height: 100%;
+  border-radius: 0;
 }
 
 .vrbo-v2-device--phone .vrbo-v2-phone__label {
