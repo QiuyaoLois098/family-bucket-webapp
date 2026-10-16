@@ -29,104 +29,153 @@ const sedona = {
     image: "/images/Expedia-images/destinations/sedona.png",
   },
 
+  /**
+   * Arrangement (design board):
+   *   Day 1 — shared welcome
+   *   Days 2–3 — Q2 order swap (adventure: Bell Rock↔treetops; relax: trolley↔village)
+   *   Day 4 — Q3 add-on (Oak Creek picnic shared)
+   *   Day 5 — branch ending
+   */
   itinerary: {
     headline: "Five days built for your family",
     meta: "Sedona · Apr 6 – 11",
-    summary: "Red earth by day, and a sky that rewrites the night",
+    summary: "Red rocks, easy outings, and time by Oak Creek",
   },
 
   dayModules: {
-    "first-light": {
-      title: "First light on the rocks",
-      description: "Settle in and watch the mesas catch the evening light.",
+    "welcome-red-rock": {
+      title: "Welcome to Red Rock Country",
+      description:
+        "Arrive via Phoenix, settle into Sedona, and take in the red-rock buttes above town.",
       image: "/images/Expedia-images/03-itinerary/it1.png",
     },
-    "red-rock-walk": {
-      title: "Easy red-rock walk",
-      description: "A short scenic walk with stops for photos and water.",
+    "among-the-red-rocks": {
+      title: "Among the Red Rocks",
+      description:
+        "Explore Bell Rock Pathway—an easy family walk with red-rock views and plenty of photo stops.",
       image: "/images/Expedia-images/03-itinerary/it2.png",
     },
-    "shade-stillness": {
-      title: "Shade and stillness",
-      description: "A slower day near camp — games, reading, and cool drinks.",
+    "ropes-among-the-pines": {
+      title: "Ropes Among the Pines",
+      description:
+        "Take on the treetop ropes course at Flagstaff Extreme, with pines and cheers from the ground.",
       image: "/images/Expedia-images/03-itinerary/it3.png",
     },
-    "sunset-overlook": {
-      title: "Sunset overlook",
-      description: "Head out as the temperature drops and shadows lengthen.",
+    "down-the-verde": {
+      title: "Down the Verde",
+      description:
+        "A guided Verde River paddle past cottonwood groves—cool water under red-rock sky.",
       image: "/images/Expedia-images/03-itinerary/it4.png",
     },
-    "whole-sky": {
-      title: "The whole sky",
+    "oak-creek-afternoon": {
+      title: "An Oak Creek Afternoon",
       description:
-        "Blankets and stargazing before you leave. The Milky Way does the rest.",
+        "A family picnic beside Oak Creek—shade, splash time, and an easy pace.",
+      image: "/images/Expedia-images/03-itinerary/it4.png",
+    },
+    "red-rocks-easy-pace": {
+      title: "Red Rocks, Easy Pace",
+      description:
+        "Ride the Sedona Trolley for red-rock overlooks without the hike.",
+      image: "/images/Expedia-images/03-itinerary/it2.png",
+    },
+    "courtyards-galleries": {
+      title: "Courtyards & Galleries",
+      description:
+        "Wander through Tlaquepaque’s courtyards, shops, and shady corners at an easy pace.",
+      image: "/images/Expedia-images/03-itinerary/it3.png",
+    },
+    "breakfast-sedona-style": {
+      title: "Breakfast, Sedona Style",
+      description:
+        "A relaxed family breakfast at Coffee Pot Restaurant—local favorite plates and an easy start.",
+      image: "/images/Expedia-images/03-itinerary/it4.png",
+    },
+    "one-last-red-rock-view": {
+      title: "One Last Red-Rock View",
+      description:
+        "Pause at a final red-rock overlook before the drive back to Phoenix and your flight home.",
+      image: "/images/Expedia-images/03-itinerary/it5.png",
+    },
+    "quiet-sedona-morning": {
+      title: "A Quiet Sedona Morning",
+      description:
+        "Enjoy one last view of Sedona’s red rocks before checking out and heading back to Phoenix.",
       image: "/images/Expedia-images/03-itinerary/it5.png",
     },
   },
 
   itineraryPaths: {
     default: [
-      "first-light",
-      "red-rock-walk",
-      "shade-stillness",
-      "sunset-overlook",
-      "whole-sky",
+      "welcome-red-rock",
+      "among-the-red-rocks",
+      "ropes-among-the-pines",
+      "down-the-verde",
+      "one-last-red-rock-view",
     ],
+    // Adventure · Bell Rock first · river paddle
     "a1-1|a2-1|a3-1": [
-      "first-light",
-      "red-rock-walk",
-      "sunset-overlook",
-      "shade-stillness",
-      "whole-sky",
+      "welcome-red-rock",
+      "among-the-red-rocks",
+      "ropes-among-the-pines",
+      "down-the-verde",
+      "one-last-red-rock-view",
     ],
+    // Adventure · Bell Rock first · Oak Creek
     "a1-1|a2-1|a3-2": [
-      "first-light",
-      "red-rock-walk",
-      "shade-stillness",
-      "sunset-overlook",
-      "whole-sky",
+      "welcome-red-rock",
+      "among-the-red-rocks",
+      "ropes-among-the-pines",
+      "oak-creek-afternoon",
+      "one-last-red-rock-view",
     ],
+    // Adventure · treetops first · river paddle
     "a1-1|a2-2|a3-1": [
-      "first-light",
-      "sunset-overlook",
-      "red-rock-walk",
-      "shade-stillness",
-      "whole-sky",
+      "welcome-red-rock",
+      "ropes-among-the-pines",
+      "among-the-red-rocks",
+      "down-the-verde",
+      "one-last-red-rock-view",
     ],
+    // Adventure · treetops first · Oak Creek
     "a1-1|a2-2|a3-2": [
-      "first-light",
-      "shade-stillness",
-      "red-rock-walk",
-      "sunset-overlook",
-      "whole-sky",
+      "welcome-red-rock",
+      "ropes-among-the-pines",
+      "among-the-red-rocks",
+      "oak-creek-afternoon",
+      "one-last-red-rock-view",
     ],
+    // Relax · trolley first · breakfast
     "a1-2|a2-3|a3-3": [
-      "first-light",
-      "shade-stillness",
-      "sunset-overlook",
-      "red-rock-walk",
-      "whole-sky",
+      "welcome-red-rock",
+      "red-rocks-easy-pace",
+      "courtyards-galleries",
+      "breakfast-sedona-style",
+      "quiet-sedona-morning",
     ],
+    // Relax · trolley first · Oak Creek
     "a1-2|a2-3|a3-2": [
-      "first-light",
-      "shade-stillness",
-      "red-rock-walk",
-      "sunset-overlook",
-      "whole-sky",
+      "welcome-red-rock",
+      "red-rocks-easy-pace",
+      "courtyards-galleries",
+      "oak-creek-afternoon",
+      "quiet-sedona-morning",
     ],
+    // Relax · village first · breakfast
     "a1-2|a2-4|a3-3": [
-      "first-light",
-      "sunset-overlook",
-      "shade-stillness",
-      "red-rock-walk",
-      "whole-sky",
+      "welcome-red-rock",
+      "courtyards-galleries",
+      "red-rocks-easy-pace",
+      "breakfast-sedona-style",
+      "quiet-sedona-morning",
     ],
+    // Relax · village first · Oak Creek
     "a1-2|a2-4|a3-2": [
-      "first-light",
-      "shade-stillness",
-      "sunset-overlook",
-      "red-rock-walk",
-      "whole-sky",
+      "welcome-red-rock",
+      "courtyards-galleries",
+      "red-rocks-easy-pace",
+      "oak-creek-afternoon",
+      "quiet-sedona-morning",
     ],
   },
 
