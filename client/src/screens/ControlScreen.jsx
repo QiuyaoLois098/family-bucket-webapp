@@ -58,7 +58,9 @@ export default function ControlScreen() {
                   answers={state.answers}
                 />
               ) : null}
-              {phase === "building" ? <BuildingMemoryStep /> : null}
+              {phase === "building" ? (
+                <BuildingMemoryStep destinationId={state.destination} />
+              ) : null}
               {phase === "itinerary" ? <ItinerarySchedule /> : null}
             </section>
           </main>

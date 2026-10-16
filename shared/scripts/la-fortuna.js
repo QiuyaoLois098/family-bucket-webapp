@@ -19,6 +19,15 @@ const laFortuna = {
     subtitle: "La Fortuna, Costa Rica · April 6–11 · Confirmed",
     chipText: "Booked · Expedia",
   },
+  /** Building phase — left memory card */
+  memoryCard: {
+    headline: "Your next family memory awaits",
+    eyebrow: "Your personalized family itinerary",
+    title: "La Fortuna",
+    duration: "5 days",
+    footer: "Created with AI Activity Planner",
+    image: "/images/Expedia-images/destinations/costa-rica.png",
+  },
 
   questions: {
     q1: {

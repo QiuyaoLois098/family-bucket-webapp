@@ -19,6 +19,15 @@ const sedona = {
     subtitle: "Sedona, AZ · April 6–11 · Confirmed",
     chipText: "Booked · Expedia",
   },
+  /** Building phase — left memory card */
+  memoryCard: {
+    headline: "Your next family memory awaits",
+    eyebrow: "Your personalized family itinerary",
+    title: "Sedona",
+    duration: "5 days",
+    footer: "Created with AI Activity Planner",
+    image: "/images/Expedia-images/destinations/sedona.png",
+  },
 
   questions: {
     q1: {

@@ -12,6 +12,7 @@
  * Script fields:
  *   tripTitle — top line on briefing / Q&A pages
  *   intro / introChip — briefing page before q1
+ *   memoryCard — building / memory reveal card
  *   replyMsg / aiReplyMsg / aiReplyChip — after selecting an answer
  */
 const southLakeTahoe = {
@@ -26,6 +27,15 @@ const southLakeTahoe = {
     title: "Sierra Shore Family Lodge",
     subtitle: "South Lake Tahoe, CA · April 6–11 · Confirmed",
     chipText: "Booked · Expedia",
+  },
+  /** Building phase — left memory card */
+  memoryCard: {
+    headline: "Your next family memory awaits",
+    eyebrow: "Your personalized family itinerary",
+    title: "South Lake Tahoe",
+    duration: "5 days",
+    footer: "Created with AI Activity Planner",
+    image: "/images/Expedia-images/destinations/lake-tahoe.png",
   },
 
   questions: {
