@@ -17,6 +17,7 @@ const reykjavik = {
     title: "Reykjavík Family Harbour Hotel",
     subtitle: "Reykjavík, Iceland · April 6–11 · Confirmed",
     chipText: "Booked · Expedia",
+    image: "/images/Expedia-images/options/iceland/intro.png",
   },
   /** Building phase — left memory card */
   memoryCard: {
@@ -229,7 +230,7 @@ const reykjavik = {
       text: "Try something adventurous",
       subtitle: "Lava tunnels, lighthouse shores, and wild landscapes.",
       chipText: "",
-      image: "/images/Expedia-images/options/q1_1.png",
+      image: "/images/Expedia-images/options/iceland/a1-1.jpg",
       replyMsg:
         "We love exploring—the kids can't wait to walk through a lava tunnel and discover the coast around Grótta Lighthouse.",
       aiReplyMsg: "",
@@ -240,7 +241,7 @@ const reykjavik = {
       text: "Take it slow",
       subtitle: "Geysers, warm pools, and easy harbor days.",
       chipText: "",
-      image: "/images/Expedia-images/options/q1_2.png",
+      image: "/images/Expedia-images/options/iceland/a1-2.jpg",
       replyMsg:
         "We'd like to take it slow—big views, warm pools, and good food by the harbor sound perfect.",
       aiReplyMsg: "",
@@ -252,7 +253,7 @@ const reykjavik = {
       text: "Raufarhólshellir lava tunnel",
       subtitle: "Explore a lava tube with helmets and headlamps.",
       chipText: "Expedia · Bookable",
-      image: "/images/Expedia-images/options/q2-ropes-1.png",
+      image: "/images/Expedia-images/options/iceland/a2-1.jpg",
       replyMsg:
         "Let's start with the lava tunnel—the kids can't wait to explore underground!",
       aiReplyMsg:
@@ -264,7 +265,7 @@ const reykjavik = {
       text: "Grótta lighthouse coast",
       subtitle: "Look for seabirds along the lighthouse shore.",
       chipText: "From Google Maps",
-      image: "/images/Expedia-images/options/q3-hike.png",
+      image: "/images/Expedia-images/options/iceland/a2-2.jpg",
       replyMsg:
         "Let's start with Grótta—the kids would love to explore the shore and spot seabirds!",
       aiReplyMsg:
@@ -277,7 +278,7 @@ const reykjavik = {
       text: "Golden Circle day tour",
       subtitle: "See Þingvellir, Gullfoss, and the Geysir area.",
       chipText: "Expedia · Bookable",
-      image: "/images/Expedia-images/options/q3-lake.png",
+      image: "/images/Expedia-images/options/iceland/a2-3.jpg",
       replyMsg:
         "Let's start with the Golden Circle—the kids can't wait to see the geyser erupt!",
       aiReplyMsg:
@@ -289,7 +290,7 @@ const reykjavik = {
       text: "Laugardalslaug warm pools",
       subtitle: "Enjoy geothermal pools, hot tubs, and a slide.",
       chipText: "From Google Maps",
-      image: "/images/Expedia-images/options/q1_2.png",
+      image: "/images/Expedia-images/options/iceland/a2-4.jpg",
       replyMsg:
         "Let's start with the warm pools—a gentle afternoon sounds just right after traveling!",
       aiReplyMsg:
@@ -302,7 +303,7 @@ const reykjavik = {
       text: "A valley zipline ride",
       subtitle: "Add a high-flying outing in Hveragerði.",
       chipText: "",
-      image: "/images/Expedia-images/options/q2-ropes-1.png",
+      image: "/images/Expedia-images/options/iceland/a3-1.jpg",
       replyMsg: "Can you recommend a zipline adventure to add to our trip?",
       aiReplyMsg:
         "Try Mega Zipline Iceland in Hveragerði for a high-flying view of the Reykjadalur valley — a different way to see Iceland's wild landscape.",
@@ -310,6 +311,7 @@ const reykjavik = {
         title: "Mega Zipline Iceland",
         subtitle: "A zipline above the Reykjadalur valley",
         chipText: "From Google Maps",
+        image: "/images/Expedia-images/options/iceland/a3-1.jpg",
       },
       nextQuestionId: null,
     },
@@ -318,7 +320,7 @@ const reykjavik = {
       text: "A mountain-view walk",
       subtitle: "Explore a trail on Mt. Esja outside the city.",
       chipText: "",
-      image: "/images/Expedia-images/options/q3-hike.png",
+      image: "/images/Expedia-images/options/iceland/a3-2.jpg",
       replyMsg: "Which mountain would you recommend for a family walk?",
       aiReplyMsg:
         "Mt. Esja is the mountain-walk option in your plan, with views back toward Reykjavík. Choose a route that suits your family and the April conditions.",
@@ -326,6 +328,7 @@ const reykjavik = {
         title: "Mt. Esja family walk",
         subtitle: "Mountain trails with views toward the city",
         chipText: "From Google Maps",
+        image: "/images/Expedia-images/options/iceland/a3-2.jpg",
       },
       nextQuestionId: null,
     },
@@ -334,7 +337,7 @@ const reykjavik = {
       text: "A family meal by the harbor",
       subtitle: "Find fresh fish and easy choices for the kids.",
       chipText: "",
-      image: "/images/Expedia-images/options/q1_2.png",
+      image: "/images/Expedia-images/options/iceland/a3-3.jpg",
       replyMsg: "Can you recommend a family-friendly meal by the harbor?",
       aiReplyMsg:
         "Try Kaffivagninn on Grandi harbor for fish and chips, with views of the boats from its waterside setting.",
@@ -342,6 +345,7 @@ const reykjavik = {
         title: "Kaffivagninn",
         subtitle: "Fish and chips beside the harbor",
         chipText: "From Google Maps",
+        image: "/images/Expedia-images/options/iceland/a3-3.jpg",
       },
       nextQuestionId: null,
     },
@@ -350,7 +354,7 @@ const reykjavik = {
       text: "A seaside picnic",
       subtitle: "Make time for lighthouse views and seabirds.",
       chipText: "",
-      image: "/images/Expedia-images/options/q3-lake.png",
+      image: "/images/Expedia-images/options/iceland/a3-4.jpg",
       replyMsg: "Where would you recommend a relaxed picnic by the sea?",
       aiReplyMsg:
         "Try the shore by Grótta Lighthouse for a picnic and seabird spotting. The causeway walk depends on the tide, so check access before heading out.",
@@ -358,6 +362,7 @@ const reykjavik = {
         title: "Grótta Lighthouse afternoon",
         subtitle: "A coastal picnic spot and seabird spotting",
         chipText: "From Google Maps",
+        image: "/images/Expedia-images/options/iceland/a3-4.jpg",
       },
       nextQuestionId: null,
     },
