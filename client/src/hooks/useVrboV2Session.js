@@ -56,7 +56,7 @@ export default function useVrboV2Session({ syncOnly = false } = {}) {
 
   const allSubmitted = useMemo(
     () =>
-      joinedUsers.length > 0 &&
+      joinedUsers.length >= 2 &&
       joinedUsers.every((user) => Boolean(state.submitted?.[user.id])),
     [joinedUsers, state.submitted],
   );

@@ -408,8 +408,9 @@ export class VrboV2Session extends EventEmitter {
   maybeOpenSummary() {
     if (this.state.stage !== "selecting") return;
     const joinedUsers = guests.filter((user) => Boolean(this.state.joined[user.id]));
+    // Need ≥2 guests joined + every joined guest submitted (one submitter alone waits).
     const allSubmitted =
-      joinedUsers.length > 0 &&
+      joinedUsers.length >= 2 &&
       joinedUsers.every((user) => Boolean(this.state.submitted[user.id]));
     if (!allSubmitted) return;
 
@@ -419,7 +420,7 @@ export class VrboV2Session extends EventEmitter {
       if (this.state.stage !== "selecting") return;
       const stillJoined = guests.filter((user) => Boolean(this.state.joined[user.id]));
       const stillReady =
-        stillJoined.length > 0 &&
+        stillJoined.length >= 2 &&
         stillJoined.every((user) => Boolean(this.state.submitted[user.id]));
       if (!stillReady) return;
 
