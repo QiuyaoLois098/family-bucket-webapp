@@ -4,5 +4,6 @@
   "minimumWeight": 1,
   "unmatchedWeight": 0,
   "resultCount": 3,
-  "resultBadges": ["01", "02", "03"]
+  "resultBadges": ["01", "02", "03"],
+  "searchLoadingMs": 2200
 }

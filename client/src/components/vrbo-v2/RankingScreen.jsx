@@ -68,7 +68,12 @@ function buildListeningLine(joined = {}, displayNames = {}) {
   return formatListeningLine(names);
 }
 
-function WaitingPanel({ ready }) {
+function WaitingPanel({
+  ready,
+  title = copy.ranking.loadingTitle,
+  subtitle = copy.ranking.loadingSubtitle,
+  hint = copy.ranking.loadingHint,
+}) {
   return (
     <div
       className={`vrbo-v2-rank__panel vrbo-v2-rank__panel--hero ${
@@ -78,9 +83,9 @@ function WaitingPanel({ ready }) {
       {ready ? (
         <div className="vrbo-v2-rank__hero-loading">
           <span className="vrbo-v2-rank__spinner" aria-hidden="true" />
-          <h2>{copy.ranking.loadingTitle}</h2>
-          <p className="vrbo-v2-rank__lede">{copy.ranking.loadingSubtitle}</p>
-          <p className="vrbo-v2-rank__hint">{copy.ranking.loadingHint}</p>
+          <h2>{title}</h2>
+          <p className="vrbo-v2-rank__lede">{subtitle}</p>
+          <p className="vrbo-v2-rank__hint">{hint}</p>
         </div>
       ) : (
         <>
@@ -291,6 +296,18 @@ export default function RankingScreen({
           onSearch={actions.searchStays}
           joined={joined}
           displayNames={displayNames}
+        />
+      ) : null}
+
+      {stage === "searching" ? (
+        <WaitingPanel
+          key="search-loading"
+          ready
+          title={copy.ranking.searchLoadingTitle || copy.ranking.loadingTitle}
+          subtitle={
+            copy.ranking.searchLoadingSubtitle || copy.ranking.loadingSubtitle
+          }
+          hint={copy.ranking.searchLoadingHint || copy.ranking.loadingHint}
         />
       ) : null}
 

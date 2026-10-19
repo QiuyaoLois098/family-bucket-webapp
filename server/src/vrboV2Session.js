@@ -438,21 +438,32 @@ export class VrboV2Session extends EventEmitter {
     if (this.state.stage !== "summary") return;
     this.noteActivity();
 
-    const guestSelections = guests
-      .filter((user) => Boolean(this.state.joined[user.id]) && this.state.submitted[user.id])
-      .map((user) => this.state.submitted[user.id] ?? []);
-
-    const results = recommendPropertySet(properties, guestSelections, {
-      resultBadges: rankingWeights.resultBadges,
-    });
-
+    // Handoff: search loading ~2200ms — reuse "Pulling it all together" panel.
     this.patch({
-      stage: "results",
-      results,
-      previewPropertyId: results[0]?.property.id ?? null,
-      selectedPropertyId: null,
+      stage: "searching",
       celebrating: false,
     });
+
+    const loadingMs = rankingWeights.searchLoadingMs ?? 2200;
+    this.schedule(() => {
+      if (this.state.stage !== "searching") return;
+
+      const guestSelections = guests
+        .filter((user) => Boolean(this.state.joined[user.id]) && this.state.submitted[user.id])
+        .map((user) => this.state.submitted[user.id] ?? []);
+
+      const results = recommendPropertySet(properties, guestSelections, {
+        resultBadges: rankingWeights.resultBadges,
+      });
+
+      this.patch({
+        stage: "results",
+        results,
+        previewPropertyId: results[0]?.property.id ?? null,
+        selectedPropertyId: null,
+        celebrating: false,
+      });
+    }, loadingMs);
   }
 
   previewProperty(propertyId) {

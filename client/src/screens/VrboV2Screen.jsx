@@ -295,6 +295,9 @@ function vrboRightReference(stage, { celebrating = false, selectedPropertyId = n
   if (stage === "summary") {
     return { src: VRBO_RIGHT_REFS.summary, caption: "Reference · summary" };
   }
+  if (stage === "searching") {
+    return { src: VRBO_RIGHT_REFS.waiting, caption: "Reference · searching" };
+  }
   if (stage === "results") {
     return { src: VRBO_RIGHT_REFS.stay, caption: "Reference · stay" };
   }
@@ -504,7 +507,10 @@ export function GuestPhonePage({ guestId, compareLayout = false } = {}) {
   const iphoneReference =
     celebrating || selectedPropertyId
       ? { src: VRBO_IPHONE_REFS.hotel, caption: "Reference · hotel" }
-      : Boolean(submitted[guest.id]) || stage === "summary" || stage === "results"
+      : Boolean(submitted[guest.id]) ||
+        stage === "summary" ||
+        stage === "searching" ||
+        stage === "results"
         ? { src: VRBO_IPHONE_REFS.submitted, caption: "Reference · submitted" }
         : Boolean(joined[guest.id])
           ? { src: VRBO_IPHONE_REFS.chat, caption: "Reference · chat" }

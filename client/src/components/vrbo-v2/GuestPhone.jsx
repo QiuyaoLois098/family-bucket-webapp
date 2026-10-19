@@ -276,7 +276,8 @@ export default function GuestPhone({
   }, [joined]);
 
   const max = copy.maxSelections;
-  const groupFinished = stage === "summary" || stage === "results";
+  const groupFinished =
+    stage === "summary" || stage === "searching" || stage === "results";
   // After join → select chips immediately (never flash the idle message feed).
   const phase = !joined
     ? canJoin
