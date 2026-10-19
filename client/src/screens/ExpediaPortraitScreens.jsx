@@ -136,7 +136,6 @@ export function ExpediaLeftPage({ compareLayout = false } = {}) {
     return (
       <div className="expedia-portrait">
         <div className="expedia-portrait__stage">{live}</div>
-        <ExpediaRestartButton onRestart={actions.reset} />
       </div>
     );
   }
@@ -194,7 +193,6 @@ export function ExpediaRightPage({ compareLayout = false } = {}) {
     return (
       <div className="expedia-portrait">
         <div className="expedia-portrait__stage">{live}</div>
-        <ExpediaRestartButton onRestart={actions.reset} />
       </div>
     );
   }
