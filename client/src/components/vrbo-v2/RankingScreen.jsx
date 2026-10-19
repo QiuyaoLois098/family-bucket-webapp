@@ -3,14 +3,14 @@ import chatScript from "../../data/vrbo-v2/chatScript.json";
 import copy from "../../data/vrbo-v2/copy.json";
 import properties from "../../data/vrbo-v2/properties.json";
 import users from "../../data/vrbo-v2/users.json";
+import { runChunkTypewriter } from "../../motion/chunkType.js";
 import { StayShowcase } from "./StayViews.jsx";
 
 const FINALE_BG_SRC = "/images/Vrbo-Images/final-bg.jpg";
-const TYPEWRITER_MS = 28;
 
 const propertyById = new Map(properties.map((property) => [property.id, property]));
 
-function useTypewriter(text, msPerChar = TYPEWRITER_MS) {
+function useTypewriter(text) {
   const [shown, setShown] = useState("");
 
   useEffect(() => {
@@ -24,21 +24,11 @@ function useTypewriter(text, msPerChar = TYPEWRITER_MS) {
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
-    if (reduceMotion) {
-      setShown(full);
-      return undefined;
-    }
-
-    setShown("");
-    let i = 0;
-    const id = window.setInterval(() => {
-      i += 1;
-      setShown(full.slice(0, i));
-      if (i >= full.length) window.clearInterval(id);
-    }, msPerChar);
-
-    return () => window.clearInterval(id);
-  }, [text, msPerChar]);
+    return runChunkTypewriter(full, {
+      reduceMotion,
+      onUpdate: setShown,
+    });
+  }, [text]);
 
   return shown;
 }

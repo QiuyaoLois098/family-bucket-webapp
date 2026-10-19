@@ -724,6 +724,14 @@
   transform: translateY(0);
 }
 
+.question__ai-line.is-typing {
+  min-height: 1.35em;
+}
+
+.question__ai-text {
+  white-space: pre-wrap;
+}
+
 .question__place-card {
   align-self: stretch;
   display: grid;

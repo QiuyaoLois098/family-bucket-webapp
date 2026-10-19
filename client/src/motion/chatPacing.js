@@ -8,8 +8,12 @@ export const chatPacing = Object.freeze({
   thinkingGapMs: 600,
   thinkingFadeMs: 250,
   thinkingExitMs: 200,
-  /** Conversation typing step (handoff TYPE_STEP). */
+  /** Legacy per-char step (prefer chunk typing below). */
   typeCharMs: 32,
+  /** Claude-style burst typing: delay between word/phrase groups. */
+  typeChunkMs: 55,
+  /** Extra rhythm jitter / pause after punctuation. */
+  typeChunkJitterMs: 18,
   /** Hold after option select before reply bridge. */
   selectHoldMs: 650,
   /** Stagger between option cards after typing finishes. */
