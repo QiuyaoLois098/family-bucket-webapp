@@ -288,7 +288,7 @@ export const DESTINATIONS = [
           time: "Day 3",
           title: "Shade and stillness",
           description:
-            "A slower day near camp — games, reading, and cool drinks.",
+            "A slower day near camp. Games, reading, and cool drinks.",
         },
         {
           time: "Day 4",

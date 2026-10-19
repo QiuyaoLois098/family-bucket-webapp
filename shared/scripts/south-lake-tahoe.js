@@ -88,7 +88,7 @@ const southLakeTahoe = {
     "easy-family-hike": {
       title: "An Easy Family Hike",
       description:
-        "Van Sickle Bi-State Park is an 8-minute drive—perfect for a family hike before dinner.",
+        "Van Sickle Bi-State Park is an 8-minute drive, perfect for a family hike before dinner.",
       image: "/images/Expedia-images/itinerary/tahoe/easy-family-hike.jpg",
     },
     "slower-shoreline-day": {
@@ -212,17 +212,17 @@ const southLakeTahoe = {
   questions: {
     q1: {
       id: "q1",
-      text: "Great — I’ll plan around what you already have booked. What sounds most like your family?",
+      text: "Great. I’ll plan around what you already have booked. What sounds most like your family?",
       answerIds: ["a1-1", "a1-2"],
     },
     "q2-1": {
       id: "q2-1",
-      text: "I found two options your family might love. Which adventure should come first?",
+      text: "I found two options your family might love. Which should come first?",
       answerIds: ["a2-1", "a2-2"],
     },
     "q2-2": {
       id: "q2-2",
-      text: "I found two calm options your family might love. Which comes first?",
+      text: "I found two calm options your family might love. Which should come first?",
       answerIds: ["a2-3", "a2-4"],
     },
     "q3-1": {
@@ -245,7 +245,7 @@ const southLakeTahoe = {
       chipText: "",
       image: "/images/Expedia-images/options/tahoe/a1-1.jpg",
       replyMsg:
-        "We love the outdoors—the kids are dying to try kayaking and a ropes course near South Lake Tahoe over spring break.",
+        "We love the outdoors. The kids are dying to try kayaking and a ropes course near South Lake Tahoe over spring break.",
       aiReplyMsg: "A little adventure it is!",
       nextQuestionId: "q2-1",
     },
@@ -256,7 +256,7 @@ const southLakeTahoe = {
       chipText: "",
       image: "/images/Expedia-images/options/tahoe/a1-2.jpg",
       replyMsg:
-        "We'd like to take it slow—calm lake views, easy outings, and good food sound perfect for our family.",
+        "We'd like to take it slow. Calm lake views, easy outings, and good food sound perfect for our family.",
       aiReplyMsg: "Taking it slow it is!",
       nextQuestionId: "q2-2",
     },
@@ -268,9 +268,9 @@ const southLakeTahoe = {
       chipText: "Expedia · Bookable",
       image: "/images/Expedia-images/options/tahoe/a2-1.jpg",
       replyMsg:
-        "Let's start with the Guided Kayak Tour on Emerald Bay—the kids can't wait to get on the water!",
+        "Let's start with the Guided Kayak Tour on Emerald Bay. The kids can't wait to get on the water!",
       aiReplyMsg:
-        "Perfect—I'll start with kayaking on Emerald Bay, then add the Tahoe City ropes course the next day to round out your itinerary.",
+        "Perfect. I'll start with kayaking on Emerald Bay, then add the Tahoe City ropes course the next day to round out your itinerary.",
       nextQuestionId: "q3-1",
     },
     "a2-2": {
@@ -280,9 +280,9 @@ const southLakeTahoe = {
       chipText: "From Google Maps",
       image: "/images/Expedia-images/options/tahoe/a2-2.jpg",
       replyMsg:
-        "Let's start with the Tahoe City ropes course—the kids can't wait to climb through the treetops!",
+        "Let's start with the Tahoe City ropes course. The kids can't wait to climb through the treetops!",
       aiReplyMsg:
-        "Perfect—I'll start with the Tahoe City ropes course, then add kayaking on Emerald Bay the next day to round out your itinerary.",
+        "Perfect. I'll start with the Tahoe City ropes course, then add kayaking on Emerald Bay the next day to round out your itinerary.",
       nextQuestionId: "q3-1",
     },
 
@@ -293,9 +293,9 @@ const southLakeTahoe = {
       chipText: "Expedia · Bookable",
       image: "/images/Expedia-images/options/tahoe/a2-3.jpg",
       replyMsg:
-        "Let's start with the M.S. Dixie II cruise—the kids will love being out on the lake!",
+        "Let's start with the M.S. Dixie II cruise. The kids will love being out on the lake!",
       aiReplyMsg:
-        "Perfect—I'll start with the M.S. Dixie II cruise, then add Kings Beach the next day to round out your easygoing itinerary.",
+        "Perfect. I'll start with the M.S. Dixie II cruise, then add Kings Beach the next day to round out your easygoing itinerary.",
       nextQuestionId: "q3-2",
     },
     "a2-4": {
@@ -305,9 +305,9 @@ const southLakeTahoe = {
       chipText: "From Google Maps",
       image: "/images/Expedia-images/options/tahoe/a2-4.jpg",
       replyMsg:
-        "Let's start with Kings Beach—the kids can ease into the trip by the water!",
+        "Let's start with Kings Beach. The kids can ease into the trip by the water!",
       aiReplyMsg:
-        "Perfect—I'll start with Kings Beach, then add the M.S. Dixie II cruise the next day to round out your easygoing itinerary.",
+        "Perfect. I'll start with Kings Beach, then add the M.S. Dixie II cruise the next day to round out your easygoing itinerary.",
       nextQuestionId: "q3-2",
     },
 

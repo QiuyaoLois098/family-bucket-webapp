@@ -195,7 +195,7 @@ const laFortuna = {
   questions: {
     q1: {
       id: "q1",
-      text: "Great — I’ll plan around what you already have booked. What sounds most like your family?",
+      text: "Great. I’ll plan around what you already have booked. What sounds most like your family?",
       answerIds: ["a1-1", "a1-2"],
     },
     "q2-1": {
@@ -228,7 +228,7 @@ const laFortuna = {
       chipText: "",
       image: "/images/Expedia-images/options/costa-rica/a1-1.jpg",
       replyMsg:
-        "We love the outdoors—the kids can't wait to zip through the rainforest and explore the lava trails below Arenal.",
+        "We love the outdoors. The kids can't wait to zip through the rainforest and explore the lava trails below Arenal.",
       aiReplyMsg: "",
       nextQuestionId: "q2-1",
     },
@@ -239,7 +239,7 @@ const laFortuna = {
       chipText: "",
       image: "/images/Expedia-images/options/costa-rica/a1-2.jpg",
       replyMsg:
-        "We'd like to take it slow—wildlife, warm pools, and volcano views sound perfect for our family.",
+        "We'd like to take it slow. Wildlife, warm pools, and volcano views sound perfect for our family.",
       aiReplyMsg: "",
       nextQuestionId: "q2-2",
     },
@@ -251,9 +251,9 @@ const laFortuna = {
       chipText: "From Google Maps",
       image: "/images/Expedia-images/options/costa-rica/a2-1.jpg",
       replyMsg:
-        "Let's start with the zipline—the kids can't wait to see the rainforest from above!",
+        "Let's start with the zipline. The kids can't wait to see the rainforest from above!",
       aiReplyMsg:
-        "Perfect—I'll start with Arenal EcoGlide, then add the Arenal 1968 lava trails the next day.",
+        "Perfect. I'll start with Arenal EcoGlide, then add the Arenal 1968 lava trails the next day.",
       nextQuestionId: "q3-1",
     },
     "a2-2": {
@@ -263,9 +263,9 @@ const laFortuna = {
       chipText: "From Google Maps",
       image: "/images/Expedia-images/options/costa-rica/a2-2.jpg",
       replyMsg:
-        "Let's start with Arenal 1968—the kids would love to explore the old lava fields!",
+        "Let's start with Arenal 1968. The kids would love to explore the old lava fields!",
       aiReplyMsg:
-        "Perfect—I'll start with Arenal 1968 lava trails, then add the EcoGlide zipline the next day.",
+        "Perfect. I'll start with Arenal 1968 lava trails, then add the EcoGlide zipline the next day.",
       nextQuestionId: "q3-1",
     },
 
@@ -276,9 +276,9 @@ const laFortuna = {
       chipText: "Expedia · Partners",
       image: "/images/Expedia-images/options/costa-rica/a2-3.jpg",
       replyMsg:
-        "Let's start with the safari float—the kids would love to spot wildlife from the river!",
+        "Let's start with the safari float. The kids would love to spot wildlife from the river!",
       aiReplyMsg:
-        "Perfect—I'll start with the Peñas Blancas safari float, then add Baldi Hot Springs the next day.",
+        "Perfect. I'll start with the Peñas Blancas safari float, then add Baldi Hot Springs the next day.",
       nextQuestionId: "q3-2",
     },
     "a2-4": {
@@ -288,9 +288,9 @@ const laFortuna = {
       chipText: "From Google Maps",
       image: "/images/Expedia-images/options/costa-rica/a2-4.jpg",
       replyMsg:
-        "Let's start with the hot springs—a warm soak sounds perfect for everyone!",
+        "Let's start with the hot springs. A warm soak sounds perfect for everyone!",
       aiReplyMsg:
-        "Perfect—I'll start with Baldi Hot Springs, then add the Peñas Blancas safari float the next day.",
+        "Perfect. I'll start with Baldi Hot Springs, then add the Peñas Blancas safari float the next day.",
       nextQuestionId: "q3-2",
     },
 

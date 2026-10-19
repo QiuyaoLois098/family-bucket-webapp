@@ -77,7 +77,7 @@ const asheville = {
     "gentle-forest-walk": {
       title: "A Gentle Forest Walk",
       description:
-        "Bent Creek Forest is a 15-minute drive—perfect for a woodland walk before dinner.",
+        "Bent Creek Forest is a 15-minute drive, perfect for a woodland walk before dinner.",
       image: "/images/Expedia-images/itinerary/asheville/gentle-forest-walk.jpg",
     },
     "riverside-picnic": {
@@ -195,7 +195,7 @@ const asheville = {
   questions: {
     q1: {
       id: "q1",
-      text: "Great — I’ll plan around what you already have booked. What sounds most like your family?",
+      text: "Great. I’ll plan around what you already have booked. What sounds most like your family?",
       answerIds: ["a1-1", "a1-2"],
     },
     "q2-1": {
@@ -228,7 +228,7 @@ const asheville = {
       chipText: "",
       image: "/images/Expedia-images/options/asheville/a1-1.png",
       replyMsg:
-        "We love the outdoors—the kids can’t wait to paddle the French Broad and try Asheville’s treetop ziplines this spring.",
+        "We love the outdoors. The kids can’t wait to paddle the French Broad and try Asheville’s treetop ziplines this spring.",
       aiReplyMsg: "",
       nextQuestionId: "q2-1",
     },
@@ -239,7 +239,7 @@ const asheville = {
       chipText: "",
       image: "/images/Expedia-images/options/asheville/a1-2.jpg",
       replyMsg:
-        "We’d like to take it slow—mountain views, easy outings, and good food sound perfect for our family.",
+        "We’d like to take it slow. Mountain views, easy outings, and good food sound perfect for our family.",
       aiReplyMsg: "",
       nextQuestionId: "q2-2",
     },
@@ -251,9 +251,9 @@ const asheville = {
       chipText: "Expedia · Bestseller",
       image: "/images/Expedia-images/options/asheville/a2-1.jpg",
       replyMsg:
-        "Let's start with the French Broad River kayak tour—the kids can't wait to get on the water!",
+        "Let's start with the French Broad River kayak tour. The kids can't wait to get on the water!",
       aiReplyMsg:
-        "Perfect—I'll start with kayaking on the French Broad River, then add Navitat the next day to round out your itinerary.",
+        "Perfect. I'll start with kayaking on the French Broad River, then add Navitat the next day to round out your itinerary.",
       nextQuestionId: "q3-1",
     },
     "a2-2": {
@@ -263,9 +263,9 @@ const asheville = {
       chipText: "From Google Maps",
       image: "/images/Expedia-images/options/asheville/a2-2.png",
       replyMsg:
-        "Let's start with Navitat's treetop ziplines—the kids can't wait to soar through the trees!",
+        "Let's start with Navitat's treetop ziplines. The kids can't wait to soar through the trees!",
       aiReplyMsg:
-        "Perfect—I'll start with the Navitat treetop adventure, then add French Broad River kayaking the next day to round out your itinerary.",
+        "Perfect. I'll start with the Navitat treetop adventure, then add French Broad River kayaking the next day to round out your itinerary.",
       nextQuestionId: "q3-1",
     },
 
@@ -276,9 +276,9 @@ const asheville = {
       chipText: "Expedia · Bestseller",
       image: "/images/Expedia-images/options/asheville/a2-3.jpg",
       replyMsg:
-        "Let's start with the Gray Line trolley—the kids will love seeing the sights around town!",
+        "Let's start with the Gray Line trolley. The kids will love seeing the sights around town!",
       aiReplyMsg:
-        "Perfect—I'll start with the Gray Line trolley, then add the Botanical Gardens the next day to round out your easygoing itinerary.",
+        "Perfect. I'll start with the Gray Line trolley, then add the Botanical Gardens the next day to round out your easygoing itinerary.",
       nextQuestionId: "q3-2",
     },
     "a2-4": {
@@ -288,9 +288,9 @@ const asheville = {
       chipText: "From Google Maps",
       image: "/images/Expedia-images/options/asheville/a2-2.png",
       replyMsg:
-        "Let's start with the gardens—the kids can ease into the trip among the flowers!",
+        "Let's start with the gardens. The kids can ease into the trip among the flowers!",
       aiReplyMsg:
-        "Perfect—I'll start with the Botanical Gardens, then add the Gray Line trolley the next day to round out your easygoing itinerary.",
+        "Perfect. I'll start with the Botanical Gardens, then add the Gray Line trolley the next day to round out your easygoing itinerary.",
       nextQuestionId: "q3-2",
     },
 

@@ -198,7 +198,7 @@ const tokyo = {
   questions: {
     q1: {
       id: "q1",
-      text: "Great — I’ll plan around what you already have booked. What sounds most like your family?",
+      text: "Great. I’ll plan around what you already have booked. What sounds most like your family?",
       answerIds: ["a1-1", "a1-2"],
     },
     "q2-1": {
@@ -231,7 +231,7 @@ const tokyo = {
       chipText: "",
       image: "/images/Expedia-images/options/tokyo/a1-1.jpg",
       replyMsg:
-        "We love getting outside—the kids can’t wait to try a treetop course and kayak in Tokyo’s mountains.",
+        "We love getting outside. The kids can’t wait to try a treetop course and kayak in Tokyo’s mountains.",
       aiReplyMsg: "",
       nextQuestionId: "q2-1",
     },
@@ -242,7 +242,7 @@ const tokyo = {
       chipText: "",
       image: "/images/Expedia-images/options/tokyo/a1-2.jpg",
       replyMsg:
-        "We’d like to take it slow—river views, spring gardens, and sushi the kids can try sound perfect.",
+        "We’d like to take it slow. River views, spring gardens, and sushi the kids can try sound perfect.",
       aiReplyMsg: "",
       nextQuestionId: "q2-2",
     },
@@ -254,9 +254,9 @@ const tokyo = {
       chipText: "From Google Maps",
       image: "/images/Expedia-images/options/tokyo/a2-1.jpg",
       replyMsg:
-        "Let's start with Forest Adventure Yokohama—the kids can't wait to hit the treetops!",
+        "Let's start with Forest Adventure Yokohama. The kids can't wait to hit the treetops!",
       aiReplyMsg:
-        "Perfect—I'll start with Forest Adventure Yokohama, then add Lake Shiromaru kayak lesson the next day.",
+        "Perfect. I'll start with Forest Adventure Yokohama, then add Lake Shiromaru kayak lesson the next day.",
       nextQuestionId: "q3-1",
     },
     "a2-2": {
@@ -266,9 +266,9 @@ const tokyo = {
       chipText: "From Google Maps",
       image: "/images/Expedia-images/options/tokyo/a2-2.jpg",
       replyMsg:
-        "Let's start with Lake Shiromaru—the kids can't wait to paddle!",
+        "Let's start with Lake Shiromaru. The kids can't wait to paddle!",
       aiReplyMsg:
-        "Perfect—I'll start with Lake Shiromaru, then add Forest Adventure Yokohama the next day.",
+        "Perfect. I'll start with Lake Shiromaru, then add Forest Adventure Yokohama the next day.",
       nextQuestionId: "q3-1",
     },
 
@@ -279,9 +279,9 @@ const tokyo = {
       chipText: "Expedia · Bookable",
       image: "/images/Expedia-images/options/tokyo/a2-3.jpg",
       replyMsg:
-        "Let's start with the Sumida River cruise—the kids will love being out on the water!",
+        "Let's start with the Sumida River cruise. The kids will love being out on the water!",
       aiReplyMsg:
-        "Perfect—I'll start with the Sumida River cruise, then add Shinjuku Gyoen gardens the next day.",
+        "Perfect. I'll start with the Sumida River cruise, then add Shinjuku Gyoen gardens the next day.",
       nextQuestionId: "q3-2",
     },
     "a2-4": {
@@ -291,9 +291,9 @@ const tokyo = {
       chipText: "From Google Maps",
       image: "/images/Expedia-images/options/tokyo/a2-4.jpg",
       replyMsg:
-        "Let's start with Shinjuku Gyoen—the kids can ease into Tokyo among the spring trees!",
+        "Let's start with Shinjuku Gyoen. The kids can ease into Tokyo among the spring trees!",
       aiReplyMsg:
-        "Perfect—I'll start with Shinjuku Gyoen, then add the Sumida River cruise the next day.",
+        "Perfect. I'll start with Shinjuku Gyoen, then add the Sumida River cruise the next day.",
       nextQuestionId: "q3-2",
     },
 

@@ -195,7 +195,7 @@ const sedona = {
   questions: {
     q1: {
       id: "q1",
-      text: "Great — I’ll plan around what you already have booked. What sounds most like your family?",
+      text: "Great. I’ll plan around what you already have booked. What sounds most like your family?",
       answerIds: ["a1-1", "a1-2"],
     },
     "q2-1": {
@@ -228,7 +228,7 @@ const sedona = {
       chipText: "",
       image: "/images/Expedia-images/options/sedona/a1-1.jpg",
       replyMsg:
-        "We love the outdoors—the kids can’t wait to explore Sedona’s red rock trails and maybe a jeep tour too.",
+        "We love the outdoors. The kids can’t wait to explore Sedona’s red rock trails and maybe a jeep tour too.",
       aiReplyMsg: "",
       nextQuestionId: "q2-1",
     },
@@ -239,7 +239,7 @@ const sedona = {
       chipText: "",
       image: "/images/Expedia-images/options/sedona/a1-2.jpg",
       replyMsg:
-        "We’d like to take it slow—valley views, shaded courtyards, and good food sound perfect for our family.",
+        "We’d like to take it slow. Valley views, shaded courtyards, and good food sound perfect for our family.",
       aiReplyMsg: "",
       nextQuestionId: "q2-2",
     },
@@ -251,9 +251,9 @@ const sedona = {
       chipText: "From Google Maps",
       image: "/images/Expedia-images/options/sedona/a2-1.jpg",
       replyMsg:
-        "Let's start with Bell Rock—the kids can't wait to explore the red-rock trails!",
+        "Let's start with Bell Rock. The kids can't wait to explore the red-rock trails!",
       aiReplyMsg:
-        "Perfect—I'll start with Bell Rock Pathway, then add Flagstaff Extreme's treetop course the next day.",
+        "Perfect. I'll start with Bell Rock Pathway, then add Flagstaff Extreme's treetop course the next day.",
       nextQuestionId: "q3-1",
     },
     "a2-2": {
@@ -263,9 +263,9 @@ const sedona = {
       chipText: "From Google Maps",
       image: "/images/Expedia-images/options/sedona/a2-2.png",
       replyMsg:
-        "Let's start with Flagstaff Extreme—the kids can't wait to tackle the treetop course!",
+        "Let's start with Flagstaff Extreme. The kids can't wait to tackle the treetop course!",
       aiReplyMsg:
-        "Perfect—I'll start with Flagstaff Extreme's treetop course, then add Bell Rock Pathway the next day.",
+        "Perfect. I'll start with Flagstaff Extreme's treetop course, then add Bell Rock Pathway the next day.",
       nextQuestionId: "q3-1",
     },
 
@@ -276,9 +276,9 @@ const sedona = {
       chipText: "Expedia Exclusive",
       image: "/images/Expedia-images/options/sedona/a2-3.png",
       replyMsg:
-        "Let's start with the trolley—a relaxed introduction to Sedona sounds just right!",
+        "Let's start with the trolley. A relaxed introduction to Sedona sounds just right!",
       aiReplyMsg:
-        "Perfect—I'll start with the Sedona Trolley, then add a Tlaquepaque village stroll the next day.",
+        "Perfect. I'll start with the Sedona Trolley, then add a Tlaquepaque village stroll the next day.",
       nextQuestionId: "q3-2",
     },
     "a2-4": {
@@ -288,9 +288,9 @@ const sedona = {
       chipText: "From Google Maps",
       image: "/images/Expedia-images/options/sedona/a2-4.jpg",
       replyMsg:
-        "Let's start with Tlaquepaque—the kids can explore while we browse the courtyards!",
+        "Let's start with Tlaquepaque. The kids can explore while we browse the courtyards!",
       aiReplyMsg:
-        "Perfect—I'll start with Tlaquepaque's courtyards, then add the Sedona Trolley the next day.",
+        "Perfect. I'll start with Tlaquepaque's courtyards, then add the Sedona Trolley the next day.",
       nextQuestionId: "q3-2",
     },
 
@@ -302,7 +302,7 @@ const sedona = {
       image: "/images/Expedia-images/options/sedona/a3-1.png",
       replyMsg: "Can you recommend a river adventure to add to our trip?",
       aiReplyMsg:
-        "Try the guided Verde River kayak tour with Clarkdale—a family-friendly float past cottonwoods and canyon walls.",
+        "Try the guided Verde River kayak tour with Clarkdale. A family-friendly float past cottonwoods and canyon walls.",
       aiReplyChip: {
         title: "Verde River guided kayak",
         subtitle: "A guided paddle near Clarkdale",

@@ -199,7 +199,7 @@ const reykjavik = {
   questions: {
     q1: {
       id: "q1",
-      text: "Great — I’ll plan around what you already have booked. What sounds most like your family?",
+      text: "Great. I’ll plan around what you already have booked. What sounds most like your family?",
       answerIds: ["a1-1", "a1-2"],
     },
     "q2-1": {
@@ -232,7 +232,7 @@ const reykjavik = {
       chipText: "",
       image: "/images/Expedia-images/options/iceland/a1-1.jpg",
       replyMsg:
-        "We love exploring—the kids can't wait to walk through a lava tunnel and discover the coast around Grótta Lighthouse.",
+        "We love exploring. The kids can't wait to walk through a lava tunnel and discover the coast around Grótta Lighthouse.",
       aiReplyMsg: "",
       nextQuestionId: "q2-1",
     },
@@ -243,7 +243,7 @@ const reykjavik = {
       chipText: "",
       image: "/images/Expedia-images/options/iceland/a1-2.jpg",
       replyMsg:
-        "We'd like to take it slow—big views, warm pools, and good food by the harbor sound perfect.",
+        "We'd like to take it slow. Big views, warm pools, and good food by the harbor sound perfect.",
       aiReplyMsg: "",
       nextQuestionId: "q2-2",
     },
@@ -255,9 +255,9 @@ const reykjavik = {
       chipText: "Expedia · Bookable",
       image: "/images/Expedia-images/options/iceland/a2-1.jpg",
       replyMsg:
-        "Let's start with the lava tunnel—the kids can't wait to explore underground!",
+        "Let's start with the lava tunnel. The kids can't wait to explore underground!",
       aiReplyMsg:
-        "Perfect—I'll start with Raufarhólshellir lava tunnel, then add the Grótta coastline the next day.",
+        "Perfect. I'll start with Raufarhólshellir lava tunnel, then add the Grótta coastline the next day.",
       nextQuestionId: "q3-1",
     },
     "a2-2": {
@@ -267,9 +267,9 @@ const reykjavik = {
       chipText: "From Google Maps",
       image: "/images/Expedia-images/options/iceland/a2-2.jpg",
       replyMsg:
-        "Let's start with Grótta—the kids would love to explore the shore and spot seabirds!",
+        "Let's start with Grótta. The kids would love to explore the shore and spot seabirds!",
       aiReplyMsg:
-        "Perfect—I'll start with Grótta's lighthouse shore, then add the Raufarhólshellir lava tunnel the next day.",
+        "Perfect. I'll start with Grótta's lighthouse shore, then add the Raufarhólshellir lava tunnel the next day.",
       nextQuestionId: "q3-1",
     },
 
@@ -280,9 +280,9 @@ const reykjavik = {
       chipText: "Expedia · Bookable",
       image: "/images/Expedia-images/options/iceland/a2-3.jpg",
       replyMsg:
-        "Let's start with the Golden Circle—the kids can't wait to see the geyser erupt!",
+        "Let's start with the Golden Circle. The kids can't wait to see the geyser erupt!",
       aiReplyMsg:
-        "Perfect—I'll start with the Golden Circle tour, then add Laugardalslaug's warm pools the next day.",
+        "Perfect. I'll start with the Golden Circle tour, then add Laugardalslaug's warm pools the next day.",
       nextQuestionId: "q3-2",
     },
     "a2-4": {
@@ -292,9 +292,9 @@ const reykjavik = {
       chipText: "From Google Maps",
       image: "/images/Expedia-images/options/iceland/a2-4.jpg",
       replyMsg:
-        "Let's start with the warm pools—a gentle afternoon sounds just right after traveling!",
+        "Let's start with the warm pools. A gentle afternoon sounds just right after traveling!",
       aiReplyMsg:
-        "Perfect—I'll start with Laugardalslaug's warm pools, then add the Golden Circle tour the next day.",
+        "Perfect. I'll start with Laugardalslaug's warm pools, then add the Golden Circle tour the next day.",
       nextQuestionId: "q3-2",
     },
 
@@ -306,7 +306,7 @@ const reykjavik = {
       image: "/images/Expedia-images/options/iceland/a3-1.jpg",
       replyMsg: "Can you recommend a zipline adventure to add to our trip?",
       aiReplyMsg:
-        "Try Mega Zipline Iceland in Hveragerði for a high-flying view of the Reykjadalur valley — a different way to see Iceland's wild landscape.",
+        "Try Mega Zipline Iceland in Hveragerði for a high-flying view of the Reykjadalur valley . A different way to see Iceland's wild landscape.",
       aiReplyChip: {
         title: "Mega Zipline Iceland",
         subtitle: "A zipline above the Reykjadalur valley",

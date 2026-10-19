@@ -2,11 +2,11 @@ export const QUESTIONS = [
   {
     id: "activity",
     prompt:
-      "Great — I’ll plan around what you already have booked. What sounds most like your family?",
+      "Great. I’ll plan around what you already have booked. What sounds most like your family?",
     pickHint: "(Pick 1 option)",
     /** After select: outdoors bubble + Thinking, then fade into Q2 */
     bridgeBubble:
-      "We love the outdoors—the kids are dying to try kayaking and a ropes course near South Lake Tahoe over spring break.",
+      "We love the outdoors. The kids are dying to try kayaking and a ropes course near South Lake Tahoe over spring break.",
     options: [
       {
         id: "adventurous",
@@ -45,7 +45,7 @@ export const QUESTIONS = [
         youSay:
           "Let’s build around the Guided Kayak Tour on Emerald Bay and Tahoe Treetop Adventure Ropes Course.",
         aiSay:
-          "Perfect — I’ll start with kayaking on Emerald Bay, then add the ropes course in Tahoe City.",
+          "Perfect. I’ll start with kayaking on Emerald Bay, then add the ropes course in Tahoe City.",
         promptHint:
           "clear-bottom kayaking on Emerald Bay, family outdoor adventure near South Lake Tahoe",
       },
@@ -59,7 +59,7 @@ export const QUESTIONS = [
         youSay:
           "Let’s build around the Tahoe City ropes course and a clear-bottom kayak on Emerald Bay.",
         aiSay:
-          "Perfect — I’ll start with the ropes course in Tahoe City, then add kayaking on Emerald Bay.",
+          "Perfect. I’ll start with the ropes course in Tahoe City, then add kayaking on Emerald Bay.",
         promptHint:
           "treetop ropes course in Tahoe City, family outdoor adventure near South Lake Tahoe",
       },
@@ -94,7 +94,7 @@ export const QUESTIONS = [
         image: "/images/Expedia-images/options/q3-lake.png",
         youSay: "Can we keep more free time by the lake?",
         aiSay:
-          "Absolutely — I’ll leave an open afternoon by the shoreline so everyone can slow down between adventures.",
+          "Absolutely. I’ll leave an open afternoon by the shoreline so everyone can slow down between adventures.",
         answerCard: {
           title: "Lakeside afternoon",
           meta: "Near your hotel",
