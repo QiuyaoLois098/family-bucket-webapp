@@ -1,4 +1,4 @@
-/**
+﻿/**
  * La Fortuna (Costa Rica) branching Q&A script (same tree as South Lake Tahoe).
  *
  *   q1 → a1-1 → q2-1 → a2-1 (end)
@@ -200,12 +200,12 @@ const laFortuna = {
     },
     "q2-1": {
       id: "q2-1",
-      text: "Rainforest canopy, or lava trails? Which adventure should come first?",
+      text: "Rainforest canopy, or lava trails? Which should come first?",
       answerIds: ["a2-1", "a2-2"],
     },
     "q2-2": {
       id: "q2-2",
-      text: "A gentle river float or warm pools? Which comes first?",
+      text: "A gentle river float or warm pools? Which should come first?",
       answerIds: ["a2-3", "a2-4"],
     },
     "q3-1": {

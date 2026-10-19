@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Sedona branching Q&A script.
  *
  *   q1 → a1-1 → q2-1 → a2-1 → q3-1 → a3-1 / a3-2
@@ -200,12 +200,12 @@ const sedona = {
     },
     "q2-1": {
       id: "q2-1",
-      text: "Red rocks or treetops? Which adventure should come first?",
+      text: "Red rocks or treetops? Which should come first?",
       answerIds: ["a2-1", "a2-2"],
     },
     "q2-2": {
       id: "q2-2",
-      text: "A trolley ride or a village stroll? Which comes first?",
+      text: "A trolley ride or a village stroll? Which should come first?",
       answerIds: ["a2-3", "a2-4"],
     },
     "q3-1": {

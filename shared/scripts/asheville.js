@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Asheville branching Q&A script (same tree as South Lake Tahoe).
  *
  *   q1 → a1-1 → q2-1 → a2-1 (end)
@@ -200,12 +200,12 @@ const asheville = {
     },
     "q2-1": {
       id: "q2-1",
-      text: "I found two options your family might love. Which adventure should come first?",
+      text: "I found two options your family might love. Which should come first?",
       answerIds: ["a2-1", "a2-2"],
     },
     "q2-2": {
       id: "q2-2",
-      text: "I found two options your family might love. Which outing should come first?",
+      text: "I found two options your family might love. Which should come first?",
       answerIds: ["a2-3", "a2-4"],
     },
     "q3-1": {

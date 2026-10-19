@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Tokyo branching Q&A script.
  *
  *   q1 → a1-1 → q2-1 → a2-1/a2-2 → q3-1 → a3-1, a3-2
@@ -203,12 +203,12 @@ const tokyo = {
     },
     "q2-1": {
       id: "q2-1",
-      text: "Treetops or a mountain kayak? Which outing should come first?",
+      text: "Treetops or a mountain kayak? Which should come first?",
       answerIds: ["a2-1", "a2-2"],
     },
     "q2-2": {
       id: "q2-2",
-      text: "River views or spring gardens? Which comes first?",
+      text: "River views or spring gardens? Which should come first?",
       answerIds: ["a2-3", "a2-4"],
     },
     "q3-1": {

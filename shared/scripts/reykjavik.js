@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Reykjavík (Iceland) branching Q&A script.
  *
  * Same Q1/Q2 branching as Tahoe, but four distinct a3 answers:
@@ -204,12 +204,12 @@ const reykjavik = {
     },
     "q2-1": {
       id: "q2-1",
-      text: "A lava tunnel or lighthouse shores? Which adventure should come first?",
+      text: "A lava tunnel or lighthouse shores? Which should come first?",
       answerIds: ["a2-1", "a2-2"],
     },
     "q2-2": {
       id: "q2-2",
-      text: "Golden Circle sights or warm pools? Which comes first?",
+      text: "Golden Circle sights or warm pools? Which should come first?",
       answerIds: ["a2-3", "a2-4"],
     },
     "q3-1": {
