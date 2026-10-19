@@ -18,6 +18,7 @@ const asheville = {
     title: "Blue Ridge Family Lodge",
     subtitle: "Asheville, NC · April 6–11 · Confirmed",
     chipText: "Booked · Expedia",
+    image: "/images/Expedia-images/options/asheville/intro.jpg",
   },
   /** Building phase — left memory card */
   memoryCard: {
@@ -224,7 +225,7 @@ const asheville = {
       text: "Try something adventurous",
       subtitle: "River paddles, treetop ziplines, and forest walks.",
       chipText: "",
-      image: "/images/Expedia-images/options/q1_1.png",
+      image: "/images/Expedia-images/options/asheville/a1-1.png",
       replyMsg:
         "We love the outdoors—the kids can’t wait to paddle the French Broad and try Asheville’s treetop ziplines this spring.",
       aiReplyMsg: "",
@@ -235,7 +236,7 @@ const asheville = {
       text: "Take it slow",
       subtitle: "Mountain views, easy outings, and good food.",
       chipText: "",
-      image: "/images/Expedia-images/options/q1_2.png",
+      image: "/images/Expedia-images/options/asheville/a1-2.jpg",
       replyMsg:
         "We’d like to take it slow—mountain views, easy outings, and good food sound perfect for our family.",
       aiReplyMsg: "",
@@ -247,7 +248,7 @@ const asheville = {
       text: "French Broad River kayak",
       subtitle: "A guided paddle on the French Broad River.",
       chipText: "Expedia · Bestseller",
-      image: "/images/Expedia-images/options/q2-kayak-1.png",
+      image: "/images/Expedia-images/options/asheville/a2-1.jpg",
       replyMsg:
         "Let's start with the French Broad River kayak tour—the kids can't wait to get on the water!",
       aiReplyMsg:
@@ -259,7 +260,7 @@ const asheville = {
       text: "Navitat treetop adventure",
       subtitle: "Treetop ziplines and ropes in the Blue Ridge.",
       chipText: "From Google Maps",
-      image: "/images/Expedia-images/options/q2-ropes-1.png",
+      image: "/images/Expedia-images/options/asheville/a2-2.png",
       replyMsg:
         "Let's start with Navitat's treetop ziplines—the kids can't wait to soar through the trees!",
       aiReplyMsg:
@@ -272,7 +273,7 @@ const asheville = {
       text: "Gray Line trolley tour",
       subtitle: "A narrated trolley ride around Asheville.",
       chipText: "Expedia · Bestseller",
-      image: "/images/Expedia-images/options/q3-lake.png",
+      image: "/images/Expedia-images/options/asheville/a2-3.jpg",
       replyMsg:
         "Let's start with the Gray Line trolley—the kids will love seeing the sights around town!",
       aiReplyMsg:
@@ -284,7 +285,7 @@ const asheville = {
       text: "Botanical Gardens stroll",
       subtitle: "Five garden paths and native wildflowers.",
       chipText: "From Google Maps",
-      image: "/images/Expedia-images/options/q1_2.png",
+      image: "/images/Expedia-images/options/asheville/a2-2.png",
       replyMsg:
         "Let's start with the gardens—the kids can ease into the trip among the flowers!",
       aiReplyMsg:
@@ -297,7 +298,7 @@ const asheville = {
       text: "A gentle forest walk",
       subtitle: "An easy woodland trail, with time to explore.",
       chipText: "",
-      image: "/images/Expedia-images/options/q3-hike.png",
+      image: "/images/Expedia-images/options/asheville/a3-1.jpg",
       replyMsg: "Can we add a gentle forest walk before dinner?",
       aiReplyMsg:
         "Bent Creek Experimental Forest is about a 15-minute drive from your hotel, so it’s easy to fit in a forest walk before dinner.",
@@ -305,6 +306,7 @@ const asheville = {
         title: "Bent Creek Experimental Forest",
         subtitle: "15 min drive from your hotel",
         chipText: "From Google Maps",
+        image: "/images/Expedia-images/options/asheville/r3-1.png",
       },
       nextQuestionId: null,
     },
@@ -313,7 +315,7 @@ const asheville = {
       text: "A riverside picnic",
       subtitle: "An unhurried picnic with a short riverside walk.",
       chipText: "",
-      image: "/images/Expedia-images/options/q3-lake.png",
+      image: "/images/Expedia-images/options/asheville/a3-2.jpg",
       replyMsg: "Can we add a picnic by the river?",
       aiReplyMsg:
         "Amboy Riverfront Park is a great fit for a slower afternoon, with a shady spot for a picnic and an easy walk along the French Broad River Greenway.",
@@ -321,6 +323,7 @@ const asheville = {
         title: "Amboy Riverfront Park",
         subtitle: "Riverside picnic and an easy greenway walk",
         chipText: "From Google Maps",
+        image: "/images/Expedia-images/options/asheville/r3-2.png",
       },
       nextQuestionId: null,
     },
@@ -329,7 +332,7 @@ const asheville = {
       text: "A Southern family meal",
       subtitle: "Biscuits, homemade jams, and local favorites.",
       chipText: "",
-      image: "/images/Expedia-images/options/q1_2.png",
+      image: "/images/Expedia-images/options/asheville/a3-3.jpg",
       replyMsg: "Can we try a Southern meal with the kids?",
       aiReplyMsg:
         "Biscuit Head has Southern biscuits, homemade jams, and easy options for the whole family.",
@@ -337,6 +340,7 @@ const asheville = {
         title: "Biscuit Head",
         subtitle: "Southern biscuits and homemade jams",
         chipText: "From Google Maps",
+        image: "/images/Expedia-images/options/asheville/r3-3.jpg",
       },
       nextQuestionId: null,
     },
