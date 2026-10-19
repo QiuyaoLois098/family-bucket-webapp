@@ -56,6 +56,24 @@ export const vrboMotion = Object.freeze({
   pickupLiftPx: 4,
   pickupNudgePx: 1.1,
 
+  /** Large-screen opening (flow.js enter / openingHeadline). */
+  openingLogoDelayMs: 100,
+  openingLogoMs: 1000,
+  openingLogoOffsetPx: 17,
+  openingTitleDelayMs: 500,
+  openingTitleMs: 1000,
+  openingStatusDelayMs: 700,
+  openingStatusMs: 1000,
+  openingHeadlineDelayMs: 700,
+  openingHeadlineMs: 1200,
+  openingHeadlineOffsetPx: 20.2,
+  openingHeadlineLoopMs: 6000,
+  openingHeadlineHoldMs: 4080,
+  openingHeadlineOutMs: 600,
+  openingHeadlineGapMs: 60,
+  openingHeadlineInMs: 1200,
+  openingHeadlineNudgePx: 6,
+
   /** Search / results. */
   searchLoadingMs: 2200,
   resultStaggerMs: 180,

@@ -102,12 +102,12 @@ export default function MainChatScreen({
 
       <header className="vrbo-v2-chat__masthead">
         <img
-          className="vrbo-v2-chat__brand"
+          className="vrbo-v2-chat__brand is-opening-enter"
           src="/logo/Vrbo_Logo_Sail_RGB.png"
           alt="Vrbo"
         />
-        <h2 className="vrbo-v2-chat__trip">{chatScript.groupTitle}</h2>
-        <p className="vrbo-v2-chat__people">{peopleLine}</p>
+        <h2 className="vrbo-v2-chat__trip is-opening-title">{chatScript.groupTitle}</h2>
+        <p className="vrbo-v2-chat__people is-opening-status">{peopleLine}</p>
       </header>
 
       <div className="vrbo-v2-chat__body">

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import copy from "../../data/vrbo-v2/copy.json";
 
-function StayImage({ property, className }) {
+function StayImage({ property, className, style }) {
   const [failed, setFailed] = useState(false);
   return (
     <div
       className={className}
       /* Use CSS var — inline background overrides stylesheet and hides seam fixes. */
-      style={{ "--stay-image-fallback": property.gradient }}
+      style={{ "--stay-image-fallback": property.gradient, ...style }}
     >
       {failed ? null : (
         <img
@@ -95,17 +95,31 @@ export function StayShowcase({
       <div className="vrbo-v2-showcase__top">
         <header className="vrbo-v2-showcase__masthead">
           <img
-            className="vrbo-v2-showcase__logo"
+            className="vrbo-v2-showcase__logo is-scene-enter"
             src="/logo/Vrbo_Logo_Sail_RGB.png"
             alt="Vrbo"
             draggable={false}
+            style={{ "--scene-delay": "0ms", "--scene-y": "17px", "--scene-duration": "750ms" }}
           />
-          <p className="vrbo-v2-showcase__headline">{buildResultsHeadline(priorities)}</p>
+          {/* Handoff resultParts stagger: +300 then +180 each · 750ms · Y20 */}
+          <p
+            className="vrbo-v2-showcase__headline is-scene-enter"
+            style={{ "--scene-delay": "300ms", "--scene-y": "20px", "--scene-duration": "750ms" }}
+          >
+            {buildResultsHeadline(priorities)}
+          </p>
         </header>
-        <StayImage property={property} className="vrbo-v2-showcase__hero" />
+        <StayImage
+          property={property}
+          className="vrbo-v2-showcase__hero is-scene-enter"
+          style={{ "--scene-delay": "0ms", "--scene-y": "0px", "--scene-duration": "750ms" }}
+        />
       </div>
 
-      <div className="vrbo-v2-showcase__body">
+      <div
+        className="vrbo-v2-showcase__body is-scene-enter"
+        style={{ "--scene-delay": "480ms", "--scene-y": "20px", "--scene-duration": "750ms" }}
+      >
         <div className="vrbo-v2-showcase__heading">
           <h3 className="vrbo-v2-showcase__name">{property.name}</h3>
           <p className="vrbo-v2-showcase__stats">{stats}</p>
@@ -128,7 +142,12 @@ export function StayShowcase({
         </div>
       </div>
 
-      <div className="vrbo-v2-showcase__thumbs" role="listbox" aria-label="Stays">
+      <div
+        className="vrbo-v2-showcase__thumbs is-scene-enter"
+        role="listbox"
+        aria-label="Stays"
+        style={{ "--scene-delay": "660ms", "--scene-y": "20px", "--scene-duration": "750ms" }}
+      >
         {results.map((item, thumbIndex) => {
           const active = item.property.id === property.id;
           const thumb = item.property;
@@ -150,7 +169,10 @@ export function StayShowcase({
         })}
       </div>
 
-      <div className="vrbo-v2-showcase__actions">
+      <div
+        className="vrbo-v2-showcase__actions is-scene-enter"
+        style={{ "--scene-delay": "840ms", "--scene-y": "20px", "--scene-duration": "750ms" }}
+      >
         <button
           type="button"
           className="vrbo-v2-showcase__share"

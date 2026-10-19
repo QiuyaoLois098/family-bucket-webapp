@@ -1311,6 +1311,107 @@
   color: #ffffff;
 }
 
+/* flow.js: logo enter (100→1000ms, Y17) + openingHeadline (700→1200ms, Y20.2) then 6s loop */
+.vrbo-v2-rank__brand-logo.is-opening-enter,
+.vrbo-v2-chat__brand.is-opening-enter {
+  animation: vrbo-opening-rise 1s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
+  --opening-y: 17px;
+}
+
+.vrbo-v2-chat__trip.is-opening-title {
+  animation: vrbo-opening-rise 1s cubic-bezier(0.4, 0, 0.2, 1) 0.5s both;
+  --opening-y: 17px;
+}
+
+.vrbo-v2-chat__people.is-opening-status {
+  animation: vrbo-opening-rise 1s cubic-bezier(0.4, 0, 0.2, 1) 0.7s both;
+  --opening-y: 17px;
+}
+
+.vrbo-v2-opening-headline.is-enter {
+  animation: vrbo-opening-headline-in 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.7s both;
+}
+
+.vrbo-v2-opening-headline.is-loop {
+  animation: vrbo-opening-headline-loop 6s linear infinite;
+}
+
+@keyframes vrbo-opening-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, var(--opening-y, 17px), 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes vrbo-opening-headline-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 20.2px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* local%6000: hold 4080 → out 600 (Y-6) → gap 60 at Y20.2 → in 1200 */
+@keyframes vrbo-opening-headline-loop {
+  0%,
+  68% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  78% {
+    opacity: 0;
+    transform: translate3d(0, -6px, 0);
+  }
+  79% {
+    opacity: 0;
+    transform: translate3d(0, 20.2px, 0);
+  }
+  99%,
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Summary / results scene enter (flow.js sceneIn / resultParts). */
+.is-scene-enter {
+  animation: vrbo-scene-enter var(--scene-duration, 0.75s)
+    cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation-delay: var(--scene-delay, 0ms);
+}
+
+@keyframes vrbo-scene-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, var(--scene-y, 28px), 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vrbo-v2-rank__brand-logo.is-opening-enter,
+  .vrbo-v2-chat__brand.is-opening-enter,
+  .vrbo-v2-chat__trip.is-opening-title,
+  .vrbo-v2-chat__people.is-opening-status,
+  .vrbo-v2-opening-headline.is-enter,
+  .vrbo-v2-opening-headline.is-loop,
+  .is-scene-enter {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .vrbo-v2-rank__hero-photo {
   display: none;
 }

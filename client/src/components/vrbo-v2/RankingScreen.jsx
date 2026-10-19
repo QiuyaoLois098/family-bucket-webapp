@@ -6,6 +6,27 @@ import users from "../../data/vrbo-v2/users.json";
 import { runChunkTypewriter } from "../../motion/chunkType.js";
 import { StayShowcase } from "./StayViews.jsx";
 
+/** Handoff openingHeadline: first enter, then 6s breathe loop (do not restart full open). */
+function OpeningHeadline({ className = "", children }) {
+  const [phase, setPhase] = useState("enter");
+
+  return (
+    <h2
+      className={`${className} vrbo-v2-opening-headline is-${phase}`.trim()}
+      onAnimationEnd={(event) => {
+        if (
+          phase === "enter" &&
+          String(event.animationName).includes("vrbo-opening-headline-in")
+        ) {
+          setPhase("loop");
+        }
+      }}
+    >
+      {children}
+    </h2>
+  );
+}
+
 const FINALE_BG_SRC = "/images/Vrbo-Images/final-bg.jpg";
 
 const propertyById = new Map(properties.map((property) => [property.id, property]));
@@ -50,7 +71,9 @@ function buildListeningLine(joined = {}, displayNames = {}) {
 function WaitingPanel({ ready }) {
   return (
     <div
-      className={`vrbo-v2-rank__panel vrbo-v2-rank__panel--hero ${ready ? "is-loading" : ""} vrbo-v2-rank__panel--enter`}
+      className={`vrbo-v2-rank__panel vrbo-v2-rank__panel--hero ${
+        ready ? "is-loading vrbo-v2-rank__panel--enter" : ""
+      }`}
     >
       {ready ? (
         <div className="vrbo-v2-rank__hero-loading">
@@ -63,17 +86,17 @@ function WaitingPanel({ ready }) {
         <>
           <header className="vrbo-v2-rank__hero-top">
             <img
-              className="vrbo-v2-rank__brand-logo"
+              className="vrbo-v2-rank__brand-logo is-opening-enter"
               src="/logo/Vrbo_Logo_Sail_RGB.png"
               alt="Vrbo"
             />
           </header>
           <div className="vrbo-v2-rank__hero-mid">
-            <h2>
+            <OpeningHeadline>
               {copy.ranking.waitingTitleLine1}
               <br />
               {copy.ranking.waitingTitleLine2}
-            </h2>
+            </OpeningHeadline>
           </div>
         </>
       )}
@@ -93,23 +116,30 @@ export function SummaryPanel({
   const isTyping = Boolean(summaryText) && typedText.length < summaryText.length;
 
   return (
-    <div className={`vrbo-v2-summary ${compact ? "vrbo-v2-summary--compact" : ""} vrbo-v2-rank__panel--enter`}>
+    <div className={`vrbo-v2-summary ${compact ? "vrbo-v2-summary--compact" : ""}`}>
       <header className="vrbo-v2-summary__masthead">
         <img
-          className="vrbo-v2-summary__brand"
+          className="vrbo-v2-summary__brand is-scene-enter"
           src="/logo/Vrbo_Logo_Sail_RGB.png"
           alt={copy.summary.brand}
+          style={{ "--scene-delay": "0ms", "--scene-y": "17px", "--scene-duration": "750ms" }}
         />
       </header>
 
       <div className="vrbo-v2-summary__body">
-        <h2 className="vrbo-v2-summary__title">{copy.summary.title}</h2>
+        <h2
+          className="vrbo-v2-summary__title is-scene-enter"
+          style={{ "--scene-delay": "80ms", "--scene-y": "28px", "--scene-duration": "750ms" }}
+        >
+          {copy.summary.title}
+        </h2>
 
         <div
-          className="vrbo-v2-summary__box"
+          className="vrbo-v2-summary__box is-scene-enter"
           role="textbox"
           aria-readonly="true"
           aria-label={summaryText}
+          style={{ "--scene-delay": "160ms", "--scene-y": "28px", "--scene-duration": "750ms" }}
         >
           <p className="vrbo-v2-summary__box-label">{copy.summary.boxLabel}</p>
           <p
@@ -120,7 +150,10 @@ export function SummaryPanel({
           </p>
         </div>
 
-        <p className="vrbo-v2-summary__listening">
+        <p
+          className="vrbo-v2-summary__listening is-scene-enter"
+          style={{ "--scene-delay": "240ms", "--scene-y": "20px", "--scene-duration": "650ms" }}
+        >
           <span className="vrbo-v2-summary__dots" aria-hidden="true">
             <i />
             <i />
@@ -131,7 +164,12 @@ export function SummaryPanel({
 
         <div className="vrbo-v2-summary__spacer" aria-hidden="true" />
 
-        <button type="button" className="vrbo-v2-summary__search" onClick={onSearch}>
+        <button
+          type="button"
+          className="vrbo-v2-summary__search is-scene-enter"
+          style={{ "--scene-delay": "400ms", "--scene-y": "20px", "--scene-duration": "650ms" }}
+          onClick={onSearch}
+        >
           {copy.summary.search}
         </button>
       </div>
@@ -147,7 +185,7 @@ function ResultsPanel({
   actions,
 }) {
   return (
-    <div className="vrbo-v2-rank__panel vrbo-v2-rank__panel--light vrbo-v2-rank__panel--showcase vrbo-v2-rank__panel--enter-up">
+    <div className="vrbo-v2-rank__panel vrbo-v2-rank__panel--light vrbo-v2-rank__panel--showcase">
       <StayShowcase
         results={results}
         priorities={priorities}
