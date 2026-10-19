@@ -1,19 +1,24 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import ExpediaBrandBar from "./ExpediaBrandBar.jsx";
+
+const PULL_MS = 670;
 
 export default function RevealStep({ onReveal }) {
   const startY = useRef(null);
   const triggered = useRef(false);
+  const [pulling, setPulling] = useState(false);
 
   const unlock = () => {
     if (triggered.current) return;
     triggered.current = true;
-    onReveal?.();
+    setPulling(true);
+    window.setTimeout(() => {
+      onReveal?.();
+    }, PULL_MS);
   };
 
   const onPointerDown = (event) => {
     startY.current = event.clientY;
-    triggered.current = false;
     event.currentTarget.setPointerCapture?.(event.pointerId);
   };
 
@@ -35,7 +40,7 @@ export default function RevealStep({ onReveal }) {
   };
 
   return (
-    <div className="reveal-step">
+    <div className={`reveal-step${pulling ? " is-pulling" : ""}`}>
       <ExpediaBrandBar />
 
       <div className="reveal-step__body">

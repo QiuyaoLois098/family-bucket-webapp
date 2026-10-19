@@ -28,7 +28,8 @@
   min-height: 0;
   overflow: hidden;
   background: #ffffff;
-  animation: rise 0.7s ease both;
+  /* Align with handoff building entrance window */
+  animation: rise 1s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .screen--display .building-screen__art {
@@ -234,12 +235,17 @@
   object-fit: cover;
   object-position: center;
   opacity: 0;
-  transition: opacity 1.25s ease-in-out;
+  transform: scale(1);
+  transition:
+    opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 6s linear;
 }
 
 .idle-display__slide.is-active {
   opacity: 1;
   z-index: 1;
+  /* Portal Ken Burns: 1 → 1.025 over 6s */
+  transform: scale(1.025);
 }
 
 .idle-display__wash {
@@ -275,11 +281,15 @@
   text-align: center;
   color: #ffffff;
   opacity: 0;
-  transition: opacity 1.25s ease-in-out;
+  transform: translateY(12px);
+  transition:
+    opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .idle-display__caption.is-active {
   opacity: 1;
+  transform: translateY(0);
 }
 
 .idle-display__caption h1 {
@@ -301,12 +311,44 @@
   letter-spacing: 0.01em;
 }
 
-.image-reveal__layer {
+.image-reveal--frost {
+  background: #0c1028;
+}
+
+.frost-reveal {
   position: absolute;
   inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: #0c1028;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.frost-reveal.is-live {
+  opacity: 1;
+}
+
+.image-reveal--frost .image-reveal__grade {
+  z-index: 3;
+  background: transparent;
+}
+
+.image-reveal--frost .image-reveal__caption {
+  z-index: 4;
+}
+
+.image-reveal__layer {
+  position: absolute;
+  inset: calc(var(--u, 2px) * -48);
   background-size: cover;
   background-position: center;
   transform-origin: center center;
+  will-change: filter, transform;
   transition: filter 1.8s ease, opacity 1.4s ease, transform 1.8s ease;
 }
 
@@ -327,7 +369,7 @@
 .image-reveal__caption {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 3;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -336,6 +378,8 @@
   padding: 0 8%;
   text-align: center;
   color: #ffffff;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
   animation: caption-fade 1.2s ease both;
 }
 

@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { DESTINATIONS, getDestination } from "@shared/destinations.js";
+import { chatPacing } from "../motion/chatPacing.js";
 import ExpediaBrandBar from "./ExpediaBrandBar.jsx";
 
 const ORDER = new Map(DESTINATIONS.map((item, index) => [item.id, index]));
-const SELECT_HOLD_MS = 520;
+const SELECT_HOLD_MS = chatPacing.portalSelectHoldMs;
 
 export default function DestinationPicker({ onSelect, offeredIds }) {
   const [pendingId, setPendingId] = useState(null);
@@ -47,7 +48,10 @@ export default function DestinationPicker({ onSelect, offeredIds }) {
               className={`destination-card${selected ? " is-selected" : ""}`}
               disabled={locked}
               onClick={() => handleSelect(destination.id)}
-              style={{ animationDelay: `${index * 0.05}s` }}
+              style={{
+                /* Portal handoff: card enter delay ≈ 1s + row×0.6s (2-col grid). */
+                animationDelay: `${1 + Math.floor(index / 2) * 0.6}s`,
+              }}
             >
               <span
                 className={`destination-card__image destination-card__image--${destination.id}`}

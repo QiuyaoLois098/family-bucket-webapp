@@ -6,6 +6,7 @@ import ExpediaBrandBar from "./ExpediaBrandBar.jsx";
 
 /**
  * Control (left) finale schedule — 5 days from destination script modules.
+ * Day cards stagger like handoff final sequence (0.8s gap).
  */
 export default function ItinerarySchedule({ destinationId, answers = [] }) {
   const script = getDestinationScript(destinationId);
@@ -24,8 +25,12 @@ export default function ItinerarySchedule({ destinationId, answers = [] }) {
       </div>
 
       <ol className="schedule__list">
-        {schedule.days.map((day) => (
-          <li key={day.id} className="schedule__card">
+        {schedule.days.map((day, index) => (
+          <li
+            key={day.id}
+            className="schedule__card"
+            style={{ animationDelay: `${index * 0.8}s` }}
+          >
             <div
               className="schedule__thumb"
               style={

@@ -7,15 +7,19 @@ import {
   getAnswer,
   answerToOption,
 } from "@shared/scripts/index.js";
+import { chatPacing } from "../motion/chatPacing.js";
 import ExpediaBrandBar from "./ExpediaBrandBar.jsx";
 
-const SELECT_HOLD_MS = 520;
 const DEFAULT_DATES = "Apr 6 – 11";
-const REVEAL_FADE_MS = 650;
-const REVEAL_STAGGER_MS = 750;
-const THINKING_HOLD_MS = 2000;
-const TYPE_CHAR_MS = 26;
-const TYPE_PAUSE_AFTER_MS = 320;
+const SELECT_HOLD_MS = chatPacing.selectHoldMs;
+const REVEAL_FADE_MS = chatPacing.bubbleEntranceMs;
+const REVEAL_STAGGER_MS = chatPacing.cardStaggerMs;
+const THINKING_HOLD_MS = chatPacing.readingMs;
+const THINKING_GAP_MS = chatPacing.thinkingGapMs;
+const THINKING_EXIT_MS = chatPacing.thinkingExitMs;
+const TYPE_CHAR_MS = chatPacing.typeCharMs;
+const TYPE_PAUSE_AFTER_MS = chatPacing.afterTypePauseMs;
+const SCENE_EXIT_MS = chatPacing.sceneExitMs;
 
 /**
  * Unified question flow (all questions = 2 options):
@@ -224,17 +228,20 @@ export default function QuestionStep({
 
       let t = 40;
       bridgeTimersRef.current.push(setTimeout(() => setBridgeStep(1), t));
-      t += REVEAL_STAGGER_MS;
+      t += REVEAL_FADE_MS;
 
       if (aiText) {
         bridgeTimersRef.current.push(setTimeout(() => setBridgeStep(2), t));
-        t += REVEAL_STAGGER_MS;
+        t += REVEAL_FADE_MS;
       }
 
       if (placeCard) {
         bridgeTimersRef.current.push(setTimeout(() => setBridgeStep(3), t));
         t += REVEAL_FADE_MS;
       }
+
+      // Thinking gap after the latest entrance completes (handoff chat pacing).
+      t += THINKING_GAP_MS;
 
       if (!isLast) {
         bridgeTimersRef.current.push(setTimeout(() => setBridgeStep(4), t));
@@ -250,7 +257,7 @@ export default function QuestionStep({
                 setBridgeStep(0);
                 setBridgeExiting(false);
                 onAnswer(questionRef, optionId, { advance: true });
-              }, REVEAL_FADE_MS),
+              }, THINKING_EXIT_MS),
             );
           }, t),
         );
@@ -265,7 +272,7 @@ export default function QuestionStep({
           onAnswer(questionRef, optionId, { advance: true });
         }, t),
       );
-    }, REVEAL_FADE_MS);
+    }, SCENE_EXIT_MS);
   };
 
   const handleSelect = (optionId) => {
@@ -298,7 +305,11 @@ export default function QuestionStep({
       className={`question question--planner question--count-${options.length}${
         exiting && !inBridge ? " is-exiting" : ""
       }${inBridge ? " is-bridging" : ""}`}
-      style={{ "--question-reveal-ms": `${REVEAL_FADE_MS}ms` }}
+      style={{
+        "--question-reveal-ms": `${REVEAL_FADE_MS}ms`,
+        "--thinking-fade-ms": `${chatPacing.thinkingFadeMs}ms`,
+        "--thinking-exit-ms": `${THINKING_EXIT_MS}ms`,
+      }}
     >
       <ExpediaBrandBar />
 
@@ -310,7 +321,11 @@ export default function QuestionStep({
       {inBridge ? (
         <div
           className={`question__dialogue${bridgeExiting ? " is-exiting" : ""}`}
-          style={{ "--briefing-fade-ms": `${REVEAL_FADE_MS}ms` }}
+          style={{
+            "--briefing-fade-ms": `${REVEAL_FADE_MS}ms`,
+            "--thinking-fade-ms": `${chatPacing.thinkingFadeMs}ms`,
+            "--thinking-exit-ms": `${THINKING_EXIT_MS}ms`,
+          }}
         >
           <div className={`briefing__bubble${showBridgeBubble ? " is-visible" : ""}`}>
             {bridge.bubbleText}

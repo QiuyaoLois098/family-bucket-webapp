@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { DESTINATIONS } from "@shared/destinations.js";
 
-const HOLD_MS = 5500;
+/** Portal right cycle (handoff): 3s hold between destination crossfades. */
+const HOLD_MS = 3000;
 
 function heroSrc(destination) {
   return destination.heroImage || destination.image;

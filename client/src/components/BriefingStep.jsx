@@ -1,15 +1,22 @@
 import { useEffect, useState } from "react";
 import { getDestination } from "@shared/destinations.js";
 import { getDestinationScript } from "@shared/scripts/index.js";
+import { chatPacing } from "../motion/chatPacing.js";
 import ExpediaBrandBar from "./ExpediaBrandBar.jsx";
 
 const DEFAULT_DATES = "Apr 6 – 11";
-const FADE_MS = 650;
-const STAGGER_MS = 750;
-const THINKING_HOLD_MS = 2000;
+const {
+  bubbleEntranceMs,
+  readingMs,
+  thinkingGapMs,
+  thinkingFadeMs,
+  thinkingExitMs,
+  stayEntranceMs,
+} = chatPacing;
 
 /**
- * bubble → stay → Thinking… (right after card) → fade out → question 1.
+ * bubble → stay → Thinking (gap after hotel entrance) → fade out → question 1.
+ * Timings from handoff v72 chat pacing.
  */
 export default function BriefingStep({ destinationId, onContinue }) {
   const [showBubble, setShowBubble] = useState(false);
@@ -36,15 +43,17 @@ export default function BriefingStep({ destinationId, onContinue }) {
   };
 
   useEffect(() => {
-    const stayAt = 40 + STAGGER_MS;
-    const thinkingAt = stayAt + FADE_MS;
-    const exitAt = thinkingAt + THINKING_HOLD_MS;
+    const bubbleAt = 150;
+    const stayAt = 650;
+    // Thinking gap starts after the later hotel-card entrance completes.
+    const thinkingAt = stayAt + stayEntranceMs + thinkingGapMs;
+    const exitAt = thinkingAt + thinkingFadeMs + readingMs;
     const timers = [
-      setTimeout(() => setShowBubble(true), 40),
+      setTimeout(() => setShowBubble(true), bubbleAt),
       setTimeout(() => setShowStay(true), stayAt),
       setTimeout(() => setThinking(true), thinkingAt),
       setTimeout(() => setExiting(true), exitAt),
-      setTimeout(() => onContinue?.(), exitAt + FADE_MS),
+      setTimeout(() => onContinue?.(), exitAt + thinkingExitMs),
     ];
 
     return () => timers.forEach(clearTimeout);
@@ -61,7 +70,11 @@ export default function BriefingStep({ destinationId, onContinue }) {
 
       <div
         className={`briefing__dialogue${exiting ? " is-exiting" : ""}`}
-        style={{ "--briefing-fade-ms": `${FADE_MS}ms` }}
+        style={{
+          "--briefing-fade-ms": `${bubbleEntranceMs}ms`,
+          "--thinking-fade-ms": `${thinkingFadeMs}ms`,
+          "--thinking-exit-ms": `${thinkingExitMs}ms`,
+        }}
       >
         <div
           className={`briefing__bubble${showBubble && !exiting ? " is-visible" : ""}`}

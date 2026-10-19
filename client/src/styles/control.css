@@ -136,6 +136,7 @@
   line-height: 1.12;
   letter-spacing: -0.03em;
   color: #0c1028;
+  animation: portal-copy 1s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .destinations__lede {
@@ -147,6 +148,8 @@
   line-height: 1.35;
   letter-spacing: -0.01em;
   color: #5c6478;
+  animation: portal-copy 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.08s;
 }
 
 .destinations__grid {
@@ -187,7 +190,8 @@
   cursor: pointer;
   outline: none;
   transition: box-shadow 0.2s ease, transform 0.25s ease;
-  animation: rise 0.55s ease both;
+  /* Portal handoff card enter */
+  animation: portal-card 1.3s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .destination-card__image {
@@ -313,19 +317,38 @@
 .briefing__stay,
 .briefing__thinking {
   opacity: 0;
-  transition: opacity var(--briefing-fade-ms, 650ms) ease;
+}
+
+.briefing__bubble {
+  transform: translateX(12px);
+  transition:
+    opacity var(--briefing-fade-ms, 500ms) cubic-bezier(0.42, 0, 0.58, 1),
+    transform var(--briefing-fade-ms, 500ms) cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+.briefing__stay {
+  transform: translateY(10px);
+  transition:
+    opacity var(--briefing-fade-ms, 500ms) cubic-bezier(0.22, 1, 0.36, 1),
+    transform var(--briefing-fade-ms, 500ms) cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.briefing__thinking {
+  transition: opacity var(--thinking-fade-ms, 250ms) ease;
 }
 
 .briefing__bubble.is-visible,
 .briefing__stay.is-visible,
 .briefing__thinking.is-visible {
   opacity: 1;
+  transform: translate(0, 0);
 }
 
 .briefing__dialogue.is-exiting .briefing__bubble,
 .briefing__dialogue.is-exiting .briefing__stay,
 .briefing__dialogue.is-exiting .briefing__thinking {
   opacity: 0;
+  transition-duration: var(--thinking-exit-ms, 200ms);
 }
 
 .briefing__bubble {
@@ -423,16 +446,11 @@
   line-height: 1.2;
   letter-spacing: -0.01em;
   color: #191e3b;
-  opacity: 0;
-  transition: opacity var(--briefing-fade-ms, 650ms) ease;
-}
-
-.briefing__thinking.is-visible {
-  opacity: 1;
 }
 
 .briefing__thinking.is-leaving {
   opacity: 0;
+  transition-duration: var(--thinking-exit-ms, 200ms);
 }
 
 .briefing__dots {
@@ -443,26 +461,30 @@
 
 .briefing__dots span {
   display: inline-block;
-  animation: briefing-dot 1.2s ease-in-out infinite;
-  opacity: 0.2;
+  /* Handoff thinking-motion: 1.3s period, 0.16s stagger, lift pulse */
+  animation: briefing-dot 1.3s ease-in-out infinite;
+  opacity: 0.3;
 }
 
 .briefing__dots span:nth-child(2) {
-  animation-delay: 0.2s;
+  animation-delay: 0.16s;
 }
 
 .briefing__dots span:nth-child(3) {
-  animation-delay: 0.4s;
+  animation-delay: 0.32s;
 }
 
 @keyframes briefing-dot {
   0%,
-  80%,
+  30%,
+  65%,
   100% {
-    opacity: 0.2;
+    opacity: 0.3;
+    transform: translateY(0);
   }
-  40% {
+  15% {
     opacity: 1;
+    transform: translateY(-0.22em);
   }
 }
 
@@ -562,9 +584,11 @@
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+  transform: translateY(12px);
   transition:
-    opacity var(--question-reveal-ms, 650ms) ease,
-    border-color 0.2s ease,
+    opacity 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.14s ease-out,
     background 0.2s ease;
 }
 
@@ -572,6 +596,7 @@
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
+  transform: translateY(0);
 }
 
 .question__option:hover,
@@ -688,11 +713,15 @@
   letter-spacing: -0.02em;
   color: #191e3b;
   opacity: 0;
-  transition: opacity var(--briefing-fade-ms, 650ms) ease;
+  transform: translateY(8px);
+  transition:
+    opacity var(--briefing-fade-ms, 500ms) cubic-bezier(0.22, 1, 0.36, 1),
+    transform var(--briefing-fade-ms, 500ms) cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .question__ai-line.is-visible {
   opacity: 1;
+  transform: translateY(0);
 }
 
 .question__place-card {
@@ -707,11 +736,15 @@
   border-radius: calc(var(--u) * 40);
   background: #f5f5f7;
   opacity: 0;
-  transition: opacity var(--briefing-fade-ms, 650ms) ease;
+  transform: translateY(10px);
+  transition:
+    opacity var(--briefing-fade-ms, 500ms) cubic-bezier(0.22, 1, 0.36, 1),
+    transform var(--briefing-fade-ms, 500ms) cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .question__place-card.is-visible {
   opacity: 1;
+  transform: translateY(0);
 }
 
 .question__place-thumb {
@@ -1124,7 +1157,16 @@
   height: calc(100cqi * 145 / var(--design-w));
   object-fit: contain;
   pointer-events: none;
-  animation: suitcase-lift 2.6s ease-in-out infinite;
+  /* Handoff suitcase hint pulse: ~1.1s cycle */
+  animation: suitcase-hint 1.1s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+.reveal-step.is-pulling .reveal-step__arrow {
+  animation: suitcase-pull 0.67s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+}
+
+.reveal-step.is-pulling .reveal-step__luggage {
+  animation: suitcase-pull-body 0.67s cubic-bezier(0.34, 1.4, 0.64, 1) both;
 }
 
 .reveal-step__luggage-slot {
@@ -1142,13 +1184,34 @@
   transform: translateY(calc(100cqh * 380 / var(--design-h)));
 }
 
-@keyframes suitcase-lift {
+@keyframes suitcase-hint {
   0%,
   100% {
     transform: translateY(0);
   }
-  50% {
-    transform: translateY(calc(var(--u) * -12));
+  36% {
+    transform: translateY(calc(var(--u) * -14));
+  }
+  55% {
+    transform: translateY(calc(var(--u) * -14));
+  }
+}
+
+@keyframes suitcase-pull {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(var(--u) * -48));
+  }
+}
+
+@keyframes suitcase-pull-body {
+  from {
+    transform: translateY(calc(100cqh * 380 / var(--design-h)));
+  }
+  to {
+    transform: translateY(calc(100cqh * 300 / var(--design-h)));
   }
 }
 
@@ -1271,6 +1334,9 @@
   background-position: center;
   color: #ffffff;
   box-shadow: 0 calc(var(--u) * 18) calc(var(--u) * 48) rgba(25, 30, 59, 0.18);
+  /* Ticket-like settle from handoff building sequence */
+  animation: memory-ticket-settle 1.5s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+  animation-delay: 0.35s;
 }
 
 .memory-card__veil {
@@ -1449,6 +1515,8 @@
   border-radius: calc(var(--u) * 24);
   background: var(--schedule-card-bg);
   color: #191e3b;
+  /* Handoff final sequence: 1.2s enter, 0.8s stagger via inline delay */
+  animation: schedule-card-enter 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .schedule__thumb {
@@ -1743,6 +1811,68 @@
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+@keyframes portal-copy {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes portal-card {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes schedule-card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--u) * 28));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes memory-ticket-settle {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--u) * 40)) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .destination-card,
+  .destinations__intro h2,
+  .destinations__lede,
+  .schedule__card,
+  .memory-card,
+  .reveal-step__arrow,
+  .reveal-step.is-pulling .reveal-step__luggage {
+    animation: none !important;
+  }
+
+  .briefing__bubble,
+  .briefing__stay,
+  .question__option {
+    transform: none !important;
   }
 }
 
