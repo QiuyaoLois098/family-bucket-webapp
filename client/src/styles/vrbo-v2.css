@@ -463,6 +463,21 @@
   box-shadow: inset 0 0 0 0.16cqh var(--sky);
 }
 
+/* Finale / celebration: no scroll — older bubbles are trimmed from the DOM. */
+.vrbo-v2-chat.is-feed-locked .vrbo-v2-chat__feed {
+  justify-content: flex-end;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+
+.vrbo-v2-phone__feed.is-feed-locked {
+  justify-content: flex-end;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+
 .vrbo-v2-chat__masthead {
   flex: 0 0 var(--display-masthead-height);
   display: flex;

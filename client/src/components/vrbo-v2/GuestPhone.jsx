@@ -5,6 +5,7 @@ import users from "../../data/vrbo-v2/users.json";
 import { createEnterTracker } from "./chatMotion.js";
 import PreferenceCard from "./PreferenceCard.jsx";
 import PropertyCard from "./PropertyCard.jsx";
+import useTailFitMessages from "./useTailFitMessages.js";
 
 const guests = users.filter((user) => user.role === "guest");
 
@@ -156,24 +157,33 @@ function MessageFeed({
   live = false,
   selfId,
   afterMessages = null,
+  lockOverflow = false,
 }) {
   const feedRef = useRef(null);
   const enterRef = useRef(null);
   if (enterRef.current == null) enterRef.current = createEnterTracker();
-  const visibleMessages = live
+  const baseMessages = live
     ? messages ?? []
     : (messages ?? []).filter((message) => message.kind !== "property").slice(-6);
+  const lockFeed =
+    lockOverflow || baseMessages.some((message) => message.phase === "finale");
+  const visibleMessages = useTailFitMessages(baseMessages, feedRef, lockFeed);
 
   enterRef.current.prepare(visibleMessages.map((message) => message.id));
 
   useEffect(() => {
     const node = feedRef.current;
-    if (!node) return;
+    if (!node || lockFeed) return;
     node.scrollTop = node.scrollHeight;
-  }, [messages?.length, typing?.length, live, afterMessages]);
+  }, [messages?.length, typing?.length, live, afterMessages, lockFeed]);
 
   return (
-    <div className={`vrbo-v2-phone__feed ${live ? "is-live" : ""}`} ref={feedRef}>
+    <div
+      className={`vrbo-v2-phone__feed${live ? " is-live" : ""}${
+        lockFeed ? " is-feed-locked" : ""
+      }`}
+      ref={feedRef}
+    >
       {visibleMessages.map((message) => {
         const author = userById[message.authorId];
         if (!author) return null;
@@ -185,6 +195,7 @@ function MessageFeed({
           return (
             <div
               key={message.id}
+              data-tail-fit-row=""
               className={`vrbo-v2-phone__property${isSelf ? " is-self" : ""}${
                 enter ? " is-enter" : ""
               }${exitClass}`}
@@ -203,6 +214,7 @@ function MessageFeed({
         return (
           <div
             key={message.id}
+            data-tail-fit-row=""
             className={`vrbo-v2-phone__msg-wrap${isSelf ? " is-self" : ""}${
               enter ? " is-enter" : ""
             }${exitClass}`}
@@ -211,7 +223,7 @@ function MessageFeed({
           </div>
         );
       })}
-      {typing?.length ? (
+      {typing?.length && !lockFeed ? (
         <p className="vrbo-v2-phone__typing is-enter">{copy.phone.idleSubtitle}</p>
       ) : null}
       {afterMessages}
@@ -258,6 +270,7 @@ export default function GuestPhone({
   userById,
   propertyLookup,
   selectedPropertyId = null,
+  celebrating = false,
   onJoin,
   onToggle,
   onSubmit,
@@ -478,6 +491,7 @@ export default function GuestPhone({
                 propertyLookup={propertyLookup}
                 selfId={user.id}
                 live
+                lockOverflow={Boolean(celebrating || selectedPropertyId)}
                 afterMessages={
                   selectedPropertyId ? null : (
                     <p className="vrbo-v2-phone__continue">{copy.phone.continueCta}</p>

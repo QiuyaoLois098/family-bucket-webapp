@@ -4,6 +4,7 @@ import copy from "../../data/vrbo-v2/copy.json";
 import { createEnterTracker } from "./chatMotion.js";
 import Celebration from "./Celebration.jsx";
 import PropertyCard from "./PropertyCard.jsx";
+import useTailFitMessages from "./useTailFitMessages.js";
 
 function Avatar({ user, className = "vrbo-v2-chat__avatar" }) {
   if (user?.avatar) {
@@ -33,6 +34,11 @@ export default function MainChatScreen({
   const feedRef = useRef(null);
   const enterRef = useRef(null);
   if (enterRef.current == null) enterRef.current = createEnterTracker();
+
+  const lockFeed =
+    Boolean(celebrating) ||
+    (messages ?? []).some((message) => message.phase === "finale");
+  const displayMessages = useTailFitMessages(messages, feedRef, lockFeed);
 
   // First list from socket = already-there; later ids fade in once.
   enterRef.current.prepare((messages ?? []).map((message) => message.id));
@@ -94,7 +100,11 @@ export default function MainChatScreen({
   }, [messages.length, typing.length, showIdleTyping]);
 
   return (
-    <div className={`vrbo-v2-chat ${celebrating ? "is-celebrating" : ""}`}>
+    <div
+      className={`vrbo-v2-chat${celebrating ? " is-celebrating" : ""}${
+        lockFeed ? " is-feed-locked" : ""
+      }`}
+    >
       <Celebration active={celebrating} />
 
       <header className="vrbo-v2-chat__masthead">
@@ -109,8 +119,10 @@ export default function MainChatScreen({
 
       <div className="vrbo-v2-chat__body">
         <div className="vrbo-v2-chat__feed" ref={feedRef}>
-          <div className="vrbo-v2-chat__feed-spacer" aria-hidden="true" />
-          {messages.map((message) => {
+          {lockFeed ? null : (
+            <div className="vrbo-v2-chat__feed-spacer" aria-hidden="true" />
+          )}
+          {displayMessages.map((message) => {
             const user = namedUserById[message.authorId];
             if (!user) return null;
             const entry = propertyLookup?.(message.propertyId);
@@ -119,6 +131,7 @@ export default function MainChatScreen({
             return (
               <div
                 key={message.id}
+                data-tail-fit-row=""
                 className={`vrbo-v2-chat__row vrbo-v2-chat__row--${user.role}${
                   message.kind === "property" ? " vrbo-v2-chat__row--card" : ""
                 }${enter ? " is-enter" : ""}${message.exiting ? " is-exit" : ""}`}

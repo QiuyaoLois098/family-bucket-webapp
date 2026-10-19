@@ -178,6 +178,7 @@ function VrboDemo() {
       userById={userById}
       propertyLookup={propertyLookup}
       selectedPropertyId={selectedPropertyId}
+      celebrating={celebrating}
       onJoin={actions.joinGuest}
       onToggle={actions.togglePreference}
       onSubmit={actions.submitGuest}
@@ -481,6 +482,7 @@ export function GuestPhonePage({ guestId, compareLayout = false } = {}) {
       userById={userById}
       propertyLookup={propertyLookup}
       selectedPropertyId={selectedPropertyId}
+      celebrating={celebrating}
       onJoin={actions.joinGuest}
       onToggle={actions.togglePreference}
       onSubmit={actions.submitGuest}

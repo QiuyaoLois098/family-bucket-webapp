@@ -210,19 +210,24 @@ function resolveSelectedProperty(selectedPropertyId, results = []) {
   return propertyById.get(selectedPropertyId) ?? null;
 }
 
-function buildChatParticipantNames(displayNames = {}) {
-  // Full chat cast (Jamie + guests), with optional display-name overrides.
-  const names = users.map((user) => displayNames[user.id] || user.name);
+function buildChatParticipantNames(joined = {}, displayNames = {}) {
+  // Jamie + guests who actually joined (custom nicknames when set).
+  const names = users
+    .filter(
+      (user) => user.role === "coordinator" || Boolean(joined[user.id]),
+    )
+    .map((user) => displayNames[user.id] || user.name);
   return names.length ? names.join(", ") : chatScript.groupSubtitle;
 }
 
 function FinaleLockedPanel({
   selectedPropertyId,
   results = [],
+  joined = {},
   displayNames = {},
 }) {
   const property = resolveSelectedProperty(selectedPropertyId, results);
-  const namesLine = buildChatParticipantNames(displayNames);
+  const namesLine = buildChatParticipantNames(joined, displayNames);
   const title = chatScript.groupTitle;
   const hotelAlt = property?.name ? `${property.name}` : title;
 
@@ -277,6 +282,7 @@ export default function RankingScreen({
         <FinaleLockedPanel
           selectedPropertyId={selectedPropertyId}
           results={results}
+          joined={joined}
           displayNames={displayNames}
         />
       </div>
