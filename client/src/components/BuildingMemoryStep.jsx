@@ -3,7 +3,7 @@ import { getDestinationScript } from "@shared/scripts/index.js";
 import ExpediaBrandBar from "./ExpediaBrandBar.jsx";
 
 const DEFAULT_MEMORY_CARD = {
-  headline: "Your next family memory awaits",
+  headline: "Your next family\nmemory awaits",
   eyebrow: "Your personalized family itinerary",
   duration: "5 days",
   footer: "Created with Activity Planner",

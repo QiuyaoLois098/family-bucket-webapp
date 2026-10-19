@@ -9,7 +9,7 @@ const QUESTION_REF = "/images/Expedia-images/example/expedia-question.png";
 const QUESTION2_REF = "/images/Expedia-images/example/question2.png";
 const QUESTION3_REF = "/images/Expedia-images/example/question3.png";
 const ANSWER3_REF = "/images/Expedia-images/example/03-answer.png";
-const BUILDING_LEFT_REF = "/images/Expedia-images/example/building-left.png";
+const BUILDING_LEFT_REF = "/images/Expedia-images/example/left/left-card.png";
 const ITINERARY_REF = "/images/Expedia-images/example/itinerary.png";
 const LUGGAGE_REF = "/images/Expedia-images/example/luggage.png";
 const BUILDING_RIGHT_REF = "/images/Expedia-images/example/building-right.png";
@@ -167,40 +167,16 @@ export function ExpediaLeftPage({ compareLayout = false } = {}) {
           Itinerary
         </button>
       </div>
-      {phase === "reveal" || phase === "building" ? (
-        <div className="expedia-portrait__stage expedia-portrait__stage--compare">
-          <div className="expedia-portrait__column">
-            {live}
-            <p className="expedia-portrait__caption">
-              {phase === "reveal"
-                ? "Live · left · Q3 answer"
-                : "Live · left · building-left"}
-            </p>
-          </div>
-          <div className="expedia-portrait__column">
-            <PortraitFrame
-              title={`Expedia · Display · ${phase}`}
-              src="/display"
-            />
-            <p className="expedia-portrait__caption">
-              {phase === "reveal"
-                ? "Live · right · luggage"
-                : "Live · right · building-right"}
-            </p>
-          </div>
+      <div className="expedia-portrait__stage expedia-portrait__stage--compare">
+        <div className="expedia-portrait__column">
+          {live}
+          <p className="expedia-portrait__caption">Live · /control</p>
         </div>
-      ) : (
-        <div className="expedia-portrait__stage expedia-portrait__stage--compare">
-          <div className="expedia-portrait__column">
-            {live}
-            <p className="expedia-portrait__caption">Live · /control</p>
-          </div>
-          <div className="expedia-portrait__column">
-            <ReferenceFrame src={reference.src} />
-            <p className="expedia-portrait__caption">{reference.caption}</p>
-          </div>
+        <div className="expedia-portrait__column">
+          <ReferenceFrame src={reference.src} />
+          <p className="expedia-portrait__caption">{reference.caption}</p>
         </div>
-      )}
+      </div>
       <ExpediaRestartButton onRestart={actions.reset} />
     </div>
   );

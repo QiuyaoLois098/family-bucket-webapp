@@ -657,6 +657,8 @@ export class ExperienceSession extends EventEmitter {
 
   scheduleBuildingToItinerary(delayMs = config.buildingHoldMs) {
     clearTimeout(this.revealTimer);
+    // 0 / negative = hold on building so CSS can be tuned; no auto itinerary.
+    if (!(delayMs > 0)) return;
     this.revealTimer = setTimeout(() => {
       if (this.state.phase !== PHASES.BUILDING) return;
       this.set({ phase: PHASES.ITINERARY }, "building-complete");

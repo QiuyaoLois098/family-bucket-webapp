@@ -21,7 +21,7 @@ const reykjavik = {
   },
   /** Building phase — left memory card */
   memoryCard: {
-    headline: "Your next family memory awaits",
+    headline: "Your next family\nmemory awaits",
     eyebrow: "Your personalized family itinerary",
     title: "Reykjavík",
     duration: "5 days",
