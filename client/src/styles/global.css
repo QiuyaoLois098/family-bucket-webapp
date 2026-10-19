@@ -222,6 +222,8 @@ body,
 
 html {
   container-type: size;
+  /* LG / Chromium touch: kill the translucent gray tap flash */
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -231,6 +233,33 @@ body {
   background: var(--page-bg);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Interactive targets — no OS tap halo; avoid 300ms click delay */
+a,
+button,
+input,
+select,
+textarea,
+label,
+summary,
+[role="button"],
+[tabindex]:not([tabindex="-1"]) {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Touch often leaves :focus with a gray ring; keep keyboard :focus-visible only */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+@media (pointer: coarse) {
+  :focus {
+    outline: none;
+    box-shadow: none;
+  }
 }
 
 button {
