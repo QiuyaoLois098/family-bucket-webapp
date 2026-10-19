@@ -54,66 +54,67 @@ const sedona = {
     summary: "Red rocks, easy outings, and time by Oak Creek",
   },
 
+  /** Reusable one-day modules (images: /images/Expedia-images/itinerary/sedona/) */
   dayModules: {
     "welcome-red-rock": {
       title: "Welcome to Red Rock Country",
       description:
         "Arrive via Phoenix, settle into Sedona, and take in the red-rock buttes above town.",
-      image: "/images/Expedia-images/03-itinerary/it1.png",
+      image: "/images/Expedia-images/itinerary/sedona/welcome-red-rock.jpg",
     },
     "among-the-red-rocks": {
       title: "Among the Red Rocks",
       description:
-        "Explore Bell Rock Pathway—an easy family walk with red-rock views and plenty of photo stops.",
-      image: "/images/Expedia-images/03-itinerary/it2.png",
+        "Explore Bell Rock Pathway together, taking in the red-rock formations at your family's pace.",
+      image: "/images/Expedia-images/itinerary/sedona/among-the-red-rocks.jpg",
     },
     "ropes-among-the-pines": {
       title: "Ropes Among the Pines",
       description:
-        "Take on the treetop ropes course at Flagstaff Extreme, with pines and cheers from the ground.",
-      image: "/images/Expedia-images/03-itinerary/it3.png",
+        "Head to Flagstaff Extreme for a treetop ropes course among the ponderosa pines.",
+      image: "/images/Expedia-images/itinerary/sedona/ropes-among-the-pines.jpg",
     },
     "down-the-verde": {
       title: "Down the Verde",
       description:
-        "A guided Verde River paddle past cottonwood groves—cool water under red-rock sky.",
-      image: "/images/Expedia-images/03-itinerary/it4.png",
+        "Join CenterFocus for a guided Verde River paddle past cottonwood groves and canyon walls.",
+      image: "/images/Expedia-images/itinerary/sedona/down-the-verde.jpg",
     },
     "oak-creek-afternoon": {
       title: "An Oak Creek Afternoon",
       description:
-        "A family picnic beside Oak Creek—shade, splash time, and an easy pace.",
-      image: "/images/Expedia-images/03-itinerary/it4.png",
+        "Settle into the shade for a family picnic beside Oak Creek, with red-rock views and hawks overhead.",
+      image: "/images/Expedia-images/itinerary/sedona/oak-creek-afternoon.jpg",
     },
     "red-rocks-easy-pace": {
       title: "Red Rocks, Easy Pace",
       description:
-        "Ride the Sedona Trolley for red-rock overlooks without the hike.",
-      image: "/images/Expedia-images/03-itinerary/it2.png",
+        "Ride the Sedona Trolley past local landmarks, with narration and photo stops along the way.",
+      image: "/images/Expedia-images/itinerary/sedona/red-rocks-easy-pace.png",
     },
     "courtyards-galleries": {
       title: "Courtyards & Galleries",
       description:
-        "Wander through Tlaquepaque’s courtyards, shops, and shady corners at an easy pace.",
-      image: "/images/Expedia-images/03-itinerary/it3.png",
+        "Wander through Tlaquepaque's shaded courtyards and browse its galleries at an easy pace.",
+      image: "/images/Expedia-images/itinerary/sedona/courtyards-galleries.jpg",
     },
     "breakfast-sedona-style": {
       title: "Breakfast, Sedona Style",
       description:
-        "A relaxed family breakfast at Coffee Pot Restaurant—local favorite plates and an easy start.",
-      image: "/images/Expedia-images/03-itinerary/it4.png",
+        "Sit down at Coffee Pot Restaurant for a casual family meal with omelets and a kids’ menu.",
+      image: "/images/Expedia-images/itinerary/sedona/breakfast-sedona-style.png",
     },
     "one-last-red-rock-view": {
       title: "One Last Red-Rock View",
       description:
         "Pause at a final red-rock overlook before the drive back to Phoenix and your flight home.",
-      image: "/images/Expedia-images/03-itinerary/it5.png",
+      image: "/images/Expedia-images/itinerary/sedona/one-last-red-rock-view.jpg",
     },
     "quiet-sedona-morning": {
       title: "A Quiet Sedona Morning",
       description:
         "Enjoy one last view of Sedona’s red rocks before checking out and heading back to Phoenix.",
-      image: "/images/Expedia-images/03-itinerary/it5.png",
+      image: "/images/Expedia-images/itinerary/sedona/quiet-sedona-morning.jpg",
     },
   },
 

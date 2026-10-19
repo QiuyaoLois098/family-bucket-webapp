@@ -54,66 +54,67 @@ const laFortuna = {
     summary: "Rainforest canopy, lava trails, warm pools, and volcano views",
   },
 
+  /** Reusable one-day modules (images: /images/Expedia-images/itinerary/costa-rica/) */
   dayModules: {
     "welcome-rainforest": {
       title: "Welcome to the Rainforest",
       description:
         "Arrive via San José, settle into La Fortuna, and watch the clouds drift around Arenal Volcano.",
-      image: "/images/Expedia-images/03-itinerary/it1.png",
+      image: "/images/Expedia-images/itinerary/costa-rica/welcome-rainforest.jpg",
     },
     "above-the-rainforest": {
       title: "Above the Rainforest",
       description:
         "Try Arenal EcoGlide’s zipline circuit for a new view through the rainforest canopy.",
-      image: "/images/Expedia-images/03-itinerary/it2.png",
+      image: "/images/Expedia-images/itinerary/costa-rica/above-the-rainforest.jpg",
     },
     "across-the-lava-fields": {
       title: "Across the Lava Fields",
       description:
         "Explore Arenal 1968’s Lava Flow trail through the landscape left by the volcano’s eruption.",
-      image: "/images/Expedia-images/03-itinerary/it3.png",
+      image: "/images/Expedia-images/itinerary/costa-rica/across-the-lava-fields.jpg",
     },
     "onto-lake-arenal": {
       title: "Onto Lake Arenal",
       description:
         "Join a guided morning paddle on Lake Arenal and take in the volcano across the water.",
-      image: "/images/Expedia-images/03-itinerary/it4.png",
+      image: "/images/Expedia-images/itinerary/costa-rica/onto-lake-arenal.jpg",
     },
     "slower-jungle-day": {
       title: "A Slower Jungle Day",
       description:
         "Enjoy a picnic with Arenal in view, a short rainforest walk, and time to look for wildlife.",
-      image: "/images/Expedia-images/03-itinerary/it4.png",
+      image: "/images/Expedia-images/itinerary/costa-rica/slower-jungle-day.png",
     },
     "down-the-river-slowly": {
       title: "Down the River, Slowly",
       description:
         "Float the Peñas Blancas with a naturalist, watching for monkeys, toucans, and sloths.",
-      image: "/images/Expedia-images/03-itinerary/it2.png",
+      image: "/images/Expedia-images/itinerary/costa-rica/down-the-river-slowly.jpg",
     },
     "warm-soak-afternoon": {
       title: "A Warm Soak Afternoon",
       description:
         "Relax in Baldi Hot Springs’ naturally heated pools, with a dedicated area for the kids.",
-      image: "/images/Expedia-images/03-itinerary/it3.png",
+      image: "/images/Expedia-images/itinerary/costa-rica/warm-soak-afternoon.jpg",
     },
     "meal-below-arenal": {
       title: "A Meal Below Arenal",
       description:
         "Enjoy a family meal at Que Rico Arenal, with volcano views and options for the kids.",
-      image: "/images/Expedia-images/03-itinerary/it4.png",
+      image: "/images/Expedia-images/itinerary/costa-rica/meal-below-arenal.jpg",
     },
     "one-last-volcano-view": {
       title: "One Last Volcano View",
       description:
         "Take one last look at Arenal before the drive back to San José and your flight home.",
-      image: "/images/Expedia-images/03-itinerary/it5.png",
+      image: "/images/Expedia-images/itinerary/costa-rica/one-last-volcano-view.png",
     },
     "quiet-arenal-morning": {
       title: "A Quiet Arenal Morning",
       description:
         "Enjoy a final peaceful morning beneath Arenal before checking out and heading to San José.",
-      image: "/images/Expedia-images/03-itinerary/it5.png",
+      image: "/images/Expedia-images/itinerary/costa-rica/quiet-arenal-morning.png",
     },
   },
 
