@@ -161,7 +161,7 @@ export default function MainChatScreen({
 
         <div className="vrbo-v2-chat__footer">
           {showPickupFooter ? (
-            <p className="vrbo-v2-chat__footer-text">
+            <p className="vrbo-v2-chat__footer-text is-pickup-hop">
               Pick up a phone
               <br />
               and join the conversation

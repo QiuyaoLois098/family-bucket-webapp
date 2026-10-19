@@ -377,13 +377,13 @@ export class VrboV2Session extends EventEmitter {
       this.patch({
         typing: withoutTyping(this.state.typing, userId),
         messages: [
+          ...rest,
           this.makeMessage({
             authorId: userId,
             text,
             preferenceIds: picks,
             phase: "preference",
           }),
-          ...rest,
         ],
       });
     };

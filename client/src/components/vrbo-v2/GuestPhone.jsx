@@ -44,18 +44,36 @@ function PhoneAvatar({ user, className = "vrbo-v2-phone__avatar" }) {
 function WaitingPills({ guestList, joinedMap, displayNames }) {
   return (
     <div className="vrbo-v2-phone__waiting" aria-label="Guests joining">
-      {guestList.map((guest) => {
+      {guestList.map((guest, index) => {
         const joined = Boolean(joinedMap[guest.id]);
-        const label = joined
-          ? displayNames[guest.id] || guest.name
-          : copy.phone.joinWaiting;
+        const named = resolveUser(guest, displayNames);
+        const label = joined ? named.name : copy.phone.joinWaiting;
         return (
           <span
             key={guest.id}
             className={`vrbo-v2-phone__waiting-pill${joined ? " is-joined" : ""}`}
+            style={{ "--join-i": index }}
+            aria-label={label}
           >
-            <span className="vrbo-v2-phone__waiting-dot" aria-hidden="true" />
-            {label}
+            {/* Handoff: keep both layers mounted; animate Waiting → avatar+name. */}
+            <span className="vrbo-v2-phone__waiting-slot vrbo-v2-phone__waiting-slot--idle">
+              <span className="vrbo-v2-phone__waiting-dot" aria-hidden="true" />
+              <span className="vrbo-v2-phone__waiting-label">
+                Waiting
+                <span className="vrbo-v2-phone__waiting-breathe" aria-hidden="true">
+                  <i>.</i>
+                  <i>.</i>
+                  <i>.</i>
+                </span>
+              </span>
+            </span>
+            <span className="vrbo-v2-phone__waiting-slot vrbo-v2-phone__waiting-slot--joined">
+              <PhoneAvatar
+                user={named}
+                className="vrbo-v2-phone__waiting-avatar"
+              />
+              <span className="vrbo-v2-phone__waiting-name">{named.name}</span>
+            </span>
           </span>
         );
       })}
@@ -78,7 +96,9 @@ function MemberPills({ members, selfId }) {
         return (
           <span
             key={member.id}
-            className={`vrbo-v2-phone__waiting-pill${isYou ? " is-you" : " is-joined"}`}
+            className={`vrbo-v2-phone__waiting-pill vrbo-v2-phone__waiting-pill--solid${
+              isYou ? " is-you" : " is-joined"
+            }`}
           >
             <PhoneAvatar user={member} className="vrbo-v2-phone__waiting-avatar" />
             {member.name}
@@ -363,12 +383,21 @@ export default function GuestPhone({
           {phase === "select" ? (
             <div
               key="select"
-              className="vrbo-v2-phone__panel vrbo-v2-phone__panel--select vrbo-v2-phone__panel--enter"
+              className="vrbo-v2-phone__panel vrbo-v2-phone__panel--select"
             >
               <div className="vrbo-v2-phone__prompt">
-                <p className="vrbo-v2-phone__prompt-title">{copy.phone.promptTitle}</p>
+                <p
+                  className="vrbo-v2-phone__prompt-title is-stage-enter"
+                  style={{
+                    "--stage-delay": "450ms",
+                    "--stage-duration": "650ms",
+                    "--stage-y": "16px",
+                  }}
+                >
+                  {copy.phone.promptTitle}
+                </p>
                 <div className="vrbo-v2-phone__chips">
-                  {preferences.map((preference) => {
+                  {preferences.map((preference, index) => {
                     const selected = selection.includes(preference.id);
                     return (
                         <PreferenceCard
@@ -378,11 +407,19 @@ export default function GuestPhone({
                           selected={selected}
                           disabled={!selected && atLimit}
                           onSelect={() => onToggle(user.id, preference.id)}
+                          enterIndex={index}
                         />
                     );
                   })}
                 </div>
-                <p className="vrbo-v2-phone__selected-hint">
+                <p
+                  className="vrbo-v2-phone__selected-hint is-stage-enter"
+                  style={{
+                    "--stage-delay": "1000ms",
+                    "--stage-duration": "560ms",
+                    "--stage-y": "12px",
+                  }}
+                >
                   {fill(copy.phone.selectedReview, {
                     count: draftLines.length,
                     max,
@@ -390,7 +427,16 @@ export default function GuestPhone({
                 </p>
               </div>
 
-              <div className={`vrbo-v2-phone__composer ${draftLines.length ? "has-draft" : ""}`}>
+              <div
+                className={`vrbo-v2-phone__composer is-stage-enter ${
+                  draftLines.length ? "has-draft" : ""
+                }`}
+                style={{
+                  "--stage-delay": "1120ms",
+                  "--stage-duration": "650ms",
+                  "--stage-y": "18px",
+                }}
+              >
                 <div className="vrbo-v2-phone__composer-row">
                   <div
                     className={`vrbo-v2-phone__composer-field ${

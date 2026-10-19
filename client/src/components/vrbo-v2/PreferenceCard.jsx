@@ -7,6 +7,7 @@ export default function PreferenceCard({
   as = "button",
   children,
   onSelect,
+  enterIndex = null,
 }) {
   const Tag = as;
   const interactive = Tag === "button";
@@ -15,14 +16,30 @@ export default function PreferenceCard({
     `vrbo-v2-pref--${variant}`,
     selected ? "is-selected" : "",
     disabled ? "is-disabled" : "",
+    enterIndex != null ? "is-stage-enter" : "",
   ]
     .filter(Boolean)
     .join(" ");
+  const enterStyle =
+    enterIndex != null
+      ? {
+          // Handoff: 540 + floor(i/2)*120 + (i%2)*45 · 680ms · Y22
+          "--stage-delay": `${
+            540 + Math.floor(enterIndex / 2) * 120 + (enterIndex % 2) * 45
+          }ms`,
+          "--stage-duration": "680ms",
+          "--stage-y": "22px",
+        }
+      : undefined;
 
   if (variant === "chip") {
     return (
       <Tag
         className={className}
+        style={{
+          ...(preference.image ? { backgroundImage: `url(${preference.image})` } : null),
+          ...enterStyle,
+        }}
         {...(interactive
           ? {
               type: "button",
@@ -31,7 +48,6 @@ export default function PreferenceCard({
               onClick: () => onSelect?.(preference.id),
             }
           : {})}
-        style={preference.image ? { backgroundImage: `url(${preference.image})` } : undefined}
       >
         <span className="vrbo-v2-pref__shade" aria-hidden="true" />
         {selected ? (
@@ -48,6 +64,7 @@ export default function PreferenceCard({
   return (
     <Tag
       className={className}
+      style={enterStyle}
       {...(interactive
         ? {
             type: "button",
