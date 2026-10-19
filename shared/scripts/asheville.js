@@ -54,66 +54,67 @@ const asheville = {
     summary: "River paddles, treetops, gardens, and Blue Ridge views",
   },
 
+  /** Reusable one-day modules (images: /images/Expedia-images/itinerary/asheville/) */
   dayModules: {
     "welcome-mountains": {
       title: "Welcome to the Mountains",
       description:
         "Arrive in Asheville, settle into your downtown hotel, and take in the spring views of the Blue Ridge.",
-      image: "/images/Expedia-images/03-itinerary/it1.png",
+      image: "/images/Expedia-images/itinerary/asheville/welcome-mountains.jpg",
     },
     "onto-the-water": {
       title: "Onto the Water",
       description:
         "Paddle along the French Broad River on a guided family kayak tour.",
-      image: "/images/Expedia-images/03-itinerary/it2.png",
+      image: "/images/Expedia-images/itinerary/asheville/onto-the-water.jpg",
     },
     "above-the-trees": {
       title: "Above the Trees",
       description:
         "Explore Navitat’s treetop course and zip through the Blue Ridge forest.",
-      image: "/images/Expedia-images/03-itinerary/it3.png",
+      image: "/images/Expedia-images/itinerary/asheville/above-the-trees.png",
     },
     "gentle-forest-walk": {
       title: "A Gentle Forest Walk",
       description:
-        "Bent Creek Forest is a 15-minute drive — perfect for a woodland walk before dinner.",
-      image: "/images/Expedia-images/03-itinerary/it4.png",
+        "Bent Creek Forest is a 15-minute drive—perfect for a woodland walk before dinner.",
+      image: "/images/Expedia-images/itinerary/asheville/gentle-forest-walk.jpg",
     },
     "riverside-picnic": {
       title: "A Riverside Picnic",
       description:
         "Enjoy a riverside picnic, a short walk past wildflowers, and local wildlife.",
-      image: "/images/Expedia-images/03-itinerary/it4.png",
+      image: "/images/Expedia-images/itinerary/asheville/riverside-picnic.png",
     },
     "easy-look-around": {
       title: "An Easy Look Around",
       description:
         "Ride the Gray Line trolley past Asheville’s sights, hopping off to explore.",
-      image: "/images/Expedia-images/03-itinerary/it2.png",
+      image: "/images/Expedia-images/itinerary/asheville/easy-look-around.jpg",
     },
     "slow-garden-stroll": {
       title: "A Slow Garden Stroll",
       description:
         "Stroll along flat paths among native wildflowers at the Botanical Gardens.",
-      image: "/images/Expedia-images/03-itinerary/it3.png",
+      image: "/images/Expedia-images/itinerary/asheville/slow-garden-stroll.jpg",
     },
     "southern-family-meal": {
       title: "A Southern Family Meal",
       description:
         "Enjoy a relaxed Southern meal at Biscuit Head, with biscuits and homemade jams.",
-      image: "/images/Expedia-images/03-itinerary/it4.png",
+      image: "/images/Expedia-images/itinerary/asheville/southern-family-meal.jpg",
     },
     "blue-ridge-one-last-time": {
-      title: "Blue Ridge. One Last Time.",
+      title: "Blue Ridge, One Last Time",
       description:
         "Take in one last Blue Ridge view and a breath of mountain air before heading home.",
-      image: "/images/Expedia-images/03-itinerary/it5.png",
+      image: "/images/Expedia-images/itinerary/asheville/blue-ridge-one-last-time.jpg",
     },
     "one-last-overlook": {
       title: "One Last Overlook",
       description:
         "Take in one final Blue Ridge overlook, enjoying the mountain views before heading home.",
-      image: "/images/Expedia-images/03-itinerary/it5.png",
+      image: "/images/Expedia-images/itinerary/asheville/one-last-overlook.jpg",
     },
   },
 
