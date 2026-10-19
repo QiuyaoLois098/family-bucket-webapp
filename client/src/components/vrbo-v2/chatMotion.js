@@ -1,2 +1,9 @@
-/** Re-export — motion constants + enter tracker live in vrboMotion.js. */
 export { createEnterTracker, vrboMotion } from "./vrboMotion.js";
+export {
+  createMessageMotionController,
+  playFlowArrive,
+  playFlowFadeOut,
+  playFlowPhoneMessage,
+  playFlowPop,
+  playPendingFlowEnters,
+} from "./flowMotion.js";

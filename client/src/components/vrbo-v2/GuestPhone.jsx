@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import chatScript from "../../data/vrbo-v2/chatScript.json";
 import copy from "../../data/vrbo-v2/copy.json";
 import users from "../../data/vrbo-v2/users.json";
-import { createEnterTracker } from "./chatMotion.js";
+import { createMessageMotionController } from "./chatMotion.js";
 import PreferenceCard from "./PreferenceCard.jsx";
 import PropertyCard from "./PropertyCard.jsx";
 import useTailFitMessages from "./useTailFitMessages.js";
@@ -160,16 +160,25 @@ function MessageFeed({
   lockOverflow = false,
 }) {
   const feedRef = useRef(null);
-  const enterRef = useRef(null);
-  if (enterRef.current == null) enterRef.current = createEnterTracker();
+  const motionRef = useRef(null);
+  if (motionRef.current == null) motionRef.current = createMessageMotionController();
   const baseMessages = live
     ? messages ?? []
     : (messages ?? []).filter((message) => message.kind !== "property").slice(-6);
   const lockFeed =
     lockOverflow || baseMessages.some((message) => message.phase === "finale");
   const visibleMessages = useTailFitMessages(baseMessages, feedRef, lockFeed);
+  const showTyping = Boolean(typing?.length && !lockFeed);
 
-  enterRef.current.prepare(visibleMessages.map((message) => message.id));
+  const motionKey = visibleMessages
+    .map((message) => `${message.id}:${message.exiting ? 1 : 0}`)
+    .join("|");
+
+  useLayoutEffect(() => {
+    motionRef.current.sync(feedRef.current, visibleMessages, "phone", {
+      typing: showTyping,
+    });
+  }, [motionKey, visibleMessages, showTyping]);
 
   useEffect(() => {
     const node = feedRef.current;
@@ -189,16 +198,14 @@ function MessageFeed({
         if (!author) return null;
         const isSelf = Boolean(selfId && author.id === selfId);
         const entry = propertyLookup?.(message.propertyId);
-        const enter = !message.exiting && enterRef.current.shouldEnter(message.id);
         const exitClass = message.exiting ? " is-exit" : "";
         if (message.kind === "property" && entry) {
           return (
             <div
               key={message.id}
+              data-msg-id={message.id}
               data-tail-fit-row=""
-              className={`vrbo-v2-phone__property${isSelf ? " is-self" : ""}${
-                enter ? " is-enter" : ""
-              }${exitClass}`}
+              className={`vrbo-v2-phone__property${isSelf ? " is-self" : ""}${exitClass}`}
             >
               <div className={`vrbo-v2-phone__msg${isSelf ? " is-self" : ""}`}>
                 {!isSelf ? <PhoneAvatar user={author} /> : null}
@@ -214,17 +221,18 @@ function MessageFeed({
         return (
           <div
             key={message.id}
+            data-msg-id={message.id}
             data-tail-fit-row=""
-            className={`vrbo-v2-phone__msg-wrap${isSelf ? " is-self" : ""}${
-              enter ? " is-enter" : ""
-            }${exitClass}`}
+            className={`vrbo-v2-phone__msg-wrap${isSelf ? " is-self" : ""}${exitClass}`}
           >
             <PhoneBubble user={author} text={message.text} isSelf={isSelf} />
           </div>
         );
       })}
-      {typing?.length && !lockFeed ? (
-        <p className="vrbo-v2-phone__typing is-enter">{copy.phone.idleSubtitle}</p>
+      {showTyping ? (
+        <p data-msg-typing="" className="vrbo-v2-phone__typing">
+          {copy.phone.idleSubtitle}
+        </p>
       ) : null}
       {afterMessages}
     </div>

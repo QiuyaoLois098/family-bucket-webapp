@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import chatScript from "../../data/vrbo-v2/chatScript.json";
 import copy from "../../data/vrbo-v2/copy.json";
-import { createEnterTracker } from "./chatMotion.js";
+import { createMessageMotionController } from "./chatMotion.js";
 import Celebration from "./Celebration.jsx";
 import PropertyCard from "./PropertyCard.jsx";
 import useTailFitMessages from "./useTailFitMessages.js";
@@ -32,16 +32,13 @@ export default function MainChatScreen({
   displayNames = {},
 }) {
   const feedRef = useRef(null);
-  const enterRef = useRef(null);
-  if (enterRef.current == null) enterRef.current = createEnterTracker();
+  const motionRef = useRef(null);
+  if (motionRef.current == null) motionRef.current = createMessageMotionController();
 
   const lockFeed =
     Boolean(celebrating) ||
     (messages ?? []).some((message) => message.phase === "finale");
   const displayMessages = useTailFitMessages(messages, feedRef, lockFeed);
-
-  // First list from socket = already-there; later ids fade in once.
-  enterRef.current.prepare((messages ?? []).map((message) => message.id));
 
   const namedUserById = Object.fromEntries(
     Object.entries(userById).map(([id, user]) => {
@@ -92,12 +89,22 @@ export default function MainChatScreen({
     return user.name;
   }
 
+  const motionKey = displayMessages
+    .map((message) => `${message.id}:${message.exiting ? 1 : 0}`)
+    .join("|");
+
+  useLayoutEffect(() => {
+    motionRef.current.sync(feedRef.current, displayMessages, "chat", {
+      typing: typingRowUsers.length > 0,
+    });
+  }, [motionKey, displayMessages, typingRowUsers.length]);
+
   useEffect(() => {
     const node = feedRef.current;
-    if (!node) return;
+    if (!node || lockFeed) return;
     // Instant pin — never animate scroll (fights paint of new bubbles).
     node.scrollTop = node.scrollHeight;
-  }, [messages.length, typing.length, showIdleTyping]);
+  }, [messages.length, typing.length, showIdleTyping, lockFeed]);
 
   return (
     <div
@@ -126,15 +133,15 @@ export default function MainChatScreen({
             const user = namedUserById[message.authorId];
             if (!user) return null;
             const entry = propertyLookup?.(message.propertyId);
-            const enter = !message.exiting && enterRef.current.shouldEnter(message.id);
 
             return (
               <div
                 key={message.id}
+                data-msg-id={message.id}
                 data-tail-fit-row=""
                 className={`vrbo-v2-chat__row vrbo-v2-chat__row--${user.role}${
                   message.kind === "property" ? " vrbo-v2-chat__row--card" : ""
-                }${enter ? " is-enter" : ""}${message.exiting ? " is-exit" : ""}`}
+                }${message.exiting ? " is-exit" : ""}`}
               >
                 {message.kind === "property" && entry ? (
                   <div className="vrbo-v2-chat__card">
@@ -154,7 +161,7 @@ export default function MainChatScreen({
           })}
 
           {typingRowUsers.length ? (
-            <div key="typing" className="vrbo-v2-chat__typing is-enter">
+            <div key="typing" data-msg-typing="" className="vrbo-v2-chat__typing">
               <div className="vrbo-v2-chat__typing-avatars" aria-hidden="true">
                 {typingRowUsers.slice(0, 3).map((user) => (
                   <Avatar key={user.id} user={user} className="vrbo-v2-chat__typing-avatar" />
