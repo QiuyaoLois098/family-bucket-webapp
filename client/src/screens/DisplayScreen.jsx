@@ -8,7 +8,7 @@ import ItineraryView from "../components/ItineraryView.jsx";
 export default function DisplayScreen() {
   return (
     <ScreenChrome role="display" syncOnly>
-      {({ state, actions }) => {
+      {({ state }) => {
         const phase = state.phase;
         const showLuggage = phase === "reveal";
         const showBuilding = phase === "building";
@@ -25,7 +25,7 @@ export default function DisplayScreen() {
             <section className={`panel panel--reveal ${revealPanelActive ? "is-active" : ""}`}>
               {state.destination ? (
                 showLuggage ? (
-                  <RevealStep onReveal={actions.shake} />
+                  <RevealStep />
                 ) : showBuilding ? (
                   <BuildingProgressStep />
                 ) : (
