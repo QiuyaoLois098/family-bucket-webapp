@@ -3,7 +3,7 @@ import { CANVAS_W, CANVAS_H } from "../canvas.js";
 import ExpediaRestartButton from "../components/ExpediaRestartButton.jsx";
 import { useSession } from "../hooks/useSession.js";
 
-const DESTINATION_REF = "/images/Expedia-images/example/start.png";
+const DESTINATION_REF = "/images/Expedia-images/example/left/start.png";
 const BRIEFING_REF = "/images/Expedia-images/example/briefing.png";
 const QUESTION_REF = "/images/Expedia-images/example/expedia-question.png";
 const QUESTION2_REF = "/images/Expedia-images/example/question2.png";
