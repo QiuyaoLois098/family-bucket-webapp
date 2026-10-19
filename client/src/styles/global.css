@@ -236,6 +236,19 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Kiosk: block browser pinch / double-tap zoom (JS also preventDefaults multi-touch). */
+html.no-pinch-zoom,
+html.no-pinch-zoom body {
+  touch-action: pan-x pan-y;
+  overscroll-behavior: none;
+  -ms-touch-action: pan-x pan-y;
+}
+
+html.no-pinch-zoom {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 /* Interactive targets — no OS tap halo; avoid 300ms click delay */
 a,
 button,

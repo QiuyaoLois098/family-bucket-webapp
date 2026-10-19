@@ -13,6 +13,7 @@ import {
 import PreviewScreen from "./screens/PreviewScreen.jsx";
 import UdpScreen from "./screens/UdpScreen.jsx";
 import VrboBaScreen from "./screens/VrboBaScreen.jsx";
+import useDisablePinchZoom from "./hooks/useDisablePinchZoom.js";
 import useHyperionHeartbeat from "./hooks/useHyperionHeartbeat.js";
 import useVrboFixedViewport from "./hooks/useVrboFixedViewport.js";
 import VrboV2Screen, {
@@ -52,6 +53,7 @@ export default function App() {
   const heartbeat = useHyperionHeartbeat();
   const { pathname } = useLocation();
   const heightGuide = isDevComparePath(pathname);
+  useDisablePinchZoom();
   useVrboFixedViewport(VRBO_FIXED_VIEWPORT_PATHS.has(pathname));
 
   return (
