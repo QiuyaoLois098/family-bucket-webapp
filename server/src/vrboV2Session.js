@@ -22,7 +22,11 @@ function loadJson(name) {
   return JSON.parse(readFileSync(path.join(dataDir, name), "utf8"));
 }
 
-const chatScript = loadJson("chatScript.json");
+/** Reload each read so chatScript edits apply without a full server restart. */
+function getChatScript() {
+  return loadJson("chatScript.json");
+}
+
 const copy = loadJson("copy.json");
 const preferences = loadJson("preferences.json");
 const properties = loadJson("properties.json");
@@ -293,6 +297,7 @@ export class VrboV2Session extends EventEmitter {
     this.clearTimers();
     let offset = 0;
 
+    const chatScript = getChatScript();
     chatScript.intro.forEach((line) => {
       offset += line.pause ?? 0;
       // No "..." — message fades in complete; typing ms kept as dwell before handoff.
@@ -359,7 +364,7 @@ export class VrboV2Session extends EventEmitter {
     });
     this.maybeOpenSummary();
 
-    const fadeMs = chatScript.preference?.introFadeMs ?? 420;
+    const fadeMs = getChatScript().preference?.introFadeMs ?? 420;
     const text = picks
       .map((preferenceId) => {
         const preference = preferenceById.get(preferenceId);
@@ -414,8 +419,8 @@ export class VrboV2Session extends EventEmitter {
       joinedUsers.every((user) => Boolean(this.state.submitted[user.id]));
     if (!allSubmitted) return;
 
-    const settle =
-      (chatScript.preference?.introFadeMs ?? 420) + (chatScript.preference.stagger ?? 800);
+    const pref = getChatScript().preference;
+    const settle = (pref?.introFadeMs ?? 420) + (pref?.stagger ?? 800);
     this.schedule(() => {
       if (this.state.stage !== "selecting") return;
       const stillJoined = guests.filter((user) => Boolean(this.state.joined[user.id]));
@@ -487,7 +492,7 @@ export class VrboV2Session extends EventEmitter {
       typing: [],
     });
 
-    const finale = chatScript.finale;
+    const finale = getChatScript().finale;
     const vars = {
       name: result.property.name,
       reasons: formatReasons(result.matched),
@@ -531,7 +536,10 @@ export class VrboV2Session extends EventEmitter {
       });
     }, offset);
 
-    const reactions = (finale.reactions ?? []).filter((line) => isActiveAuthor(line.authorId));
+    // Guests only — Jamie's closing SMS is intentionally omitted from the script.
+    const reactions = (finale.reactions ?? []).filter(
+      (line) => line.authorId !== "jamie" && isActiveAuthor(line.authorId),
+    );
     if (!reactions.length) {
       offset += finale.celebrationPause ?? 400;
       this.schedule(() => {
