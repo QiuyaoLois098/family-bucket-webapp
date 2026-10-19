@@ -8,13 +8,14 @@
 // ================================
 const char* ssid = "DE-YAN Wifi";
 const char* password = "Gkrsd34982!";
+
 // const char* ssid = "NETGEAR34";
 // const char* password = "thirstybox961";
 
 // ================================
 // UDP
 // ================================
-IPAddress pcIP(192, 168, 128, 137);
+IPAddress pcIP(192, 168, 128, 134);
 const int pcPort = 41234;
 
 WiFiUDP udp;
@@ -34,6 +35,18 @@ unsigned long lastRawChange = 0;
 unsigned long lastReconnectAttempt = 0;
 
 bool wasConnected = false;
+
+// ================================
+// UDP REPEAT SETTINGS
+// ================================
+// 1 immediate + 3 additional sends
+const int UDP_SEND_COUNT = 4;
+const unsigned long UDP_SEND_INTERVAL = 300;
+
+int pendingStatus = 0;
+int sendsRemaining = 0;
+
+unsigned long lastUdpSend = 0;
 
 // ================================
 // SEND UDP
@@ -77,6 +90,44 @@ void sendLuggageStatus(int status) {
 }
 
 // ================================
+// START REPEATED UDP SEND
+// ================================
+void startRepeatedSend(int status) {
+
+  // Cancel previous pending sends
+  pendingStatus = status;
+
+  // Send immediately
+  sendLuggageStatus(pendingStatus);
+
+  // Schedule 3 additional sends
+  sendsRemaining = UDP_SEND_COUNT - 1;
+
+  lastUdpSend = millis();
+}
+
+// ================================
+// PROCESS REPEATED UDP SEND
+// ================================
+void processRepeatedSend() {
+
+  if (sendsRemaining <= 0) {
+    return;
+  }
+
+  unsigned long now = millis();
+
+  if (now - lastUdpSend >= UDP_SEND_INTERVAL) {
+
+    sendLuggageStatus(pendingStatus);
+
+    sendsRemaining--;
+
+    lastUdpSend = millis();
+  }
+}
+
+// ================================
 // SETUP
 // ================================
 void setup() {
@@ -88,6 +139,8 @@ void setup() {
 
   rawState = digitalRead(luggagePin);
   stableState = rawState;
+
+  pendingStatus = stableState;
 
   WiFi.mode(WIFI_STA);
   WiFi.setSleep(false);
@@ -126,11 +179,17 @@ void loop() {
     Serial.print(" | millis: ");
     Serial.println(now);
 
-    sendLuggageStatus(stableState);
+    // Send 4 times, 300ms apart
+    startRepeatedSend(stableState);
   }
 
   // ------------------------------
-  // 2. WIFI STATUS
+  // 2. PROCESS UDP REPEATS
+  // ------------------------------
+  processRepeatedSend();
+
+  // ------------------------------
+  // 3. WIFI STATUS
   // ------------------------------
   bool connected =
     WiFi.status() == WL_CONNECTED;
@@ -143,7 +202,8 @@ void loop() {
     Serial.println(WiFi.localIP());
 
     // Synchronize current switch state
-    sendLuggageStatus(stableState);
+    // Also send 4 times
+    startRepeatedSend(stableState);
   }
 
   if (!connected && wasConnected) {
@@ -153,7 +213,7 @@ void loop() {
   wasConnected = connected;
 
   // ------------------------------
-  // 3. NON-BLOCKING RECONNECT
+  // 4. NON-BLOCKING RECONNECT
   // ------------------------------
   if (!connected &&
       now - lastReconnectAttempt >= RECONNECT_MS) {
