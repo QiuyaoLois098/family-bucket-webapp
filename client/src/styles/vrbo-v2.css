@@ -522,6 +522,7 @@
 }
 
 .vrbo-v2-chat__body {
+  position: relative;
   flex: 1;
   min-height: 0;
   display: flex;
@@ -529,6 +530,48 @@
   overflow: hidden;
   padding: 3.2cqh 5.5cqw 4.5cqh;
   background: var(--cream);
+}
+
+.vrbo-v2-chat__join-toast {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 3;
+  margin: 0;
+  translate: -50% -50%;
+  max-width: min(80%, 28em);
+  font-family: var(--vrbo-v2-content);
+  font-size: 1.85cqh;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  text-align: center;
+  color: rgba(90, 98, 110, 0.72);
+  pointer-events: none;
+  animation: vrbo-join-toast 2.8s ease both;
+}
+
+@keyframes vrbo-join-toast {
+  0% {
+    opacity: 0;
+    transform: translateY(0.4cqh);
+  }
+  12%,
+  78% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vrbo-v2-chat__join-toast {
+    animation: none;
+    opacity: 1;
+  }
 }
 
 .vrbo-v2-chat__prompt {

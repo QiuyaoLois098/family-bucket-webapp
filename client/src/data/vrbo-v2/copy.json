@@ -20,7 +20,8 @@
     "footer": "Pick up a phone\nand join the conversation",
     "footerPlanning": "Your group is planning...",
     "waitingGuests": "Waiting for guests to join…",
-    "groupPlannerLabel": "Primary planner"
+    "groupPlannerLabel": "Primary planner",
+    "joinedToast": "{name} joined the chat."
   },
   "ranking": {
     "waitingTitle": "Great trips start with a conversation",

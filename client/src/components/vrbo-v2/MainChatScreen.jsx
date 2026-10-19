@@ -1,10 +1,19 @@
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import chatScript from "../../data/vrbo-v2/chatScript.json";
 import copy from "../../data/vrbo-v2/copy.json";
 import { createMessageMotionController } from "./chatMotion.js";
 import Celebration from "./Celebration.jsx";
 import PropertyCard from "./PropertyCard.jsx";
 import useTailFitMessages from "./useTailFitMessages.js";
+
+const JOIN_TOAST_MS = 2800;
+
+function fill(template, values) {
+  return Object.entries(values).reduce(
+    (text, [key, value]) => text.replaceAll(`{${key}}`, value),
+    template,
+  );
+}
 
 function Avatar({ user, className = "vrbo-v2-chat__avatar" }) {
   if (user?.avatar) {
@@ -33,6 +42,9 @@ export default function MainChatScreen({
 }) {
   const feedRef = useRef(null);
   const motionRef = useRef(null);
+  const seenJoinedRef = useRef(null);
+  const joinToastTimerRef = useRef(0);
+  const [joinToast, setJoinToast] = useState(null);
   if (motionRef.current == null) motionRef.current = createMessageMotionController();
 
   const lockFeed =
@@ -46,6 +58,37 @@ export default function MainChatScreen({
       return [id, custom ? { ...user, name: custom } : user];
     }),
   );
+
+  useEffect(() => {
+    const activeIds = Object.keys(joined).filter((id) => Boolean(joined[id]));
+    if (seenJoinedRef.current == null) {
+      seenJoinedRef.current = new Set(activeIds);
+      return undefined;
+    }
+
+    const newcomers = activeIds.filter((id) => !seenJoinedRef.current.has(id));
+    newcomers.forEach((id) => seenJoinedRef.current.add(id));
+
+    // Drop ids that left (restart) so a re-join can toast again.
+    [...seenJoinedRef.current].forEach((id) => {
+      if (!activeIds.includes(id)) seenJoinedRef.current.delete(id);
+    });
+
+    if (!newcomers.length) return undefined;
+
+    const id = newcomers[newcomers.length - 1];
+    const custom = displayNames[id];
+    const name = custom || userById[id]?.name || "Someone";
+    const template = copy.chat.joinedToast || "{name} joined the chat.";
+    setJoinToast({ id: `${id}-${Date.now()}`, text: fill(template, { name }) });
+
+    window.clearTimeout(joinToastTimerRef.current);
+    joinToastTimerRef.current = window.setTimeout(() => {
+      setJoinToast(null);
+    }, JOIN_TOAST_MS);
+
+    return () => window.clearTimeout(joinToastTimerRef.current);
+  }, [joined, displayNames, userById]);
   const members = Object.values(namedUserById).filter(
     (user) => user.role === "coordinator" || Boolean(joined[user.id]),
   );
@@ -125,6 +168,11 @@ export default function MainChatScreen({
       </header>
 
       <div className="vrbo-v2-chat__body">
+        {joinToast ? (
+          <p key={joinToast.id} className="vrbo-v2-chat__join-toast" role="status">
+            {joinToast.text}
+          </p>
+        ) : null}
         <div className="vrbo-v2-chat__feed" ref={feedRef}>
           {lockFeed ? null : (
             <div className="vrbo-v2-chat__feed-spacer" aria-hidden="true" />
