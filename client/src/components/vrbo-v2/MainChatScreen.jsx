@@ -73,14 +73,11 @@ export default function MainChatScreen({
   const idleTypingUsers = guestUsers.slice(0, 2);
   const typingRowUsers = typingUsers.length ? typingUsers : showIdleTyping ? idleTypingUsers : [];
   const plannerLabel = copy.chat.groupPlannerLabel || "Primary planner";
+  // No guests yet → waiting copy; each join appends: Jamie, Sarah, Alex…
   const peopleLine =
-    guestsWaiting > 0
-      ? chatScript.groupSubtitle
-      : members
-          .map((user) =>
-            user.role === "coordinator" ? `${user.name} · ${plannerLabel}` : user.name,
-          )
-          .join(", ");
+    guestsJoined === 0
+      ? copy.chat.waitingGuests
+      : members.map((user) => user.name).join(", ");
 
   function authorLabel(user) {
     if (user.role === "coordinator") {

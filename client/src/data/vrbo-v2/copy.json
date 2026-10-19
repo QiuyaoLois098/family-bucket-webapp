@@ -19,7 +19,7 @@
     "prompt": "Plan your Hawaii getaway together.",
     "footer": "Pick up a phone\nand join the conversation",
     "footerPlanning": "Your group is planning...",
-    "waitingGuests": "Waiting for {count} guests to join",
+    "waitingGuests": "Waiting for guests to join…",
     "groupPlannerLabel": "Primary planner"
   },
   "ranking": {
