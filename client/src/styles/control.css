@@ -1101,6 +1101,40 @@
   animation: rise 0.7s ease both;
 }
 
+/* Handoff suitcase canvas — full-bleed under brand bar */
+.reveal-step--motion {
+  padding: 0;
+  container-type: size;
+}
+
+.reveal-step--motion > .expedia-brandbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  padding: calc(var(--u) * 80) calc(var(--u) * 80) 0;
+}
+
+.reveal-step__hit {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.reveal-step__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
 .reveal-step__body {
   flex: 1 1 auto;
   display: flex;

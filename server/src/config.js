@@ -26,7 +26,8 @@ export const config = {
   vrboCelebrationTimeoutMs: Number(process.env.VRBO_CELEBRATION_TIMEOUT_MS || 0),
   revealHoldMs: Number(process.env.REVEAL_HOLD_MS || 4000),
   /** Hold on building screens after luggage pull before itinerary. */
-  buildingHoldMs: Number(process.env.BUILDING_HOLD_MS || 4000),
+  // Handoff four-suitcase sequence (~6s); keep room for handle extensions.
+  buildingHoldMs: Number(process.env.BUILDING_HOLD_MS || 7000),
   openaiTimeoutMs: Number(process.env.OPENAI_TIMEOUT_MS || 45000),
   memorySlideMs: Number(process.env.MEMORY_SLIDE_MS || 7000),
 

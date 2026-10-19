@@ -21,15 +21,32 @@
   background: #ffffff;
 }
 
-/* Building · right (display) — full design frame (building-right.png) */
+/* Building · right (display) — handoff four-suitcase canvas */
 .screen--display .building-screen {
   z-index: 1;
   height: 100%;
   min-height: 0;
   overflow: hidden;
   background: #ffffff;
-  /* Align with handoff building entrance window */
   animation: rise 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+  container-type: size;
+}
+
+.screen--display .building-screen--motion > .expedia-brandbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  padding: calc(var(--u) * 80) calc(var(--u) * 80) 0;
+}
+
+.screen--display .building-screen__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
 }
 
 .screen--display .building-screen__art {
