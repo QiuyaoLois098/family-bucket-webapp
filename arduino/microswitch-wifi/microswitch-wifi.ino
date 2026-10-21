@@ -15,7 +15,7 @@ const char* password = "Gkrsd34982!";
 // ================================
 // UDP
 // ================================
-IPAddress pcIP(192, 168, 128, 134);
+IPAddress pcIP(192, 168, 128, 137);
 const int pcPort = 41234;
 
 WiFiUDP udp;

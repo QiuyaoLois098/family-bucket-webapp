@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { getDestination } from "@shared/destinations.js";
 import { getDestinationScript } from "@shared/scripts/index.js";
 import { chatPacing } from "../motion/chatPacing.js";
+import { wordBatchDurationMs } from "../motion/wordBatch.js";
 import ExpediaBrandBar from "./ExpediaBrandBar.jsx";
+import GrowingBubble from "./GrowingBubble.jsx";
 
 const DEFAULT_DATES = "Apr 6 – 11";
 const {
@@ -11,25 +13,26 @@ const {
   thinkingGapMs,
   thinkingFadeMs,
   thinkingExitMs,
+  thinkingVisibleMs,
   stayEntranceMs,
+  pageExitMs,
 } = chatPacing;
 
 /**
- * bubble → stay → Thinking (gap after hotel entrance) → fade out → question 1.
- * Timings from handoff v72 chat pacing.
+ * Blue bubble (word-batch + grow) → hotel after the message finishes →
+ * Thinking 1.5s including fades → page fade. Timings from Expedia-text-1020.
  */
 export default function BriefingStep({ destinationId, onContinue }) {
   const [showBubble, setShowBubble] = useState(false);
   const [showStay, setShowStay] = useState(false);
-  const [thinking, setThinking] = useState(false);
+  const [thinking, setThinking] = useState("hidden");
   const [exiting, setExiting] = useState(false);
 
   const destination = getDestination(destinationId);
   const script = getDestinationScript(destinationId);
   const tripPlace = destination?.tripLabel || destination?.shortTitle || "your trip";
   const tripDates = destination?.dates || DEFAULT_DATES;
-  const tripTitle =
-    script?.tripTitle || `${tripPlace} · ${tripDates}`;
+  const tripTitle = script?.tripTitle || `${tripPlace} · ${tripDates}`;
   const thumb =
     script?.introChip?.image || destination?.image || destination?.heroImage;
 
@@ -44,20 +47,24 @@ export default function BriefingStep({ destinationId, onContinue }) {
 
   useEffect(() => {
     const bubbleAt = 150;
-    const stayAt = 650;
-    // Thinking gap starts after the later hotel-card entrance completes.
+    const blueMs = wordBatchDurationMs(intro);
+    const stayAt = bubbleAt + blueMs;
     const thinkingAt = stayAt + stayEntranceMs + thinkingGapMs;
-    const exitAt = thinkingAt + thinkingFadeMs + readingMs;
+    const thinkingLeaveAt = thinkingAt + thinkingVisibleMs - thinkingExitMs;
+    const thinkingEnd = thinkingAt + thinkingVisibleMs;
+    const exitAt = Math.max(bubbleAt + blueMs + readingMs, thinkingEnd);
+
     const timers = [
       setTimeout(() => setShowBubble(true), bubbleAt),
       setTimeout(() => setShowStay(true), stayAt),
-      setTimeout(() => setThinking(true), thinkingAt),
+      setTimeout(() => setThinking("on"), thinkingAt),
+      setTimeout(() => setThinking("leaving"), thinkingLeaveAt),
       setTimeout(() => setExiting(true), exitAt),
-      setTimeout(() => onContinue?.(), exitAt + thinkingExitMs),
+      setTimeout(() => onContinue?.(), exitAt + pageExitMs),
     ];
 
     return () => timers.forEach(clearTimeout);
-  }, [destinationId, onContinue]);
+  }, [destinationId, intro, onContinue]);
 
   return (
     <div className="question question--planner briefing">
@@ -72,15 +79,12 @@ export default function BriefingStep({ destinationId, onContinue }) {
         className={`briefing__dialogue${exiting ? " is-exiting" : ""}`}
         style={{
           "--briefing-fade-ms": `${bubbleEntranceMs}ms`,
+          "--stay-fade-ms": `${stayEntranceMs}ms`,
           "--thinking-fade-ms": `${thinkingFadeMs}ms`,
-          "--thinking-exit-ms": `${thinkingExitMs}ms`,
+          "--thinking-exit-ms": `${pageExitMs}ms`,
         }}
       >
-        <div
-          className={`briefing__bubble${showBubble && !exiting ? " is-visible" : ""}`}
-        >
-          {intro}
-        </div>
+        <GrowingBubble text={intro} visible={showBubble} />
 
         <div className={`briefing__stay${showStay && !exiting ? " is-visible" : ""}`}>
           <div
@@ -96,8 +100,10 @@ export default function BriefingStep({ destinationId, onContinue }) {
           </div>
         </div>
 
-        {thinking ? (
-          <p className={`briefing__thinking${!exiting ? " is-visible" : ""}`}>
+        {thinking !== "hidden" ? (
+          <p
+            className={`briefing__thinking${thinking === "on" && !exiting ? " is-visible" : ""}`}
+          >
             Thinking
             <span className="briefing__dots" aria-hidden="true">
               <span>.</span>

@@ -8,30 +8,37 @@ import {
   answerToOption,
 } from "@shared/scripts/index.js";
 import { chatPacing } from "../motion/chatPacing.js";
-import { runChunkTypewriter } from "../motion/chunkType.js";
+import { wordBatchDurationMs } from "../motion/wordBatch.js";
 import ExpediaBrandBar from "./ExpediaBrandBar.jsx";
+import GrowingBubble from "./GrowingBubble.jsx";
 
 const DEFAULT_DATES = "Apr 6 – 11";
 const SELECT_HOLD_MS = chatPacing.selectHoldMs;
-const REVEAL_FADE_MS = chatPacing.bubbleEntranceMs;
-const REVEAL_STAGGER_MS = chatPacing.cardStaggerMs;
-const THINKING_HOLD_MS = chatPacing.readingMs;
+const BUBBLE_POP_MS = chatPacing.bubbleEntranceMs;
 const THINKING_GAP_MS = chatPacing.thinkingGapMs;
 const THINKING_EXIT_MS = chatPacing.thinkingExitMs;
-const TYPE_CHUNK_MS = chatPacing.typeChunkMs;
-const TYPE_CHUNK_JITTER_MS = chatPacing.typeChunkJitterMs;
-const TYPE_PAUSE_AFTER_MS = chatPacing.afterTypePauseMs;
+const THINKING_VISIBLE_MS = chatPacing.thinkingVisibleMs;
+const TEXT_FADE_MS = chatPacing.aiBlockFadeMs;
+const FIRST_CARD_MS = chatPacing.firstCardDelayMs;
+const SECOND_CARD_MS = chatPacing.secondCardDelayMs;
+const CARD_STAGGER_MS = chatPacing.cardStaggerMs;
 const SCENE_EXIT_MS = chatPacing.sceneExitMs;
+const STAY_FADE_MS = chatPacing.stayEntranceMs;
+const PAGE_EXIT_MS = chatPacing.pageExitMs;
 
 const prefersReducedMotion = () =>
   typeof window !== "undefined" &&
   Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches);
 
+function cardDelayAfterText(index) {
+  if (index <= 0) return FIRST_CARD_MS;
+  if (index === 1) return SECOND_CARD_MS;
+  return SECOND_CARD_MS + (index - 1) * CARD_STAGGER_MS;
+}
+
 /**
- * Unified question flow (all questions = 2 options):
- * type prompt → then hint / cards stagger → select → fade out →
- * answer confirm (bubble → AI type → optional place card → Thinking) → fade → next
- * Terminal: settle on place card, advance (right → luggage; left stays put)
+ * Prompt + hint fade as one block → cards 0.4s / 0.95s → select →
+ * blue word-batch bubble → AI whole-message fade → place card → Thinking 1.5s.
  */
 export default function QuestionStep({
   currentQuestion,
@@ -48,18 +55,13 @@ export default function QuestionStep({
   /** 0=hidden … 1=bubble 2=ai 3=card 4=thinking */
   const [bridgeStep, setBridgeStep] = useState(0);
   const [bridgeExiting, setBridgeExiting] = useState(false);
-  /** 0=none, 1=prompt typing/done, 2=hint, 3=first card, 4=second card */
+  const [thinkingOn, setThinkingOn] = useState(false);
+  /** 0=none, 1=prompt+hint, 2=first card, 3=second card, … */
   const [revealStep, setRevealStep] = useState(0);
-  const [typedPrompt, setTypedPrompt] = useState("");
-  const [promptDone, setPromptDone] = useState(false);
-  const [typedAi, setTypedAi] = useState("");
-  const [aiDone, setAiDone] = useState(false);
 
   const timerRef = useRef(null);
   const revealTimersRef = useRef([]);
   const bridgeTimersRef = useRef([]);
-  const cancelTypeRef = useRef(null);
-  const cancelAiTypeRef = useRef(null);
   const confirmingRef = useRef(false);
   const bridgeRef = useRef(null);
   const finaleAnswerRef = useRef(finaleAnswerId);
@@ -83,79 +85,60 @@ export default function QuestionStep({
     bridgeTimersRef.current = [];
   };
 
-  const clearPromptType = () => {
-    cancelTypeRef.current?.();
-    cancelTypeRef.current = null;
-  };
-
-  const clearAiType = () => {
-    cancelAiTypeRef.current?.();
-    cancelAiTypeRef.current = null;
-  };
-
   const scheduleRevealAfterPrompt = (optionCount) => {
-    for (let step = 2; step <= 2 + optionCount; step += 1) {
+    const textMs = prefersReducedMotion() ? 0 : TEXT_FADE_MS;
+    for (let index = 0; index < optionCount; index += 1) {
       revealTimersRef.current.push(
         setTimeout(
-          () => setRevealStep(step),
-          TYPE_PAUSE_AFTER_MS + (step - 2) * REVEAL_STAGGER_MS,
+          () => setRevealStep(2 + index),
+          textMs + cardDelayAfterText(index),
         ),
       );
     }
   };
 
-  const startQuestionReveal = (promptText, optionCount) => {
+  const startQuestionReveal = (optionCount) => {
     clearRevealTimers();
-    clearPromptType();
-    clearAiType();
+    clearBridgeTimers();
     setRevealStep(0);
-    setTypedPrompt("");
-    setPromptDone(false);
-    setTypedAi("");
-    setAiDone(false);
     setExiting(false);
     setBridge(null);
     setBridgeStep(0);
     setBridgeExiting(false);
+    setThinkingOn(false);
     confirmingRef.current = false;
-
-    const full = promptText || "";
     setRevealStep(1);
-
-    if (!full) {
-      setPromptDone(true);
-      scheduleRevealAfterPrompt(optionCount);
-      return;
-    }
-
-    cancelTypeRef.current = runChunkTypewriter(full, {
-      chunkMs: TYPE_CHUNK_MS,
-      jitterMs: TYPE_CHUNK_JITTER_MS,
-      reduceMotion: prefersReducedMotion(),
-      onUpdate: setTypedPrompt,
-      onDone: () => {
-        setPromptDone(true);
-        scheduleRevealAfterPrompt(optionCount);
-      },
-    });
+    scheduleRevealAfterPrompt(optionCount);
   };
 
-  const continueBridgeAfterAi = ({ placeCard, isLast, optionId }) => {
-    let t = TYPE_PAUSE_AFTER_MS;
+  const continueBridgeAfterAi = ({
+    placeCard,
+    isLast,
+    optionId,
+    afterTextMs = 0,
+  }) => {
+    let t = afterTextMs;
 
     if (placeCard) {
-      bridgeTimersRef.current.push(
-        setTimeout(() => setBridgeStep(3), t),
-      );
-      t += REVEAL_FADE_MS;
+      bridgeTimersRef.current.push(setTimeout(() => setBridgeStep(3), t));
+      t += STAY_FADE_MS;
     }
 
     t += THINKING_GAP_MS;
 
     if (!isLast) {
-      bridgeTimersRef.current.push(setTimeout(() => setBridgeStep(4), t));
-      t += THINKING_HOLD_MS;
+      bridgeTimersRef.current.push(
+        setTimeout(() => {
+          setBridgeStep(4);
+          setThinkingOn(true);
+        }, t),
+      );
+      const leaveAt = t + THINKING_VISIBLE_MS - THINKING_EXIT_MS;
+      const endAt = t + THINKING_VISIBLE_MS;
 
+      bridgeTimersRef.current.push(
+        setTimeout(() => setThinkingOn(false), leaveAt),
+      );
       bridgeTimersRef.current.push(
         setTimeout(() => {
           setBridgeExiting(true);
@@ -165,17 +148,16 @@ export default function QuestionStep({
               setBridge(null);
               setBridgeStep(0);
               setBridgeExiting(false);
-              setTypedAi("");
-              setAiDone(false);
+              setThinkingOn(false);
               onAnswer(questionRef, optionId, { advance: true });
-            }, THINKING_EXIT_MS),
+            }, PAGE_EXIT_MS),
           );
-        }, t),
+        }, endAt),
       );
       return;
     }
 
-    t += placeCard ? REVEAL_FADE_MS : 40;
+    t += placeCard ? STAY_FADE_MS : 40;
     bridgeTimersRef.current.push(
       setTimeout(() => {
         confirmingRef.current = true;
@@ -184,25 +166,7 @@ export default function QuestionStep({
     );
   };
 
-  const startAiTyping = (aiText, then) => {
-    clearAiType();
-    setTypedAi("");
-    setAiDone(false);
-
-    cancelAiTypeRef.current = runChunkTypewriter(aiText, {
-      chunkMs: TYPE_CHUNK_MS,
-      jitterMs: TYPE_CHUNK_JITTER_MS,
-      reduceMotion: prefersReducedMotion(),
-      onUpdate: setTypedAi,
-      onDone: () => {
-        setAiDone(true);
-        then?.();
-      },
-    });
-  };
-
   useEffect(() => {
-    // Reveal/luggage: keep settled reply on screen (do not reset Q&A).
     if (holdReply) {
       if (bridgeRef.current) return undefined;
 
@@ -216,14 +180,13 @@ export default function QuestionStep({
       setLocked(true);
       setExiting(false);
       setBridgeExiting(false);
+      setThinkingOn(false);
       setBridge({
         bubbleText: option.youSay || "",
         aiText: option.aiSay || null,
         placeCard: option.answerCard || null,
         optionId: option.id,
       });
-      setTypedAi(option.aiSay || "");
-      setAiDone(true);
       setBridgeStep(option.answerCard ? 3 : option.aiSay ? 2 : 1);
       confirmingRef.current = true;
       return undefined;
@@ -234,26 +197,21 @@ export default function QuestionStep({
     clearTimeout(timerRef.current);
     clearBridgeTimers();
     clearRevealTimers();
-    clearPromptType();
-    clearAiType();
     setPendingId(null);
     setLocked(false);
     setBridge(null);
     setBridgeStep(0);
     setBridgeExiting(false);
-    setTypedAi("");
-    setAiDone(false);
+    setThinkingOn(false);
     confirmingRef.current = false;
 
-    startQuestionReveal(question?.prompt || "", question?.options?.length || 0);
+    startQuestionReveal(question?.options?.length || 0);
 
     return () => {
       if (confirmingRef.current) return;
       clearTimeout(timerRef.current);
       clearBridgeTimers();
       clearRevealTimers();
-      clearPromptType();
-      clearAiType();
     };
     // finaleAnswerId intentionally omitted — locking an answer must not reset the question
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -292,31 +250,31 @@ export default function QuestionStep({
     clearTimeout(timerRef.current);
     clearBridgeTimers();
     clearRevealTimers();
-    clearPromptType();
-    clearAiType();
     confirmingRef.current = true;
     setLocked(true);
     setExiting(true);
 
-    // Mid + terminal answers share the same reply bridge (bubble → AI → place card).
-    // Terminal skips "Thinking" and advances into reveal after holding on the card.
     timerRef.current = setTimeout(() => {
       setBridge({ bubbleText, aiText, placeCard, optionId });
       setBridgeStep(0);
       setBridgeExiting(false);
-      setTypedAi("");
-      setAiDone(false);
+      setThinkingOn(false);
 
+      const reduced = prefersReducedMotion();
+      const blueMs = reduced ? 0 : wordBatchDurationMs(bubbleText);
       let t = 40;
       bridgeTimersRef.current.push(setTimeout(() => setBridgeStep(1), t));
-      t += REVEAL_FADE_MS;
+      t += blueMs;
 
       if (aiText) {
         bridgeTimersRef.current.push(
           setTimeout(() => {
             setBridgeStep(2);
-            startAiTyping(aiText, () => {
-              continueBridgeAfterAi({ placeCard, isLast, optionId });
+            continueBridgeAfterAi({
+              placeCard,
+              isLast,
+              optionId,
+              afterTextMs: reduced ? 0 : TEXT_FADE_MS,
             });
           }, t),
         );
@@ -347,14 +305,12 @@ export default function QuestionStep({
   };
 
   const inBridge = Boolean(bridge);
-  const showBridgeBubble = inBridge && bridgeStep >= 1 && !bridgeExiting;
   const showBridgeAi = inBridge && bridge?.aiText && bridgeStep >= 2 && !bridgeExiting;
   const showBridgeCard =
     inBridge && bridge?.placeCard && bridgeStep >= 3 && !bridgeExiting;
-  const showBridgeThinking = inBridge && bridgeStep >= 4 && !bridgeExiting;
+  const showBridgeThinking = inBridge && bridgeStep >= 4 && thinkingOn && !bridgeExiting;
 
   const showPrompt = revealStep >= 1 && !exiting && !inBridge;
-  const showHint = revealStep >= 2 && !exiting && !inBridge;
 
   return (
     <div
@@ -362,7 +318,8 @@ export default function QuestionStep({
         exiting && !inBridge ? " is-exiting" : ""
       }${inBridge ? " is-bridging" : ""}`}
       style={{
-        "--question-reveal-ms": `${REVEAL_FADE_MS}ms`,
+        "--question-reveal-ms": `${chatPacing.cardEntranceMs}ms`,
+        "--question-text-ms": `${TEXT_FADE_MS}ms`,
         "--thinking-fade-ms": `${chatPacing.thinkingFadeMs}ms`,
         "--thinking-exit-ms": `${THINKING_EXIT_MS}ms`,
       }}
@@ -378,23 +335,22 @@ export default function QuestionStep({
         <div
           className={`question__dialogue${bridgeExiting ? " is-exiting" : ""}`}
           style={{
-            "--briefing-fade-ms": `${REVEAL_FADE_MS}ms`,
+            "--briefing-fade-ms": `${BUBBLE_POP_MS}ms`,
+            "--stay-fade-ms": `${STAY_FADE_MS}ms`,
+            "--ai-fade-ms": `${TEXT_FADE_MS}ms`,
             "--thinking-fade-ms": `${chatPacing.thinkingFadeMs}ms`,
-            "--thinking-exit-ms": `${THINKING_EXIT_MS}ms`,
+            "--thinking-exit-ms": `${PAGE_EXIT_MS}ms`,
           }}
         >
-          <div className={`briefing__bubble${showBridgeBubble ? " is-visible" : ""}`}>
-            {bridge.bubbleText}
-          </div>
+          <GrowingBubble
+            text={bridge.bubbleText}
+            visible={inBridge && bridgeStep >= 1}
+            instant={holdReply}
+          />
 
           {bridge.aiText ? (
-            <p
-              className={`question__ai-line${showBridgeAi ? " is-visible is-typing" : ""}`}
-            >
-              <span className="question__ai-text">{typedAi}</span>
-              {showBridgeAi && !aiDone ? (
-                <span className="question__prompt-caret" aria-hidden="true" />
-              ) : null}
+            <p className={`question__ai-line${showBridgeAi ? " is-visible" : ""}`}>
+              <span className="question__ai-text">{bridge.aiText}</span>
             </p>
           ) : null}
 
@@ -434,14 +390,9 @@ export default function QuestionStep({
 
       {!inBridge ? (
         <>
-          <div className="question__prompt">
-            <h2 className={showPrompt ? "is-revealed is-typing" : undefined}>
-              <span className="question__prompt-text">{typedPrompt}</span>
-              {showPrompt && !promptDone ? (
-                <span className="question__prompt-caret" aria-hidden="true" />
-              ) : null}
-            </h2>
-            <p className={`question__pick-hint${showHint ? " is-revealed" : ""}`}>
+          <div className={`question__prompt${showPrompt ? " is-revealed" : ""}`}>
+            <h2>{question?.prompt}</h2>
+            <p className="question__pick-hint">
               {question?.pickHint || "(Pick 1 option)"}
             </p>
           </div>
@@ -449,7 +400,7 @@ export default function QuestionStep({
           <div className="question__options" role="list">
             {options.map((option, index) => {
               const selected = pendingId === option.id;
-              const revealed = revealStep >= 3 + index && !exiting;
+              const revealed = revealStep >= 2 + index && !exiting;
               return (
                 <button
                   key={`${questionRef}-${option.id}`}
