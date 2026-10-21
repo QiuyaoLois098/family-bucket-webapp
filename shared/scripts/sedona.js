@@ -18,7 +18,7 @@ const sedona = {
     title: "Sky Rock Sedona Lodge",
     subtitle: "Sedona, AZ · April 6–11 · Confirmed",
     chipText: "Booked · Expedia",
-    image: "/images/Expedia-images/options/sedona/intro.png",
+    image: "/images/Expedia-images/options/sedona/intro.jpg",
   },
   /** Building phase — left memory card */
   memoryCard: {
@@ -265,7 +265,7 @@ const sedona = {
       text: "Flagstaff treetop challenge",
       subtitle: "Climb ropes and bridges among the ponderosa pines.",
       chipText: "From Google Maps",
-      image: "/images/Expedia-images/options/sedona/a2-2.png",
+      image: "/images/Expedia-images/options/sedona/a2-2.jpg",
       replyMsg:
         "Let's start with Flagstaff Extreme. The kids can't wait to tackle the treetop course!",
       aiReplyMsg:
@@ -278,7 +278,7 @@ const sedona = {
       text: "Sedona Trolley tour",
       subtitle: "See Sedona's landmarks with short photo stops.",
       chipText: "Expedia Exclusive",
-      image: "/images/Expedia-images/options/sedona/a2-3.png",
+      image: "/images/Expedia-images/options/sedona/a2-3.jpg",
       replyMsg:
         "Let's start with the trolley. A relaxed introduction to Sedona sounds just right!",
       aiReplyMsg:
@@ -303,7 +303,7 @@ const sedona = {
       text: "A guided river paddle",
       subtitle: "Admire cliffs from the Verde River.",
       chipText: "",
-      image: "/images/Expedia-images/options/sedona/a3-1.png",
+      image: "/images/Expedia-images/options/sedona/a3-1.jpg",
       replyMsg: "Can you recommend a river adventure to add to our trip?",
       aiReplyMsg:
         "Try the guided Verde River kayak tour with Clarkdale. A family-friendly float past cottonwoods and canyon walls.",
@@ -311,7 +311,7 @@ const sedona = {
         title: "Verde River guided kayak",
         subtitle: "A guided paddle near Clarkdale",
         chipText: "Expedia Exclusive",
-        image: "/images/Expedia-images/options/sedona/r3-1.png",
+        image: "/images/Expedia-images/options/sedona/a3-1.jpg",
       },
       nextQuestionId: null,
     },
@@ -320,7 +320,7 @@ const sedona = {
       text: "A creekside picnic",
       subtitle: "Make time for water, shade, and canyon views.",
       chipText: "",
-      image: "/images/Expedia-images/options/sedona/a3-2.png",
+      image: "/images/Expedia-images/options/sedona/a3-2.jpg",
       replyMsg: "Where would you recommend a slower afternoon by the water?",
       aiReplyMsg:
         "Try a picnic beside Oak Creek for a slower afternoon after your adventures. Settle into the shade, enjoy the red-rock views, and watch for hawks overhead.",
@@ -328,7 +328,7 @@ const sedona = {
         title: "Oak Creek family picnic",
         subtitle: "Water, shade, and views together",
         chipText: "From Google Maps",
-        image: "/images/Expedia-images/options/sedona/r3-2.jpg",
+        image: "/images/Expedia-images/options/sedona/a3-2.jpg",
       },
       nextQuestionId: null,
     },
@@ -337,7 +337,7 @@ const sedona = {
       text: "A relaxed family breakfast",
       subtitle: "Find a casual spot with choices for the kids.",
       chipText: "",
-      image: "/images/Expedia-images/options/sedona/a3-3.png",
+      image: "/images/Expedia-images/options/sedona/a3-3.jpg",
       replyMsg: "Can you recommend a casual breakfast spot the kids will like?",
       aiReplyMsg:
         "Try Coffee Pot Restaurant for a relaxed family meal, with plenty of omelet choices and a dedicated kids' menu.",
@@ -345,7 +345,7 @@ const sedona = {
         title: "Coffee Pot Restaurant",
         subtitle: "Omelets and a dedicated kids' menu",
         chipText: "From Google Maps",
-        image: "/images/Expedia-images/options/sedona/r3-3.png",
+        image: "/images/Expedia-images/options/sedona/a3-3.jpg",
       },
       nextQuestionId: null,
     },
