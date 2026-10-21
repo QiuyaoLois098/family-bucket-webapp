@@ -50,8 +50,12 @@ const laFortuna = {
    */
   itinerary: {
     headline: "Five days built for your family",
-    meta: "La Fortuna · Apr 6 – 11",
+    meta: "La Fortuna · Apr 6–11",
     summary: "Rainforest canopy, lava trails, warm pools, and volcano views",
+    bookings: {
+      flight: "IAH ↔ SJO",
+      stay: "Arenal Family Rainforest Lodge",
+    },
   },
 
   /** Reusable one-day modules (images: /images/Expedia-images/itinerary/costa-rica/) */

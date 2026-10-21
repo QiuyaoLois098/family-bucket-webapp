@@ -49,8 +49,12 @@ const reykjavik = {
    */
   itinerary: {
     headline: "Five days built for your family",
-    meta: "Reykjavík · Apr 6 – 11",
+    meta: "Reykjavík · Apr 6–11",
     summary: "Lava tunnels, lighthouse shores, warm pools, and harbor days",
+    bookings: {
+      flight: "BOS ↔ KEF",
+      stay: "Reykjavík Family Harbour Hotel",
+    },
   },
 
   dayModules: {

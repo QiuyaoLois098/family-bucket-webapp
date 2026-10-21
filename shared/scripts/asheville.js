@@ -50,8 +50,12 @@ const asheville = {
    */
   itinerary: {
     headline: "Five days built for your family",
-    meta: "Asheville · Apr 6 – 11",
+    meta: "Asheville · Apr 6–11",
     summary: "River paddles, treetops, gardens, and Blue Ridge views",
+    bookings: {
+      flight: "ORD ↔ AVL",
+      stay: "Blue Ridge Family Lodge",
+    },
   },
 
   /** Reusable one-day modules (images: /images/Expedia-images/itinerary/asheville/) */

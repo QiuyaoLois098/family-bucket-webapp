@@ -50,8 +50,12 @@ const sedona = {
    */
   itinerary: {
     headline: "Five days built for your family",
-    meta: "Sedona · Apr 6 – 11",
+    meta: "Sedona · Apr 6–11",
     summary: "Red rocks, easy outings, and time by Oak Creek",
+    bookings: {
+      flight: "MSP ↔ PHX",
+      stay: "Sky Rock Sedona Lodge",
+    },
   },
 
   /** Reusable one-day modules (images: /images/Expedia-images/itinerary/sedona/) */

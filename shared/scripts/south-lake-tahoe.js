@@ -61,8 +61,12 @@ const southLakeTahoe = {
    */
   itinerary: {
     headline: "Five days built for your family",
-    meta: "South Lake Tahoe · Apr 6 – 11",
+    meta: "South Lake Tahoe · Apr 6–11",
     summary: "Kayaking, ropes, family hikes, and time by the lake",
+    bookings: {
+      flight: "JFK ↔ RNO",
+      stay: "Sierra Shore Family Lodge",
+    },
   },
 
   /** Reusable one-day modules (images: /images/Expedia-images/itinerary/tahoe/) */

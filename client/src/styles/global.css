@@ -222,8 +222,9 @@ body,
 
 html {
   container-type: size;
-  /* LG / Chromium touch: kill the translucent gray tap flash */
+  /* LG / Chromium touch: kill the translucent gray tap disc */
   -webkit-tap-highlight-color: transparent;
+  -webkit-focus-ring-color: transparent;
 }
 
 body {
@@ -234,6 +235,19 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   -webkit-tap-highlight-color: transparent;
+  -webkit-focus-ring-color: transparent;
+}
+
+/*
+ * Nuke the LG / Chromium translucent gray tap circle on every node.
+ * (Expedia + Vrbo both load this sheet.)
+ */
+*,
+*::before,
+*::after {
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-focus-ring-color: transparent;
+  -webkit-touch-callout: none;
 }
 
 /* Kiosk: block browser pinch / double-tap zoom (JS also preventDefaults multi-touch). */
@@ -249,7 +263,7 @@ html.no-pinch-zoom {
   text-size-adjust: 100%;
 }
 
-/* Interactive targets — no OS tap halo; avoid 300ms click delay */
+/* Interactive targets — avoid 300ms click delay */
 a,
 button,
 input,
@@ -259,7 +273,6 @@ label,
 summary,
 [role="button"],
 [tabindex]:not([tabindex="-1"]) {
-  -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
 
@@ -270,6 +283,11 @@ summary,
 
 @media (pointer: coarse) {
   :focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  :focus-visible {
     outline: none;
     box-shadow: none;
   }

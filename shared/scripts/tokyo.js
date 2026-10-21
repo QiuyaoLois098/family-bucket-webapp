@@ -48,8 +48,12 @@ const tokyo = {
    */
   itinerary: {
     headline: "Five days built for your family",
-    meta: "Tokyo · Apr 6 – 11",
+    meta: "Tokyo · Apr 6–11",
     summary: "Treetops, gardens, river views, and easy city days",
+    bookings: {
+      flight: "LAX ↔ HND",
+      stay: "Tokyo Family Garden Hotel",
+    },
   },
 
   dayModules: {

@@ -1527,6 +1527,48 @@
   color: #191e3b;
 }
 
+.schedule__booked {
+  box-sizing: border-box;
+  align-self: stretch;
+  width: 100%;
+  margin: calc(var(--u) * 22) 0 0;
+  padding: calc(var(--u) * 22) calc(var(--u) * 28);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--u) * 20) calc(var(--u) * 56);
+  border-radius: calc(var(--u) * 24);
+  background: var(--schedule-card-bg);
+  font-family: var(--ui);
+  font-size: calc(var(--u) * 26);
+  font-weight: 400;
+  line-height: 1.2;
+  color: #191e3b;
+}
+
+.schedule__booked-item {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--u) * 10);
+  min-width: 0;
+}
+
+.schedule__booked-glyph {
+  width: calc(var(--u) * 28);
+  height: calc(var(--u) * 28);
+  flex: 0 0 auto;
+  color: rgba(25, 30, 59, 0.55);
+}
+
+.schedule__booked-label {
+  white-space: nowrap;
+}
+
+.schedule__booked-pill {
+  color: #191e3b;
+}
+
 .schedule__summary {
   margin: calc(var(--u) * 10) 0 0;
   font-family: var(--ui);

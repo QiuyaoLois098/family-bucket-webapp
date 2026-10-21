@@ -159,6 +159,7 @@ export function resolveItinerarySchedule(script, answerIds = []) {
     headline: header.headline || "Five days built for your family",
     meta: header.meta || script?.tripTitle || "",
     summary: header.summary || "",
+    bookings: header.bookings || null,
     days,
   };
 }

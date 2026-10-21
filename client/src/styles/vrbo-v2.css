@@ -1935,7 +1935,6 @@
   display: flex;
   flex-direction: column;
   padding: 2.8cqh var(--sc-pad) 3.6cqh;
-  background: #ffffff;
 }
 
 .vrbo-v2-showcase__share {

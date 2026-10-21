@@ -10,6 +10,7 @@ const QUESTION2_REF = "/images/Expedia-images/example/question2.png";
 const QUESTION3_REF = "/images/Expedia-images/example/question3.png";
 const ANSWER3_REF = "/images/Expedia-images/example/03-answer.png";
 const BUILDING_LEFT_REF = "/images/Expedia-images/example/left/left-card.png";
+const LEFT_ITINERARY_REF = "/images/Expedia-images/example/left/itinerary.png";
 const ITINERARY_REF = "/images/Expedia-images/example/itinerary.png";
 const LUGGAGE_REF = "/images/Expedia-images/example/luggage.png";
 const BUILDING_RIGHT_REF = "/images/Expedia-images/example/building-right.png";
@@ -96,7 +97,7 @@ function leftReference(phase, currentQuestion) {
     return { src: BUILDING_LEFT_REF, caption: "Reference · building" };
   }
   if (phase === "itinerary") {
-    return { src: ITINERARY_REF, caption: "Reference · itinerary" };
+    return { src: LEFT_ITINERARY_REF, caption: "Reference · itinerary" };
   }
   return {
     src: questionRef,

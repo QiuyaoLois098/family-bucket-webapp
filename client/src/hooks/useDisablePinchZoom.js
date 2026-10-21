@@ -13,8 +13,16 @@ function upsertViewport(content) {
   el.setAttribute("content", content);
 }
 
+function isEditable(el) {
+  if (!(el instanceof Element)) return false;
+  if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) return true;
+  if (el.isContentEditable) return true;
+  return Boolean(el.closest("input, textarea, [contenteditable='true']"));
+}
+
 /**
- * Block browser pinch-zoom / ctrl+wheel zoom on touch kiosks.
+ * Block browser pinch-zoom / ctrl+wheel zoom on touch kiosks,
+ * and clear sticky focus after taps (LG gray disc / focus flash).
  * Does not block single-finger scroll inside overflow regions.
  */
 export default function useDisablePinchZoom() {
@@ -31,6 +39,12 @@ export default function useDisablePinchZoom() {
     const blockCtrlWheel = (event) => {
       if (event.ctrlKey) event.preventDefault();
     };
+    // Drop focus after a tap so Chromium/LG don't leave a gray halo on the target.
+    const clearTapFocus = () => {
+      const active = document.activeElement;
+      if (!active || active === document.body || isEditable(active)) return;
+      if (typeof active.blur === "function") active.blur();
+    };
 
     document.addEventListener("touchstart", blockMultiTouch, { passive: false });
     document.addEventListener("touchmove", blockMultiTouch, { passive: false });
@@ -38,6 +52,8 @@ export default function useDisablePinchZoom() {
     document.addEventListener("gesturechange", blockGesture, { passive: false });
     document.addEventListener("gestureend", blockGesture, { passive: false });
     document.addEventListener("wheel", blockCtrlWheel, { passive: false });
+    document.addEventListener("touchend", clearTapFocus, { passive: true });
+    document.addEventListener("pointerup", clearTapFocus, { passive: true });
 
     return () => {
       document.documentElement.classList.remove("no-pinch-zoom");
@@ -47,6 +63,8 @@ export default function useDisablePinchZoom() {
       document.removeEventListener("gesturechange", blockGesture);
       document.removeEventListener("gestureend", blockGesture);
       document.removeEventListener("wheel", blockCtrlWheel);
+      document.removeEventListener("touchend", clearTapFocus);
+      document.removeEventListener("pointerup", clearTapFocus);
     };
   }, []);
 }
