@@ -31,7 +31,9 @@ function BookedItem({ icon, label }) {
     <span className="schedule__booked-item">
       {icon}
       <span className="schedule__booked-label">{label}</span>
-      <span className="schedule__booked-pill">Booked</span>
+      <span className="schedule__booked-pill">
+        <span>Booked</span>
+      </span>
     </span>
   );
 }

@@ -1569,13 +1569,21 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
+  height: calc(var(--u) * 40);
   padding: calc(var(--u) * 6) calc(var(--u) * 14);
-  border-radius: calc(var(--u) * 10);
+  border-radius: calc(var(--u) * 20);
   background: #d9d7d2;
   color: #191e3b;
   font-size: calc(var(--u) * 28);
   font-weight: 500;
   line-height: 1;
+}
+
+/* Centra's em box sits high — nudge the glyphs onto the chip midline. */
+.schedule__booked-pill > span {
+  display: block;
+  transform: translateY(0.08em);
 }
 
 .schedule__summary {
