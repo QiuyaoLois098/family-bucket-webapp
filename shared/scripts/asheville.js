@@ -32,13 +32,13 @@ const asheville = {
 
   /** Right screen images during briefing / Q&A (keyed by step) */
   displayImages: {
-    briefing: "/images/Expedia-images/destination-view/asheville.png",
-    q1: "/images/Expedia-images/destination-view/asheville.png",
-    "q2-1": "/images/Expedia-images/destination-view/asheville.png",
-    "q2-2": "/images/Expedia-images/destination-view/asheville.png",
-    "q3-1": "/images/Expedia-images/destination-view/asheville.png",
-    "q3-2": "/images/Expedia-images/destination-view/asheville.png",
-    default: "/images/Expedia-images/destination-view/asheville.png",
+    briefing: "/images/Expedia-images/destination-view/asheville.jpg",
+    q1: "/images/Expedia-images/destination-view/asheville.jpg",
+    "q2-1": "/images/Expedia-images/destination-view/asheville.jpg",
+    "q2-2": "/images/Expedia-images/destination-view/asheville.jpg",
+    "q3-1": "/images/Expedia-images/destination-view/asheville.jpg",
+    "q3-2": "/images/Expedia-images/destination-view/asheville.jpg",
+    default: "/images/Expedia-images/destination-view/asheville.jpg",
   },
 
   /**
@@ -230,7 +230,7 @@ const asheville = {
       text: "Try something adventurous",
       subtitle: "River paddles, treetop ziplines, and forest walks.",
       chipText: "",
-      image: "/images/Expedia-images/options/asheville/a1-1.png",
+      image: "/images/Expedia-images/options/asheville/a1-1.jpg",
       replyMsg:
         "We love the outdoors. The kids can’t wait to paddle the French Broad and try Asheville’s treetop ziplines this spring.",
       aiReplyMsg: "",
@@ -265,7 +265,7 @@ const asheville = {
       text: "Navitat treetop adventure",
       subtitle: "Treetop ziplines and ropes in the Blue Ridge.",
       chipText: "From Google Maps",
-      image: "/images/Expedia-images/options/asheville/a2-2.png",
+      image: "/images/Expedia-images/options/asheville/a2-2.jpg",
       replyMsg:
         "Let's start with Navitat's treetop ziplines. The kids can't wait to soar through the trees!",
       aiReplyMsg:
@@ -290,7 +290,7 @@ const asheville = {
       text: "Botanical Gardens stroll",
       subtitle: "Five garden paths and native wildflowers.",
       chipText: "From Google Maps",
-      image: "/images/Expedia-images/options/asheville/a2-2.png",
+      image: "/images/Expedia-images/options/asheville/a2-4.jpg",
       replyMsg:
         "Let's start with the gardens. The kids can ease into the trip among the flowers!",
       aiReplyMsg:
@@ -311,7 +311,7 @@ const asheville = {
         title: "Bent Creek Experimental Forest",
         subtitle: "15 min drive from your hotel",
         chipText: "From Google Maps",
-        image: "/images/Expedia-images/options/asheville/r3-1.png",
+        image: "/images/Expedia-images/options/asheville/r3-1.jpg",
       },
       nextQuestionId: null,
     },
@@ -328,7 +328,7 @@ const asheville = {
         title: "Amboy Riverfront Park",
         subtitle: "Riverside picnic and an easy greenway walk",
         chipText: "From Google Maps",
-        image: "/images/Expedia-images/options/asheville/r3-2.png",
+        image: "/images/Expedia-images/options/asheville/r3-2.jpg",
       },
       nextQuestionId: null,
     },
@@ -345,7 +345,7 @@ const asheville = {
         title: "Biscuit Head",
         subtitle: "Southern biscuits and homemade jams",
         chipText: "From Google Maps",
-        image: "/images/Expedia-images/options/asheville/r3-3.jpg",
+        image: "/images/Expedia-images/options/asheville/a3-3.jpg",
       },
       nextQuestionId: null,
     },
