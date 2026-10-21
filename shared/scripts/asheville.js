@@ -27,7 +27,7 @@ const asheville = {
     title: "Asheville",
     duration: "5 days",
     footer: "Created with Activity Planner",
-    image: "/images/Expedia-images/destination-view/asheville.png",
+    image: "/images/Expedia-images/destination-view/asheville.jpg",
   },
 
   /** Right screen images during briefing / Q&A (keyed by step) */

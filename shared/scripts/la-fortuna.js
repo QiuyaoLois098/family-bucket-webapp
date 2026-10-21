@@ -320,7 +320,7 @@ const laFortuna = {
       text: "A quieter rainforest day",
       subtitle: "Make room for a picnic and spotting wildlife.",
       chipText: "",
-      image: "/images/Expedia-images/options/costa-rica/a3-2.png",
+      image: "/images/Expedia-images/options/costa-rica/a3-2.jpg",
       replyMsg: "Where would you recommend a quieter day with volcano views?",
       aiReplyMsg:
         "Stay around Arenal Volcano for a slower day: pack a picnic, take a short rainforest walk, and look for toucans or sloths in the treetops.",
@@ -328,7 +328,7 @@ const laFortuna = {
         title: "Arenal rainforest picnic",
         subtitle: "Outdoor picnic and short forest walk.",
         chipText: "From Google Maps",
-        image: "/images/Expedia-images/options/costa-rica/r3-2.png",
+        image: "/images/Expedia-images/options/costa-rica/r3-2.jpg",
       },
       nextQuestionId: null,
     },

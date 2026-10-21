@@ -26,18 +26,18 @@ const reykjavik = {
     title: "Reykjavík",
     duration: "5 days",
     footer: "Created with Activity Planner",
-    image: "/images/Expedia-images/destination-view/iceland.png",
+    image: "/images/Expedia-images/destination-view/iceland.jpg",
   },
 
   /** Right screen images during briefing / Q&A (keyed by step) */
   displayImages: {
-    briefing: "/images/Expedia-images/destination-view/iceland.png",
-    q1: "/images/Expedia-images/destination-view/iceland.png",
-    "q2-1": "/images/Expedia-images/destination-view/iceland.png",
-    "q2-2": "/images/Expedia-images/destination-view/iceland.png",
-    "q3-1": "/images/Expedia-images/destination-view/iceland.png",
-    "q3-2": "/images/Expedia-images/destination-view/iceland.png",
-    default: "/images/Expedia-images/destination-view/iceland.png",
+    briefing: "/images/Expedia-images/destination-view/iceland.jpg",
+    q1: "/images/Expedia-images/destination-view/iceland.jpg",
+    "q2-1": "/images/Expedia-images/destination-view/iceland.jpg",
+    "q2-2": "/images/Expedia-images/destination-view/iceland.jpg",
+    "q3-1": "/images/Expedia-images/destination-view/iceland.jpg",
+    "q3-2": "/images/Expedia-images/destination-view/iceland.jpg",
+    default: "/images/Expedia-images/destination-view/iceland.jpg",
   },
 
   /**
@@ -349,7 +349,7 @@ const reykjavik = {
         title: "Kaffivagninn",
         subtitle: "Fish and chips beside the harbor",
         chipText: "From Google Maps",
-        image: "/images/Expedia-images/options/iceland/a3-3.jpg",
+        image: "/images/Expedia-images/options/iceland/r3-3.jpg",
       },
       nextQuestionId: null,
     },
