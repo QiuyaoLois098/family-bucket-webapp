@@ -4,25 +4,15 @@ import {
 } from "@shared/scripts/index.js";
 import ExpediaBrandBar from "./ExpediaBrandBar.jsx";
 
-function PlaneIcon() {
+function BookedIcon({ src, alt = "" }) {
   return (
-    <svg className="schedule__booked-glyph" viewBox="0 0 24 24" aria-hidden="true">
-      <path
-        fill="currentColor"
-        d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5L21 16z"
-      />
-    </svg>
-  );
-}
-
-function LodgeIcon() {
-  return (
-    <svg className="schedule__booked-glyph" viewBox="0 0 24 24" aria-hidden="true">
-      <path
-        fill="currentColor"
-        d="M4 21V9.5L12 3l8 6.5V21h-6v-6H10v6H4zm2-2h2v-6h8v6h2v-8.2L12 5.5 6 10.8V19z"
-      />
-    </svg>
+    <img
+      className="schedule__booked-glyph"
+      src={src}
+      alt={alt}
+      aria-hidden={alt ? undefined : true}
+      draggable="false"
+    />
   );
 }
 
@@ -57,10 +47,16 @@ export default function ItinerarySchedule({ destinationId, answers = [] }) {
         {bookings?.flight || bookings?.stay ? (
           <div className="schedule__booked">
             {bookings.flight ? (
-              <BookedItem icon={<PlaneIcon />} label={bookings.flight} />
+              <BookedItem
+                icon={<BookedIcon src="/images/Expedia-images/flight-icon.png" />}
+                label={bookings.flight}
+              />
             ) : null}
             {bookings.stay ? (
-              <BookedItem icon={<LodgeIcon />} label={bookings.stay} />
+              <BookedItem
+                icon={<BookedIcon src="/images/Expedia-images/hotel-icon.png" />}
+                label={bookings.stay}
+              />
             ) : null}
           </div>
         ) : schedule.summary ? (

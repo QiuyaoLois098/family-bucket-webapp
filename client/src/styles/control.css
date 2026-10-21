@@ -1497,7 +1497,7 @@
 .schedule__intro {
   box-sizing: border-box;
   min-height: var(--schedule-card-slot);
-  margin: 8% 0 5%;
+  margin: 8% 0 3%;
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -1528,41 +1528,49 @@
 }
 
 .schedule__booked {
+  --booked-row-h: calc(var(--u) * 40);
   box-sizing: border-box;
   align-self: stretch;
   width: 100%;
   margin: calc(var(--u) * 22) 0 0;
-  padding: calc(var(--u) * 22) calc(var(--u) * 28);
+  padding: calc(var(--u) * 20) calc(var(--u) * 14);
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  gap: calc(var(--u) * 20) calc(var(--u) * 56);
+  gap: calc(var(--u) * 56);
   border-radius: calc(var(--u) * 24);
   background: var(--schedule-card-bg);
   font-family: var(--ui);
   font-size: calc(var(--u) * 28);
   font-weight: 400;
-  line-height: 1.2;
+  line-height: 1;
   color: #191e3b;
 }
 
 .schedule__booked-item {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  height: var(--booked-row-h);
   gap: calc(var(--u) * 10);
   min-width: 0;
+  line-height: 1;
 }
 
 .schedule__booked-glyph {
-  width: calc(var(--u) * 28);
-  height: calc(var(--u) * 28);
+  width: 1.45em;
+  height: 1.45em;
   flex: 0 0 auto;
-  color: rgba(25, 30, 59, 0.55);
+  object-fit: contain;
+  display: block;
 }
 
 .schedule__booked-label {
+  display: flex;
+  align-items: center;
+  height: 100%;
   white-space: nowrap;
+  line-height: 1;
 }
 
 .schedule__booked-pill {
@@ -1570,20 +1578,20 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  height: calc(var(--u) * 40);
-  padding: calc(var(--u) * 6) calc(var(--u) * 14);
+  height: 100%;
+  padding: 0 calc(var(--u) * 14);
   border-radius: calc(var(--u) * 20);
   background: #d9d7d2;
   color: #191e3b;
-  font-size: calc(var(--u) * 28);
+  font-size: inherit;
   font-weight: 500;
   line-height: 1;
 }
 
-/* Centra's em box sits high — nudge the glyphs onto the chip midline. */
+/* Same optical nudge on every text so label + Booked share one midline. */
+.schedule__booked-label,
 .schedule__booked-pill > span {
-  display: block;
-  transform: translateY(0.08em);
+  transform: translateY(0.06em);
 }
 
 .schedule__summary {
@@ -1601,7 +1609,7 @@
   padding: 0 0 1.2%;
   list-style: none;
   min-height: 0;
-  height: 98%;
+  height: 94%;
   display: grid;
   grid-template-rows: repeat(5, minmax(0, 1fr));
   gap: 1.85%;
