@@ -1541,7 +1541,7 @@
   border-radius: calc(var(--u) * 24);
   background: var(--schedule-card-bg);
   font-family: var(--ui);
-  font-size: calc(var(--u) * 26);
+  font-size: calc(var(--u) * 28);
   font-weight: 400;
   line-height: 1.2;
   color: #191e3b;
@@ -1566,7 +1566,16 @@
 }
 
 .schedule__booked-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--u) * 6) calc(var(--u) * 14);
+  border-radius: calc(var(--u) * 10);
+  background: #d9d7d2;
   color: #191e3b;
+  font-size: calc(var(--u) * 28);
+  font-weight: 500;
+  line-height: 1;
 }
 
 .schedule__summary {
