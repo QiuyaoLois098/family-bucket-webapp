@@ -1,0 +1,30 @@
+---
+description: Do not remove a working input/path when adding a new one. Re-check old kiosk details after flow edits.
+alwaysApply: true
+---
+
+# Don't break existing interaction paths
+
+When adding or tightening a feature, **keep every input that already worked** unless this message explicitly says to remove it.
+
+## Dual paths stay dual
+
+If two things used to trigger the same step, both must still trigger it.
+
+- Luggage / reveal: **arrow click and UDP** both pull the handle and `shake` to building. UDP-only is a regression. Do not add timed AUTO_PULL that advances without click or UDP.
+- Q&A / destination: click, hold, and existing fade timings stay unless the user asks to change them.
+
+```js
+// BAD — new UDP path deletes the old click
+socket.on("udp:message", beginPull);
+
+// GOOD — one activate() for click and UDP
+<button onClick={activateReveal} />
+socket.on("udp:message", activateReveal);
+```
+
+## After a flow change
+
+Re-check the **old** path, not only the new one: click, UDP, keyboard/button if it existed, and the screen that still shows the previous step (left vs right).
+
+Do not "simplify" a hit target, button, or emit just because a sensor/server path was added.

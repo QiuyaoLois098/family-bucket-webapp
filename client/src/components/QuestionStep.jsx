@@ -11,6 +11,7 @@ import { chatPacing } from "../motion/chatPacing.js";
 import { wordBatchDurationMs } from "../motion/wordBatch.js";
 import ExpediaBrandBar from "./ExpediaBrandBar.jsx";
 import GrowingBubble from "./GrowingBubble.jsx";
+import WholeBlockFade from "./WholeBlockFade.jsx";
 
 const DEFAULT_DATES = "Apr 6 – 11";
 const SELECT_HOLD_MS = chatPacing.selectHoldMs;
@@ -349,9 +350,15 @@ export default function QuestionStep({
           />
 
           {bridge.aiText ? (
-            <p className={`question__ai-line${showBridgeAi ? " is-visible" : ""}`}>
+            <WholeBlockFade
+              as="p"
+              className="question__ai-line"
+              visible={showBridgeAi}
+              durationMs={TEXT_FADE_MS}
+              instant={holdReply}
+            >
               <span className="question__ai-text">{bridge.aiText}</span>
-            </p>
+            </WholeBlockFade>
           ) : null}
 
           {bridge.placeCard ? (
@@ -390,12 +397,16 @@ export default function QuestionStep({
 
       {!inBridge ? (
         <>
-          <div className={`question__prompt${showPrompt ? " is-revealed" : ""}`}>
+          <WholeBlockFade
+            className={`question__prompt${showPrompt ? " is-revealed" : ""}`}
+            visible={showPrompt}
+            durationMs={TEXT_FADE_MS}
+          >
             <h2>{question?.prompt}</h2>
             <p className="question__pick-hint">
               {question?.pickHint || "(Pick 1 option)"}
             </p>
-          </div>
+          </WholeBlockFade>
 
           <div className="question__options" role="list">
             {options.map((option, index) => {

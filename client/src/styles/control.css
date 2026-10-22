@@ -504,12 +504,6 @@
 .question__prompt {
   flex: 0 0 auto;
   margin-top: 5.6cqh;
-  opacity: 0;
-  transition: opacity var(--question-text-ms, 400ms) cubic-bezier(0.42, 0, 0.58, 1);
-}
-
-.question__prompt.is-revealed {
-  opacity: 1;
 }
 
 .question__prompt h2 {
@@ -714,8 +708,6 @@
   line-height: 1.35;
   letter-spacing: -0.02em;
   color: #191e3b;
-  opacity: 0;
-  transition: opacity var(--ai-fade-ms, 400ms) cubic-bezier(0.42, 0, 0.58, 1);
 }
 
 .question__ai-line.is-visible {

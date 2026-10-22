@@ -17,6 +17,8 @@ import {
 
 const COPY_DURATION = 0.6;
 const PULL_DURATION = 0.67;
+/** Same hold as luggage UDP before phase advance (arrow click and sensor). */
+const ADVANCE_DELAY_MS = 1000;
 
 function hintPulse(t) {
   // Keep pulsing while we wait for UDP — no timed auto-advance.
@@ -29,8 +31,8 @@ function hintPulse(t) {
 }
 
 /**
- * Right-screen suitcase: rise → hint pulse → wait for UDP → handle pull.
- * Phase advance is server-side (luggage UDP → shake). This only plays the pull.
+ * Right-screen suitcase: rise → hint pulse → click or UDP pulls the handle,
+ * then shake advances reveal → building.
  */
 export default function RevealStep() {
   const canvasRef = useRef(null);
@@ -41,10 +43,13 @@ export default function RevealStep() {
   const rafRef = useRef(0);
   const [ready, setReady] = useState(false);
 
-  const beginPull = () => {
+  const activateReveal = () => {
     if (triggered.current) return;
     triggered.current = true;
     pullStartRef.current = performance.now();
+    window.setTimeout(() => {
+      getSocket().emit("experience:shake");
+    }, ADVANCE_DELAY_MS);
   };
 
   useEffect(() => {
@@ -61,13 +66,13 @@ export default function RevealStep() {
     };
   }, []);
 
-  // Hardware luggage sensor (UDP) starts the pull; server shake advances phase.
+  // Luggage sensor (UDP) uses the same pull + shake path as the arrow click.
   useEffect(() => {
     const socket = getSocket();
     const onUdp = (packet) => {
       const text = typeof packet === "string" ? packet : packet?.text;
       if (text == null || !String(text).trim()) return;
-      beginPull();
+      activateReveal();
     };
     socket.on("udp:message", onUdp);
     return () => socket.off("udp:message", onUdp);
@@ -169,9 +174,11 @@ export default function RevealStep() {
   return (
     <div className="reveal-step reveal-step--motion">
       <ExpediaBrandBar />
-      <div
+      <button
+        type="button"
         className="reveal-step__hit"
-        aria-label="Waiting for luggage sensor to reveal your itinerary"
+        aria-label="Pull the suitcase handle to reveal your itinerary"
+        onClick={activateReveal}
       >
         <canvas
           ref={canvasRef}
@@ -179,7 +186,7 @@ export default function RevealStep() {
           width={MOTION_W}
           height={MOTION_H}
         />
-      </div>
+      </button>
     </div>
   );
 }
