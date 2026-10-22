@@ -1,0 +1,56 @@
+---
+description: VRBO layouts must scale with the display; new work cannot undo earlier screens.
+alwaysApply: true
+---
+
+# VRBO — scale with the display, don't forget the front
+
+VRBO screens render in **more than one host**. A change that looks right on one route and broken on another is a regression.
+
+## Hosts you must re-check
+
+| Route | What it is | How size works |
+| --- | --- | --- |
+| `/vrbo-v2` | Five-up overview (Display 1, Display 2, three phones) | Fluid frames; UI uses **cqh/cqw** |
+| `/vrbo-left` `/vrbo-right` | Full-bleed kiosk | Inner panel is 2160×3840 + `transform: scale(...)` |
+| `/vrbo-ip1` `/vrbo-ip2` `/vrbo-ip3` | Guest phones | Own phone frame / screen container |
+
+After any VRBO visual or motion edit, check **the overview and the full-bleed page**, not only the page you had open.
+
+- Display 2 / ranking: `/vrbo-v2` **and** `/vrbo-right`
+- Display 1 / chat: `/vrbo-v2` **and** `/vrbo-left`
+- Phones: `/vrbo-v2` **and** the matching `/vrbo-ip*`
+
+## Proportional scale (do not hardcode design px)
+
+Design canvas is **2160×3840**. Convert with the container, same as the rest of Display 1/2:
+
+```css
+/* GOOD — rides /vrbo-v2 thumbnail and /vrbo-right kiosk */
+left: calc(160 / var(--design-w) * 100cqw);
+height: calc(138 / var(--design-h) * 100cqh);
+font-size: calc(148 / var(--design-h) * 100cqh);
+```
+
+```css
+/* BAD — only correct if the parent is literally 2160×3840 CSS pixels */
+left: 160px;
+height: 138px;
+font-size: 148px;
+width: 2160px;
+top: 2160px;
+```
+
+`.vrbo-v2-chat` and `.vrbo-v2-rank` already set `--design-w: 2160`, `--design-h: 3840`, and `container-type: size`. Use that. JS motion travel must also be container-relative (`calc(N / var(--design-h) * 100cqh)` or `%`), not raw `translateY(17px)` on overview frames.
+
+`ScaledDisplayCanvas` / `.vrbo-v2-displayHd__panel` is the **only** place that is a literal 2160×3840 box plus uniform scale. Do not add a second inner 2160 canvas on `/vrbo-v2`. Do not stretch text and photos independently.
+
+## New work cannot delete old work
+
+Keep every screen and input that already worked unless this message explicitly removes it.
+
+- Opening loop on Display 2 waiting **and** “Pulling it all together” after everyone submits
+- Left chat, phones, summary, results, finale
+- Click **and** UDP where both existed
+
+Do not “simplify” a layout to one host. If you are unsure, open `/vrbo-v2` first — that is where fixed 2160 px breaks show up.

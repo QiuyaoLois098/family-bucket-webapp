@@ -4,28 +4,8 @@ import copy from "../../data/vrbo-v2/copy.json";
 import properties from "../../data/vrbo-v2/properties.json";
 import users from "../../data/vrbo-v2/users.json";
 import { runChunkTypewriter } from "../../motion/chunkType.js";
+import OpeningLoop from "./OpeningLoop.jsx";
 import { StayShowcase } from "./StayViews.jsx";
-
-/** Handoff openingHeadline: first enter, then 6s breathe loop (do not restart full open). */
-function OpeningHeadline({ className = "", children }) {
-  const [phase, setPhase] = useState("enter");
-
-  return (
-    <h2
-      className={`${className} vrbo-v2-opening-headline is-${phase}`.trim()}
-      onAnimationEnd={(event) => {
-        if (
-          phase === "enter" &&
-          String(event.animationName).includes("vrbo-opening-headline-in")
-        ) {
-          setPhase("loop");
-        }
-      }}
-    >
-      {children}
-    </h2>
-  );
-}
 
 const FINALE_BG_SRC = "/images/Vrbo-Images/final-bg.jpg";
 
@@ -77,7 +57,7 @@ function WaitingPanel({
   return (
     <div
       className={`vrbo-v2-rank__panel vrbo-v2-rank__panel--hero ${
-        ready ? "is-loading vrbo-v2-rank__panel--enter" : ""
+        ready ? "is-loading vrbo-v2-rank__panel--enter" : "is-opening"
       }`}
     >
       {ready ? (
@@ -88,22 +68,7 @@ function WaitingPanel({
           <p className="vrbo-v2-rank__hint">{hint}</p>
         </div>
       ) : (
-        <>
-          <header className="vrbo-v2-rank__hero-top">
-            <img
-              className="vrbo-v2-rank__brand-logo is-opening-enter"
-              src="/logo/Vrbo_Logo_Sail_RGB.png"
-              alt="Vrbo"
-            />
-          </header>
-          <div className="vrbo-v2-rank__hero-mid">
-            <OpeningHeadline>
-              {copy.ranking.waitingTitleLine1}
-              <br />
-              {copy.ranking.waitingTitleLine2}
-            </OpeningHeadline>
-          </div>
-        </>
+        <OpeningLoop />
       )}
     </div>
   );

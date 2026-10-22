@@ -1275,12 +1275,114 @@
   overflow: hidden;
 }
 
+.vrbo-v2-rank__panel--hero.is-opening {
+  display: block;
+}
+
 .vrbo-v2-rank__panel--hero.is-loading {
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--blue-screen);
   color: #ffffff;
+}
+
+.vrbo-v2-opening {
+  /* Same 2160×3840 design as Display 2 — sizes must ride the container (cqh/cqw). */
+  --design-w: 2160;
+  --design-h: 3840;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #0f51ec;
+  container-type: size;
+}
+
+.vrbo-v2-opening__logo {
+  position: absolute;
+  left: calc(160 / var(--design-w) * 100cqw);
+  top: calc(160 / var(--design-h) * 100cqh);
+  width: auto;
+  height: calc(138 / var(--design-h) * 100cqh);
+  object-fit: contain;
+  object-position: left center;
+  pointer-events: none;
+  user-select: none;
+  mix-blend-mode: screen;
+}
+
+.vrbo-v2-opening__headlines {
+  position: absolute;
+  left: calc(166.3 / var(--design-w) * 100cqw);
+  top: calc(1344 / var(--design-h) * 100cqh);
+  width: calc(1531.111 / var(--design-w) * 100cqw);
+  height: calc(529 / var(--design-h) * 100cqh);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.vrbo-v2-opening__slide {
+  position: absolute;
+  inset: 0;
+  will-change: transform, opacity;
+}
+
+.vrbo-v2-opening__slide--second {
+  display: flex;
+  align-items: flex-start;
+}
+
+.vrbo-v2-opening__line {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: calc(165.42 / var(--design-h) * 100cqh);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.vrbo-v2-opening__line--2 {
+  top: calc(165.42 / var(--design-h) * 100cqh);
+}
+
+.vrbo-v2-opening__line p,
+.vrbo-v2-opening__slide--second p {
+  margin: 0;
+  font-family: var(--vrbo-v2-sans);
+  font-size: calc(148 / var(--design-h) * 100cqh);
+  font-weight: 600;
+  line-height: calc(165.42 / var(--design-h) * 100cqh);
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.vrbo-v2-opening__photos {
+  position: absolute;
+  left: 0;
+  top: calc(2160 / var(--design-h) * 100cqh);
+  width: 100%;
+  height: calc(1680 / var(--design-h) * 100cqh);
+  overflow: hidden;
+}
+
+.vrbo-v2-opening__photo {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(100%);
+  will-change: transform;
+}
+
+.vrbo-v2-opening__photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+  user-select: none;
 }
 
 .vrbo-v2-rank__hero-top {
