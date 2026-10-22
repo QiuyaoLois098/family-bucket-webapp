@@ -16,7 +16,6 @@ function StayImage({ property, className, style }) {
         <img
           src={property.image}
           alt=""
-          loading="lazy"
           draggable={false}
           onError={() => setFailed(true)}
         />

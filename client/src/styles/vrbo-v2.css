@@ -472,7 +472,8 @@
 }
 
 .vrbo-v2-phone__feed.is-feed-locked {
-  justify-content: flex-end;
+  /* Match Display 1 finale: stack from the top, not pinned to the composer. */
+  justify-content: flex-start;
   overflow: hidden;
   overscroll-behavior: none;
   touch-action: none;

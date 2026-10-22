@@ -10,7 +10,7 @@ function PropertyImage({ property }) {
   return (
     <div className="vrbo-v2-property__image" style={{ background: property.gradient }}>
       {failed ? null : (
-        <img src={property.image} alt={property.name} loading="lazy" onError={() => setFailed(true)} />
+        <img src={property.image} alt={property.name} onError={() => setFailed(true)} />
       )}
     </div>
   );

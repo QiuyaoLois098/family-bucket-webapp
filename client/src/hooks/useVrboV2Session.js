@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import users from "../data/vrbo-v2/users.json";
+import { preloadVrboHotelImages } from "../lib/preloadVrboHotelImages.js";
 import { getSocket } from "../socket.js";
 
 export const guests = users.filter((user) => user.role === "guest");
@@ -25,6 +26,10 @@ const EMPTY_STATE = {
 export default function useVrboV2Session({ syncOnly = false } = {}) {
   const [state, setState] = useState(EMPTY_STATE);
   const [connected, setConnected] = useState(false);
+
+  useEffect(() => {
+    preloadVrboHotelImages();
+  }, [state.runId]);
 
   useEffect(() => {
     const socket = getSocket();
