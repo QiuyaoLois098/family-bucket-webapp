@@ -1513,7 +1513,11 @@
   .vrbo-v2-chat__people.is-opening-status,
   .vrbo-v2-opening-headline.is-enter,
   .vrbo-v2-opening-headline.is-loop,
-  .is-scene-enter {
+  .is-scene-enter,
+  .vrbo-v2-showcase__hero-layer.is-in,
+  .vrbo-v2-showcase__hero-layer.is-out,
+  .vrbo-v2-showcase__copy-layer.is-in,
+  .vrbo-v2-showcase__copy-layer.is-out {
     animation: none;
     opacity: 1;
     transform: none;
@@ -1784,12 +1788,85 @@
   background: var(--stay-image-fallback, #d5dbe6);
 }
 
-.vrbo-v2-showcase__hero img {
+.vrbo-v2-showcase__hero img,
+.vrbo-v2-showcase__hero-layer img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center top;
   display: block;
+}
+
+.vrbo-v2-showcase__hero-layer {
+  position: absolute;
+  inset: 0;
+  background: var(--stay-image-fallback, #d5dbe6);
+}
+
+.vrbo-v2-showcase__hero-layer.is-out {
+  z-index: 1;
+}
+
+.vrbo-v2-showcase__hero-layer.is-in {
+  z-index: 2;
+}
+
+.vrbo-v2-showcase__copy {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.vrbo-v2-showcase__copy-layer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5cqh;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.vrbo-v2-showcase__copy-layer.is-out {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.vrbo-v2-showcase__copy-layer.is-in {
+  position: relative;
+  z-index: 2;
+}
+
+.vrbo-v2-showcase__hero-layer.is-in,
+.vrbo-v2-showcase__copy-layer.is-in {
+  animation: vrbo-stay-cross-in var(--stay-crossfade, 480ms)
+    var(--stay-crossfade-ease, cubic-bezier(0.22, 1, 0.36, 1)) both;
+}
+
+.vrbo-v2-showcase__hero-layer.is-out,
+.vrbo-v2-showcase__copy-layer.is-out {
+  animation: vrbo-stay-cross-out var(--stay-crossfade, 480ms)
+    var(--stay-crossfade-ease, cubic-bezier(0.22, 1, 0.36, 1)) both;
+}
+
+@keyframes vrbo-stay-cross-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes vrbo-stay-cross-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 .vrbo-v2-showcase__thumb-img img,
@@ -4386,44 +4463,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
   color: rgba(32, 32, 32, 0.55);
 }
 
-/* ---------- celebration ---------- */
-
-.vrbo-v2-confetti {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 4;
-}
-
-.vrbo-v2-confetti span {
-  position: absolute;
-  top: -8%;
-  border-radius: calc(var(--u) * 2);
-  opacity: 0;
-  animation-name: vrbo-v2-fall;
-  animation-timing-function: cubic-bezier(0.3, 0.1, 0.4, 1);
-  animation-iteration-count: 3;
-}
-
-@keyframes vrbo-v2-fall {
-  0% {
-    top: -8%;
-    transform: translate3d(0, 0, 0) rotate(0deg);
-    opacity: 0;
-  }
-  12% {
-    opacity: 0.95;
-  }
-  100% {
-    top: 106%;
-    transform: translate3d(var(--drift, 0), 0, 0) rotate(520deg);
-    opacity: 0;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .vrbo-v2-confetti,
   .vrbo-v2-rank__spinner {
     display: none;
   }

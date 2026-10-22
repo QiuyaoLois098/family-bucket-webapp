@@ -1,5 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import copy from "../../data/vrbo-v2/copy.json";
+import { vrboMotion } from "./vrboMotion.js";
+
+const STAY_CROSSFADE_MS = 480;
 
 function StayImage({ property, className, style }) {
   const [failed, setFailed] = useState(false);
@@ -41,6 +44,77 @@ function padIndex(index) {
   return String(index + 1).padStart(2, "0");
 }
 
+function useStayCrossfade(property) {
+  const [incoming, setIncoming] = useState(property);
+  const [outgoing, setOutgoing] = useState(null);
+  const incomingRef = useRef(property);
+  const timerRef = useRef(0);
+
+  useEffect(() => {
+    if (!property) return undefined;
+    if (property.id === incomingRef.current?.id) {
+      incomingRef.current = property;
+      setIncoming(property);
+      return undefined;
+    }
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      incomingRef.current = property;
+      setIncoming(property);
+      setOutgoing(null);
+      return undefined;
+    }
+
+    const previous = incomingRef.current;
+    incomingRef.current = property;
+    setOutgoing(previous);
+    setIncoming(property);
+    window.clearTimeout(timerRef.current);
+    timerRef.current = window.setTimeout(() => {
+      setOutgoing(null);
+    }, STAY_CROSSFADE_MS);
+
+    return () => window.clearTimeout(timerRef.current);
+  }, [property]);
+
+  return { incoming, outgoing };
+}
+
+function StayDetails({ property }) {
+  const stats = [property.bedrooms, property.sleeps, `${property.nightly} / night`]
+    .filter(Boolean)
+    .join(" · ");
+  const reviews = property.thumbReviews || copy.ranking.reviewsFallback || "128 reviews";
+  const highlights =
+    property.highlightsText || (property.highlights ?? []).join(", ");
+
+  return (
+    <>
+      <div className="vrbo-v2-showcase__heading">
+        <h3 className="vrbo-v2-showcase__name">{property.name}</h3>
+        <p className="vrbo-v2-showcase__stats">{stats}</p>
+      </div>
+
+      <div className="vrbo-v2-showcase__cards">
+        <section className="vrbo-v2-showcase__card vrbo-v2-showcase__card--loved">
+          <h4>{copy.ranking.lovedByGuests || "Loved by Guests"}</h4>
+          <p className="vrbo-v2-showcase__reviews">{reviews}</p>
+          <GuestRatingBadge
+            rating={property.rating}
+            label={property.ratingLabel || copy.ranking.guestRatingLabel}
+          />
+        </section>
+
+        <section className="vrbo-v2-showcase__card vrbo-v2-showcase__card--highlights">
+          <h4>{copy.ranking.highlightsLabel}</h4>
+          <p className="vrbo-v2-showcase__highlights-text">{highlights}</p>
+        </section>
+      </div>
+    </>
+  );
+}
+
 function buildResultsHeadline(priorities = []) {
   const phrases = copy.ranking.headlinePhrases ?? {};
   const firstId = priorities[0];
@@ -75,19 +149,15 @@ export function StayShowcase({
     onPreview?.(results[0].property.id);
   }, [results, previewPropertyId, selectedPropertyId, onPreview]);
 
-  if (!results.length || !property) return null;
+  const { incoming, outgoing } = useStayCrossfade(property);
+  const fading = Boolean(outgoing);
+
+  if (!results.length || !property || !incoming) return null;
 
   function handleThumb(propertyId) {
     if (shared) return;
     onPreview?.(propertyId);
   }
-
-  const stats = [property.bedrooms, property.sleeps, `${property.nightly} / night`]
-    .filter(Boolean)
-    .join(" · ");
-  const reviews = property.thumbReviews || copy.ranking.reviewsFallback || "128 reviews";
-  const highlights =
-    property.highlightsText || (property.highlights ?? []).join(", ");
 
   return (
     <div className={`vrbo-v2-showcase${shared ? " is-shared" : ""}`}>
@@ -109,36 +179,48 @@ export function StayShowcase({
             {buildResultsHeadline(priorities)}
           </p>
         </header>
-        <StayImage
-          property={property}
+        <div
           className="vrbo-v2-showcase__hero is-scene-enter"
-          style={{ "--scene-delay": "0ms", "--scene-y": "0px", "--scene-duration": "750ms" }}
-        />
+          style={{
+            "--scene-delay": "0ms",
+            "--scene-y": "0px",
+            "--scene-duration": "750ms",
+            "--stay-crossfade": `${STAY_CROSSFADE_MS}ms`,
+            "--stay-crossfade-ease": vrboMotion.softEase,
+          }}
+        >
+          {outgoing ? (
+            <StayImage
+              property={outgoing}
+              className="vrbo-v2-showcase__hero-layer is-out"
+            />
+          ) : null}
+          <StayImage
+            property={incoming}
+            className={`vrbo-v2-showcase__hero-layer${fading ? " is-in" : ""}`}
+          />
+        </div>
       </div>
 
       <div
         className="vrbo-v2-showcase__body is-scene-enter"
-        style={{ "--scene-delay": "480ms", "--scene-y": "20px", "--scene-duration": "750ms" }}
+        style={{
+          "--scene-delay": "480ms",
+          "--scene-y": "20px",
+          "--scene-duration": "750ms",
+          "--stay-crossfade": `${STAY_CROSSFADE_MS}ms`,
+          "--stay-crossfade-ease": vrboMotion.softEase,
+        }}
       >
-        <div className="vrbo-v2-showcase__heading">
-          <h3 className="vrbo-v2-showcase__name">{property.name}</h3>
-          <p className="vrbo-v2-showcase__stats">{stats}</p>
-        </div>
-
-        <div className="vrbo-v2-showcase__cards">
-          <section className="vrbo-v2-showcase__card vrbo-v2-showcase__card--loved">
-            <h4>{copy.ranking.lovedByGuests || "Loved by Guests"}</h4>
-            <p className="vrbo-v2-showcase__reviews">{reviews}</p>
-            <GuestRatingBadge
-              rating={property.rating}
-              label={property.ratingLabel || copy.ranking.guestRatingLabel}
-            />
-          </section>
-
-          <section className="vrbo-v2-showcase__card vrbo-v2-showcase__card--highlights">
-            <h4>{copy.ranking.highlightsLabel}</h4>
-            <p className="vrbo-v2-showcase__highlights-text">{highlights}</p>
-          </section>
+        <div className="vrbo-v2-showcase__copy">
+          {outgoing ? (
+            <div className="vrbo-v2-showcase__copy-layer is-out">
+              <StayDetails property={outgoing} />
+            </div>
+          ) : null}
+          <div className={`vrbo-v2-showcase__copy-layer${fading ? " is-in" : ""}`}>
+            <StayDetails property={incoming} />
+          </div>
         </div>
       </div>
 

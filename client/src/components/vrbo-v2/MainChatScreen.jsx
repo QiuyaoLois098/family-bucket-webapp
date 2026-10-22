@@ -2,7 +2,6 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import chatScript from "../../data/vrbo-v2/chatScript.json";
 import copy from "../../data/vrbo-v2/copy.json";
 import { createMessageMotionController } from "./chatMotion.js";
-import Celebration from "./Celebration.jsx";
 import PropertyCard from "./PropertyCard.jsx";
 import useTailFitMessages from "./useTailFitMessages.js";
 
@@ -155,8 +154,6 @@ export default function MainChatScreen({
         lockFeed ? " is-feed-locked" : ""
       }`}
     >
-      <Celebration active={celebrating} />
-
       <header className="vrbo-v2-chat__masthead">
         <img
           className="vrbo-v2-chat__brand is-opening-enter"
