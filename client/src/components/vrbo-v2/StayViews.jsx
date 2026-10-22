@@ -1,5 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import copy from "../../data/vrbo-v2/copy.json";
+import {
+  buildStayHeadline,
+  buildStayHighlights,
+  featureCountsFromResults,
+  stayStatsLine,
+} from "@shared/vrboStayCopy.js";
 import { vrboMotion } from "./vrboMotion.js";
 
 const STAY_CROSSFADE_MS = 480;
@@ -80,13 +86,13 @@ function useStayCrossfade(property) {
   return { incoming, outgoing };
 }
 
-function StayDetails({ property }) {
-  const stats = [property.bedrooms, property.sleeps, `${property.nightly} / night`]
-    .filter(Boolean)
-    .join(" · ");
+function StayDetails({ property, featureCounts }) {
+  const stats = stayStatsLine(property);
   const reviews = property.thumbReviews || copy.ranking.reviewsFallback || "128 reviews";
   const highlights =
-    property.highlightsText || (property.highlights ?? []).join(", ");
+    buildStayHighlights(property, featureCounts, copy) ||
+    property.highlightsText ||
+    (property.highlights ?? []).join(", ");
 
   return (
     <>
@@ -114,15 +120,8 @@ function StayDetails({ property }) {
   );
 }
 
-function buildResultsHeadline(priorities = []) {
-  const phrases = copy.ranking.headlinePhrases ?? {};
-  const firstId = priorities[0];
-  const feature =
-    (firstId && phrases[firstId]) || copy.ranking.resultsTitleFallback || "pool days";
-  return String(copy.ranking.resultsTitle ?? "Hawaii stays for {feature}.").replaceAll(
-    "{feature}",
-    feature,
-  );
+function buildResultsHeadline(priorities = [], results = []) {
+  return buildStayHeadline(priorities, copy, results);
 }
 
 /** Display 2 — pick among the 3 recommended stays, then share to the group. */
@@ -150,6 +149,7 @@ export function StayShowcase({
 
   const { incoming, outgoing } = useStayCrossfade(property);
   const fading = Boolean(outgoing);
+  const featureCounts = featureCountsFromResults(results);
 
   if (!results.length || !property || !incoming) return null;
 
@@ -175,7 +175,7 @@ export function StayShowcase({
             className="vrbo-v2-showcase__headline is-scene-enter"
             style={{ "--scene-delay": "300ms", "--scene-y": "20px", "--scene-duration": "750ms" }}
           >
-            {buildResultsHeadline(priorities)}
+            {buildResultsHeadline(priorities, results)}
           </p>
         </header>
         <div
@@ -214,11 +214,11 @@ export function StayShowcase({
         <div className="vrbo-v2-showcase__copy">
           {outgoing ? (
             <div className="vrbo-v2-showcase__copy-layer is-out">
-              <StayDetails property={outgoing} />
+              <StayDetails property={outgoing} featureCounts={featureCounts} />
             </div>
           ) : null}
           <div className={`vrbo-v2-showcase__copy-layer${fading ? " is-in" : ""}`}>
-            <StayDetails property={incoming} />
+            <StayDetails property={incoming} featureCounts={featureCounts} />
           </div>
         </div>
       </div>

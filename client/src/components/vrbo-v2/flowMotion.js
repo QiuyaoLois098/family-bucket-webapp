@@ -306,20 +306,13 @@ export function createMessageMotionController() {
       if (!root) return;
       const list = messages ?? [];
 
+      // Restart / empty feed: forget prior ids so reused m1/m2 can enter again.
+      if (list.length === 0) {
+        seen.clear();
+      }
+
       if (!seeded) {
-        // Only seed ids that are actually mounted. Missing nodes must animate later.
-        list.forEach((message) => {
-          const node = root.querySelector(`[data-msg-id="${message.id}"]`);
-          if (!node) return;
-          seen.add(message.id);
-          revealMessageNode(node);
-        });
         seeded = true;
-        typingOn = Boolean(opts.typing);
-        if (typingOn) {
-          revealMessageNode(root.querySelector("[data-msg-typing]"));
-        }
-        return;
       }
 
       list.forEach((message) => {

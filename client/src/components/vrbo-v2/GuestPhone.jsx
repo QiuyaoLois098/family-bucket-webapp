@@ -2,9 +2,11 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import chatScript from "../../data/vrbo-v2/chatScript.json";
 import copy from "../../data/vrbo-v2/copy.json";
 import users from "../../data/vrbo-v2/users.json";
+import { assembleGuestParts, partsToText, sharedPhraseBank } from "@shared/vrboChatCopy.js";
 import { createMessageMotionController } from "./chatMotion.js";
 import PreferenceCard from "./PreferenceCard.jsx";
 import PropertyCard from "./PropertyCard.jsx";
+import RichChatText from "./RichChatText.jsx";
 import useTailFitMessages from "./useTailFitMessages.js";
 
 const guests = users.filter((user) => user.role === "guest");
@@ -136,13 +138,26 @@ function authorLabel(user, { isSelf = false } = {}) {
   return user.name;
 }
 
-function PhoneBubble({ user, text, isSelf = false }) {
+function PhoneBubble({
+  user,
+  text,
+  parts,
+  isSelf = false,
+  sharedIds,
+  phraseBank,
+}) {
   return (
     <div className={`vrbo-v2-phone__msg${isSelf ? " is-self" : ""}`}>
       {!isSelf ? <PhoneAvatar user={user} /> : null}
       <div className={`vrbo-v2-phone__bubble${isSelf ? " is-self" : ""}`}>
         <p className="vrbo-v2-phone__bubble-author">{authorLabel(user, { isSelf })}</p>
-        <p className="vrbo-v2-phone__bubble-text">{text}</p>
+        <RichChatText
+          className="vrbo-v2-phone__bubble-text"
+          text={text}
+          parts={parts}
+          sharedIds={sharedIds}
+          phraseBank={phraseBank}
+        />
       </div>
       {isSelf ? <PhoneAvatar user={user} /> : null}
     </div>
@@ -157,11 +172,15 @@ function MessageFeed({
   live = false,
   selfId,
   afterMessages = null,
+  sharedIds,
+  phraseBank,
   lockOverflow = false,
 }) {
   const feedRef = useRef(null);
   const motionRef = useRef(null);
-  if (motionRef.current == null) motionRef.current = createMessageMotionController();
+  if (motionRef.current == null) {
+    motionRef.current = createMessageMotionController();
+  }
   const baseMessages = live
     ? messages ?? []
     : (messages ?? []).filter((message) => message.kind !== "property").slice(-6);
@@ -225,7 +244,14 @@ function MessageFeed({
             data-tail-fit-row=""
             className={`vrbo-v2-phone__msg-wrap${isSelf ? " is-self" : ""}${exitClass}`}
           >
-            <PhoneBubble user={author} text={message.text} isSelf={isSelf} />
+            <PhoneBubble
+              user={author}
+              text={message.text}
+              parts={message.parts}
+              isSelf={isSelf}
+              sharedIds={sharedIds}
+              phraseBank={phraseBank}
+            />
           </div>
         );
       })}
@@ -279,6 +305,7 @@ export default function GuestPhone({
   propertyLookup,
   selectedPropertyId = null,
   celebrating = false,
+  sharedPriorityIds = [],
   onJoin,
   onToggle,
   onSubmit,
@@ -309,15 +336,16 @@ export default function GuestPhone({
       : "select";
   const atLimit = selection.length >= max;
   const canSend = selection.length === max;
-  const draftLines = selection
-    .map((id) => {
-      const preference = preferenceById.get(id);
-      if (!preference) return null;
-      const text =
-        preference.chatLines?.[user.id] ?? preference.chatLine ?? preference.label;
-      return { id, text };
-    })
-    .filter(Boolean);
+  const draftParts = assembleGuestParts(user.id, selection, preferences, copy);
+  const draftText = partsToText(draftParts);
+  const sharedIds = useMemo(
+    () => new Set(sharedPriorityIds ?? []),
+    [sharedPriorityIds],
+  );
+  const phraseBank = useMemo(
+    () => (sharedIds.size ? sharedPhraseBank([...sharedIds], preferences, copy) : []),
+    [sharedIds, preferences],
+  );
 
   const namedUserById = useMemo(
     () =>
@@ -443,7 +471,7 @@ export default function GuestPhone({
                   }}
                 >
                   {fill(copy.phone.selectedReview, {
-                    count: draftLines.length,
+                    count: selection.length,
                     max,
                   })}
                 </p>
@@ -451,7 +479,7 @@ export default function GuestPhone({
 
               <div
                 className={`vrbo-v2-phone__composer is-stage-enter ${
-                  draftLines.length ? "has-draft" : ""
+                  draftText ? "has-draft" : ""
                 }`}
                 style={{
                   "--stage-delay": "1120ms",
@@ -462,12 +490,12 @@ export default function GuestPhone({
                 <div className="vrbo-v2-phone__composer-row">
                   <div
                     className={`vrbo-v2-phone__composer-field ${
-                      draftLines.length ? "is-filled" : ""
+                      draftText ? "is-filled" : ""
                     }`}
                   >
-                    {draftLines.length ? (
+                    {draftText ? (
                       <p className="vrbo-v2-phone__draft-line">
-                        {draftLines.map((line) => line.text).join(" ")}
+                        {draftText}
                       </p>
                     ) : (
                       <span>{copy.phone.composerPlaceholder}</span>
@@ -499,6 +527,8 @@ export default function GuestPhone({
                 propertyLookup={propertyLookup}
                 selfId={user.id}
                 live
+                sharedIds={sharedIds}
+                phraseBank={phraseBank}
                 lockOverflow={Boolean(celebrating || selectedPropertyId)}
                 afterMessages={
                   selectedPropertyId ? null : (

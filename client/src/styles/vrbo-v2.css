@@ -666,9 +666,17 @@
   max-width: 100%;
 }
 
-/* Message enter/exit driven by flowMotion.js (handoff arrive / message / fadeOut).
-   Do NOT CSS-hold opacity here — a missed data-motion-enter leaves bubbles invisible forever.
-   useLayoutEffect applies the first animation frame before paint. */
+/* Hold new bubbles invisible until flowMotion marks data-motion-enter. */
+
+.vrbo-v2-chat__row[data-msg-id]:not([data-motion-enter]) .vrbo-v2-chat__avatar,
+.vrbo-v2-chat__row[data-msg-id]:not([data-motion-enter]) .vrbo-v2-chat__bubble,
+.vrbo-v2-chat__row[data-msg-id]:not([data-motion-enter]) .vrbo-v2-chat__card,
+.vrbo-v2-chat__typing[data-msg-typing]:not([data-motion-enter]),
+.vrbo-v2-phone__property[data-msg-id]:not([data-motion-enter]),
+.vrbo-v2-phone__msg-wrap[data-msg-id]:not([data-motion-enter]),
+.vrbo-v2-phone__typing[data-msg-typing]:not([data-motion-enter]) {
+  opacity: 0;
+}
 
 .vrbo-v2-chat__row.is-exit,
 .vrbo-v2-phone__property.is-exit,
@@ -754,6 +762,11 @@
   line-height: 1.28;
   letter-spacing: -0.01em;
   white-space: pre-line;
+}
+
+.vrbo-v2-chat__text strong,
+.vrbo-v2-phone__bubble-text strong {
+  font-weight: 700;
 }
 
 .vrbo-v2-chat__row--coordinator .vrbo-v2-chat__bubble {

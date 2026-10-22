@@ -179,6 +179,7 @@ function VrboDemo() {
       propertyLookup={propertyLookup}
       selectedPropertyId={selectedPropertyId}
       celebrating={celebrating}
+      sharedPriorityIds={state.sharedPriorityIds}
       onJoin={actions.joinGuest}
       onToggle={actions.togglePreference}
       onSubmit={actions.submitGuest}
@@ -231,6 +232,8 @@ function VrboDemo() {
                   joined={joined}
                   submitted={submitted}
                   displayNames={displayNames}
+                  sharedPriorityIds={state.sharedPriorityIds}
+                  runId={runId}
                 />
               </div>
             </section>
@@ -325,6 +328,8 @@ export function VrboLeftPage({ compareLayout = false } = {}) {
         joined={state.joined}
         submitted={state.submitted ?? {}}
         displayNames={state.displayNames ?? {}}
+        sharedPriorityIds={state.sharedPriorityIds}
+        runId={state.runId}
       />
     </ScaledDisplayCanvas>
   );
@@ -483,6 +488,7 @@ export function GuestPhonePage({ guestId, compareLayout = false } = {}) {
       propertyLookup={propertyLookup}
       selectedPropertyId={selectedPropertyId}
       celebrating={celebrating}
+      sharedPriorityIds={state.sharedPriorityIds}
       onJoin={actions.joinGuest}
       onToggle={actions.togglePreference}
       onSubmit={actions.submitGuest}

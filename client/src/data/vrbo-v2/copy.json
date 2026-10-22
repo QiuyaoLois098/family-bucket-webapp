@@ -21,7 +21,12 @@
     "footerPlanning": "Your group is planning...",
     "waitingGuests": "Waiting for guests to join…",
     "groupPlannerLabel": "Primary planner",
-    "joinedToast": "{name} joined the chat."
+    "joinedToast": "{name} joined the chat.",
+    "smsConnectors": {
+      "sarah": "and",
+      "alex": "and",
+      "chris": "plus"
+    }
   },
   "ranking": {
     "waitingTitle": "Great trips start with a conversation",
@@ -33,16 +38,16 @@
     "waitingSubtitle": "Your group is planning...",
     "waitingHero": "/images/Vrbo-Images/waiting-hero.png",
     "loadingTitle": "Pulling it all together",
-    "loadingSubtitle": "Everyone's in - writing your group summary...",
+    "loadingSubtitle": "Everyone's in. Writing your group summary...",
     "loadingHint": "Hang tight for a moment",
     "searchLoadingTitle": "Finding the right stay",
     "searchLoadingSubtitle": "Looking for homes that fit what everyone asked for...",
     "searchLoadingHint": "This only takes a moment",
-    "resultsTitle": "Hawaii stays for {feature}.",
-    "resultsTitleFallback": "pool days",
+    "resultsTitle": "{feature}",
+    "resultsTitleFallback": "Hawaii homes for private pool days",
     "resultsSubtitle": "Top picks matched to what your group asked for.",
     "resultsHint": "Tap a stay to preview. Anyone can select and share.",
-    "resultsPickedSubtitle": "Shared to the trip - watch Display 1",
+    "resultsPickedSubtitle": "Shared to the trip. Watch Display 1",
     "resultsDisclaimer": "Fictional demo stays. Illustrative prices and ratings.",
     "share": "Share this stay to the group",
     "shared": "Shared to the group",
@@ -54,14 +59,48 @@
     "guestRatingLabel": "Guest Rating",
     "matchLabel": "match",
     "headlinePhrases": {
-      "private-pool": "pool days",
-      "outdoor-dining": "dinners outside",
-      "near-beach": "beach time",
-      "wifi": "easy wifi",
-      "fire-pit": "fire pit nights",
-      "hot-tub": "hot tub evenings",
-      "air-conditioning": "cool rooms",
-      "big-kitchen": "big kitchen mornings"
+      "private-pool": "Hawaii homes for private pool days",
+      "outdoor-dining": "Hawaii homes for al fresco dining",
+      "near-beach": "Hawaii homes near the beach",
+      "wifi": "Hawaii homes for staying in touch",
+      "fire-pit": "Hawaii homes for fireside evenings",
+      "hot-tub": "Hawaii homes for a relaxing soak",
+      "air-conditioning": "Hawaii homes with cooling comfort",
+      "big-kitchen": "Hawaii homes for cooking together"
+    },
+    "featureCopy": {
+      "private-pool": {
+        "lead": "A private pool for everyone to enjoy",
+        "supporting": "a private pool for easy downtime"
+      },
+      "outdoor-dining": {
+        "lead": "Outdoor dining for the whole group",
+        "supporting": "outdoor dining for the group"
+      },
+      "near-beach": {
+        "lead": "Easy beach days with the shore close by",
+        "supporting": "a nearby beach"
+      },
+      "wifi": {
+        "lead": "Wi-Fi to keep the whole group connected",
+        "supporting": "Wi-Fi for staying connected"
+      },
+      "fire-pit": {
+        "lead": "A fire pit for evenings together",
+        "supporting": "a fire pit for evening chats"
+      },
+      "hot-tub": {
+        "lead": "A hot tub for relaxing after a day out",
+        "supporting": "a hot tub for winding down"
+      },
+      "air-conditioning": {
+        "lead": "Air conditioning for cool, restful nights",
+        "supporting": "air conditioning for cool nights"
+      },
+      "big-kitchen": {
+        "lead": "A big kitchen for making group breakfasts",
+        "supporting": "a big kitchen for making group breakfasts"
+      }
     }
   },
   "summary": {
@@ -73,13 +112,13 @@
     "destination": "Hawaii",
     "phrases": {
       "private-pool": "a private pool",
-      "outdoor-dining": "an outdoor dining space",
-      "near-beach": "a spot near the beach",
-      "wifi": "reliable wifi",
-      "fire-pit": "a fire pit for evenings",
+      "outdoor-dining": "outdoor space",
+      "near-beach": "a nearby beach",
+      "wifi": "Wi-Fi",
+      "fire-pit": "a fire pit",
       "hot-tub": "a hot tub",
-      "air-conditioning": "air conditioning",
-      "big-kitchen": "a big kitchen for breakfast"
+      "air-conditioning": "AC",
+      "big-kitchen": "a big kitchen"
     }
   },
   "stayPicker": {

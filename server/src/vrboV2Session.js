@@ -3,7 +3,15 @@ import { EventEmitter } from "events";
 import { readFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import {
+  assembleGuestParts,
+  buildGroupRequest,
+  buildJamieParts,
+  partsToText,
+  pickSharedPriorities,
+} from "../../shared/vrboChatCopy.js";
 import { recommendPropertySet } from "../../shared/vrboRecommendPropertySet.js";
+import { applyStayCopy, countFeatureSelections } from "../../shared/vrboStayCopy.js";
 import { config } from "./config.js";
 import {
   HYPERION_STATIONS,
@@ -45,32 +53,15 @@ function emptyMap(value) {
   return guests.reduce((map, user) => ({ ...map, [user.id]: value() }), {});
 }
 
-function listPhrase(items) {
-  if (!items.length) return "everything the group asked for";
-  if (items.length === 1) return items[0];
-  if (items.length === 2) return `${items[0]} and ${items[1]}`;
-  return `${items.slice(0, -1).join(", ")}, and ${items.at(-1)}`;
+function submittedLists(submitted, joined) {
+  return guests
+    .filter((user) => Boolean(joined[user.id]) && submitted[user.id])
+    .map((user) => submitted[user.id] ?? []);
 }
 
-function buildSummaryText(priorities) {
-  const phrases = copy.summary?.phrases ?? {};
-  const destination = copy.summary?.destination ?? "Hawaii";
-  const parts = priorities
-    .slice(0, 4)
-    .map((id) => phrases[id] ?? preferenceById.get(id)?.label?.toLowerCase())
-    .filter(Boolean);
-
-  if (!parts.length) {
-    return `Let's find a ${destination} stay the whole group will love.`;
-  }
-
-  if (parts.length === 1) {
-    return `Let's find a ${destination} stay with ${parts[0]}.`;
-  }
-
-  const lead = parts.slice(0, -1);
-  const last = parts.at(-1);
-  return `Let's find a ${destination} stay with ${listPhrase(lead)}. ${last.charAt(0).toUpperCase()}${last.slice(1)} would be great too.`;
+function buildSummaryText(submitted, joined) {
+  const counts = countFeatureSelections(submittedLists(submitted, joined));
+  return buildGroupRequest(counts, copy);
 }
 
 function formatReasons(matched) {
@@ -123,6 +114,7 @@ function createInitialState(runId = 0) {
     submitted: emptyMap(() => null),
     priorities: [],
     summaryText: "",
+    sharedPriorityIds: [],
     results: [],
     previewPropertyId: null,
     selectedPropertyId: null,
@@ -270,7 +262,7 @@ export class VrboV2Session extends EventEmitter {
 
   makeMessage(message) {
     this.messageCounter += 1;
-    return { id: `m${this.messageCounter}`, kind: "text", ...message };
+    return { id: `m${this.state.runId}-${this.messageCounter}`, kind: "text", ...message };
   }
 
   clearTimers() {
@@ -359,18 +351,23 @@ export class VrboV2Session extends EventEmitter {
     if (picks.length !== copy.maxSelections) return;
 
     this.noteActivity();
+    const nextSubmitted = { ...this.state.submitted, [userId]: picks };
+    const joinedUsers = guests.filter((user) => Boolean(this.state.joined[user.id]));
+    const allSubmitted =
+      joinedUsers.length >= 2 &&
+      joinedUsers.every((user) => Boolean(nextSubmitted[user.id]));
+    const counts = countFeatureSelections(submittedLists(nextSubmitted, this.state.joined));
+    const sharedPriorityIds = allSubmitted ? pickSharedPriorities(counts) : [];
+
     this.patch({
-      submitted: { ...this.state.submitted, [userId]: picks },
+      submitted: nextSubmitted,
+      sharedPriorityIds,
     });
     this.maybeOpenSummary();
 
     const fadeMs = getChatScript().preference?.introFadeMs ?? 420;
-    const text = picks
-      .map((preferenceId) => {
-        const preference = preferenceById.get(preferenceId);
-        return preference?.chatLines?.[userId] ?? preference?.chatLine ?? preferenceId;
-      })
-      .join("\n");
+    const parts = assembleGuestParts(userId, picks, preferences, copy);
+    const text = partsToText(parts);
 
     const hasIntro = this.state.messages.some((message) => message.phase === "intro");
 
@@ -386,6 +383,7 @@ export class VrboV2Session extends EventEmitter {
           this.makeMessage({
             authorId: userId,
             text,
+            parts,
             preferenceIds: picks,
             phase: "preference",
           }),
@@ -430,11 +428,29 @@ export class VrboV2Session extends EventEmitter {
       if (!stillReady) return;
 
       const priorities = aggregatePreferences(this.state.submitted, this.state.joined);
+      const counts = countFeatureSelections(
+        submittedLists(this.state.submitted, this.state.joined),
+      );
+      const sharedPriorityIds = pickSharedPriorities(counts);
+      const jamieParts = buildJamieParts(sharedPriorityIds, copy);
+      const messages = [...this.state.messages];
+      if (jamieParts) {
+        messages.push(
+          this.makeMessage({
+            authorId: "jamie",
+            text: partsToText(jamieParts),
+            parts: jamieParts,
+            phase: "planner",
+          }),
+        );
+      }
       this.patch({
         stage: "summary",
         priorities,
-        summaryText: buildSummaryText(priorities),
+        summaryText: buildSummaryText(this.state.submitted, this.state.joined),
+        sharedPriorityIds,
         typing: [],
+        messages,
       });
     }, settle);
   }
@@ -457,9 +473,13 @@ export class VrboV2Session extends EventEmitter {
         .filter((user) => Boolean(this.state.joined[user.id]) && this.state.submitted[user.id])
         .map((user) => this.state.submitted[user.id] ?? []);
 
-      const results = recommendPropertySet(properties, guestSelections, {
-        resultBadges: rankingWeights.resultBadges,
-      });
+      const results = applyStayCopy(
+        recommendPropertySet(properties, guestSelections, {
+          resultBadges: rankingWeights.resultBadges,
+        }),
+        guestSelections,
+        copy,
+      );
 
       this.patch({
         stage: "results",

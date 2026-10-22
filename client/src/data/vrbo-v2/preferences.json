@@ -5,9 +5,9 @@
     "icon": "🏊",
     "image": "/images/Vrbo-Images/Preferences/Private-Pool.png",
     "chatLines": {
-      "chris": "A private pool would save us packing up for every swim.",
       "sarah": "a pool we don't have to share would be AMAZING 🏊",
-      "alex": "I want a private pool. My vacation schedule is mostly floating."
+      "alex": "a private pool, please. I'd rather not work around pool opening hours.",
+      "chris": "a pool just for us? i'm getting in before we unpack"
     }
   },
   {
@@ -16,9 +16,9 @@
     "icon": "🍽️",
     "image": "/images/Vrbo-Images/Preferences/Outdoor-Dining.png",
     "chatLines": {
-      "chris": "An outdoor dining space would make group dinners much easier.",
-      "sarah": "dinner outside together every night.",
-      "alex": "Outdoor dining, please. Eating indoors feels like homework."
+      "sarah": "dinner outside together every night",
+      "alex": "I'd like outdoor dining so we can all sit down for meals.",
+      "chris": "outdoor dining is a must"
     }
   },
   {
@@ -27,9 +27,9 @@
     "icon": "🏖️",
     "image": "/images/Vrbo-Images/Preferences/Near-Beach.png",
     "chatLines": {
-      "chris": "Being near the beach means less gear to haul in the car.",
-      "sarah": "also close enough to the beach so we don't have to drive 🌊",
-      "alex": "Near the beach, please. Less travel, more towel time."
+      "sarah": "close enough to the beach so we don't have to drive 🌊",
+      "alex": "near the beach, please. I'd rather not need the car every time.",
+      "chris": "beach close by so i can go back for one more swim"
     }
   },
   {
@@ -38,9 +38,9 @@
     "icon": "📶",
     "image": "/images/Vrbo-Images/Preferences/Wifi.png",
     "chatLines": {
-      "chris": "Solid wifi would help if anyone needs to check in from home.",
-      "sarah": "Good wifi would be lovely for photo dumps and quick calls 📱",
-      "alex": "Wifi, please. Even paradise needs a loading bar sometimes."
+      "sarah": "good WiFi so we can send all the beach photos 📱",
+      "alex": "the WiFi needs to work, I might have to hop on a few calls.",
+      "chris": "WiFi so i can send the beach pics and make everyone jealous"
     }
   },
   {
@@ -49,9 +49,9 @@
     "icon": "🔥",
     "image": "/images/Vrbo-Images/Preferences/Fire-Pit.png",
     "chatLines": {
-      "chris": "A fire pit would be a simple plan for cooler evenings.",
-      "sarah": "S’mores by a fire pit would feel so cozy 🔥",
-      "alex": "A fire pit, please. Staring at flames counts as plans."
+      "sarah": "a fire pit for late-night chats would be SO good 🔥",
+      "alex": "a fire pit would be good for sitting outside after dinner.",
+      "chris": "fire pit for nighttime hangs 🔥"
     }
   },
   {
@@ -60,9 +60,9 @@
     "icon": "♨️",
     "image": "/images/Vrbo-Images/Preferences/Private-Pool.png",
     "chatLines": {
-      "chris": "A hot tub would be a nice unwind after long beach days.",
-      "sarah": "A hot tub after sunset sounds absolutely dreamy ♨️",
-      "alex": "Hot tub, please. My shoulders already filed the request."
+      "sarah": "a hot tub after a beach day sounds perfect ✨",
+      "alex": "a hot tub would be good after a long day out.",
+      "chris": "if there's a hot tub i will never leave it"
     }
   },
   {
@@ -71,9 +71,9 @@
     "icon": "❄️",
     "image": "/images/Vrbo-Images/Preferences/Air-Conditioning.png",
     "chatLines": {
-      "chris": "Air conditioning would keep everyone comfortable after hot days.",
-      "sarah": "AC is a must for me — cool rooms make better sleep ❄️",
-      "alex": "Air conditioning, please. I’m on vacation, not a sauna tour."
+      "sarah": "AC please, cool rooms after a sunny day would feel SO good",
+      "alex": "AC is non-negotiable!",
+      "chris": "AC so i can actually sleep instead of melting all night"
     }
   },
   {
@@ -82,9 +82,9 @@
     "icon": "🍳",
     "image": "/images/Vrbo-Images/Preferences/Big-Kitchen.png",
     "chatLines": {
-      "chris": "A big kitchen would make breakfast at home much easier.",
-      "sarah": "Vacation pancakes need a big kitchen — it’s on my list!",
-      "alex": "A big kitchen, please. Vacation breakfast is serious business."
+      "sarah": "a big kitchen for pancakes together in the morning 🥞",
+      "alex": "kitchen big enough that we're not all tripping over each other.",
+      "chris": "a big kitchen so we can go all out on breakfast"
     }
   }
 ]

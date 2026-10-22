@@ -22,7 +22,7 @@
     "reactions": [
       {
         "authorId": "sarah",
-        "text": "You're a magician - {name} is perfect",
+        "text": "You're a magician. {name} is perfect",
         "pause": 900,
         "typing": 700
       },

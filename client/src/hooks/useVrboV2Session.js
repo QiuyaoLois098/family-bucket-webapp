@@ -16,6 +16,7 @@ const EMPTY_STATE = {
   submitted: Object.fromEntries(guests.map((user) => [user.id, null])),
   priorities: [],
   summaryText: "",
+  sharedPriorityIds: [],
   results: [],
   previewPropertyId: null,
   selectedPropertyId: null,

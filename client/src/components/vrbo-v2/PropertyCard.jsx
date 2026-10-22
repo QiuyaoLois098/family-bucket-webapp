@@ -1,6 +1,7 @@
 import { useState } from "react";
 import copy from "../../data/vrbo-v2/copy.json";
 import preferences from "../../data/vrbo-v2/preferences.json";
+import { stayStatsLine } from "@shared/vrboStayCopy.js";
 
 const preferenceById = new Map(preferences.map((preference) => [preference.id, preference]));
 
@@ -17,8 +18,7 @@ function PropertyImage({ property }) {
 }
 
 function chatMetaLine(property) {
-  const price = property.nightly ? `${property.nightly} / night` : null;
-  return [property.bedrooms, property.sleeps, price].filter(Boolean).join(" · ");
+  return stayStatsLine(property);
 }
 
 export default function PropertyCard({
@@ -98,7 +98,7 @@ export default function PropertyCard({
         ) : null}
         <p className="vrbo-v2-property__meta">
           <span>{property.nightly} / night</span>
-          <span>{property.sleeps}</span>
+          <span>{property.beds || property.sleeps}</span>
         </p>
       </div>
       {badge ? <span className="vrbo-v2-property__badge">{badge}</span> : null}

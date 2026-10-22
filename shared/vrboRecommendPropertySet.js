@@ -26,43 +26,65 @@ export function recommendPropertySet(properties, guestSelections, options = {}) 
 
   if (!properties?.length || !lists.length) return [];
 
+  const groupFeatureSet = new Set();
+  lists.forEach((picks) => {
+    picks.forEach((featureId) => groupFeatureSet.add(featureId));
+  });
+
   const combos = chooseK(properties, 3);
-  const scored = [];
 
-  for (const combo of combos) {
-    const covered = new Set();
-    combo.forEach((property) => {
-      (property.features ?? []).forEach((featureId) => covered.add(featureId));
-    });
+  function scoreCombos(requireSharedMatch) {
+    const next = [];
+    for (const combo of combos) {
+      if (
+        requireSharedMatch &&
+        combo.some(
+          (property) =>
+            !(property.features ?? []).some((featureId) => groupFeatureSet.has(featureId)),
+        )
+      ) {
+        continue;
+      }
 
-    const guestCoverages = lists.map(
-      (picks) => picks.filter((featureId) => covered.has(featureId)).length,
-    );
+      const covered = new Set();
+      combo.forEach((property) => {
+        (property.features ?? []).forEach((featureId) => covered.add(featureId));
+      });
 
-    // Every guest must have at least one of their picks represented.
-    if (guestCoverages.some((count) => count === 0)) continue;
+      const guestCoverages = lists.map(
+        (picks) => picks.filter((featureId) => covered.has(featureId)).length,
+      );
 
-    const minGuestCoverage = Math.min(...guestCoverages);
-    const totalGuestCoverage = guestCoverages.reduce((sum, count) => sum + count, 0);
+      // Every guest must have at least one of their picks represented.
+      if (guestCoverages.some((count) => count === 0)) continue;
 
-    // Unique covered features: points = how many guests selected that feature.
-    let groupPreferenceScore = 0;
-    covered.forEach((featureId) => {
-      const fans = lists.filter((picks) => picks.includes(featureId)).length;
-      groupPreferenceScore += fans;
-    });
+      const minGuestCoverage = Math.min(...guestCoverages);
+      const totalGuestCoverage = guestCoverages.reduce((sum, count) => sum + count, 0);
 
-    scored.push({
-      combo,
-      minGuestCoverage,
-      groupPreferenceScore,
-      totalGuestCoverage,
-    });
+      // Unique covered features: points = how many guests selected that feature.
+      let groupPreferenceScore = 0;
+      covered.forEach((featureId) => {
+        const fans = lists.filter((picks) => picks.includes(featureId)).length;
+        groupPreferenceScore += fans;
+      });
+
+      next.push({
+        combo,
+        minGuestCoverage,
+        groupPreferenceScore,
+        totalGuestCoverage,
+      });
+    }
+    return next;
   }
 
-  if (!scored.length) return [];
+  // Each stay should match at least one group-selected priority; fall back if none do.
+  const scored = scoreCombos(true);
+  const ranked = scored.length ? scored : scoreCombos(false);
 
-  scored.sort((a, b) => {
+  if (!ranked.length) return [];
+
+  ranked.sort((a, b) => {
     if (b.minGuestCoverage !== a.minGuestCoverage) {
       return b.minGuestCoverage - a.minGuestCoverage;
     }
@@ -72,7 +94,7 @@ export function recommendPropertySet(properties, guestSelections, options = {}) 
     return b.totalGuestCoverage - a.totalGuestCoverage;
   });
 
-  const winner = scored[0];
+  const winner = ranked[0];
   const groupFeatureCounts = new Map();
   lists.forEach((picks) => {
     picks.forEach((featureId) => {
@@ -85,7 +107,7 @@ export function recommendPropertySet(properties, guestSelections, options = {}) 
     const aHits = (a.features ?? []).filter((id) => groupFeatureCounts.has(id)).length;
     const bHits = (b.features ?? []).filter((id) => groupFeatureCounts.has(id)).length;
     if (bHits !== aHits) return bHits - aHits;
-    return String(a.id).localeCompare(String(b.id));
+    return (a.order ?? a.id ?? 0) - (b.order ?? b.id ?? 0);
   });
 
   const maxPerGuest = Math.max(...lists.map((picks) => picks.length), 1);

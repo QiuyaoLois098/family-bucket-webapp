@@ -1,8 +1,11 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import chatScript from "../../data/vrbo-v2/chatScript.json";
 import copy from "../../data/vrbo-v2/copy.json";
+import preferences from "../../data/vrbo-v2/preferences.json";
+import { sharedPhraseBank } from "@shared/vrboChatCopy.js";
 import { createMessageMotionController } from "./chatMotion.js";
 import PropertyCard from "./PropertyCard.jsx";
+import RichChatText from "./RichChatText.jsx";
 import useTailFitMessages from "./useTailFitMessages.js";
 
 const JOIN_TOAST_MS = 2800;
@@ -38,13 +41,19 @@ export default function MainChatScreen({
   joined = {},
   submitted = {},
   displayNames = {},
+  sharedPriorityIds = [],
+  runId = 0,
 }) {
   const feedRef = useRef(null);
   const motionRef = useRef(null);
   const seenJoinedRef = useRef(null);
   const joinToastTimerRef = useRef(0);
   const [joinToast, setJoinToast] = useState(null);
-  if (motionRef.current == null) motionRef.current = createMessageMotionController();
+  const motionRunIdRef = useRef(runId);
+  if (motionRef.current == null || motionRunIdRef.current !== runId) {
+    motionRunIdRef.current = runId;
+    motionRef.current = createMessageMotionController();
+  }
 
   const lockFeed =
     Boolean(celebrating) ||
@@ -105,7 +114,8 @@ export default function MainChatScreen({
       (message.authorId === "jamie" &&
         message.kind !== "property" &&
         !message.preferenceIds?.length &&
-        message.phase !== "finale"),
+        message.phase !== "finale" &&
+        message.phase !== "planner"),
   );
   const hasPreferenceOrFinale = (messages ?? []).some(
     (message) =>
@@ -118,6 +128,11 @@ export default function MainChatScreen({
   const idleTypingUsers = guestUsers.slice(0, 2);
   const typingRowUsers = typingUsers.length ? typingUsers : showIdleTyping ? idleTypingUsers : [];
   const plannerLabel = copy.chat.groupPlannerLabel || "Primary planner";
+  const sharedIds = useMemo(() => new Set(sharedPriorityIds ?? []), [sharedPriorityIds]);
+  const phraseBank = useMemo(
+    () => (sharedIds.size ? sharedPhraseBank([...sharedIds], preferences, copy) : []),
+    [sharedIds],
+  );
   // No guests yet → waiting copy; each join appends: Jamie, Sarah, Alex…
   const peopleLine =
     guestsJoined === 0
@@ -197,7 +212,13 @@ export default function MainChatScreen({
                     <Avatar user={user} />
                     <div className="vrbo-v2-chat__bubble">
                       <span className="vrbo-v2-chat__author">{authorLabel(user)}</span>
-                      <p className="vrbo-v2-chat__text">{message.text}</p>
+                      <RichChatText
+                        className="vrbo-v2-chat__text"
+                        text={message.text}
+                        parts={message.parts}
+                        sharedIds={sharedIds}
+                        phraseBank={phraseBank}
+                      />
                     </div>
                   </>
                 )}
