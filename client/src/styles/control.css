@@ -1586,9 +1586,9 @@
   width: 100%;
   height: 100%;
   min-height: 0;
-  padding: 1.1% 1.8%;
+  padding: 1.2% 3.3%;
   overflow: hidden;
-  border-radius: calc(var(--u) * 24);
+  border-radius: calc(var(--u) * 30);
   background: var(--schedule-card-bg);
   color: #191e3b;
   /* Handoff final sequence: 1.2s enter, 0.8s stagger via inline delay */
@@ -1601,7 +1601,7 @@
   max-height: 100%;
   aspect-ratio: 1;
   width: auto;
-  border-radius: calc(var(--u) * 18);
+  border-radius: calc(var(--u) * 28);
   background-color: #d9dadf;
   background-size: cover;
   background-position: center;
