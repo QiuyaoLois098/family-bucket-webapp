@@ -86,19 +86,23 @@ export default function BriefingStep({ destinationId, onContinue }) {
       >
         <GrowingBubble text={intro} visible={showBubble} />
 
-        <div className={`briefing__stay${showStay && !exiting ? " is-visible" : ""}`}>
+        <article
+          className={`question__place-card briefing__stay${showStay && !exiting ? " is-visible" : ""}`}
+        >
           <div
-            className="briefing__stay-thumb"
+            className="question__place-thumb"
             style={thumb ? { backgroundImage: `url(${thumb})` } : undefined}
             role="img"
             aria-hidden="true"
           />
-          <div className="briefing__stay-copy">
-            <p className="briefing__stay-name">{introChip.title}</p>
-            <p className="briefing__stay-meta">{introChip.subtitle}</p>
-            <span className="briefing__stay-badge">{introChip.chipText}</span>
+          <div className="question__place-copy">
+            <p className="question__place-title">{introChip.title}</p>
+            <p className="question__place-meta">{introChip.subtitle}</p>
+            {introChip.chipText ? (
+              <span className="question__place-badge">{introChip.chipText}</span>
+            ) : null}
           </div>
-        </div>
+        </article>
 
         {thinking !== "hidden" ? (
           <p

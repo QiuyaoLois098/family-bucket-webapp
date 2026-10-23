@@ -15,7 +15,7 @@ const char* password = "thirstybox961";
 // ================================
 // UDP
 // ================================
-// IPAddress pcIP(192, 168, 128, 137);
+// IPAddress pcIP(192, 168, 128, 120);
 IPAddress pcIP(192, 168, 1, 6);
 const int pcPort = 41234;
 
