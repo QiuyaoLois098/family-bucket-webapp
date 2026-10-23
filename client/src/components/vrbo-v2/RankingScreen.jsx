@@ -34,20 +34,6 @@ function useTypewriter(text) {
   return shown;
 }
 
-function formatListeningLine(names) {
-  if (names.length === 0) return "Listening...";
-  if (names.length === 1) return `Listening to ${names[0]}...`;
-  if (names.length === 2) return `Listening to ${names[0]} and ${names[1]}...`;
-  return `Listening to ${names.slice(0, -1).join(", ")}, and ${names[names.length - 1]}...`;
-}
-
-function buildListeningLine(joined = {}, displayNames = {}) {
-  const names = users
-    .filter((user) => user.role === "coordinator" || Boolean(joined[user.id]))
-    .map((user) => displayNames[user.id] || user.name);
-  return formatListeningLine(names);
-}
-
 function WaitingPanel({
   ready,
   title = copy.ranking.loadingTitle,
@@ -78,10 +64,7 @@ export function SummaryPanel({
   summaryText,
   onSearch,
   compact = false,
-  joined = {},
-  displayNames = {},
 }) {
-  const listeningLine = buildListeningLine(joined, displayNames);
   const typedText = useTypewriter(summaryText);
   const isTyping = Boolean(summaryText) && typedText.length < summaryText.length;
 
@@ -119,18 +102,6 @@ export function SummaryPanel({
             {typedText}
           </p>
         </div>
-
-        <p
-          className="vrbo-v2-summary__listening is-scene-enter"
-          style={{ "--scene-delay": "240ms", "--scene-y": "20px", "--scene-duration": "650ms" }}
-        >
-          <span className="vrbo-v2-summary__dots" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-          </span>
-          {listeningLine}
-        </p>
 
         <div className="vrbo-v2-summary__spacer" aria-hidden="true" />
 
@@ -265,8 +236,6 @@ export default function RankingScreen({
           key="summary"
           summaryText={summaryText}
           onSearch={actions.searchStays}
-          joined={joined}
-          displayNames={displayNames}
         />
       ) : null}
 
