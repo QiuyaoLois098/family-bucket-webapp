@@ -278,7 +278,19 @@ function VrboDemo() {
   );
 }
 
-const VRBO_LEFT1_REF = "/images/Vrbo-Images/example/vrbo-l/left1.png";
+const VRBO_LEFT_REF = "/images/Vrbo-Images/example/vrbo-l";
+const VRBO_LEFT_REFS = {
+  intro: { src: `${VRBO_LEFT_REF}/1-intro.png`, caption: "Reference · intro" },
+  firstSms: { src: `${VRBO_LEFT_REF}/2-sarah.png`, caption: "Reference · first SMS" },
+  allPriority: {
+    src: `${VRBO_LEFT_REF}/3-all-priority.png`,
+    caption: "Reference · all priorities",
+  },
+  share: {
+    src: `${VRBO_LEFT_REF}/4-share-property.png`,
+    caption: "Reference · shared stay",
+  },
+};
 const VRBO_IPHONE_REFS = {
   join: "/images/Vrbo-Images/example/vrbo-iphone/avatar.png",
   chat: "/images/Vrbo-Images/example/vrbo-iphone/2.png",
@@ -291,6 +303,30 @@ const VRBO_RIGHT_REFS = {
   stay: "/images/Vrbo-Images/example/vrbo-r/3.png",
   locked: "/images/Vrbo-Images/example/vrbo-r/4.png",
 };
+
+function vrboLeftReference(state) {
+  if (state.celebrating || state.selectedPropertyId) {
+    return VRBO_LEFT_REFS.share;
+  }
+
+  const submittedCount = guests.filter((guest) => Boolean(state.submitted?.[guest.id])).length;
+  const joinedGuests = guests.filter((guest) => Boolean(state.joined?.[guest.id]));
+  const allSubmitted =
+    joinedGuests.length >= 2 &&
+    joinedGuests.every((guest) => Boolean(state.submitted?.[guest.id]));
+  const laterStage =
+    state.stage === "summary" ||
+    state.stage === "searching" ||
+    state.stage === "results";
+
+  if (allSubmitted || laterStage || submittedCount >= 3) {
+    return VRBO_LEFT_REFS.allPriority;
+  }
+  if (submittedCount >= 1) {
+    return VRBO_LEFT_REFS.firstSms;
+  }
+  return VRBO_LEFT_REFS.intro;
+}
 
 function vrboRightReference(stage, { celebrating = false, selectedPropertyId = null } = {}) {
   if (celebrating || selectedPropertyId) {
@@ -314,9 +350,7 @@ export function VrboLeftPage({ compareLayout = false } = {}) {
   const propertyLookup = usePropertyLookup(state.results);
   useVrboSessionStartOnActivity(actions.startSession);
 
-  // First page reference; swap by stage later as more comps land.
-  const referenceSrc = VRBO_LEFT1_REF;
-  const referenceCaption = "Reference · intro";
+  const reference = vrboLeftReference(state);
   const live = (
     <ScaledDisplayCanvas>
       <MainChatScreen
@@ -358,12 +392,12 @@ export function VrboLeftPage({ compareLayout = false } = {}) {
           >
             <img
               className="vrbo-v2-displayHd__reference"
-              src={referenceSrc}
+              src={reference.src}
               alt="Vrbo left design reference"
               draggable={false}
             />
           </div>
-          <p className="vrbo-v2-displayFrame__caption">{referenceCaption}</p>
+          <p className="vrbo-v2-displayFrame__caption">{reference.caption}</p>
         </div>
       </div>
     </div>

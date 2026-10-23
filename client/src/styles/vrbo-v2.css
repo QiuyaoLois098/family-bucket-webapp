@@ -485,11 +485,11 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 1.2cqh;
+  gap: 1cqh;
   height: var(--display-masthead-height);
   min-height: var(--display-masthead-height);
   max-height: var(--display-masthead-height);
-  padding: 3.6cqh 6cqw 3.2cqh;
+  padding: 4.8cqh 6cqw 3.2cqh;
   background: var(--blue-screen);
   color: #ffffff;
   box-sizing: border-box;
@@ -505,7 +505,7 @@
 }
 
 .vrbo-v2-chat__trip {
-  margin: 0.55cqh 0 0;
+  margin: 0.8cqh 0 0;
   font-family: var(--vrbo-v2-sans);
   font-size: 3.1cqh;
   font-weight: 600;
@@ -518,7 +518,7 @@
   margin: 0.15cqh 0 0;
   font-family: var(--vrbo-v2-content);
   font-size: 1.9cqh;
-  font-weight: 400;
+  font-weight: 200;
   color: rgba(255, 255, 255, 0.9);
 }
 
