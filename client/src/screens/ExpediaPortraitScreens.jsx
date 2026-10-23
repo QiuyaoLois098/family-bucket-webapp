@@ -3,18 +3,23 @@ import { CANVAS_W, CANVAS_H } from "../canvas.js";
 import ExpediaRestartButton from "../components/ExpediaRestartButton.jsx";
 import { useSession } from "../hooks/useSession.js";
 
-const DESTINATION_REF = "/images/Expedia-images/example/left/start.png";
-const BRIEFING_REF = "/images/Expedia-images/example/briefing.png";
-const QUESTION_REF = "/images/Expedia-images/example/expedia-question.png";
-const QUESTION2_REF = "/images/Expedia-images/example/question2.png";
-const QUESTION3_REF = "/images/Expedia-images/example/question3.png";
-const ANSWER3_REF = "/images/Expedia-images/example/03-answer.png";
-const BUILDING_LEFT_REF = "/images/Expedia-images/example/left/left-card.png";
-const LEFT_ITINERARY_REF = "/images/Expedia-images/example/left/itinerary.png";
-const ITINERARY_REF = "/images/Expedia-images/example/itinerary.png";
-const LUGGAGE_REF = "/images/Expedia-images/example/luggage.png";
-const BUILDING_RIGHT_REF = "/images/Expedia-images/example/building-right.png";
-const RIGHT_IDLE_REF = "/images/Expedia-images/example/right/1.png";
+const LEFT_REF = "/images/Expedia-images/example/left";
+const RIGHT_REF = "/images/Expedia-images/example/right";
+
+const LEFT_QA_REFS = [
+  {
+    question: { src: `${LEFT_REF}/1-q1.png`, caption: "Reference · Q1" },
+    reply: { src: `${LEFT_REF}/2-q1-reply.png`, caption: "Reference · Q1 reply" },
+  },
+  {
+    question: { src: `${LEFT_REF}/3-q2.png`, caption: "Reference · Q2" },
+    reply: { src: `${LEFT_REF}/4-q2-reply.png`, caption: "Reference · Q2 reply" },
+  },
+  {
+    question: { src: `${LEFT_REF}/5-q3.png`, caption: "Reference · Q3" },
+    reply: { src: `${LEFT_REF}/6-q3-reply.png`, caption: "Reference · Q3 reply" },
+  },
+];
 
 /** Family Bucket screens in a locked 2160×3840 (9∶16) stage, like /vrbo-left. */
 
@@ -76,58 +81,55 @@ function ReferenceFrame({ src }) {
   );
 }
 
-function leftReference(phase, currentQuestion) {
-  const questionRef =
-    phase === "questions" && currentQuestion >= 2
-      ? QUESTION3_REF
-      : phase === "questions" && currentQuestion >= 1
-        ? QUESTION2_REF
-        : QUESTION_REF;
+function leftQaReference(currentQuestion, answers = []) {
+  const step = Math.min(Math.max(currentQuestion ?? 0, 0), LEFT_QA_REFS.length - 1);
+  const showingReply = Boolean(answers[step]);
+  return showingReply ? LEFT_QA_REFS[step].reply : LEFT_QA_REFS[step].question;
+}
 
+function leftReference(phase, currentQuestion, answers = []) {
   if (phase === "destination") {
-    return { src: DESTINATION_REF, caption: "Reference · destination" };
+    return { src: `${LEFT_REF}/start.png`, caption: "Reference · destination" };
   }
   if (phase === "briefing") {
-    return { src: BRIEFING_REF, caption: "Reference · briefing" };
+    return { src: `${LEFT_REF}/0-destination.png`, caption: "Reference · intro" };
   }
-  if (phase === "reveal") {
-    return { src: ANSWER3_REF, caption: "Reference · Q3 answer" };
+  if (phase === "reveal" || phase === "planning") {
+    return LEFT_QA_REFS[2].reply;
   }
   if (phase === "building") {
-    return { src: BUILDING_LEFT_REF, caption: "Reference · building" };
+    return { src: `${LEFT_REF}/left-card.png`, caption: "Reference · building" };
   }
   if (phase === "itinerary") {
-    return { src: LEFT_ITINERARY_REF, caption: "Reference · itinerary" };
+    return { src: `${LEFT_REF}/itinerary.png`, caption: "Reference · itinerary" };
   }
-  return {
-    src: questionRef,
-    caption:
-      currentQuestion >= 2
-        ? "Reference · question 3"
-        : currentQuestion >= 1
-          ? "Reference · question 2"
-          : "Reference · question",
-  };
+  return leftQaReference(currentQuestion, answers);
 }
 
 function rightReference(phase) {
-  if (phase === "reveal") {
-    return { src: LUGGAGE_REF, caption: "Reference · luggage" };
+  if (phase === "reveal" || phase === "planning") {
+    return { src: `${RIGHT_REF}/luggage.png`, caption: "Reference · luggage" };
   }
   if (phase === "building") {
-    return { src: BUILDING_RIGHT_REF, caption: "Reference · building" };
+    return { src: `${RIGHT_REF}/building-right.png`, caption: "Reference · building" };
   }
   if (phase === "itinerary") {
-    return { src: ITINERARY_REF, caption: "Reference · itinerary" };
+    return {
+      src: "/images/Expedia-images/final-right.png",
+      caption: "Reference · itinerary",
+    };
   }
-  return { src: RIGHT_IDLE_REF, caption: "Reference · idle" };
+  if (phase === "destination") {
+    return { src: `${RIGHT_REF}/1.png`, caption: "Reference · idle" };
+  }
+  return { src: `${RIGHT_REF}/option-view.png`, caption: "Reference · planning" };
 }
 
 /** Screen A · Control — prod full-bleed; `compareLayout` = live + reference. */
 export function ExpediaLeftPage({ compareLayout = false } = {}) {
   const { state, actions } = useSession({ syncOnly: true });
   const phase = state.phase === "idle" ? "destination" : state.phase;
-  const reference = leftReference(phase, state.currentQuestion);
+  const reference = leftReference(phase, state.currentQuestion, state.answers);
 
   const live = (
     <PortraitFrame title={`Expedia · Control · ${phase}`} src="/control" />

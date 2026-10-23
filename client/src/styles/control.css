@@ -122,7 +122,7 @@
 
 .destinations__intro {
   flex: 0 0 auto;
-  margin-top: calc(var(--u) * 180);
+  margin-top: calc(var(--u) * 210);
   max-width: none;
   text-align: center;
 }
@@ -141,13 +141,13 @@
 
 .destinations__lede {
   margin: calc(100cqi * 14 / var(--design-w)) auto 0;
-  max-width: 20em;
+  max-width: 16em;
   font-family: var(--sans);
   font-size: calc(100cqi * 34 / var(--design-w));
   font-weight: 400;
   line-height: 1.35;
   letter-spacing: -0.01em;
-  color: #5c6478;
+  color: #191E3B;
   animation: portal-copy 1s cubic-bezier(0.22, 1, 0.36, 1) both;
   animation-delay: 0.08s;
 }
@@ -156,7 +156,7 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(calc(var(--u) * 10), 2.8vw, calc(var(--u) * 30)) clamp(calc(var(--u) * 10), 4vw, calc(var(--u) * 43));
-  margin-top: calc(var(--u) * 100);
+  margin-top: calc(var(--u) * 60);
   flex: 0 0 auto;
   align-content: start;
   min-height: 0;
@@ -172,6 +172,7 @@
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  color:#191E3B;
 }
 
 .destination-card {
@@ -226,8 +227,8 @@
   bottom: calc(100cqi * 28 / var(--design-w));
   z-index: 1;
   font-family: var(--ui);
-  font-weight: 700;
-  font-size: calc(100cqi * 30 / var(--design-w));
+  font-weight: 400;
+  font-size: calc(100cqi * 34 / var(--design-w));
   line-height: 1.15;
   letter-spacing: 0.01em;
   text-shadow: 0 1px calc(var(--u) * 10) rgba(25, 30, 59, 0.55);
