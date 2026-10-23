@@ -20,7 +20,9 @@ function BookedItem({ icon, label }) {
   return (
     <span className="schedule__booked-item">
       {icon}
-      <span className="schedule__booked-label">{label}</span>
+      <span className="schedule__booked-label" title={label}>
+        {label}
+      </span>
       <span className="schedule__booked-pill">
         <span>Booked</span>
       </span>

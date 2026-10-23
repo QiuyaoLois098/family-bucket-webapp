@@ -1478,21 +1478,23 @@
 }
 
 .schedule__booked {
-  --booked-row-h: calc(var(--u) * 40);
+  --booked-row-h: 1.43em;
   box-sizing: border-box;
   align-self: stretch;
   width: 100%;
+  min-width: 0;
   margin: calc(var(--u) * 22) 0 0;
   padding: calc(var(--u) * 20) calc(var(--u) * 14);
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  gap: calc(var(--u) * 20);
+  gap: 0.71em;
+  overflow: hidden;
   border-radius: calc(var(--u) * 24);
   background: var(--schedule-card-bg);
   font-family: var(--ui);
-  font-size: calc(var(--u) * 28);
+  font-size: var(--booked-font, calc(var(--u) * 28));
   font-weight: 400;
   line-height: 1;
   color: #191e3b;
@@ -1502,9 +1504,15 @@
   display: flex;
   align-items: center;
   height: var(--booked-row-h);
-  gap: calc(var(--u) * 10);
+  gap: 0.36em;
   min-width: 0;
+  flex: 0 0 auto;
   line-height: 1;
+}
+
+.schedule__booked-item:last-child {
+  flex: 0 1 auto;
+  min-width: 0;
 }
 
 .schedule__booked-glyph {
@@ -1516,11 +1524,13 @@
 }
 
 .schedule__booked-label {
-  display: flex;
-  align-items: center;
+  display: block;
+  min-width: 0;
   height: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
-  line-height: 1;
+  line-height: var(--booked-row-h);
 }
 
 .schedule__booked-pill {
@@ -1528,9 +1538,10 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+  flex: 0 0 auto;
   height: 100%;
-  padding: 0 calc(var(--u) * 12);
-  border-radius: calc(var(--u) * 20);
+  padding: 0 0.43em;
+  border-radius: 0.71em;
   background: #d9d7d2;
   color: #191e3b;
   font-size: inherit;
