@@ -611,8 +611,8 @@
   padding: 0.55cqh 1.4cqi;
   border-radius: 999px;
   font-family: var(--sans);
-  font-size: 1.7cqi;
-  font-weight: 600;
+  font-size: calc(100cqi * 26 / var(--design-w));
+  font-weight: 500;
   line-height: 1.2;
   letter-spacing: -0.01em;
   color: #191e3b;
@@ -657,7 +657,7 @@
   max-width: 18em;
   align-self: flex-start;
   font-family: var(--ui);
-  font-size: calc(var(--u) * 36);
+  font-size: calc(var(--u) * 40);
   font-weight: 400;
   line-height: 1.35;
   letter-spacing: -0.02em;
@@ -745,10 +745,14 @@
   border-radius: 999px;
   background: #e8eaef;
   font-family: var(--ui);
-  font-size: calc(var(--u) * 22);
+  font-size: calc(var(--u) * 26);
   font-weight: 500;
   line-height: 1;
   color: #191e3b;
+}
+
+.question__place-badge--bookable {
+  background: #f0d756;
 }
 
 .question__dialogue.is-exiting .question__ai-line,
@@ -1484,7 +1488,7 @@
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  gap: calc(var(--u) * 56);
+  gap: calc(var(--u) * 20);
   border-radius: calc(var(--u) * 24);
   background: var(--schedule-card-bg);
   font-family: var(--ui);
@@ -1525,7 +1529,7 @@
   justify-content: center;
   box-sizing: border-box;
   height: 100%;
-  padding: 0 calc(var(--u) * 14);
+  padding: 0 calc(var(--u) * 12);
   border-radius: calc(var(--u) * 20);
   background: #d9d7d2;
   color: #191e3b;

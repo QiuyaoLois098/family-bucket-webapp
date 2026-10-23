@@ -99,7 +99,15 @@ export default function BriefingStep({ destinationId, onContinue }) {
             <p className="question__place-title">{introChip.title}</p>
             <p className="question__place-meta">{introChip.subtitle}</p>
             {introChip.chipText ? (
-              <span className="question__place-badge">{introChip.chipText}</span>
+              <span
+                className={`question__place-badge${
+                  String(introChip.chipText).toLowerCase().includes("expedia")
+                    ? " question__place-badge--bookable"
+                    : ""
+                }`}
+              >
+                {introChip.chipText}
+              </span>
             ) : null}
           </div>
         </article>

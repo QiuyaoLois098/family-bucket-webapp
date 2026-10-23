@@ -374,7 +374,15 @@ export default function QuestionStep({
                 <p className="question__place-title">{bridge.placeCard.title}</p>
                 <p className="question__place-meta">{bridge.placeCard.meta}</p>
                 {bridge.placeCard.badge ? (
-                  <span className="question__place-badge">{bridge.placeCard.badge}</span>
+                  <span
+                    className={`question__place-badge${
+                      String(bridge.placeCard.badge).toLowerCase().includes("expedia")
+                        ? " question__place-badge--bookable"
+                        : ""
+                    }`}
+                  >
+                    {bridge.placeCard.badge}
+                  </span>
                 ) : null}
               </div>
             </article>

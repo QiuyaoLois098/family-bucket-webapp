@@ -53,7 +53,15 @@ export default function AnswerFinaleStep({ destinationId, answers }) {
               <p className="question__place-title">{card.title}</p>
               <p className="question__place-meta">{card.meta}</p>
               {card.badge ? (
-                <span className="question__place-badge">{card.badge}</span>
+                <span
+                  className={`question__place-badge${
+                    String(card.badge).toLowerCase().includes("expedia")
+                      ? " question__place-badge--bookable"
+                      : ""
+                  }`}
+                >
+                  {card.badge}
+                </span>
               ) : null}
             </div>
           </article>
