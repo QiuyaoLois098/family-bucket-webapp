@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react";
 import copy from "../../data/vrbo-v2/copy.json";
 import {
+  OPENING_PHOTOS,
   softEnter,
   updateOpeningHeadlines,
+  updateOpeningPhotos,
 } from "../../motion/vrboOpeningLoop.js";
-
-const OPENING_VIDEO = "/images/Vrbo-Images/vrbo-image-loop-60fps.mp4";
 
 export default function OpeningLoop() {
   const rootRef = useRef(null);
@@ -18,7 +18,8 @@ export default function OpeningLoop() {
     const logo = root.querySelector("[data-opening-logo]");
     const lines = [...root.querySelectorAll("[data-opening-line]")];
     const slides = [...root.querySelectorAll("[data-opening-slide]")];
-    const video = root.querySelector("[data-opening-video]");
+    const photos = [...root.querySelectorAll("[data-opening-photo]")];
+    const images = [...root.querySelectorAll("img")];
 
     let elapsed = 0;
     let playing = true;
@@ -33,6 +34,7 @@ export default function OpeningLoop() {
         softEnter(node, elapsed, 700 + index * 180, 1200, 24, reduced);
       });
       updateOpeningHeadlines(slides, elapsed, reduced);
+      updateOpeningPhotos(photos, elapsed, reduced);
     };
 
     const tick = (stamp) => {
@@ -47,34 +49,20 @@ export default function OpeningLoop() {
       if (destroyed || loaded) return;
       loaded = true;
       root.style.visibility = "visible";
-      video?.play()?.catch(() => {});
       render();
       frame = requestAnimationFrame(tick);
     };
 
-    const ready = [];
-    const logoImg = root.querySelector("[data-opening-logo]");
-    if (logoImg?.decode) ready.push(logoImg.decode().catch(() => undefined));
-    if (video) {
-      ready.push(
-        new Promise((resolve) => {
-          if (video.readyState >= 2) {
-            resolve();
-            return;
-          }
-          video.addEventListener("loadeddata", resolve, { once: true });
-          video.addEventListener("error", resolve, { once: true });
-        }),
-      );
-    }
-
-    Promise.all(ready).then(start);
+    Promise.all(
+      images.map((image) =>
+        image.decode().catch(() => undefined),
+      ),
+    ).then(start);
 
     return () => {
       destroyed = true;
       playing = false;
       cancelAnimationFrame(frame);
-      video?.pause();
     };
   }, []);
 
@@ -117,16 +105,11 @@ export default function OpeningLoop() {
       </div>
 
       <div className="vrbo-v2-opening__photos">
-        <video
-          data-opening-video
-          className="vrbo-v2-opening__video"
-          src={OPENING_VIDEO}
-          muted
-          loop
-          playsInline
-          autoPlay
-          preload="auto"
-        />
+        {OPENING_PHOTOS.map((src) => (
+          <div key={src} data-opening-photo className="vrbo-v2-opening__photo">
+            <img src={src} alt="" draggable={false} />
+          </div>
+        ))}
       </div>
     </section>
   );

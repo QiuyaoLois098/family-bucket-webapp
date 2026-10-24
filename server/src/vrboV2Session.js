@@ -412,9 +412,23 @@ export class VrboV2Session extends EventEmitter {
 
     const pref = getChatScript().preference;
     const submitDelayMs = pref?.submitDelayMs ?? 1000;
+    const boldAfterTextsMs = pref?.boldAfterTextsMs ?? 400;
     const jamieDelayMs = pref?.jamieDelayMs ?? 1000;
-    const boldAfterJamieMs = pref?.boldAfterJamieMs ?? 200;
-    const settle = submitDelayMs + jamieDelayMs;
+
+    this.schedule(() => {
+      if (this.state.stage !== "selecting") return;
+      const stillJoined = guests.filter((user) => Boolean(this.state.joined[user.id]));
+      const stillReady =
+        stillJoined.length >= 2 &&
+        stillJoined.every((user) => Boolean(this.state.submitted[user.id]));
+      if (!stillReady) return;
+
+      const counts = countFeatureSelections(
+        submittedLists(this.state.submitted, this.state.joined),
+      );
+      this.patch({ sharedPriorityIds: pickSharedPriorities(counts) });
+    }, submitDelayMs + boldAfterTextsMs);
+
     this.schedule(() => {
       if (this.state.stage !== "selecting") return;
       const stillJoined = guests.filter((user) => Boolean(this.state.joined[user.id]));
@@ -444,15 +458,11 @@ export class VrboV2Session extends EventEmitter {
         stage: "summary",
         priorities,
         summaryText: buildSummaryText(this.state.submitted, this.state.joined),
-        sharedPriorityIds: [],
+        sharedPriorityIds,
         typing: [],
         messages,
       });
-      this.schedule(() => {
-        if (this.state.stage !== "summary") return;
-        this.patch({ sharedPriorityIds });
-      }, boldAfterJamieMs);
-    }, settle);
+    }, submitDelayMs + boldAfterTextsMs + jamieDelayMs);
   }
 
   searchStays() {

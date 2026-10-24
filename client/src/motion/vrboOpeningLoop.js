@@ -1,5 +1,5 @@
 /**
- * Right-screen opening loop — headline timings from
+ * Right-screen opening loop — timings and easing from
  * vrbo-image-right-loop-1020 / right-screen.js (published image option v13).
  */
 
@@ -7,6 +7,15 @@ export const PHOTO_LOOP_START = 3100;
 export const PHOTO_STEP = 4100;
 export const PHOTO_HOLD = 3000;
 export const PHOTO_TRANSITION = 1100;
+
+export const OPENING_PHOTOS = [
+  "/images/Vrbo-Images/Properties/sunset-beach-house.jpg",
+  "/images/Vrbo-Images/Properties/ohana-beach-house.jpg",
+  "/images/Vrbo-Images/Properties/aloha-coast-retreat.jpg",
+  "/images/Vrbo-Images/Properties/honolulu-oceanfront-home.jpeg",
+  "/images/Vrbo-Images/Properties/oceanfront-maui-home.jpeg",
+  "/images/Vrbo-Images/Properties/big-island-beach-retreat.jpg",
+];
 
 export function clamp(n, a = 0, b = 1) {
   return Math.max(a, Math.min(b, n));
@@ -37,6 +46,33 @@ export function softEnter(node, t, start, duration, offset, reduced) {
   node.style.opacity = p;
   /* Design-px travel, relative to the 3840 display container — never raw CSS px. */
   node.style.transform = `translateY(calc(${offset * (1 - p)} / var(--design-h, 3840) * 100cqh))`;
+}
+
+export function updateOpeningPhotos(photos, t, reduced) {
+  photos.forEach((node) => {
+    node.style.opacity = 0;
+    node.style.transform = "translateY(100%)";
+    node.style.zIndex = 0;
+  });
+  if (t < 1800) return;
+  if (t < 3100) {
+    const p = reduced ? 1 : softEase((t - 1800) / 1300);
+    photos[0].style.opacity = p;
+    photos[0].style.transform = `translateY(${8 * (1 - p)}%)`;
+    return;
+  }
+  const elapsed = t - PHOTO_LOOP_START;
+  const index = Math.floor(elapsed / PHOTO_STEP) % photos.length;
+  const local = elapsed % PHOTO_STEP;
+  photos[index].style.opacity = 1;
+  photos[index].style.transform = "translateY(0)";
+  if (local >= PHOTO_HOLD) {
+    const next = (index + 1) % photos.length;
+    const p = reduced ? 1 : screenEase((local - PHOTO_HOLD) / PHOTO_TRANSITION);
+    photos[index].style.transform = `translateY(${-100 * p}%)`;
+    photos[next].style.opacity = 1;
+    photos[next].style.transform = `translateY(${100 * (1 - p)}%)`;
+  }
 }
 
 export function updateOpeningHeadlines(slides, t, reduced) {
