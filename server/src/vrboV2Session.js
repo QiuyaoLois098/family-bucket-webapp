@@ -442,7 +442,10 @@ export class VrboV2Session extends EventEmitter {
         submittedLists(this.state.submitted, this.state.joined),
       );
       const sharedPriorityIds = pickSharedPriorities(counts);
-      const jamieParts = buildJamieParts(sharedPriorityIds, copy);
+      const selections = guests
+        .filter((user) => Boolean(this.state.joined[user.id]) && this.state.submitted[user.id])
+        .map((user) => ({ userId: user.id, picks: this.state.submitted[user.id] ?? [] }));
+      const jamieParts = buildJamieParts(sharedPriorityIds, copy, { selections });
       const messages = [...this.state.messages];
       if (jamieParts) {
         messages.push(

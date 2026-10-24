@@ -11,7 +11,7 @@ export default function RichChatText({
   const nodes = parts?.length
     ? parts.map((part) => ({
         text: part.text ?? "",
-        bold: Boolean(part.id && shared.has(part.id)),
+        bold: Boolean(part.bold || (part.id && shared.has(part.id))),
       }))
     : splitByPhrases(text, shared.size ? phraseBank : []);
 

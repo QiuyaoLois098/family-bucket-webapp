@@ -98,12 +98,90 @@ export function buildGroupRequest(counts, copy) {
   )}.`;
 }
 
-export function buildJamieParts(sharedIds, copy) {
-  const words = (sharedIds ?? []).map((id) => ({
-    id,
-    text: searchWording(id, copy),
-  }));
+const VACATION_FEATURES = new Set([
+  "private-pool",
+  "outdoor-dining",
+  "near-beach",
+  "fire-pit",
+  "hot-tub",
+  "big-kitchen",
+]);
+
+function featureAppeal(id) {
+  if (id === "wifi") return 0;
+  if (VACATION_FEATURES.has(id)) return 2;
+  return 1;
+}
+
+/** No overlap: two picks, different people when possible, Wi-Fi last. */
+export function pickUnsharedMentions(selections = [], random = Math.random) {
+  const owners = new Map();
+  selections.forEach(({ userId, picks }) => {
+    (picks ?? []).forEach((id) => {
+      if (!id) return;
+      if (!owners.has(id)) owners.set(id, new Set());
+      owners.get(id).add(userId);
+    });
+  });
+  const ids = [...owners.keys()];
+  if (ids.length <= 1) return ids;
+
+  const pairs = [];
+  for (let i = 0; i < ids.length; i += 1) {
+    for (let j = i + 1; j < ids.length; j += 1) {
+      const a = ids[i];
+      const b = ids[j];
+      const peopleA = owners.get(a);
+      const peopleB = owners.get(b);
+      let different = false;
+      peopleA.forEach((person) => {
+        if (!peopleB.has(person)) different = true;
+      });
+      pairs.push({
+        pair: [a, b],
+        score: (different ? 10 : 0) + featureAppeal(a) + featureAppeal(b),
+      });
+    }
+  }
+
+  const best = Math.max(...pairs.map((item) => item.score));
+  const choices = pairs.filter((item) => item.score === best);
+  const index = Math.min(choices.length - 1, Math.floor(random() * choices.length));
+  return [...choices[index].pair].sort((a, b) => {
+    const byAppeal = featureAppeal(b) - featureAppeal(a);
+    if (byAppeal !== 0) return byAppeal;
+    return orderIndex(a) - orderIndex(b);
+  });
+}
+
+function wordingPart(id, copy, bold = false) {
+  return { id, text: searchWording(id, copy), ...(bold ? { bold: true } : {}) };
+}
+
+function everyoneParts(first, second) {
+  return [
+    { text: "ok, a little something for everyone! I'll find us a Hawaii stay with " },
+    first,
+    { text: " and " },
+    second,
+    { text: ", and see how many of the other wishes we can fit in." },
+  ];
+}
+
+export function buildJamieParts(sharedIds, copy, options = {}) {
+  const shared = sharedIds ?? [];
+  const mentionIds = shared.length
+    ? shared.length >= 4
+      ? shared.slice(0, 2)
+      : shared
+    : pickUnsharedMentions(options.selections ?? [], options.random ?? Math.random);
+  const boldMentions = shared.length === 0;
+  const words = mentionIds.map((id) => wordingPart(id, copy, boldMentions));
   if (!words.length) return null;
+
+  if (shared.length >= 4 || (shared.length === 0 && words.length >= 2)) {
+    return everyoneParts(words[0], words[1]);
+  }
 
   if (words.length === 1) {
     return [
@@ -128,19 +206,17 @@ export function buildJamieParts(sharedIds, copy) {
   }
 
   const parts = [{ text: "ok so " }];
-  words.forEach((word, index) => {
+  words.slice(0, 3).forEach((word, index, list) => {
     if (index === 0) {
       parts.push(word);
       return;
     }
-    parts.push({ text: index === words.length - 1 ? ", and " : ", " });
+    parts.push({ text: index === list.length - 1 ? ", and " : ", " });
     parts.push(word);
   });
-  const closer =
-    words.length === 3
-      ? " are the big ones. I'll find something that hits all three and as much of the rest as I can."
-      : " are the big ones. I'll find something that hits all of them and as much of the rest as I can.";
-  parts.push({ text: closer });
+  parts.push({
+    text: " are the big ones. I'll find something that hits all three and as much of the rest as I can.",
+  });
   return parts;
 }
 
