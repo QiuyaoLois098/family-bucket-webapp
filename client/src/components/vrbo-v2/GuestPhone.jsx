@@ -100,8 +100,8 @@ function MemberPills({ members, selfId }) {
         return (
           <span
             key={member.id}
-            className={`vrbo-v2-phone__waiting-pill vrbo-v2-phone__waiting-pill--solid${
-              isYou ? " is-you" : " is-joined"
+            className={`vrbo-v2-phone__waiting-pill vrbo-v2-phone__waiting-pill--solid is-joined${
+              isYou ? " is-you" : ""
             }`}
           >
             <PhoneAvatar user={member} className="vrbo-v2-phone__waiting-avatar" />

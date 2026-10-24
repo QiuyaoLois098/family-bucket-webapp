@@ -4161,7 +4161,8 @@ body:has(.vrbo-v2-device--phone.is-framed),
 }
 
 .vrbo-v2-phone__waiting-pill--solid .vrbo-v2-phone__waiting-avatar,
-.vrbo-v2-phone__waiting-pill--solid.is-joined .vrbo-v2-phone__waiting-avatar {
+.vrbo-v2-phone__waiting-pill--solid.is-joined .vrbo-v2-phone__waiting-avatar,
+.vrbo-v2-phone__waiting-pill.is-you .vrbo-v2-phone__waiting-avatar {
   opacity: 1;
   clip-path: none;
   transition: none;
