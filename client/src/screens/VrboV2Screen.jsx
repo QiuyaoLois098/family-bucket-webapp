@@ -136,7 +136,7 @@ function RestartControl({ onReset }) {
 }
 
 function VrboDemo() {
-  const { state, allSubmitted, actions } = useVrboV2Session();
+  const { state, allSubmitted, actions, hearSounds } = useVrboV2Session();
   const {
     stage,
     messages,
@@ -234,6 +234,7 @@ function VrboDemo() {
                   displayNames={displayNames}
                   sharedPriorityIds={state.sharedPriorityIds}
                   runId={runId}
+                  hearSounds={hearSounds}
                 />
               </div>
             </section>
@@ -253,6 +254,7 @@ function VrboDemo() {
                   joined={joined}
                   displayNames={displayNames}
                   actions={actions}
+                  hearSounds={hearSounds}
                 />
               </div>
             </section>
@@ -346,7 +348,7 @@ function vrboRightReference(stage, { celebrating = false, selectedPropertyId = n
 
 /** Display 1 · Organizer chat. Prod = full-bleed; `compareLayout` = live + reference. */
 export function VrboLeftPage({ compareLayout = false } = {}) {
-  const { state, actions } = useVrboV2Session({ syncOnly: true });
+  const { state, actions, hearSounds } = useVrboV2Session({ syncOnly: true });
   const propertyLookup = usePropertyLookup(state.results);
   useVrboSessionStartOnActivity(actions.startSession);
 
@@ -364,6 +366,7 @@ export function VrboLeftPage({ compareLayout = false } = {}) {
         displayNames={state.displayNames ?? {}}
         sharedPriorityIds={state.sharedPriorityIds}
         runId={state.runId}
+        hearSounds={hearSounds}
       />
     </ScaledDisplayCanvas>
   );
@@ -406,7 +409,7 @@ export function VrboLeftPage({ compareLayout = false } = {}) {
 
 /** Display 2 · Output / search. Prod = full-bleed; `compareLayout` = live + reference. */
 export function VrboRightPage({ compareLayout = false } = {}) {
-  const { state, allSubmitted, actions } = useVrboV2Session({ syncOnly: true });
+  const { state, allSubmitted, actions, hearSounds } = useVrboV2Session({ syncOnly: true });
   const reference = vrboRightReference(state.stage, {
     celebrating: state.celebrating,
     selectedPropertyId: state.selectedPropertyId,
@@ -425,6 +428,7 @@ export function VrboRightPage({ compareLayout = false } = {}) {
         joined={state.joined}
         displayNames={state.displayNames ?? {}}
         actions={actions}
+        hearSounds={hearSounds}
       />
     </ScaledDisplayCanvas>
   );

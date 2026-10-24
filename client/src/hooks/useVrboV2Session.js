@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import users from "../data/vrbo-v2/users.json";
+import { preloadVrboSounds } from "../components/vrbo-v2/vrboSound.js";
 import { preloadVrboHotelImages } from "../lib/preloadVrboHotelImages.js";
 import { getSocket } from "../socket.js";
 
@@ -27,15 +28,21 @@ const EMPTY_STATE = {
 export default function useVrboV2Session({ syncOnly = false } = {}) {
   const [state, setState] = useState(EMPTY_STATE);
   const [connected, setConnected] = useState(false);
+  const [hearSounds, setHearSounds] = useState(false);
+  const hydratedRef = useRef(false);
 
   useEffect(() => {
     preloadVrboHotelImages();
+    preloadVrboSounds();
   }, [state.runId]);
 
   useEffect(() => {
     const socket = getSocket();
 
-    const onState = (next) => setState(next);
+    const onState = (next) => {
+      hydratedRef.current = true;
+      setState(next);
+    };
     const onConnect = () => {
       setConnected(true);
       socket.emit(syncOnly ? "vrbo-v2:subscribe" : "vrbo-v2:join");
@@ -54,6 +61,10 @@ export default function useVrboV2Session({ syncOnly = false } = {}) {
       socket.off("disconnect", onDisconnect);
     };
   }, [syncOnly]);
+
+  useEffect(() => {
+    if (hydratedRef.current) setHearSounds(true);
+  }, [state]);
 
   const joinedUsers = useMemo(
     () => guests.filter((user) => Boolean(state.joined?.[user.id])),
@@ -85,5 +96,5 @@ export default function useVrboV2Session({ syncOnly = false } = {}) {
     [],
   );
 
-  return { state, connected, allSubmitted, joinedUsers, actions };
+  return { state, connected, allSubmitted, joinedUsers, actions, hearSounds };
 }

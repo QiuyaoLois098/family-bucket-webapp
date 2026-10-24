@@ -1329,16 +1329,7 @@
   overflow: hidden;
 }
 
-.vrbo-v2-opening__photo {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateY(100%);
-  will-change: transform;
-}
-
-.vrbo-v2-opening__photo img {
+.vrbo-v2-opening__video {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -1346,7 +1337,6 @@
   object-fit: cover;
   object-position: center;
   pointer-events: none;
-  user-select: none;
 }
 
 .vrbo-v2-rank__hero-top {

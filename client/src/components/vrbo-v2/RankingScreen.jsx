@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import chatScript from "../../data/vrbo-v2/chatScript.json";
 import copy from "../../data/vrbo-v2/copy.json";
 import properties from "../../data/vrbo-v2/properties.json";
@@ -6,6 +6,7 @@ import users from "../../data/vrbo-v2/users.json";
 import { runChunkTypewriter } from "../../motion/chunkType.js";
 import OpeningLoop from "./OpeningLoop.jsx";
 import { StayShowcase } from "./StayViews.jsx";
+import { playSharedVrboSound, playTapSearchSound } from "./vrboSound.js";
 
 const FINALE_BG_SRC = "/images/Vrbo-Images/final-bg.jpg";
 
@@ -109,7 +110,10 @@ export function SummaryPanel({
           type="button"
           className="vrbo-v2-summary__search is-scene-enter"
           style={{ "--scene-delay": "400ms", "--scene-y": "20px", "--scene-duration": "650ms" }}
-          onClick={onSearch}
+          onClick={() => {
+            playTapSearchSound();
+            onSearch?.();
+          }}
         >
           {copy.summary.search}
         </button>
@@ -211,7 +215,31 @@ export default function RankingScreen({
   joined = {},
   displayNames = {},
   actions,
+  hearSounds = false,
 }) {
+  const stageReadyRef = useRef(false);
+  const finaleReadyRef = useRef(false);
+
+  useEffect(() => {
+    if (!hearSounds) return;
+    if (!stageReadyRef.current) {
+      stageReadyRef.current = true;
+      return;
+    }
+    if (stage === "summary" || stage === "searching" || stage === "results") {
+      playSharedVrboSound("textAppear");
+    }
+  }, [stage, hearSounds]);
+
+  useEffect(() => {
+    if (!hearSounds) return;
+    if (!finaleReadyRef.current) {
+      finaleReadyRef.current = true;
+      return;
+    }
+    if (celebrating) playSharedVrboSound("textAppear");
+  }, [celebrating, hearSounds]);
+
   if (celebrating) {
     return (
       <div className="vrbo-v2-rank vrbo-v2-rank--finale">

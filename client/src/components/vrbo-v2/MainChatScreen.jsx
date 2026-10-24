@@ -2,11 +2,17 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import chatScript from "../../data/vrbo-v2/chatScript.json";
 import copy from "../../data/vrbo-v2/copy.json";
 import preferences from "../../data/vrbo-v2/preferences.json";
+import properties from "../../data/vrbo-v2/properties.json";
 import { sharedPhraseBank } from "@shared/vrboChatCopy.js";
 import { createMessageMotionController } from "./chatMotion.js";
 import PropertyCard from "./PropertyCard.jsx";
 import RichChatText from "./RichChatText.jsx";
 import useTailFitMessages from "./useTailFitMessages.js";
+import { playSharedVrboSound } from "./vrboSound.js";
+
+const propertyNames = properties
+  .map((property) => property.name)
+  .filter((name) => name && name.length > 2);
 
 const JOIN_TOAST_MS = 2800;
 
@@ -43,10 +49,13 @@ export default function MainChatScreen({
   displayNames = {},
   sharedPriorityIds = [],
   runId = 0,
+  hearSounds = false,
 }) {
   const feedRef = useRef(null);
   const motionRef = useRef(null);
   const seenJoinedRef = useRef(null);
+  const heardMessagesRef = useRef(null);
+  const heardRunRef = useRef(runId);
   const joinToastTimerRef = useRef(0);
   const [joinToast, setJoinToast] = useState(null);
   const motionRunIdRef = useRef(runId);
@@ -68,6 +77,39 @@ export default function MainChatScreen({
   );
 
   useEffect(() => {
+    if (!hearSounds) return;
+
+    const list = (messages ?? []).filter((message) => !message.exiting);
+    if (heardMessagesRef.current == null || heardRunRef.current !== runId) {
+      heardRunRef.current = runId;
+      heardMessagesRef.current = new Set(list.map((message) => message.id));
+      return;
+    }
+
+    const seen = heardMessagesRef.current;
+    const fresh = list.filter((message) => message.id && !seen.has(message.id));
+    fresh.forEach((message) => seen.add(message.id));
+
+    fresh.forEach((message) => {
+      if (message.kind === "property") {
+        playSharedVrboSound("sendProperty");
+        return;
+      }
+      if (message.phase === "preference") {
+        playSharedVrboSound("infoSent");
+        return;
+      }
+      const text = message.text ?? "";
+      if (propertyNames.some((name) => text.includes(name))) {
+        playSharedVrboSound("propertyText");
+        return;
+      }
+      if (text) playSharedVrboSound("textAppear");
+    });
+  }, [messages, runId, hearSounds]);
+
+  useEffect(() => {
+    if (!hearSounds) return undefined;
     const activeIds = Object.keys(joined).filter((id) => Boolean(joined[id]));
     if (seenJoinedRef.current == null) {
       seenJoinedRef.current = new Set(activeIds);
@@ -96,7 +138,7 @@ export default function MainChatScreen({
     }, JOIN_TOAST_MS);
 
     return () => window.clearTimeout(joinToastTimerRef.current);
-  }, [joined, displayNames, userById]);
+  }, [joined, displayNames, userById, hearSounds]);
   const members = Object.values(namedUserById).filter(
     (user) => user.role === "coordinator" || Boolean(joined[user.id]),
   );

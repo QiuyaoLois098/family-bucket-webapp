@@ -5,6 +5,7 @@ import users from "../../data/vrbo-v2/users.json";
 import { assembleGuestParts, partsToText, sharedPhraseBank } from "@shared/vrboChatCopy.js";
 import { createMessageMotionController } from "./chatMotion.js";
 import PreferenceCard from "./PreferenceCard.jsx";
+import { playVrboSound } from "./vrboSound.js";
 import PropertyCard from "./PropertyCard.jsx";
 import RichChatText from "./RichChatText.jsx";
 import useTailFitMessages from "./useTailFitMessages.js";
@@ -456,7 +457,10 @@ export default function GuestPhone({
                           variant="chip"
                           selected={selected}
                           disabled={!selected && atLimit}
-                          onSelect={() => onToggle(user.id, preference.id)}
+                          onSelect={() => {
+                            playVrboSound("tapAmenity");
+                            onToggle(user.id, preference.id);
+                          }}
                           enterIndex={index}
                         />
                     );

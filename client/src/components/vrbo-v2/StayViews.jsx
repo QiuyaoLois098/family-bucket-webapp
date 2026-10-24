@@ -7,6 +7,7 @@ import {
   stayStatsLine,
 } from "@shared/vrboStayCopy.js";
 import { vrboMotion } from "./vrboMotion.js";
+import { playVrboSound } from "./vrboSound.js";
 
 const STAY_CROSSFADE_MS = 480;
 
@@ -155,6 +156,7 @@ export function StayShowcase({
 
   function handleThumb(propertyId) {
     if (shared) return;
+    playVrboSound("tapProperty");
     onPreview?.(propertyId);
   }
 
@@ -258,7 +260,11 @@ export function StayShowcase({
           type="button"
           className="vrbo-v2-showcase__share"
           disabled={shared}
-          onClick={() => onShare?.(property.id)}
+          onClick={() => {
+            if (shared) return;
+            playVrboSound("confirmProperty");
+            onShare?.(property.id);
+          }}
         >
           {shared ? copy.ranking.shared : copy.ranking.share}
         </button>
