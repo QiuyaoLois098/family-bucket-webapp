@@ -13,7 +13,10 @@
   "preference": {
     "typing": 700,
     "stagger": 1000,
-    "introFadeMs": 420
+    "introFadeMs": 420,
+    "submitDelayMs": 1000,
+    "jamieDelayMs": 1000,
+    "boldAfterJamieMs": 200
   },
   "finale": {
     "reveal": { "authorId": "jamie", "text": "I might've found the perfect place...", "pause": 300, "typing": 1000 },

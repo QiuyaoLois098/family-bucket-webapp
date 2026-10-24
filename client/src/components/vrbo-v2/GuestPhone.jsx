@@ -200,12 +200,6 @@ function MessageFeed({
     });
   }, [motionKey, visibleMessages, showTyping]);
 
-  useEffect(() => {
-    const node = feedRef.current;
-    if (!node || lockFeed) return;
-    node.scrollTop = node.scrollHeight;
-  }, [messages?.length, typing?.length, live, afterMessages, lockFeed]);
-
   return (
     <div
       className={`vrbo-v2-phone__feed${live ? " is-live" : ""}${

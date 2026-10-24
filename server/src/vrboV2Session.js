@@ -352,20 +352,14 @@ export class VrboV2Session extends EventEmitter {
 
     this.noteActivity();
     const nextSubmitted = { ...this.state.submitted, [userId]: picks };
-    const joinedUsers = guests.filter((user) => Boolean(this.state.joined[user.id]));
-    const allSubmitted =
-      joinedUsers.length >= 2 &&
-      joinedUsers.every((user) => Boolean(nextSubmitted[user.id]));
-    const counts = countFeatureSelections(submittedLists(nextSubmitted, this.state.joined));
-    const sharedPriorityIds = allSubmitted ? pickSharedPriorities(counts) : [];
-
     this.patch({
       submitted: nextSubmitted,
-      sharedPriorityIds,
     });
     this.maybeOpenSummary();
 
-    const fadeMs = getChatScript().preference?.introFadeMs ?? 420;
+    const pref = getChatScript().preference;
+    const fadeMs = pref?.introFadeMs ?? 420;
+    const submitDelayMs = pref?.submitDelayMs ?? 1000;
     const parts = assembleGuestParts(userId, picks, preferences, copy);
     const text = partsToText(parts);
 
@@ -392,7 +386,7 @@ export class VrboV2Session extends EventEmitter {
     };
 
     if (hasIntro) {
-      // Fade Jamie's intro, then show message — no "..." typing in between.
+      // Phone submit first; wait, then fade Jamie's intro and show the SMS.
       this.schedule(() => {
         if (this.state.submitted[userId] == null) return;
         this.patch({
@@ -400,11 +394,10 @@ export class VrboV2Session extends EventEmitter {
             message.phase === "intro" ? { ...message, exiting: true } : message,
           ),
         });
-      }, 0);
-      this.schedule(revealPreference, fadeMs);
+      }, Math.max(0, submitDelayMs - fadeMs));
+      this.schedule(revealPreference, submitDelayMs);
     } else {
-      // Later submitters: message fades in immediately.
-      this.schedule(revealPreference, 0);
+      this.schedule(revealPreference, submitDelayMs);
     }
   }
 
@@ -418,7 +411,10 @@ export class VrboV2Session extends EventEmitter {
     if (!allSubmitted) return;
 
     const pref = getChatScript().preference;
-    const settle = (pref?.introFadeMs ?? 420) + (pref?.stagger ?? 800);
+    const submitDelayMs = pref?.submitDelayMs ?? 1000;
+    const jamieDelayMs = pref?.jamieDelayMs ?? 1000;
+    const boldAfterJamieMs = pref?.boldAfterJamieMs ?? 200;
+    const settle = submitDelayMs + jamieDelayMs;
     this.schedule(() => {
       if (this.state.stage !== "selecting") return;
       const stillJoined = guests.filter((user) => Boolean(this.state.joined[user.id]));
@@ -448,10 +444,14 @@ export class VrboV2Session extends EventEmitter {
         stage: "summary",
         priorities,
         summaryText: buildSummaryText(this.state.submitted, this.state.joined),
-        sharedPriorityIds,
+        sharedPriorityIds: [],
         typing: [],
         messages,
       });
+      this.schedule(() => {
+        if (this.state.stage !== "summary") return;
+        this.patch({ sharedPriorityIds });
+      }, boldAfterJamieMs);
     }, settle);
   }
 

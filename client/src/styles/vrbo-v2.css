@@ -631,25 +631,19 @@
 }
 
 .vrbo-v2-chat__feed {
-  flex: 0 1 auto;
+  flex: 1 1 auto;
   min-height: 0;
   max-height: 100%;
-  /* Keep programmatic scroll; never flash bars when spring enter overflows. */
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
+  overflow-anchor: none;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   gap: 1.8cqh;
   padding: 0;
   scrollbar-width: none;
   -ms-overflow-style: none;
-}
-
-/* Pins bubbles to the bottom so new lines slide older ones up (with layout). */
-.vrbo-v2-chat__feed-spacer {
-  flex: 1 1 auto;
-  min-height: 0;
-  pointer-events: none;
 }
 
 .vrbo-v2-chat__feed::-webkit-scrollbar {
@@ -766,7 +760,11 @@
 
 .vrbo-v2-chat__text strong,
 .vrbo-v2-phone__bubble-text strong {
-  font-weight: 700;
+  /* Same weight as body copy so bolding shared phrases does not reflow older bubbles. */
+  font-weight: inherit;
+  text-shadow:
+    0.035em 0 0 currentColor,
+    -0.035em 0 0 currentColor;
 }
 
 .vrbo-v2-chat__row--coordinator .vrbo-v2-chat__bubble {
@@ -3733,9 +3731,12 @@ body:has(.vrbo-v2-device--phone.is-framed),
 .vrbo-v2-phone__feed {
   flex: 1;
   min-height: 0;
-  overflow-y: auto;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  overflow-anchor: none;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   gap: calc(28 / var(--phone-h) * 100cqh);
   padding: calc(36 / var(--phone-h) * 100cqh) calc(40 / var(--phone-w) * 100cqw) calc(24 / var(--phone-h) * 100cqh);
   scrollbar-width: none;

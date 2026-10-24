@@ -9,14 +9,9 @@ export default function useTailFitMessages(messages, feedRef, enabled) {
   const list = messages ?? [];
   const [startIndex, setStartIndex] = useState(0);
 
-  // New message or lock-on → remeasure from the full stack next layout.
   useLayoutEffect(() => {
-    if (!enabled) {
-      setStartIndex(0);
-      return;
-    }
-    setStartIndex(0);
-  }, [list.length, enabled]);
+    if (!enabled) setStartIndex(0);
+  }, [enabled]);
 
   useLayoutEffect(() => {
     if (!enabled) return;

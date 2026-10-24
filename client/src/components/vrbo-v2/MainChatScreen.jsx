@@ -198,13 +198,6 @@ export default function MainChatScreen({
     });
   }, [motionKey, displayMessages, typingRowUsers.length]);
 
-  useEffect(() => {
-    const node = feedRef.current;
-    if (!node || lockFeed) return;
-    // Instant pin — never animate scroll (fights paint of new bubbles).
-    node.scrollTop = node.scrollHeight;
-  }, [messages.length, typing.length, showIdleTyping, lockFeed]);
-
   return (
     <div
       className={`vrbo-v2-chat${celebrating ? " is-celebrating" : ""}${
@@ -228,9 +221,6 @@ export default function MainChatScreen({
           </p>
         ) : null}
         <div className="vrbo-v2-chat__feed" ref={feedRef}>
-          {lockFeed ? null : (
-            <div className="vrbo-v2-chat__feed-spacer" aria-hidden="true" />
-          )}
           {displayMessages.map((message) => {
             const user = namedUserById[message.authorId];
             if (!user) return null;
