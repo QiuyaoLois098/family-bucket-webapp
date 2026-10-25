@@ -13,6 +13,7 @@ import useLandscapeGate from "../hooks/useLandscapeGate.js";
 import useVrboIphoneWebApp from "../hooks/useVrboIphoneWebApp.js";
 import useVrboSessionStartOnActivity from "../hooks/useVrboSessionStartOnActivity.js";
 import useVrboV2Session, { guests } from "../hooks/useVrboV2Session.js";
+import { buildStayCardTitle } from "@shared/vrboStayCopy.js";
 
 const VRBO_IPHONE_WEBAPP = {
   sarah: { routeKey: "ip1", title: "Interactive Experience" },
@@ -73,17 +74,25 @@ const userById = Object.fromEntries(users.map((user) => [user.id, user]));
 const preferenceById = new Map(preferences.map((preference) => [preference.id, preference]));
 const propertyById = new Map(properties.map((property) => [property.id, property]));
 
-function usePropertyLookup(results) {
+function usePropertyLookup(results, priorities) {
   return useMemo(() => {
     const byId = new Map((results ?? []).map((result) => [result.property.id, result]));
     return (propertyId) => {
       if (propertyId == null) return null;
       const scored = byId.get(propertyId);
-      if (scored) return scored;
-      const property = propertyById.get(propertyId);
-      return property ? { property, matched: [] } : null;
+      const entry = scored ?? (propertyById.has(propertyId)
+        ? { property: propertyById.get(propertyId), matched: [] }
+        : null);
+      if (!entry) return null;
+      // Server results can lag the client JSON (loaded once at boot) — client fields fill gaps.
+      const property = { ...(propertyById.get(propertyId) ?? {}), ...entry.property };
+      return {
+        ...entry,
+        property,
+        cardTitle: buildStayCardTitle(property, priorities, copy),
+      };
     };
-  }, [results]);
+  }, [results, priorities]);
 }
 
 function VrboLandscapeGate() {
@@ -155,7 +164,7 @@ function VrboDemo() {
   } = state;
   const [cursorHighlight, setCursorHighlight] = useState(false);
   const [phonesOnly, setPhonesOnly] = useState(false);
-  const propertyLookup = usePropertyLookup(results);
+  const propertyLookup = usePropertyLookup(results, priorities);
   // Demo stage includes interactive + phones — any activity starts VGC session.
   useVrboSessionStartOnActivity(actions.startSession);
 
@@ -349,7 +358,7 @@ function vrboRightReference(stage, { celebrating = false, selectedPropertyId = n
 /** Display 1 · Organizer chat. Prod = full-bleed; `compareLayout` = live + reference. */
 export function VrboLeftPage({ compareLayout = false } = {}) {
   const { state, actions, hearSounds } = useVrboV2Session({ syncOnly: true });
-  const propertyLookup = usePropertyLookup(state.results);
+  const propertyLookup = usePropertyLookup(state.results, state.priorities);
   useVrboSessionStartOnActivity(actions.startSession);
 
   const reference = vrboLeftReference(state);
@@ -502,7 +511,7 @@ export function GuestPhonePage({ guestId, compareLayout = false } = {}) {
     celebrating = false,
   } = state;
   const guest = guests.find((user) => user.id === guestId);
-  const propertyLookup = usePropertyLookup(results);
+  const propertyLookup = usePropertyLookup(results, state.priorities);
   useVrboSessionStartOnActivity(actions.startSession);
 
   if (!guest) return null;

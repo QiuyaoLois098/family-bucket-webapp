@@ -1,7 +1,7 @@
 import { useState } from "react";
 import copy from "../../data/vrbo-v2/copy.json";
 import preferences from "../../data/vrbo-v2/preferences.json";
-import { stayStatsLine } from "@shared/vrboStayCopy.js";
+import { ratingWord, stayTypeLine } from "@shared/vrboStayCopy.js";
 
 const preferenceById = new Map(preferences.map((preference) => [preference.id, preference]));
 
@@ -17,12 +17,9 @@ function PropertyImage({ property }) {
   );
 }
 
-function chatMetaLine(property) {
-  return stayStatsLine(property);
-}
-
 export default function PropertyCard({
   property,
+  title = null,
   variant = "result",
   matched = [],
   matchPercent = null,
@@ -44,16 +41,34 @@ export default function PropertyCard({
     .join(" ");
 
   if (variant === "chat") {
-    const blurb = property.description || property.highlightsText || property.about;
+    const word = ratingWord(property.rating, copy);
     return (
       <div className={className}>
-        <div className="vrbo-v2-property__chat-card">
-          <div className="vrbo-v2-property__chat-row">
+        <div className="vrbo-v2-staycard">
+          <div className="vrbo-v2-staycard__media">
             <PropertyImage property={property} />
-            <div className="vrbo-v2-property__body">
-              <h4 className="vrbo-v2-property__name">{property.name}</h4>
-              <p className="vrbo-v2-property__meta-line">{chatMetaLine(property)}</p>
-              {blurb ? <p className="vrbo-v2-property__description">{blurb}</p> : null}
+            <span className="vrbo-v2-staycard__heart" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M12 20.4 4.9 13.6a4.6 4.6 0 0 1 0-6.5 4.5 4.5 0 0 1 6.4 0l.7.7.7-.7a4.5 4.5 0 0 1 6.4 0 4.6 4.6 0 0 1 0 6.5L12 20.4Z" />
+              </svg>
+            </span>
+          </div>
+          <div className="vrbo-v2-staycard__body">
+            <div className="vrbo-v2-staycard__top">
+              {property.beachLine ? (
+                <p className="vrbo-v2-staycard__kicker">{property.beachLine}</p>
+              ) : null}
+              <h4 className="vrbo-v2-staycard__title">{title || property.name}</h4>
+              <p className="vrbo-v2-staycard__meta">{stayTypeLine(property)}</p>
+            </div>
+            <div className="vrbo-v2-staycard__bottom">
+              <span className="vrbo-v2-staycard__rating">
+                <span className="vrbo-v2-staycard__score">{property.rating}</span>
+                {word ? <span className="vrbo-v2-staycard__word">{word}</span> : null}
+              </span>
+              {property.nightly ? (
+                <span className="vrbo-v2-staycard__price">{property.nightly} / night</span>
+              ) : null}
             </div>
           </div>
         </div>

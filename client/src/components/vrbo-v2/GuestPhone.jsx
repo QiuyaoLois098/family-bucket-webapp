@@ -228,7 +228,7 @@ function MessageFeed({
                 </p>
                 {isSelf ? <PhoneAvatar user={author} /> : null}
               </div>
-              <PropertyCard property={entry.property} variant="chat" />
+              <PropertyCard property={entry.property} title={entry.cardTitle} variant="chat" />
             </div>
           );
         }

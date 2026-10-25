@@ -237,7 +237,7 @@ export default function MainChatScreen({
               >
                 {message.kind === "property" && entry ? (
                   <div className="vrbo-v2-chat__card">
-                    <PropertyCard property={entry.property} variant="chat" />
+                    <PropertyCard property={entry.property} title={entry.cardTitle} variant="chat" />
                   </div>
                 ) : (
                   <>

@@ -132,6 +132,49 @@ export function applyStayCopy(results, guestSelections, copy) {
   });
 }
 
+/**
+ * Chat card title: "{displayName} w/ {top 2 guest priorities}".
+ * Priorities come ranked (most guests first). Only tags the property offers
+ * count; suppressed tags (Near Beach) never appear.
+ */
+export function buildStayCardTitle(property, priorities = [], copy = {}) {
+  const base = property?.displayName || property?.name || "";
+  const labels = copy.chat?.cardTitleTags ?? {};
+  const suppressed = new Set(property?.suppressTags ?? []);
+  const offered = (property?.titleTags ?? property?.features ?? []).filter(
+    (id) => !suppressed.has(id),
+  );
+  const offeredSet = new Set(offered);
+
+  const picked = [];
+  (priorities ?? []).forEach((id) => {
+    if (picked.length < 2 && offeredSet.has(id) && !picked.includes(id)) picked.push(id);
+  });
+  [...offered]
+    .sort((a, b) => orderIndex(a) - orderIndex(b))
+    .forEach((id) => {
+      if (picked.length < 2 && !picked.includes(id)) picked.push(id);
+    });
+
+  const words = picked.map((id) => labels[id]).filter(Boolean);
+  if (!words.length) return base;
+  return `${base} w/ ${words.join(" & ")}`;
+}
+
+export function ratingWord(rating, copy = {}) {
+  const score = Number.parseFloat(rating);
+  if (Number.isNaN(score)) return "";
+  const scale = copy.chat?.ratingScale ?? [];
+  return scale.find((step) => score >= step.min)?.label ?? "";
+}
+
+/** "House · 4 bedrooms · 6 beds" */
+export function stayTypeLine(property) {
+  return [property?.propertyType, property?.bedrooms, property?.beds || property?.sleeps]
+    .filter(Boolean)
+    .join(" · ");
+}
+
 export function stayStatsLine(property) {
   const beds = property?.beds || property?.sleeps;
   const price = property?.nightly ? `${property.nightly} / night` : null;

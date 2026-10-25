@@ -6,6 +6,11 @@ const DEFAULT_CONNECTORS = {
   chris: "plus",
 };
 
+function capitalizeFirst(text) {
+  const value = String(text ?? "");
+  return value ? value.charAt(0).toUpperCase() + value.slice(1) : value;
+}
+
 function orderIndex(featureId) {
   const index = FEATURE_ORDER.indexOf(featureId);
   return index === -1 ? FEATURE_ORDER.length : index;
@@ -67,9 +72,11 @@ export function assembleGuestParts(userId, picks, preferences, copy) {
       parts.push(phrase);
       return;
     }
-    parts.push({ text: " " });
+      parts.push({ text: " " });
     parts.push(phrase);
   });
+  // Sent texts start with a capital letter.
+  if (parts[0]?.text) parts[0] = { ...parts[0], text: capitalizeFirst(parts[0].text) };
   return parts;
 }
 
@@ -231,7 +238,9 @@ export function sharedPhraseBank(sharedIds, preferences, copy) {
       if (line) phrases.push(line);
     });
   });
-  return [...new Set(phrases)].sort((a, b) => b.length - a.length);
+  // A sent text starts with a capital, so its first phrase must still match for bold.
+  const withCaps = phrases.flatMap((phrase) => [phrase, capitalizeFirst(phrase)]);
+  return [...new Set(withCaps)].sort((a, b) => b.length - a.length);
 }
 
 function escapeRegExp(value) {

@@ -19,7 +19,7 @@
     "jamieDelayMs": 1000
   },
   "finale": {
-    "reveal": { "authorId": "jamie", "text": "I might've found the perfect place...", "pause": 300, "typing": 1000 },
+    "reveal": { "authorId": "jamie", "text": "I found the perfect place…", "pause": 300, "typing": 1000 },
     "propertyAuthorId": "jamie",
     "propertyPause": 700,
     "reactions": [

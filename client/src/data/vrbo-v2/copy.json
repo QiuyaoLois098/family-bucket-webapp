@@ -16,6 +16,22 @@
   "chat": {
     "typingLabel": "typing",
     "sharedCard": "Shared from touchscreen · Vrbo",
+    "ratingScale": [
+      { "min": 9, "label": "Exceptional" },
+      { "min": 8, "label": "Excellent" },
+      { "min": 7, "label": "Very good" },
+      { "min": 0, "label": "Good" }
+    ],
+    "cardTitleTags": {
+      "private-pool": "Private Pool",
+      "outdoor-dining": "Outdoor Dining",
+      "near-beach": "Near the Beach",
+      "wifi": "Wi-Fi",
+      "fire-pit": "Fire Pit",
+      "hot-tub": "Hot Tub",
+      "air-conditioning": "A/C",
+      "big-kitchen": "Big Kitchen"
+    },
     "prompt": "Plan your Hawaii getaway together.",
     "footer": "Pick up a phone\nand join the conversation",
     "footerPlanning": "Your group is planning...",
