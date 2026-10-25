@@ -225,7 +225,6 @@ function MessageFeed({
   sharedIds,
   phraseBank,
   lockOverflow = false,
-  finale = false,
 }) {
   const feedRef = useRef(null);
   const motionRef = useRef(null);
@@ -235,9 +234,8 @@ function MessageFeed({
   const phaseMessages = live
     ? messages ?? []
     : (messages ?? []).filter((message) => message.kind !== "property").slice(-6);
-  const baseMessages = finale
-    ? phaseMessages.filter((message) => message.kind === "property" || userById[message.authorId]?.role !== "coordinator")
-    : phaseMessages;
+  // Finale keeps Jamie's "I found the perfect place…" line, same as Display 1.
+  const baseMessages = phaseMessages;
   const lockFeed =
     lockOverflow || baseMessages.some((message) => message.phase === "finale");
   const visibleMessages = useTailFitMessages(baseMessages, feedRef, lockFeed);
@@ -578,7 +576,6 @@ export default function GuestPhone({
                 sharedIds={sharedIds}
                 phraseBank={phraseBank}
                 lockOverflow={Boolean(celebrating || selectedPropertyId)}
-                finale={Boolean(selectedPropertyId)}
                 afterMessages={
                   selectedPropertyId ? null : (
                     <p className="vrbo-v2-phone__continue">{copy.phone.continueCta}</p>
