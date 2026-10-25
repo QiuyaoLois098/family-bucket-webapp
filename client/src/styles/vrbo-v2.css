@@ -3120,6 +3120,28 @@ html.vrbo-kiosk-lock #root {
 }
 
 /*
+ * iOS Home Screen app (class added by useVrboFixedViewport): keep the lock's
+ * no-scroll behaviour but drop position:fixed on html/body (fixed boxes are
+ * clipped at the short 793px viewport) and size by 100vh, which is the true
+ * screen height there.
+ */
+html.vrbo-kiosk-lock.vrbo-standalone-fill,
+html.vrbo-kiosk-lock.vrbo-standalone-fill body {
+  position: relative;
+  inset: auto;
+  height: 100vh;
+  min-height: 100vh;
+}
+
+html.vrbo-kiosk-lock.vrbo-standalone-fill #root {
+  height: 100vh;
+}
+
+.vrbo-v2-device--phone.is-standalone:not(.is-framed) {
+  height: 100vh;
+}
+
+/*
  * Standalone / Guided Access phone pages:
  * Keep page chrome white so the home-indicator strip is never brand-blue.
  * Top notch/status still reads blue via .vrbo-v2-phone__chrome + theme-color.
@@ -3977,7 +3999,8 @@ body:has(.vrbo-v2-device--phone.is-framed),
   font-size: calc(12.726 / var(--phone-h) * 100cqh);
   font-weight: 400;
   line-height: normal;
-  height: calc(89.829 / var(--phone-h) * 100cqh);
+  /* Grow with the auto-drafted text instead of letting it spill past the border. */
+  height: auto;
 }
 
 .vrbo-v2-phone__panel--select .vrbo-v2-phone__composer-field {
@@ -3996,6 +4019,14 @@ body:has(.vrbo-v2-device--phone.is-framed),
   font-size: calc(12.726 / var(--phone-h) * 100cqh);
   font-weight: 400;
   line-height: normal;
+  /* Very long drafts scroll inside the box rather than pushing the layout away. */
+  max-height: calc(110 / var(--phone-h) * 100cqh);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.vrbo-v2-phone__draft-line::-webkit-scrollbar {
+  display: none;
 }
 
 .vrbo-v2-phone__composer-send {
@@ -4835,6 +4866,8 @@ body:has(.vrbo-v2-device--phone.is-framed),
 .vrbo-v2-phone .vrbo-v2-phone__bubble-text strong {
   font-feature-settings: inherit;
   font-weight: 700;
+  /* Real Bold font is loaded; drop the old fake-bold shadow so it is not doubled. */
+  text-shadow: none;
 }
 
 .vrbo-v2-phone .vrbo-v2-staycard__media {

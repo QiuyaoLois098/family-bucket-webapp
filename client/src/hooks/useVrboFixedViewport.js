@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
 const LOCK_CLASS = "vrbo-kiosk-lock";
+const STANDALONE_FILL_CLASS = "vrbo-standalone-fill";
 const KIOSK_VIEWPORT =
   "width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover";
 const DEFAULT_VIEWPORT =
@@ -33,6 +34,15 @@ export default function useVrboFixedViewport(enabled) {
     html.classList.add(LOCK_CLASS);
     upsertViewport(KIOSK_VIEWPORT);
 
+    // iOS Home Screen apps: window.innerHeight / 100dvh come back one status bar
+    // short (793 on an 852pt screen) while 100vh is the full 852, and anything
+    // position:fixed (html/body included) is clipped at 793. Let the page use
+    // normal flow at 100vh instead — see .vrbo-standalone-fill in vrbo-v2.css.
+    const isStandalone =
+      window.matchMedia?.("(display-mode: standalone)").matches ||
+      window.navigator.standalone === true;
+    if (isStandalone) html.classList.add(STANDALONE_FILL_CLASS);
+
     const blockMultiTouchZoom = (event) => {
       if (event.touches?.length > 1) event.preventDefault();
     };
@@ -50,7 +60,7 @@ export default function useVrboFixedViewport(enabled) {
         return;
       }
       const scroller = target.closest(
-        '[data-allow-scroll="1"], .vrbo-v2-chat__feed, .vrbo-v2-phone__feed, .vrbo-v2-phone__prompt, .vrbo-v2-rank__results',
+        '[data-allow-scroll="1"], .vrbo-v2-chat__feed, .vrbo-v2-phone__feed, .vrbo-v2-phone__prompt, .vrbo-v2-phone__draft-line, .vrbo-v2-rank__results',
       );
       if (scroller) return;
       event.preventDefault();
@@ -64,6 +74,7 @@ export default function useVrboFixedViewport(enabled) {
 
     return () => {
       html.classList.remove(LOCK_CLASS);
+      html.classList.remove(STANDALONE_FILL_CLASS);
       upsertViewport(previousViewport);
       document.removeEventListener("touchmove", blockMultiTouchZoom);
       document.removeEventListener("touchmove", blockDocScroll);

@@ -573,7 +573,7 @@ export function GuestPhonePage({ guestId, compareLayout = false } = {}) {
 
   return (
     <div
-      className={`vrbo-v2-device vrbo-v2-device--phone${framed ? " is-framed" : ""}`}
+      className={`vrbo-v2-device vrbo-v2-device--phone${framed ? " is-framed" : ""}${standalone ? " is-standalone" : ""}`}
     >
       {compare && !standalone ? (
         <button
