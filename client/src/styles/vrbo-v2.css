@@ -1,5 +1,30 @@
 /* Vrbo v2 group-trip installation - five simulated displays in one window. */
 
+/* Separate family keeps the supplied web fonts limited to the two Vrbo displays. */
+@font-face {
+  font-family: "Centra No2 Vrbo Web";
+  src: url("/font/vrbo/CentraNo2-Book.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Centra No2 Vrbo Web";
+  src: url("/font/vrbo/CentraNo2-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Centra No2 Vrbo Web";
+  src: url("/font/vrbo/CentraNo2-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @font-face {
   font-family: "Albra Sans";
   src: url("/font/vrbo/Albra-SansMedium.otf") format("opentype");
@@ -64,6 +89,12 @@
   background: #000000;
   user-select: none;
   touch-action: manipulation;
+}
+
+.vrbo-v2-chat,
+.vrbo-v2-rank {
+  --vrbo-v2-content: "Centra No2 Vrbo Web", "Helvetica Neue", sans-serif;
+  font-family: var(--vrbo-v2-content);
 }
 
 .vrbo-v2-stage__eyebrow {
