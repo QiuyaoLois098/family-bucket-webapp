@@ -3,7 +3,7 @@ import chatScript from "../../data/vrbo-v2/chatScript.json";
 import copy from "../../data/vrbo-v2/copy.json";
 import properties from "../../data/vrbo-v2/properties.json";
 import users from "../../data/vrbo-v2/users.json";
-import { runChunkTypewriter } from "../../motion/chunkType.js";
+import { runChunkTypewriter, splitTypingChunks } from "../../motion/chunkType.js";
 import OpeningLoop from "./OpeningLoop.jsx";
 import { StayShowcase } from "./StayViews.jsx";
 import { playSharedVrboSound, playTapSearchSound } from "./vrboSound.js";
@@ -14,11 +14,13 @@ const propertyById = new Map(properties.map((property) => [property.id, property
 
 function useTypewriter(text) {
   const [shown, setShown] = useState("");
+  const [complete, setComplete] = useState(false);
 
   useEffect(() => {
     const full = text ?? "";
+    setShown("");
+    setComplete(false);
     if (!full) {
-      setShown("");
       return undefined;
     }
 
@@ -26,13 +28,31 @@ function useTypewriter(text) {
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
-    return runChunkTypewriter(full, {
-      reduceMotion,
-      onUpdate: setShown,
-    });
+    if (reduceMotion) {
+      setShown(full);
+      setComplete(true);
+      return undefined;
+    }
+
+    // The box enters after 160ms for 750ms. Give it another 100ms
+    // before revealing text, then take 2.5s from first to final phrase.
+    let cancelTyping;
+    const timer = window.setTimeout(() => {
+      const steps = Math.max(1, splitTypingChunks(full).length - 1);
+      cancelTyping = runChunkTypewriter(full, {
+        chunkMs: 2500 / steps,
+        jitterMs: 0,
+        onUpdate: setShown,
+        onDone: () => setComplete(true),
+      });
+    }, 160 + 750 + 100);
+    return () => {
+      window.clearTimeout(timer);
+      cancelTyping?.();
+    };
   }, [text]);
 
-  return shown;
+  return { shown, complete };
 }
 
 function WaitingPanel({
@@ -66,7 +86,7 @@ export function SummaryPanel({
   onSearch,
   compact = false,
 }) {
-  const typedText = useTypewriter(summaryText);
+  const { shown: typedText, complete } = useTypewriter(summaryText);
   const isTyping = Boolean(summaryText) && typedText.length < summaryText.length;
 
   return (
@@ -108,8 +128,9 @@ export function SummaryPanel({
 
         <button
           type="button"
-          className="vrbo-v2-summary__search is-scene-enter"
-          style={{ "--scene-delay": "400ms", "--scene-y": "20px", "--scene-duration": "650ms" }}
+          className={`vrbo-v2-summary__search${complete ? " is-scene-enter" : ""}`}
+          style={{ visibility: complete ? "visible" : "hidden", "--scene-delay": "0ms", "--scene-y": "20px", "--scene-duration": "650ms" }}
+          disabled={!complete}
           onClick={() => {
             playTapSearchSound();
             onSearch?.();
@@ -292,3 +313,4 @@ export default function RankingScreen({
     </div>
   );
 }
+
