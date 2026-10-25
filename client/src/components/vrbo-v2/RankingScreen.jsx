@@ -3,7 +3,6 @@ import chatScript from "../../data/vrbo-v2/chatScript.json";
 import copy from "../../data/vrbo-v2/copy.json";
 import properties from "../../data/vrbo-v2/properties.json";
 import users from "../../data/vrbo-v2/users.json";
-import { runChunkTypewriter, splitTypingChunks } from "../../motion/chunkType.js";
 import OpeningLoop from "./OpeningLoop.jsx";
 import { StayShowcase } from "./StayViews.jsx";
 import { playSharedVrboSound, playTapSearchSound } from "./vrboSound.js";
@@ -12,13 +11,15 @@ const FINALE_BG_SRC = "/images/Vrbo-Images/final-bg.jpg";
 
 const propertyById = new Map(properties.map((property) => [property.id, property]));
 
-function useTypewriter(text) {
-  const [shown, setShown] = useState("");
+const SUMMARY_TEXT_START_MS = 1010;
+const SUMMARY_TEXT_DURATION_MS = 2000;
+const SUMMARY_WORD_FADE_MS = 180;
+
+function useSummaryTypingComplete(text) {
   const [complete, setComplete] = useState(false);
 
   useEffect(() => {
     const full = text ?? "";
-    setShown("");
     setComplete(false);
     if (!full) {
       return undefined;
@@ -29,30 +30,17 @@ function useTypewriter(text) {
       window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
     if (reduceMotion) {
-      setShown(full);
       setComplete(true);
       return undefined;
     }
 
-    // The box enters after 160ms for 750ms. Give it another 100ms
-    // before revealing text, then take 2.5s from first to final phrase.
-    let cancelTyping;
-    const timer = window.setTimeout(() => {
-      const steps = Math.max(1, splitTypingChunks(full).length - 1);
-      cancelTyping = runChunkTypewriter(full, {
-        chunkMs: 2500 / steps,
-        jitterMs: 0,
-        onUpdate: setShown,
-        onDone: () => setComplete(true),
-      });
-    }, 160 + 750 + 100);
-    return () => {
-      window.clearTimeout(timer);
-      cancelTyping?.();
-    };
+    // Search follows the final word's fade, rather than the first paint.
+    const timer = window.setTimeout(() => setComplete(true),
+      SUMMARY_TEXT_START_MS + SUMMARY_TEXT_DURATION_MS);
+    return () => window.clearTimeout(timer);
   }, [text]);
 
-  return { shown, complete };
+  return complete;
 }
 
 function WaitingPanel({
@@ -86,8 +74,9 @@ export function SummaryPanel({
   onSearch,
   compact = false,
 }) {
-  const { shown: typedText, complete } = useTypewriter(summaryText);
-  const isTyping = Boolean(summaryText) && typedText.length < summaryText.length;
+  const complete = useSummaryTypingComplete(summaryText);
+  const words = String(summaryText ?? "").match(/\S+\s*/g) ?? [];
+  const wordStep = (SUMMARY_TEXT_DURATION_MS - SUMMARY_WORD_FADE_MS) / Math.max(1, words.length - 1);
 
   return (
     <div className={`vrbo-v2-summary ${compact ? "vrbo-v2-summary--compact" : ""}`}>
@@ -117,10 +106,16 @@ export function SummaryPanel({
         >
           <p className="vrbo-v2-summary__box-label">{copy.summary.boxLabel}</p>
           <p
-            className={`vrbo-v2-summary__box-text${isTyping ? " is-typing" : ""}`}
+            className="vrbo-v2-summary__box-text"
             aria-hidden={Boolean(summaryText)}
           >
-            {typedText}
+            {words.map((word, index) => (
+              <span
+                key={`${summaryText}-${index}`}
+                className="vrbo-v2-summary__word"
+                style={{ animationDelay: `${SUMMARY_TEXT_START_MS + index * wordStep}ms`, animationDuration: `${SUMMARY_WORD_FADE_MS}ms` }}
+              >{word}</span>
+            ))}
           </p>
         </div>
 
