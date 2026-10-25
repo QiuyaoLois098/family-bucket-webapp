@@ -507,13 +507,13 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: var(--cream);
+  background: #ffffff;
   transition: box-shadow 0.6s ease;
   container-type: size;
 }
 
 .vrbo-v2-chat.is-celebrating {
-  box-shadow: inset 0 0 0 0.16cqh var(--sky);
+  box-shadow: none;
 }
 
 /* Finale / celebration: no scroll — stack from the top like the earlier chat;
@@ -593,7 +593,7 @@
   flex-direction: column;
   overflow: hidden;
   padding: 3.2cqh 5.5cqw 4.5cqh;
-  background: var(--cream);
+  background: #ffffff;
 }
 
 .vrbo-v2-chat__join-toast {
@@ -770,11 +770,11 @@
   font-size: 1.5cqh;
   font-weight: 600;
   overflow: hidden;
-  background: #f3e7c8;
+  background: var(--chat-avatar-fill, #fff1c3);
 }
 
 .vrbo-v2-chat__avatar.has-photo {
-  background: #f3e7c8;
+  background: var(--chat-avatar-fill, #fff1c3);
   border: 0;
 }
 
@@ -814,7 +814,7 @@
   margin: 0;
   padding: 2.4cqh 4cqw 2.4cqh;
   border-radius: 2cqw;
-  background: #eceae4;
+  background: #faf6f1;
   color: var(--charcoal);
   font-family: var(--vrbo-v2-content);
   border: 0;
@@ -842,7 +842,7 @@
 }
 
 .vrbo-v2-chat__row--coordinator .vrbo-v2-chat__bubble {
-  background: #eceae4;
+  background: #faf6f1;
   color: var(--charcoal);
   border-color: transparent;
   box-shadow: none;
@@ -869,7 +869,7 @@
   overflow: hidden;
   border-radius: 50%;
   border: 0.18cqh solid var(--cream);
-  background: var(--soft-gray);
+  background: var(--chat-avatar-fill, var(--soft-gray));
 }
 
 .vrbo-v2-chat__bubble--typing {
@@ -878,7 +878,7 @@
   gap: 0.45cqw;
   align-items: center;
   padding: 1.5cqh 1.3cqw;
-  background: #eceae4;
+  background: #faf6f1;
   color: var(--blue);
   box-shadow: none;
 }
@@ -936,7 +936,7 @@
   --design-h: 3840;
   position: relative;
   height: 100%;
-  background: var(--warm-white);
+  background: #ffffff;
   container-type: size;
 }
 
@@ -951,7 +951,7 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #1a1420;
+  background-color: #ffffff;
   background-image: var(--finale-bg);
   background-size: cover;
   background-position: center center;
@@ -981,8 +981,11 @@
   overflow: hidden;
   transform: rotate(-7deg);
   box-shadow:
-    0 18px 48px rgba(0, 0, 0, 0.28),
-    0 4px 14px rgba(0, 0, 0, 0.18);
+    0 calc(455 / var(--design-w) * 100cqw) calc(127 / var(--design-w) * 100cqw) rgba(0, 0, 0, 0),
+    0 calc(291 / var(--design-w) * 100cqw) calc(117 / var(--design-w) * 100cqw) rgba(0, 0, 0, 0.01),
+    0 calc(164 / var(--design-w) * 100cqw) calc(98 / var(--design-w) * 100cqw) rgba(0, 0, 0, 0.05),
+    0 calc(73 / var(--design-w) * 100cqw) calc(73 / var(--design-w) * 100cqw) rgba(0, 0, 0, 0.09),
+    0 calc(18 / var(--design-w) * 100cqw) calc(40 / var(--design-w) * 100cqw) rgba(0, 0, 0, 0.10);
   background: #d8d0c8;
 }
 
@@ -1118,7 +1121,7 @@
   flex-direction: column;
   gap: 1.6cqh;
   padding: 2.2cqh 3.4cqw 3cqh;
-  border: 0.15cqh solid #1668E3;
+  border: 0.15cqh solid #0f51ec;
   border-radius: 4cqw;
   background: #ffffff;
   overflow: hidden;
@@ -1194,7 +1197,7 @@
   border: 0;
   border-radius: 999px;
   padding: 2cqh 2cqw;
-  background: var(--blue);
+  background: #1668e3;
   color: #ffffff;
   font-family: var(--vrbo-v2-content);
   font-size: calc(80 / var(--design-h) * 100cqh);
@@ -1271,7 +1274,7 @@
 }
 
 .vrbo-v2-rank__panel--light {
-  background: var(--cream);
+  background: #ffffff;
 }
 
 .vrbo-v2-rank__panel--blue {
@@ -1778,11 +1781,11 @@
   --sc-hero-h: 1050;
   --sc-body-h: 850;
   --sc-blue: #0f51ec;
-  --sc-cream: #f9f6f2;
-  --sc-ink: #1a1a1a;
-  --sc-muted: #6b6b6b;
-  --sc-loved: #e7f0ff;
-  --sc-highlights: #f4efe7;
+  --sc-cream: #faf6f1;
+  --sc-ink: #191e3b;
+  --sc-muted: #676a7d;
+  --sc-loved: #e6f9fe;
+  --sc-highlights: #faf6f1;
   --sc-display: var(--vrbo-v2-sans, "Albra Sans", "Helvetica Neue", sans-serif);
   --sc-ui: var(--vrbo-v2-content, "Centra No2", "Helvetica Neue", sans-serif);
   --sc-pad: 6.2cqw;
@@ -2142,7 +2145,7 @@
   border-radius: 1.8cqw;
   overflow: hidden;
   border: 0.45cqw solid transparent;
-  background: #d5dbe6;
+  background: #e6f9fe;
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
@@ -2156,7 +2159,7 @@
 .vrbo-v2-showcase__thumb.is-active {
   /* Inner white ring (border) + outer blue ring (box-shadow) */
   border-color: #ffffff;
-  box-shadow: 0 0 0 0.5cqw var(--sc-blue);
+  box-shadow: 0 0 0 0.5cqw #1668e3;
 }
 
 .vrbo-v2-showcase__thumb.is-active .vrbo-v2-showcase__thumb-badge {
@@ -2189,7 +2192,7 @@
   width: calc(120 / var(--design-h) * 100cqh);
   height: calc(100 / var(--design-h) * 100cqh);
   border-radius: 999px;
-  background: var(--sc-blue);
+  background: #1668e3;
   color: #ffffff;
   font-family: var(--sc-ui);
   font-size: calc(52 / var(--design-h) * 100cqh);
@@ -2215,7 +2218,7 @@
   border: 0;
   border-radius: 999px;
   padding: 2cqh 2cqw;
-  background: var(--blue, var(--sc-blue));
+  background: #1668e3;
   color: #ffffff;
   font-family: var(--vrbo-v2-content);
   font-size: calc(80 / var(--design-h) * 100cqh);
@@ -4001,6 +4004,19 @@ body:has(.vrbo-v2-device--phone.is-framed),
 }
 
 /* Figma typography for Display 1 only. Shared phone card styles stay unchanged. */
+.vrbo-v2-chat .vrbo-v2-staycard {
+  background: #f5f4f2;
+  border-color: #d3d1d6;
+}
+
+.vrbo-v2-chat .vrbo-v2-staycard__heart {
+  box-shadow: inset 0 0 0 calc(2 * var(--dp)) #d6d6db;
+}
+
+.vrbo-v2-chat .vrbo-v2-staycard__heart svg {
+  stroke: #be1c48;
+}
+
 .vrbo-v2-chat .vrbo-v2-staycard__kicker {
   font-size: calc(40 * var(--dp));
   line-height: 1.16;
@@ -4013,6 +4029,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
   line-height: 1.16;
 }
 .vrbo-v2-chat .vrbo-v2-staycard__score {
+  background: #1668e3;
   font-size: calc(56 * var(--dp));
   font-weight: 700;
   line-height: 1.16;

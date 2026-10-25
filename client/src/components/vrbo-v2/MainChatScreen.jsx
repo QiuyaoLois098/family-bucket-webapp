@@ -15,6 +15,12 @@ const propertyNames = properties
   .filter((name) => name && name.length > 2);
 
 const JOIN_TOAST_MS = 2800;
+const CHAT_AVATAR_FILLS = {
+  jamie: "#fff1c3",
+  sarah: "#d6f5e8",
+  alex: "#dbf0fa",
+  chris: "#f2f2db",
+};
 
 function fill(template, values) {
   return Object.entries(values).reduce(
@@ -26,7 +32,11 @@ function fill(template, values) {
 function Avatar({ user, className = "vrbo-v2-chat__avatar" }) {
   if (user?.avatar) {
     return (
-      <span className={`${className} has-photo`} aria-hidden="true">
+      <span
+        className={`${className} has-photo`}
+        style={{ "--chat-avatar-fill": CHAT_AVATAR_FILLS[user.id] || user.accent }}
+        aria-hidden="true"
+      >
         <img src={user.avatar} alt="" />
       </span>
     );
