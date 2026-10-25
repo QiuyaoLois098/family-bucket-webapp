@@ -494,7 +494,7 @@ export default function GuestPhone({
                     return (
                         <PreferenceCard
                           key={preference.id}
-                          preference={{ ...preference, image: `/images/Vrbo-Images/mobile/preferences/${preference.id}.png` }}
+                          preference={{ ...preference, image: `/images/Vrbo-Images/mobile/preferences/${preference.id}.${preference.id === "big-kitchen" ? "jpg" : "png"}` }}
                           variant="chip"
                           selected={selected}
                           disabled={!selected && atLimit}
