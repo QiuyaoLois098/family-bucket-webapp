@@ -525,6 +525,13 @@
   letter-spacing: 0;
 }
 
+/* Joined participants use the post-join Figma text style; waiting copy stays unchanged. */
+.vrbo-v2-chat__people.is-joined {
+  color: #ffffff;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
 .vrbo-v2-chat__body {
   position: relative;
   flex: 1;
@@ -954,22 +961,22 @@
   margin: 0;
   /* Vrbo title face — same as chat trip title (Albra Sans). */
   font-family: var(--vrbo-v2-sans, "Albra Sans", "Helvetica Neue", sans-serif);
-  font-weight: 600;
+  font-weight: 500;
   /* ~168px @ 2160 design width — matches reference hero title */
   font-size: calc(200 / var(--design-w, 2160) * 100cqw);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  color: #ffffff;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: #faf6f1;
 }
 
 .vrbo-v2-rank__finale-names {
   margin: 0;
   font-family: var(--vrbo-v2-content, "Centra No2", "Helvetica Neue", sans-serif);
-  font-weight: 200;
+  font-weight: 400;
   /* ~1/3 of title height */
   font-size: calc(81 / var(--design-w, 2160) * 100cqw);
-  line-height: 1.25;
-  letter-spacing: 0.01em;
+  line-height: calc(90 / 81);
+  letter-spacing: -0.0133333333em;
   color: #ffffff;
 }
 
@@ -1041,9 +1048,9 @@
   margin: 0 0 3.2cqh;
   font-family: var(--vrbo-v2-sans);
   font-size: calc(132 / var(--design-h) * 100cqh);
-  font-weight: 600;
-  line-height: 1.12;
-  letter-spacing: -0.02em;
+  font-weight: 500;
+  line-height: calc(160 / 132);
+  letter-spacing: 0;
   color: var(--blue);
 }
 
@@ -1079,7 +1086,7 @@
   font-size: calc(72 / var(--design-h) * 100cqh);
   font-weight: 500;
   line-height: 1.2;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
   color: var(--blue);
 }
 
@@ -1091,8 +1098,9 @@
   font-size: calc(80 / var(--design-h) * 100cqh);
   font-weight: 400;
   line-height: 1.3;
-  color: #202020;
+  color: #191e3b;
   overflow: hidden;
+  letter-spacing: 0;
 }
 
 .vrbo-v2-summary__box-text.is-typing::after {
@@ -1137,9 +1145,9 @@
   color: #ffffff;
   font-family: var(--vrbo-v2-content);
   font-size: calc(80 / var(--design-h) * 100cqh);
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  line-height: 1;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.2;
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
@@ -1749,11 +1757,11 @@
   margin: 0.55cqh 0 0;
   max-width: none;
   font-family: var(--vrbo-v2-sans);
-  font-size: 3.1cqh;
-  font-weight: 600;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  color: #ffffff;
+  font-size: calc(115.14704895 / var(--design-h) * 100cqh);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: #faf6f1;
   white-space: nowrap;
 }
 
@@ -1891,9 +1899,9 @@
   /* ~120px @ 3840 */
   font-size: calc(112 / var(--design-h) * 100cqh);
   font-weight: 500;
-  line-height: 1.05;
-  letter-spacing: -0.025em;
-  color: var(--sc-ink);
+  line-height: calc(128 / 112);
+  letter-spacing: -0.0223214286em;
+  color: #191e3b;
 }
 
 .vrbo-v2-showcase__stats {
@@ -1902,8 +1910,9 @@
   /* ~56px @ 3840 */
   font-size: calc(72 / var(--design-h) * 100cqh);
   font-weight: 400;
-  line-height: 1.25;
-  color: var(--sc-muted);
+  line-height: 1.2;
+  color: #676a7d;
+  letter-spacing: 0;
 }
 
 .vrbo-v2-showcase__cards {
@@ -1936,8 +1945,9 @@
   /* ~60px @ 3840 */
   font-size: calc(56 / var(--design-h) * 100cqh);
   font-weight: 500;
-  line-height: 1.15;
-  color: var(--sc-ink);
+  line-height: calc(72 / 56);
+  color: #191e3b;
+  letter-spacing: 0;
 }
 
 .vrbo-v2-showcase__card--loved {
@@ -1958,8 +1968,9 @@
   /* ~44px @ 3840 */
   font-size: calc(56 / var(--design-h) * 100cqh);
   font-weight: 400;
-  line-height: 1.2;
-  color: var(--sc-muted);
+  line-height: calc(72 / 56);
+  color: #191e3b;
+  letter-spacing: 0;
 }
 
 .vrbo-v2-showcase__badge {
@@ -1989,10 +2000,10 @@
   /* 144px @ 3840 */
   font-size: calc(144 / var(--design-h) * 100cqh);
   font-weight: 500;
-  line-height: 1;
-  letter-spacing: -0.02em;
+  line-height: calc(160 / 144);
+  letter-spacing: 0;
   text-align: center;
-  color: var(--sc-ink);
+  color: #191e3b;
 }
 
 .vrbo-v2-showcase__badge-ring {
@@ -2011,10 +2022,11 @@
   margin: 1.1cqh 0 0;
   font-family: var(--sc-ui);
   /* ~52px @ 3840 */
-  font-size: calc(52 / var(--design-h) * 100cqh);
+  font-size: calc(56 / var(--design-h) * 100cqh);
   font-weight: 400;
-  line-height: 1.32;
-  color: var(--sc-ink);
+  line-height: calc(72 / 56);
+  color: #191e3b;
+  letter-spacing: 0;
 }
 
 .vrbo-v2-showcase__thumbs {
@@ -2057,7 +2069,7 @@
 
 .vrbo-v2-showcase__thumb.is-active .vrbo-v2-showcase__thumb-badge {
   background: #ffffff;
-  color: var(--sc-blue);
+  color: #1668e3;
 }
 
 .vrbo-v2-showcase__thumb-img {
@@ -2089,11 +2101,13 @@
   color: #ffffff;
   font-family: var(--sc-ui);
   font-size: calc(52 / var(--design-h) * 100cqh);
-  font-weight: 500;
-  line-height: 1;
+  font-weight: 700;
+  line-height: 1.3;
   /* Digits sit optically low in Centra — nudge text up inside the pill */
   padding: 0.13em 0 0;
   text-align: center;
+  font-feature-settings: "ss02" on;
+  letter-spacing: 0;
 }
 
 .vrbo-v2-showcase__actions {
@@ -2113,9 +2127,9 @@
   color: #ffffff;
   font-family: var(--vrbo-v2-content);
   font-size: calc(80 / var(--design-h) * 100cqh);
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  line-height: 1;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.2;
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
@@ -3892,6 +3906,37 @@ body:has(.vrbo-v2-device--phone.is-framed),
   padding: 0;
   background: transparent;
   box-shadow: none;
+}
+
+/* Figma typography for Display 1 only. Shared phone card styles stay unchanged. */
+.vrbo-v2-chat .vrbo-v2-staycard__kicker {
+  font-size: calc(40 * var(--dp));
+  line-height: 1.16;
+}
+.vrbo-v2-chat .vrbo-v2-staycard__title {
+  line-height: 1.16;
+}
+.vrbo-v2-chat .vrbo-v2-staycard__meta {
+  font-size: calc(56 * var(--dp));
+  line-height: 1.16;
+}
+.vrbo-v2-chat .vrbo-v2-staycard__score {
+  font-size: calc(56 * var(--dp));
+  font-weight: 700;
+  line-height: 1.16;
+}
+.vrbo-v2-chat .vrbo-v2-staycard__word {
+  font-size: calc(56 * var(--dp));
+  line-height: 1.16;
+}
+.vrbo-v2-chat .vrbo-v2-staycard__price {
+  font-weight: 500;
+  line-height: 1.16;
+}
+.vrbo-v2-chat .vrbo-v2-property__shared {
+  font-size: calc(64.65789795 / var(--design-h) * 100cqh);
+  line-height: 1.2;
+  letter-spacing: 0;
 }
 
 .vrbo-v2-phone__property .vrbo-v2-property__shared {
