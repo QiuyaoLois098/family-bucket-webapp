@@ -1673,7 +1673,7 @@
   --design-w: 2160;
   --design-h: 3840;
   /* Heights in design px @ 3840 — change these to resize bands */
-  --sc-hero-h: 1230;
+  --sc-hero-h: 1050;
   --sc-body-h: 850;
   --sc-blue: #0f51ec;
   --sc-cream: #f9f6f2;
@@ -1691,11 +1691,12 @@
   position: absolute;
   inset: 0;
   display: grid;
+  /* Last row takes the leftover height so the rows above stay tight (no hidden gaps). */
   grid-template-rows:
     auto
     auto
     auto
-    auto;
+    1fr;
   row-gap: 0;
   column-gap: 0;
   overflow: hidden;
@@ -1858,13 +1859,15 @@
 }
 
 .vrbo-v2-showcase__body {
+  /* Gap under the hero (design px @ 3840) */
+  margin-top: calc(91 / var(--design-h) * 100cqh);
   display: flex;
   flex-direction: column;
   gap: 1.5cqh;
   height: calc(var(--sc-body-h) / var(--design-h) * 100cqh);
   min-height: calc(var(--sc-body-h) / var(--design-h) * 100cqh);
   max-height: calc(var(--sc-body-h) / var(--design-h) * 100cqh);
-  padding: 1.8cqh var(--sc-pad) 1.2cqh;
+  padding: 0cqh var(--sc-pad) 1.2cqh;
   box-sizing: border-box;
   background: #ffffff;
   overflow: hidden;
@@ -2013,10 +2016,12 @@
 }
 
 .vrbo-v2-showcase__thumbs {
+  /* Space between the Loved / Highlights cards and the thumbs (design px @ 3840; body padding adds ~46) */
+  margin-top: calc(35 / var(--design-h) * 100cqh);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2.4cqw;
-  padding: 1.8cqh var(--sc-pad) 0;
+  padding: 0cqh var(--sc-pad) 0;
   background: #ffffff;
   touch-action: manipulation;
 }
@@ -2092,7 +2097,7 @@
 .vrbo-v2-showcase__actions {
   display: flex;
   flex-direction: column;
-  padding: 2.8cqh var(--sc-pad) 3.6cqh;
+  padding: 1.8cqh var(--sc-pad) 3.6cqh;
 }
 
 .vrbo-v2-showcase__share {
