@@ -211,7 +211,7 @@ export default function MainChatScreen({
           alt="Vrbo"
         />
         <h2 className="vrbo-v2-chat__trip is-opening-title">{chatScript.groupTitle}</h2>
-        <p className="vrbo-v2-chat__people is-opening-status">{peopleLine}</p>
+        <p className={`vrbo-v2-chat__people is-opening-status${guestsJoined > 0 ? " is-joined" : ""}`}>{peopleLine}</p>
       </header>
 
       <div className={`vrbo-v2-chat__body${showPickupFooter ? "" : " is-footer-empty"}`}>
