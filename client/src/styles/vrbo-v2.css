@@ -588,6 +588,17 @@
   min-height: calc(2.4cqh * 2.5);
 }
 
+/* No pickup text → give the room back to the feed so the last bubble is never covered. */
+.vrbo-v2-chat__footer.is-empty {
+  min-height: 0;
+  padding-bottom: 0;
+}
+
+/* …and part of the body's bottom padding (4.5cqh → 2cqh; feed is capped at 100% of the content box). */
+.vrbo-v2-chat__body.is-footer-empty {
+  padding-bottom: 2cqh;
+}
+
 .vrbo-v2-chat__footer-text {
   margin: 0;
   font-family: var(--vrbo-v2-content);
@@ -1017,6 +1028,11 @@
   padding: 4.2cqh 5.5cqw 4.8cqh;
   background: #ffffff;
   box-sizing: border-box;
+}
+
+/* Display 2: lift Search to match the reference (bottom gap ≈ 8.9% of the screen height). */
+.vrbo-v2-summary:not(.vrbo-v2-summary--compact) .vrbo-v2-summary__body {
+  padding-bottom: 8.9cqh;
 }
 
 .vrbo-v2-summary__title {

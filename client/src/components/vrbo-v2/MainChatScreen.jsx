@@ -214,7 +214,7 @@ export default function MainChatScreen({
         <p className="vrbo-v2-chat__people is-opening-status">{peopleLine}</p>
       </header>
 
-      <div className="vrbo-v2-chat__body">
+      <div className={`vrbo-v2-chat__body${showPickupFooter ? "" : " is-footer-empty"}`}>
         {joinToast ? (
           <p key={joinToast.id} className="vrbo-v2-chat__join-toast" role="status">
             {joinToast.text}
@@ -274,7 +274,7 @@ export default function MainChatScreen({
           ) : null}
         </div>
 
-        <div className="vrbo-v2-chat__footer">
+        <div className={`vrbo-v2-chat__footer${showPickupFooter ? "" : " is-empty"}`}>
           {showPickupFooter ? (
             <p className="vrbo-v2-chat__footer-text is-pickup-hop">
               Pick up a phone
