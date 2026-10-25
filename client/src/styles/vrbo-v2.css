@@ -1323,11 +1323,13 @@
 }
 
 .vrbo-v2-opening__headlines {
+  /* 180px type at 110% needs 198px per line, including the three-line copy. */
+  --opening-line-height: 198;
   position: absolute;
   left: calc(166.3 / var(--design-w) * 100cqw);
   top: calc(1344 / var(--design-h) * 100cqh);
-  width: calc(1531.111 / var(--design-w) * 100cqw);
-  height: calc(529 / var(--design-h) * 100cqh);
+  width: calc(1840 / var(--design-w) * 100cqw);
+  height: calc(3 * var(--opening-line-height) / var(--design-h) * 100cqh);
   overflow: hidden;
   pointer-events: none;
 }
@@ -1347,13 +1349,13 @@
   position: absolute;
   left: 0;
   width: 100%;
-  height: calc(165.42 / var(--design-h) * 100cqh);
+  height: calc(var(--opening-line-height) / var(--design-h) * 100cqh);
   overflow: hidden;
   pointer-events: none;
 }
 
 .vrbo-v2-opening__line--2 {
-  top: calc(165.42 / var(--design-h) * 100cqh);
+  top: calc(var(--opening-line-height) / var(--design-h) * 100cqh);
 }
 
 .vrbo-v2-opening__line p,
@@ -1365,6 +1367,7 @@
   line-height: 1.1;
   letter-spacing: 0;
   color: #ffffff;
+  white-space: nowrap;
 }
 
 .vrbo-v2-opening__photos {
