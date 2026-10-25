@@ -168,7 +168,7 @@ function PhoneHeader({ subtitle, children = null }) {
     <header className="vrbo-v2-phone__join-head">
       <div className="vrbo-v2-phone__join-head-row">
         <span className="vrbo-v2-phone__group-avatar" aria-hidden="true">
-          <img src="/images/Vrbo-Images/mobile/group.png" alt="" />
+          <img src="/images/Vrbo-Images/group-avatar.png" alt="" />
         </span>
         <div>
           <h3>{chatScript.groupTitle}</h3>
