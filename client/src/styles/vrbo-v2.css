@@ -508,19 +508,21 @@
 .vrbo-v2-chat__trip {
   margin: 0.8cqh 0 0;
   font-family: var(--vrbo-v2-sans);
-  font-size: 3.1cqh;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.05;
-  color: #ffffff;
+  font-size: calc(115.14704895 / var(--design-h) * 100cqh);
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.2;
+  color: var(--cream);
 }
 
 .vrbo-v2-chat__people {
   margin: 0.15cqh 0 0;
   font-family: var(--vrbo-v2-content);
-  font-size: 1.9cqh;
-  font-weight: 200;
-  color: rgba(255, 255, 255, 0.9);
+  font-size: calc(72 / var(--design-h) * 100cqh);
+  font-weight: 400;
+  color: var(--cream);
+  line-height: 1.2;
+  letter-spacing: 0;
 }
 
 .vrbo-v2-chat__body {
@@ -602,9 +604,9 @@
 .vrbo-v2-chat__footer-text {
   margin: 0;
   font-family: var(--vrbo-v2-content);
-  font-size: 2.4cqh;
+  font-size: calc(96 / var(--design-h) * 100cqh);
   font-weight: 500;
-  line-height: 1.25;
+  line-height: 1.2;
   letter-spacing: -0.01em;
   text-align: center;
   color: var(--blue);
@@ -737,8 +739,8 @@
   margin: 0 0 0.55cqh;
   padding: 0;
   font-family: var(--vrbo-v2-content);
-  font-size: 1.6cqh;
-  font-weight: 400;
+  font-size: calc(64.65789795 / var(--design-h) * 100cqh);
+  font-weight: 500;
   letter-spacing: 0;
   line-height: 1.2;
   text-transform: none;
@@ -761,13 +763,14 @@
 
 .vrbo-v2-chat__text {
   margin: 0;
-  color: var(--charcoal);
+  color: #191e3b;
   font-family: var(--vrbo-v2-content);
-  font-size: 2cqh;
+  font-size: calc(76.974 / var(--design-h) * 100cqh);
   font-weight: 400;
-  line-height: 1.28;
-  letter-spacing: -0.01em;
+  line-height: 1.2;
+  letter-spacing: 0;
   white-space: pre-line;
+  font-feature-settings: "ss02" on;
 }
 
 .vrbo-v2-phone__bubble-text strong {
@@ -1327,10 +1330,10 @@
 .vrbo-v2-opening__slide--second p {
   margin: 0;
   font-family: var(--vrbo-v2-sans);
-  font-size: calc(148 / var(--design-h) * 100cqh);
-  font-weight: 600;
-  line-height: calc(165.42 / var(--design-h) * 100cqh);
-  letter-spacing: -0.02em;
+  font-size: calc(180 / var(--design-h) * 100cqh);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: 0;
   color: #ffffff;
 }
 
