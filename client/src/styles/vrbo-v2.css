@@ -3796,17 +3796,32 @@ body:has(.vrbo-v2-device--phone.is-framed),
 
 .vrbo-v2-phone__chips .vrbo-v2-pref--chip {
   aspect-ratio: auto;
-  padding: calc(5.44 / var(--phone-h) * 100cqh) calc(5.44 / var(--phone-w) * 100cqw) calc(7.615 / var(--phone-h) * 100cqh) calc(7.615 / var(--phone-w) * 100cqw);
-  border-width: calc(3.264 / var(--phone-w) * 100cqw);
+  /* Include the former border inset in content padding, not image layout. */
+  padding: calc(8.704 / var(--phone-h) * 100cqh) calc(8.704 / var(--phone-w) * 100cqw) calc(10.879 / var(--phone-h) * 100cqh) calc(10.879 / var(--phone-w) * 100cqw);
+  border: 0;
+  background-origin: border-box;
+  background-clip: border-box;
+  background-repeat: no-repeat;
+  background-color: transparent;
   border-radius: calc(13.055 / var(--phone-w) * 100cqw);
   width: calc(163.189 / var(--phone-w) * 100cqw);
   height: calc(69.627 / var(--phone-h) * 100cqh);
   box-shadow: none;
 }
 
+.vrbo-v2-phone__chips .vrbo-v2-pref--chip.is-selected::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: calc(3.264 / var(--phone-w) * 100cqw) solid var(--blue);
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 2;
+}
+
 .vrbo-v2-phone__chips .vrbo-v2-pref--chip .vrbo-v2-pref__tick {
-  top: calc(5.44 / var(--phone-h) * 100cqh);
-  right: calc(5.44 / var(--phone-w) * 100cqw);
+  top: calc(8.704 / var(--phone-h) * 100cqh);
+  right: calc(8.704 / var(--phone-w) * 100cqw);
   width: calc(23.934 / var(--phone-w) * 100cqw);
   height: calc(23.934 / var(--phone-h) * 100cqh);
   font-size: 0;
