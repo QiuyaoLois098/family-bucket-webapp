@@ -17,10 +17,10 @@ const guests = users.filter((user) => user.role === "guest");
 const PHONE_WIDTH = 393;
 const PHONE_HEIGHT = 851.126;
 
-/** Keep line wrapping and every layout measurement identical in all phone views. */
+/** Fixed Figma previews; native phone pages fit width and use available height. */
 function ScaledPhoneCanvas({ children }) {
   const viewportRef = useRef(null);
-  const [fit, setFit] = useState({ scale: 1, left: 0, top: 0 });
+  const [fit, setFit] = useState({ scale: 1, left: 0, top: 0, height: PHONE_HEIGHT });
 
   useLayoutEffect(() => {
     const viewport = viewportRef.current;
@@ -28,14 +28,17 @@ function ScaledPhoneCanvas({ children }) {
     const resize = () => {
       const { width, height } = viewport.getBoundingClientRect();
       if (width <= 0 || height <= 0) return;
-      const scale = Math.min(width / PHONE_WIDTH, height / PHONE_HEIGHT);
+      const native = Boolean(viewport.closest('.vrbo-v2-device--phone:not(.is-framed)'));
+      const scale = native ? width / PHONE_WIDTH : Math.min(width / PHONE_WIDTH, height / PHONE_HEIGHT);
+      const canvasHeight = native ? height / scale : PHONE_HEIGHT;
       const next = {
         scale,
         left: (width - PHONE_WIDTH * scale) / 2,
-        top: (height - PHONE_HEIGHT * scale) / 2,
+        top: (height - canvasHeight * scale) / 2,
+        height: canvasHeight,
       };
       setFit((previous) =>
-        previous.scale === next.scale && previous.left === next.left && previous.top === next.top
+        previous.scale === next.scale && previous.left === next.left && previous.top === next.top && previous.height === next.height
           ? previous
           : next,
       );
@@ -50,7 +53,7 @@ function ScaledPhoneCanvas({ children }) {
     <div className="vrbo-v2-phone__viewport" ref={viewportRef} aria-label="393×851.126 phone canvas">
       <div
         className="vrbo-v2-phone__surface"
-        style={{ width: PHONE_WIDTH, height: PHONE_HEIGHT, left: fit.left, top: fit.top, transform: `scale(${fit.scale})` }}
+        style={{ width: PHONE_WIDTH, height: fit.height, left: fit.left, top: fit.top, transform: `scale(${fit.scale})`, "--phone-canvas-h": fit.height, "--phone-scale": fit.scale }}
       >
         {children}
       </div>
@@ -601,3 +604,4 @@ export default function GuestPhone({
     </div>
   );
 }
+

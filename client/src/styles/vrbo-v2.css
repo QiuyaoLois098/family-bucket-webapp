@@ -2161,7 +2161,7 @@
   border-radius: 1.8cqw;
   overflow: hidden;
   border: 0.45cqw solid transparent;
-  background: #e6f9fe;
+  background: #ffffff;
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
@@ -2184,8 +2184,8 @@
 }
 
 .vrbo-v2-showcase__thumb-img {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
   pointer-events: none;
   background: var(--stay-image-fallback, #d5dbe6);
@@ -3161,6 +3161,8 @@ html.vrbo-kiosk-lock:has(.vrbo-v2-device--phone:not(.is-framed)) #root {
 background: #ffffff;
   height: 100dvh;
   min-height: 0;
+  --vrbo-safe-top: env(safe-area-inset-top, 0px);
+  --vrbo-safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 /*
@@ -3293,6 +3295,12 @@ background: #ffffff;
   min-height: 0;
   background: #ffffff;
   aspect-ratio: 393 / 851.126;
+}
+
+.vrbo-v2-device--phone:not(.is-framed) > .vrbo-v2-phone--bare {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
 }
 
 
@@ -3511,7 +3519,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
 .vrbo-v2-phone__screen {
   /* Figma phone canvas 393×851.126 — calc(N / var(--phone-h) * 100cqh) or / var(--phone-w) * 100cqw */
   --phone-w: 393;
-  --phone-h: 851.126;
+  --phone-h: var(--phone-canvas-h, 851.126);
   container-type: size;
   display: flex;
   flex-direction: column;
@@ -4891,6 +4899,30 @@ body:has(.vrbo-v2-device--phone.is-framed),
 .vrbo-v2-device--phone:not(.is-framed) .vrbo-v2-phone__notch,
 .vrbo-v2-device--phone:not(.is-framed) .vrbo-v2-phone__screen::after {
   display: none;
+}
+
+/* Real devices: extend the header to both edges, place content below iOS
+   chrome, and let the feed use the remaining height. Figma previews stay fixed. */
+.vrbo-v2-device--phone:not(.is-framed) .vrbo-v2-phone__chrome {
+  height: max(31.44px, calc(var(--vrbo-safe-top) / var(--phone-scale) + 8px));
+}
+
+.vrbo-v2-device--phone:not(.is-framed) .vrbo-v2-phone__panel--chat .vrbo-v2-phone__feed {
+  flex: 1 1 auto;
+  height: auto;
+}
+
+.vrbo-v2-device--phone:not(.is-framed) .vrbo-v2-phone__panel--select .vrbo-v2-phone__prompt {
+  flex: 1 1 auto;
+  height: auto;
+  overflow-y: auto;
+}
+
+.vrbo-v2-device--phone:not(.is-framed) .vrbo-v2-phone__composer {
+  position: relative;
+  top: auto;
+  height: auto;
+  padding-bottom: max(22.457px, calc(var(--vrbo-safe-bottom) / var(--phone-scale) + 8px));
 }
 
 
