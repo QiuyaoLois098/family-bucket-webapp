@@ -10,7 +10,53 @@ import PropertyCard from "./PropertyCard.jsx";
 import RichChatText from "./RichChatText.jsx";
 import useTailFitMessages from "./useTailFitMessages.js";
 
+const PHONE_AVATAR_FILLS = { jamie: "#fff1c3", sarah: "#d6f5e8", alex: "#dbf0fa", chris: "#f2f2db" };
+
 const guests = users.filter((user) => user.role === "guest");
+
+const PHONE_WIDTH = 393;
+const PHONE_HEIGHT = 851.126;
+
+/** Keep line wrapping and every layout measurement identical in all phone views. */
+function ScaledPhoneCanvas({ children }) {
+  const viewportRef = useRef(null);
+  const [fit, setFit] = useState({ scale: 1, left: 0, top: 0 });
+
+  useLayoutEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return undefined;
+    const resize = () => {
+      const { width, height } = viewport.getBoundingClientRect();
+      if (width <= 0 || height <= 0) return;
+      const scale = Math.min(width / PHONE_WIDTH, height / PHONE_HEIGHT);
+      const next = {
+        scale,
+        left: (width - PHONE_WIDTH * scale) / 2,
+        top: (height - PHONE_HEIGHT * scale) / 2,
+      };
+      setFit((previous) =>
+        previous.scale === next.scale && previous.left === next.left && previous.top === next.top
+          ? previous
+          : next,
+      );
+    };
+    resize();
+    const observer = new ResizeObserver(resize);
+    observer.observe(viewport);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div className="vrbo-v2-phone__viewport" ref={viewportRef} aria-label="393×851.126 phone canvas">
+      <div
+        className="vrbo-v2-phone__surface"
+        style={{ width: PHONE_WIDTH, height: PHONE_HEIGHT, left: fit.left, top: fit.top, transform: `scale(${fit.scale})` }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
 
 function fill(template, values) {
   return Object.entries(values).reduce(
@@ -29,7 +75,7 @@ function resolveUser(user, displayNames = {}) {
 function PhoneAvatar({ user, className = "vrbo-v2-phone__avatar" }) {
   if (user?.avatar) {
     return (
-      <span className={`${className} has-photo`} aria-hidden="true">
+      <span className={`${className} has-photo`} style={{ "--phone-avatar-fill": PHONE_AVATAR_FILLS[user.id] || user.accent }} aria-hidden="true">
         <img src={user.avatar} alt="" />
       </span>
     );
@@ -119,7 +165,7 @@ function PhoneHeader({ subtitle, children = null }) {
     <header className="vrbo-v2-phone__join-head">
       <div className="vrbo-v2-phone__join-head-row">
         <span className="vrbo-v2-phone__group-avatar" aria-hidden="true">
-          <img src="/images/Vrbo-Images/Properties/ohana-beach-house.jpg" alt="" />
+          <img src="/images/Vrbo-Images/mobile/group.png" alt="" />
         </span>
         <div>
           <h3>{chatScript.groupTitle}</h3>
@@ -176,15 +222,19 @@ function MessageFeed({
   sharedIds,
   phraseBank,
   lockOverflow = false,
+  finale = false,
 }) {
   const feedRef = useRef(null);
   const motionRef = useRef(null);
   if (motionRef.current == null) {
     motionRef.current = createMessageMotionController();
   }
-  const baseMessages = live
+  const phaseMessages = live
     ? messages ?? []
     : (messages ?? []).filter((message) => message.kind !== "property").slice(-6);
+  const baseMessages = finale
+    ? phaseMessages.filter((message) => message.kind === "property" || userById[message.authorId]?.role !== "coordinator")
+    : phaseMessages;
   const lockFeed =
     lockOverflow || baseMessages.some((message) => message.phase === "finale");
   const visibleMessages = useTailFitMessages(baseMessages, feedRef, lockFeed);
@@ -269,15 +319,15 @@ function ReadonlyComposer() {
         </span>
         <div className="vrbo-v2-phone__composer-field">
           <span>{copy.phone.watchPlaceholder}</span>
+          <button
+            type="button"
+            className="vrbo-v2-phone__composer-send"
+            disabled
+            aria-label={copy.phone.watchPlaceholder}
+          >
+            ↑
+          </button>
         </div>
-        <button
-          type="button"
-          className="vrbo-v2-phone__composer-send"
-          disabled
-          aria-label={copy.phone.watchPlaceholder}
-        >
-          ↑
-        </button>
       </div>
     </div>
   );
@@ -350,23 +400,20 @@ export default function GuestPhone({
     [userById, displayNames],
   );
   const chipMembers = Object.values(namedUserById).filter(
-    (member) => member.role === "coordinator" || Boolean(joinedMap[member.id]),
+    (member) => member.role === "guest" && Boolean(joinedMap[member.id]),
   );
   const showMemberChips = phase === "select" || phase === "watch";
-  const tripSubtitle = showMemberChips
-    ? fill(copy.phone.groupCount, { count: chipMembers.length })
-    : chatScript.groupSubtitle;
-  const joinMeta = fill(copy.phone.joinHeaderMeta, { count: guests.length });
 
   const handleContinue = () => {
     onJoin(user.id, draftName.trim());
   };
 
-  const headerSubtitle =
-    phase === "join" || phase === "closed" ? joinMeta : tripSubtitle;
+  const waitingForGuests = phase === "join" || phase === "closed";
+  const planner = namedUserById.jamie;
+  const headerSubtitle = `${planner?.name || "Jamie"} · ${planner?.roleLabel || "Primary planner"} · ${waitingForGuests ? guests.length : chipMembers.length} guests ${waitingForGuests ? "joining" : "joined"}`;
 
   const screen = (
-        <div className="vrbo-v2-phone__screen">
+        <div className={`vrbo-v2-phone__screen${selectedPropertyId ? " is-finale" : ""}`}>
           <div className="vrbo-v2-phone__chrome">
             <span className="vrbo-v2-phone__time">9:41</span>
             <span className="vrbo-v2-phone__notch" aria-hidden="true" />
@@ -447,7 +494,7 @@ export default function GuestPhone({
                     return (
                         <PreferenceCard
                           key={preference.id}
-                          preference={preference}
+                          preference={{ ...preference, image: `/images/Vrbo-Images/mobile/preferences/${preference.id}.png` }}
                           variant="chip"
                           selected={selected}
                           disabled={!selected && atLimit}
@@ -528,6 +575,7 @@ export default function GuestPhone({
                 sharedIds={sharedIds}
                 phraseBank={phraseBank}
                 lockOverflow={Boolean(celebrating || selectedPropertyId)}
+                finale={Boolean(selectedPropertyId)}
                 afterMessages={
                   selectedPropertyId ? null : (
                     <p className="vrbo-v2-phone__continue">{copy.phone.continueCta}</p>
@@ -541,12 +589,12 @@ export default function GuestPhone({
   );
 
   if (bare) {
-    return <div className="vrbo-v2-phone vrbo-v2-phone--bare">{screen}</div>;
+    return <div className="vrbo-v2-phone vrbo-v2-phone--bare"><ScaledPhoneCanvas>{screen}</ScaledPhoneCanvas></div>;
   }
 
   return (
     <div className="vrbo-v2-phone">
-      <div className="vrbo-v2-phone__frame">{screen}</div>
+      <div className="vrbo-v2-phone__frame"><ScaledPhoneCanvas>{screen}</ScaledPhoneCanvas></div>
       <p className="vrbo-v2-phone__label">
         <span>{user.phoneLabel}</span>
       </p>
