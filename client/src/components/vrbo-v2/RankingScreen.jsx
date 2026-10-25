@@ -189,7 +189,7 @@ function FinaleLockedPanel({
 
   return (
     <div
-      className="vrbo-v2-rank__finale vrbo-v2-rank__panel--enter"
+      className="vrbo-v2-rank__finale"
       aria-label={`${title} locked in`}
       style={{ "--finale-bg": `url("${FINALE_BG_SRC}")` }}
     >
