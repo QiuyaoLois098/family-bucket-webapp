@@ -770,7 +770,6 @@
   white-space: pre-line;
 }
 
-.vrbo-v2-chat__text strong,
 .vrbo-v2-phone__bubble-text strong {
   /* Same weight as body copy so bolding shared phrases does not reflow older bubbles. */
   font-weight: inherit;
@@ -2736,15 +2735,17 @@
 }
 
 .vrbo-v2-staycard__score {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: calc(0.85 * var(--sc)) calc(1.6 * var(--sc));
+  display: inline-block;
+  text-align: center;
+  line-height: 1;
+  font-variant-numeric: lining-nums;
+  /* Trim the line box to cap-height → baseline so digits are optically centered. */
+  text-box: trim-both cap alphabetic;
+  padding: calc(1.2 * var(--sc)) calc(1.6 * var(--sc));
   border-radius: calc(99 * var(--sc));
   background: #3d5fd8;
   color: #ffffff;
   font-size: calc(50 * var(--dp));
-  line-height: 1.15;
   font-weight: 500;
 }
 
