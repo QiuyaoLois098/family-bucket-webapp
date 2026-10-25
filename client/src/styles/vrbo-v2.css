@@ -1383,10 +1383,46 @@
   height: calc(var(--opening-line-height) / var(--design-h) * 100cqh);
   overflow: hidden;
   pointer-events: none;
+  will-change: transform, opacity;
 }
 
 .vrbo-v2-opening__line--2 {
   top: calc(var(--opening-line-height) / var(--design-h) * 100cqh);
+}
+
+/* The browser composites entrance motion; JS no longer updates text each frame. */
+.vrbo-v2-opening[data-opening-ready="true"] .vrbo-v2-opening__logo {
+  --opening-enter-y: 17;
+  animation: vrbo-v2-opening-enter 1000ms cubic-bezier(0.3333333333, 0, 0.6666666667, 1) 100ms both;
+}
+
+.vrbo-v2-opening[data-opening-ready="true"] .vrbo-v2-opening__line {
+  --opening-enter-y: 24;
+  animation: vrbo-v2-opening-enter 1200ms cubic-bezier(0.3333333333, 0, 0.6666666667, 1) 700ms both;
+}
+
+.vrbo-v2-opening[data-opening-ready="true"] .vrbo-v2-opening__line--2 {
+  animation-delay: 880ms;
+}
+
+@keyframes vrbo-v2-opening-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, calc(var(--opening-enter-y) / var(--design-h, 3840) * 100cqh), 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vrbo-v2-opening[data-opening-ready="true"] .vrbo-v2-opening__logo,
+  .vrbo-v2-opening[data-opening-ready="true"] .vrbo-v2-opening__line {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .vrbo-v2-opening__line p,

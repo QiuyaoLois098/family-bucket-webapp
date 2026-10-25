@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import copy from "../../data/vrbo-v2/copy.json";
 import {
   OPENING_PHOTOS,
-  softEnter,
   updateOpeningHeadlines,
   updateOpeningPhotos,
 } from "../../motion/vrboOpeningLoop.js";
@@ -15,8 +14,6 @@ export default function OpeningLoop() {
     if (!root) return undefined;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const logo = root.querySelector("[data-opening-logo]");
-    const lines = [...root.querySelectorAll("[data-opening-line]")];
     const slides = [...root.querySelectorAll("[data-opening-slide]")];
     const photos = [...root.querySelectorAll("[data-opening-photo]")];
     const images = [...root.querySelectorAll("img")];
@@ -29,10 +26,6 @@ export default function OpeningLoop() {
     let frame = 0;
 
     const render = () => {
-      softEnter(logo, elapsed, 100, 1000, 17, reduced);
-      lines.forEach((node, index) => {
-        softEnter(node, elapsed, 700 + index * 180, 1200, 24, reduced);
-      });
       updateOpeningHeadlines(slides, elapsed, reduced);
       updateOpeningPhotos(photos, elapsed, reduced);
     };
@@ -48,21 +41,27 @@ export default function OpeningLoop() {
     const start = () => {
       if (destroyed || loaded) return;
       loaded = true;
+      root.dataset.openingReady = "true";
       root.style.visibility = "visible";
       render();
       frame = requestAnimationFrame(tick);
     };
 
-    Promise.all(
-      images.map((image) =>
+    const titleFontReady = document.fonts
+      ? document.fonts.load('500 180px "Albra Sans"', root.textContent).catch(() => [])
+      : Promise.resolve();
+    Promise.all([
+      titleFontReady,
+      ...images.map((image) =>
         image.decode().catch(() => undefined),
       ),
-    ).then(start);
+    ]).then(start);
 
     return () => {
       destroyed = true;
       playing = false;
       cancelAnimationFrame(frame);
+      delete root.dataset.openingReady;
     };
   }, []);
 
