@@ -303,23 +303,45 @@
 }
 
 .vrbo-v2-stage__left {
+  --overview-display-gap: clamp(calc(var(--u) * 12), 1.4vw, calc(var(--u) * 22));
+  --overview-display-padding: calc(var(--u) * 10);
+  --overview-caption-height: 0.696rem;
+  --overview-caption-gap: calc(var(--u) * 8);
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: clamp(calc(var(--u) * 12), 1.4vw, calc(var(--u) * 22));
+  gap: var(--overview-display-gap);
   min-width: 0;
   min-height: 0;
   container-type: size;
 }
 
-/* Two portrait screens side-by-side: each keeps 1080∶1920 (9∶16). */
+/* Fit the actual 2160:3840 screen, reserving space for the caption and bezel. */
 .vrbo-v2-stage__left > .vrbo-v2-display {
-  flex: 1 1 0;
-  width: auto;
-  max-width: calc((100% - calc(var(--u) * 22)) / 2);
+  flex: 0 0 auto;
+  width: min(
+    calc((100cqw - var(--overview-display-gap)) / 2),
+    calc((100cqh - var(--overview-display-padding) * 2 - var(--overview-caption-height) - var(--overview-caption-gap)) * 9 / 16 + var(--overview-display-padding) * 2)
+  );
+  max-width: calc((100% - var(--overview-display-gap)) / 2);
   max-height: 100%;
-  aspect-ratio: 9 / 16;
+  aspect-ratio: auto;
   height: auto;
+  padding: var(--overview-display-padding);
+}
+
+.vrbo-v2-stage__left .vrbo-v2-display__label {
+  line-height: 1.2;
+  margin-bottom: var(--overview-caption-gap);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vrbo-v2-stage__left .vrbo-v2-display__body {
+  flex: 0 0 auto;
+  width: 100%;
+  aspect-ratio: 9 / 16;
 }
 
 .vrbo-v2-stage__right {
