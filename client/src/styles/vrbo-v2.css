@@ -3743,7 +3743,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
 }
 
 .vrbo-v2-phone__panel--select .vrbo-v2-phone__prompt {
-  flex: 0 0 auto;
+  flex: 1 1 auto;
   min-height: 0;
   margin: 0 0 0 calc(15.72 / var(--phone-w) * 100cqw);
   padding: calc(20.96 / var(--phone-h) * 100cqh) calc(11.229 / var(--phone-w) * 100cqw) calc(11.229 / var(--phone-h) * 100cqh);
@@ -3751,12 +3751,12 @@ body:has(.vrbo-v2-device--phone.is-framed),
   border-radius: 0;
   background: #ffffff;
   overflow-x: hidden;
-  overflow-y: visible;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: calc(21.709 / var(--phone-h) * 100cqh);
   width: calc(366.051 / var(--phone-w) * 100cqw);
-  height: calc(496.303 / var(--phone-h) * 100cqh);
+  height: auto;
 }
 
 .vrbo-v2-phone__panel--select .vrbo-v2-phone__prompt::-webkit-scrollbar {
@@ -3855,20 +3855,20 @@ body:has(.vrbo-v2-device--phone.is-framed),
   margin-top: 0;
   padding: calc(7.485714 / var(--phone-h) * 100cqh) calc(17.965714 / var(--phone-w) * 100cqw) calc(20.96 / var(--phone-h) * 100cqh);
   background: #ffffff;
+  --vrbo-phone-composer-bottom: calc(40.803 / var(--phone-h) * 100cqh);
 }
 
 .vrbo-v2-phone__panel--select .vrbo-v2-phone__composer {
   flex: 0 0 auto;
   justify-content: flex-start;
-  /* Space above home indicator */
-  padding-bottom: calc(26.948571 / var(--phone-h) * 100cqh);
-  position: absolute;
-  top: calc(497.426 / var(--phone-h) * 100cqh);
-  left: calc(15.72 / var(--phone-w) * 100cqw);
+  /* Keep the field on the same bottom baseline as every chat stage. */
+  position: relative;
+  top: auto;
+  left: auto;
   width: calc(366.051 / var(--phone-w) * 100cqw);
-  height: calc(112.286 / var(--phone-h) * 100cqh);
-  padding: calc(6.737 / var(--phone-h) * 100cqh) calc(8.983 / var(--phone-w) * 100cqw) calc(22.457 / var(--phone-h) * 100cqh);
-  margin: 0;
+  height: auto;
+  padding: calc(6.737 / var(--phone-h) * 100cqh) calc(8.983 / var(--phone-w) * 100cqw) var(--vrbo-phone-composer-bottom);
+  margin: 0 0 0 calc(15.72 / var(--phone-w) * 100cqw);
 }
 
 .vrbo-v2-phone__draft-label {
@@ -3897,12 +3897,13 @@ body:has(.vrbo-v2-device--phone.is-framed),
   opacity: 0.7;
   pointer-events: none;
   border-top: 0;
-  padding: calc(6.737 / var(--phone-h) * 100cqh) calc(8.983 / var(--phone-w) * 100cqw) calc(31.44 / var(--phone-h) * 100cqh);
-  position: absolute;
-  top: calc(576.026 / var(--phone-h) * 100cqh);
-  left: calc(15.72 / var(--phone-w) * 100cqw);
+  padding: calc(6.737 / var(--phone-h) * 100cqh) calc(8.983 / var(--phone-w) * 100cqw) var(--vrbo-phone-composer-bottom);
+  position: relative;
+  top: auto;
+  left: auto;
   width: calc(366.051 / var(--phone-w) * 100cqw);
-  height: calc(102 / var(--phone-h) * 100cqh);
+  height: auto;
+  margin: 0 0 0 calc(15.72 / var(--phone-w) * 100cqw);
   background: #ffffff;
 }
 
@@ -4043,7 +4044,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
 }
 
 .vrbo-v2-phone__feed {
-  flex: 0 0 auto;
+  flex: 1 1 auto;
   min-height: 0;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -4056,7 +4057,7 @@ body:has(.vrbo-v2-device--phone.is-framed),
   scrollbar-width: none;
   background: #ffffff;
   width: calc(366.051 / var(--phone-w) * 100cqw);
-  height: calc(574.903 / var(--phone-h) * 100cqh);
+  height: auto;
   margin-left: calc(15.72 / var(--phone-w) * 100cqw);
 }
 
@@ -4937,7 +4938,8 @@ body:has(.vrbo-v2-device--phone.is-framed),
   position: relative;
   top: auto;
   height: auto;
-  padding-bottom: max(22.457px, calc(var(--vrbo-safe-bottom) / var(--phone-scale) + 8px));
+  --vrbo-phone-composer-bottom: max(22.457px, calc(var(--vrbo-safe-bottom) / var(--phone-scale) + 8px));
+  padding-bottom: var(--vrbo-phone-composer-bottom);
 }
 
 
