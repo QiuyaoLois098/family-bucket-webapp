@@ -2,17 +2,12 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import chatScript from "../../data/vrbo-v2/chatScript.json";
 import copy from "../../data/vrbo-v2/copy.json";
 import preferences from "../../data/vrbo-v2/preferences.json";
-import properties from "../../data/vrbo-v2/properties.json";
 import { sharedPhraseBank } from "@shared/vrboChatCopy.js";
 import { createMessageMotionController } from "./chatMotion.js";
 import PropertyCard from "./PropertyCard.jsx";
 import RichChatText from "./RichChatText.jsx";
 import useTailFitMessages from "./useTailFitMessages.js";
 import { playSharedVrboSound } from "./vrboSound.js";
-
-const propertyNames = properties
-  .map((property) => property.name)
-  .filter((name) => name && name.length > 2);
 
 const JOIN_TOAST_MS = 2800;
 
@@ -92,19 +87,16 @@ export default function MainChatScreen({
 
     fresh.forEach((message) => {
       if (message.kind === "property") {
-        playSharedVrboSound("sendProperty");
-        return;
-      }
-      if (message.phase === "preference") {
-        playSharedVrboSound("infoSent");
-        return;
-      }
-      const text = message.text ?? "";
-      if (propertyNames.some((name) => text.includes(name))) {
+        // Shared property card landing in the group chat (not text-appear).
         playSharedVrboSound("propertyText");
         return;
       }
-      if (text) playSharedVrboSound("textAppear");
+      if (message.phase === "preference") {
+        playSharedVrboSound("textAppear");
+        return;
+      }
+      // Plain text (including replies that name the property) = text-appear.
+      if (message.text) playSharedVrboSound("textAppear");
     });
   }, [messages, runId, hearSounds]);
 
