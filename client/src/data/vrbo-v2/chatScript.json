@@ -16,7 +16,8 @@
     "introFadeMs": 420,
     "submitDelayMs": 1000,
     "boldAfterTextsMs": 400,
-    "jamieDelayMs": 1000
+    "jamieDelayMs": 1000,
+    "pullingMs": 2200
   },
   "finale": {
     "reveal": { "authorId": "jamie", "text": "I found the perfect place…", "pause": 300, "typing": 1000 },

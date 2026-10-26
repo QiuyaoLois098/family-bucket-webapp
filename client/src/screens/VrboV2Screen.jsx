@@ -144,6 +144,11 @@ function RestartControl({ onReset }) {
   );
 }
 
+/** Jamie's "here's what you all want" SMS — Display 2 shows "Pulling it all together" after it. */
+function hasPlannerMessage(messages) {
+  return (messages ?? []).some((message) => message.phase === "planner");
+}
+
 function VrboDemo() {
   const { state, allSubmitted, actions, hearSounds } = useVrboV2Session();
   const {
@@ -257,6 +262,7 @@ function VrboDemo() {
                   results={results}
                   priorities={priorities}
                   allSubmitted={allSubmitted}
+                  plannerReady={hasPlannerMessage(messages)}
                   previewPropertyId={previewPropertyId}
                   selectedPropertyId={selectedPropertyId}
                   celebrating={celebrating}
@@ -431,6 +437,7 @@ export function VrboRightPage({ compareLayout = false } = {}) {
         results={state.results}
         priorities={state.priorities}
         allSubmitted={allSubmitted}
+        plannerReady={hasPlannerMessage(state.messages)}
         previewPropertyId={state.previewPropertyId}
         selectedPropertyId={state.selectedPropertyId}
         celebrating={state.celebrating}

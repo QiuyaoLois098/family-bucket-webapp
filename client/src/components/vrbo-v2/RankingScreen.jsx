@@ -225,6 +225,7 @@ export default function RankingScreen({
   results,
   priorities,
   allSubmitted,
+  plannerReady = true,
   previewPropertyId,
   selectedPropertyId,
   celebrating = false,
@@ -272,7 +273,11 @@ export default function RankingScreen({
   return (
     <div className="vrbo-v2-rank">
       {stage === "intro" || stage === "selecting" ? (
-        <WaitingPanel key={allSubmitted ? "loading" : "waiting"} ready={allSubmitted} />
+        // Opening loop until everyone submitted AND Jamie's SMS is out, then "Pulling it all together…".
+        <WaitingPanel
+          key={allSubmitted && plannerReady ? "loading" : "waiting"}
+          ready={allSubmitted && plannerReady}
+        />
       ) : null}
 
       {stage === "summary" ? (

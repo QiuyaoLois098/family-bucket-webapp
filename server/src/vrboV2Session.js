@@ -414,6 +414,7 @@ export class VrboV2Session extends EventEmitter {
     const submitDelayMs = pref?.submitDelayMs ?? 1000;
     const boldAfterTextsMs = pref?.boldAfterTextsMs ?? 400;
     const jamieDelayMs = pref?.jamieDelayMs ?? 1000;
+    const pullingMs = pref?.pullingMs ?? 2200;
 
     this.schedule(() => {
       if (this.state.stage !== "selecting") return;
@@ -457,14 +458,23 @@ export class VrboV2Session extends EventEmitter {
           }),
         );
       }
+      // Jamie's SMS lands on Display 1 first. Display 2 keeps its opening loop until
+      // this message exists, then shows "Pulling it all together…" (see RankingScreen).
       this.patch({
-        stage: "summary",
         priorities,
-        summaryText: buildSummaryText(this.state.submitted, this.state.joined),
         sharedPriorityIds,
         typing: [],
         messages,
       });
+
+      // Hold the "Pulling it all together…" panel, then open the summary.
+      this.schedule(() => {
+        if (this.state.stage !== "selecting") return;
+        this.patch({
+          stage: "summary",
+          summaryText: buildSummaryText(this.state.submitted, this.state.joined),
+        });
+      }, pullingMs);
     }, submitDelayMs + boldAfterTextsMs + jamieDelayMs);
   }
 
