@@ -177,8 +177,9 @@ function start(id, { allowTapSearch = false } = {}) {
 /** Blue Search button only. */
 export function playTapSearchSound() {
   start("tapSearch", { allowTapSearch: true });
-  // Search owns the next second: no scene or message sound may stack on the tap.
-  suppressFollowups(["textAppear", "sendProperty", "propertyText"], 1000);
+  // Search is the only sound for this transition. Keep delayed scene/message
+  // effects silent while the results screen finishes appearing.
+  suppressFollowups(["textAppear", "sendProperty", "propertyText"], 5000);
 }
 
 /** Sound for the screen that was just touched. Later sounds from that same action stay quiet. */
@@ -186,10 +187,10 @@ export function playVrboSound(id) {
   if (SEARCH_ONLY_IDS.has(id)) {
     if (id === "confirmProperty") {
       // "Share this stay to the group" = same sound as the blue Search button.
-      // Group-chat messages after Share (Jamie, card, reactions) keep their own sounds.
       start("tapSearch", { allowTapSearch: true });
-      // Share owns the next second: prevent scene/chat sounds from stacking on the tap.
-      suppressFollowups(["celebration", "sendProperty", "propertyText", "textAppear"], 1000);
+      // Share is the only sound for this transition. The property card and
+      // related chat messages can arrive asynchronously, so cover that delay.
+      suppressFollowups(["celebration", "sendProperty", "propertyText", "textAppear"], 5000);
     }
     return;
   }
