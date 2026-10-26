@@ -413,6 +413,64 @@
   max-width: 100%;
 }
 
+/* Third phone sits under the first; the Hyperion log fills the black area beside it. */
+.vrbo-v2-stage__phones-bottom {
+  justify-content: flex-start;
+  gap: clamp(calc(var(--u) * 10), 1.2vw, calc(var(--u) * 16));
+}
+
+.vrbo-v2-stage__phones-bottom > .hyperion-dev--inline {
+  position: static;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: none;
+  min-height: 0;
+  max-height: none;
+  align-self: stretch;
+  box-sizing: border-box;
+  pointer-events: auto;
+}
+
+/* Compact type: the log carries a lot of events. */
+.hyperion-dev.hyperion-dev--inline {
+  padding: calc(var(--u) * 7) calc(var(--u) * 8);
+  font-size: calc(var(--u) * 7.5);
+  line-height: 1.3;
+}
+
+.hyperion-dev--inline .hyperion-dev__title {
+  margin-bottom: calc(var(--u) * 3);
+  font-size: calc(var(--u) * 7);
+}
+
+.hyperion-dev--inline .hyperion-dev__section-title {
+  font-size: calc(var(--u) * 6.5);
+}
+
+.hyperion-dev--inline .hyperion-dev__list {
+  gap: calc(var(--u) * 3);
+}
+
+.hyperion-dev--inline .hyperion-dev__row-btn {
+  padding: calc(var(--u) * 3) calc(var(--u) * 5);
+}
+
+.hyperion-dev--inline .hyperion-dev__row-top {
+  flex-wrap: wrap;
+  gap: calc(var(--u) * 1) calc(var(--u) * 6);
+}
+
+.hyperion-dev--inline .hyperion-dev__row-top strong {
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+
+.hyperion-dev--inline .hyperion-dev__row-meta,
+.hyperion-dev--inline .hyperion-dev__row-error,
+.hyperion-dev--inline .hyperion-dev__request {
+  font-size: calc(var(--u) * 6.5);
+}
+
 /* Fullscreen phones-only: three devices side by side. */
 .vrbo-v2-stage.is-phones-only {
   padding: calc(var(--u) * 18) calc(var(--u) * 28) calc(var(--u) * 18) calc(var(--u) * 88);

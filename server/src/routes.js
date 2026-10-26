@@ -4,7 +4,7 @@ import { generateDestinationImage, generateItinerary } from "./openaiService.js"
 import { config } from "./config.js";
 import { DESTINATIONS } from "../../shared/destinations.js";
 import { QUESTIONS } from "../../shared/questions.js";
-import { getHyperionActivity } from "./hyperionActivity.js";
+import { clearHyperionActivity, getHyperionActivity } from "./hyperionActivity.js";
 import { forwardHeartbeatForPath, resolveHyperionDevice } from "./hyperionHeartbeat.js";
 
 export function registerRoutes(app) {
@@ -93,6 +93,9 @@ export function registerSockets(io) {
     socket.on("hyperion:subscribe", () => {
       socket.emit("hyperion:activity:list", getHyperionActivity());
     });
+    socket.on("hyperion:clear", () => {
+      clearHyperionActivity();
+    });
 
     socket.on("session:join", () => {
       // Don't wipe session on reconnect/HMR — only sync state (use experience:reset to go home).
@@ -132,6 +135,7 @@ export function registerSockets(io) {
       // BA / remote clients: sync state without restarting.
       socket.emit("vrbo-v2:state", vrboV2Session.snapshot());
     });
+    // Any tap/typing only refreshes the idle clock; the Hyperion session starts on the first Join.
     socket.on("vrbo-v2:sessionStart", () => vrboV2Session.noteActivity());
     socket.on("vrbo-v2:joinGuest", (payload) => {
       vrboV2Session.joinGuest(payload?.userId, payload?.displayName);
@@ -150,6 +154,17 @@ export function registerSockets(io) {
       vrboV2Session.selectProperty(payload?.propertyId);
     });
     socket.on("vrbo-v2:reset", () => vrboV2Session.reset("manual"));
+
+    // Hyperion VGC: a device page (/vrbo-left, /vrbo-right, /vrbo-ip1..3) announces which device it is.
+    socket.on("vgc:device", (payload) => {
+      vrboV2Session.registerDevice(socket.id, payload?.device ?? null);
+    });
+    socket.on("vgc:error", (payload) => {
+      vrboV2Session.reportDeviceError(socket.id, payload);
+    });
+    socket.on("disconnect", () => {
+      vrboV2Session.unregisterDevice(socket.id);
+    });
   });
 
   session.on("state", (state) => {

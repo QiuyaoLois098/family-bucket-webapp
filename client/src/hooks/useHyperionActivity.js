@@ -4,13 +4,23 @@ import { getSocket } from "../socket.js";
 
 const MAX = 5;
 
+/** Wipe the server's Hyperion log (every open log view empties). */
+export function clearHyperionActivity() {
+  getSocket().emit("hyperion:clear");
+}
+
 /**
- * Latest Hyperion custom-event logs when ?dev=1.
- * Server broadcasts via Socket.IO.
+ * Latest Hyperion custom-event logs when ?dev=1 (or `force`, e.g. the /vrbo-v2 log panel).
+ * Server broadcasts via Socket.IO. `includeHeartbeats` also returns heartbeat entries (/logging).
  */
-export default function useHyperionActivity() {
+export default function useHyperionActivity({
+  force = false,
+  max = MAX,
+  includeHeartbeats = false,
+} = {}) {
   const [params] = useSearchParams();
   const enabled =
+    force ||
     params.get("dev") === "1" ||
     params.get("dev") === "true" ||
     params.get("hyperion") === "1" ||
@@ -26,20 +36,18 @@ export default function useHyperionActivity() {
 
     const socket = getSocket();
 
-    const onlyEvents = (list) =>
-      (Array.isArray(list) ? list : [])
-        .filter((item) => item?.kind === "event")
-        .slice(0, MAX);
+    const wanted = (item) =>
+      item?.kind === "event" || (includeHeartbeats && item?.kind === "heartbeat");
 
     const onList = (list) => {
-      setEntries(onlyEvents(list));
+      setEntries((Array.isArray(list) ? list : []).filter(wanted).slice(0, max));
     };
 
     const onItem = (item) => {
-      if (!item?.id || item.kind !== "event") return;
+      if (!item?.id || !wanted(item)) return;
       setEntries((prev) => {
         if (prev.some((e) => e.id === item.id)) return prev;
-        return [item, ...prev].slice(0, MAX);
+        return [item, ...prev].slice(0, max);
       });
     };
 
@@ -55,7 +63,7 @@ export default function useHyperionActivity() {
       socket.off("hyperion:activity", onItem);
       socket.off("connect", onConnect);
     };
-  }, [enabled]);
+  }, [enabled, max, includeHeartbeats]);
 
   return enabled ? entries : [];
 }

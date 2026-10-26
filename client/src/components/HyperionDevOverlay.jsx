@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import useHyperionActivity from "../hooks/useHyperionActivity.js";
 
-function formatTime(at) {
+export function formatTime(at) {
   if (!at) return "—";
   return new Date(at).toLocaleTimeString();
 }
@@ -12,7 +12,7 @@ function shortId(value) {
   return value.length > 12 ? `${value.slice(0, 8)}…` : value;
 }
 
-function formatRequest(entry) {
+export function formatRequest(entry) {
   const request = entry.request ?? {
     slug: entry.slug,
     sessionId: entry.sessionId,
@@ -28,7 +28,27 @@ function formatRequest(entry) {
   }
 }
 
-function EntryRow({ entry, expanded, onToggle }) {
+const COMPACT_HIDDEN_KEYS = new Set(["eventKey", "occurredAt", "sessionId", "source"]);
+
+/** Request body without timestamp / session id / event key / url — what the event actually says. */
+function formatCompactRequest(entry) {
+  const body = entry.request?.body ?? {
+    slug: entry.slug,
+    sourceId: entry.sourceId,
+    fieldData: entry.deviceLabel ? { device: entry.deviceLabel } : undefined,
+  };
+  const trimmed = {};
+  for (const [key, value] of Object.entries(body ?? {})) {
+    if (!COMPACT_HIDDEN_KEYS.has(key)) trimmed[key] = value;
+  }
+  try {
+    return JSON.stringify(trimmed, null, 2);
+  } catch {
+    return String(trimmed);
+  }
+}
+
+export function EntryRow({ entry, expanded, onToggle, compact = false }) {
   const tone = entry.skipped
     ? "is-muted"
     : entry.ok
@@ -52,13 +72,17 @@ function EntryRow({ entry, expanded, onToggle }) {
           </strong>
           <span>{entry.status == null ? (entry.skipped ? "skip" : "—") : entry.status}</span>
         </div>
-        <div className="hyperion-dev__row-meta">
-          {formatTime(entry.at)}
-          {entry.sessionId ? <> · sess {shortId(entry.sessionId)}</> : null}
-        </div>
+        {compact ? null : (
+          <div className="hyperion-dev__row-meta">
+            {formatTime(entry.at)}
+            {entry.sessionId ? <> · sess {shortId(entry.sessionId)}</> : null}
+          </div>
+        )}
       </button>
       {expanded ? (
-        <pre className="hyperion-dev__request">{formatRequest(entry)}</pre>
+        <pre className="hyperion-dev__request">
+          {compact ? formatCompactRequest(entry) : formatRequest(entry)}
+        </pre>
       ) : null}
       {!expanded && entry.error ? (
         <div className="hyperion-dev__row-error">{entry.error}</div>

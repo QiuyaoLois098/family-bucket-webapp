@@ -10,6 +10,7 @@ import {
   ExpediaLeftPage,
   ExpediaRightPage,
 } from "./screens/ExpediaPortraitScreens.jsx";
+import HyperionLogScreen from "./screens/HyperionLogScreen.jsx";
 import PreviewScreen from "./screens/PreviewScreen.jsx";
 import UdpScreen from "./screens/UdpScreen.jsx";
 import VrboBaScreen from "./screens/VrboBaScreen.jsx";
@@ -38,6 +39,7 @@ const DEVICE_PATHS = new Set([
   "/vrbo-ba",
   "/expedia-ba",
   "/udp",
+  "/logging",
 ]);
 
 /** Prod kiosk routes: no page zoom / no document scroll. */
@@ -91,6 +93,7 @@ export default function App() {
         <Route path="/vrbo-v2/sarah" element={<Navigate to="/vrbo-ip1" replace />} />
         <Route path="/vrbo-ba" element={<VrboBaScreen />} />
         <Route path="/expedia-ba" element={<ExpediaBaScreen />} />
+        <Route path="/logging" element={<HyperionLogScreen />} />
         <Route path="/udp" element={<UdpScreen />} />
         <Route path="/control" element={<ControlScreen />} />
         <Route path="/display" element={<DisplayScreen />} />
