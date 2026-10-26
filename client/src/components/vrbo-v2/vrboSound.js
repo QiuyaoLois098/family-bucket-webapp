@@ -80,8 +80,9 @@ export function playTapSearchSound() {
 export function playVrboSound(id) {
   if (SEARCH_ONLY_IDS.has(id)) {
     if (id === "confirmProperty") {
+      // "Share this stay to the group" = same sound as the blue Search button.
       // Group-chat messages after Share (Jamie, card, reactions) keep their own sounds.
-      suppressFollowups(["sendProperty"], 9000);
+      start("tapSearch", { allowTapSearch: true });
     }
     return;
   }
