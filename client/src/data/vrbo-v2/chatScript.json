@@ -27,19 +27,39 @@
     "reactions": [
       {
         "authorId": "sarah",
-        "text": "You're a magician. {name} is perfect",
+        "text": "ooh I can already picture us here 😍",
         "pause": 900,
         "typing": 700
       },
       {
         "authorId": "alex",
-        "text": "That covers {reasons}. LOVE IT BOOK IT NOW!!!",
+        "fallback": "Yep, I'm in!",
+        "byPriority": {
+          "private-pool": "Yep, I'm in—that private pool looks great.",
+          "outdoor-dining": "Yep, I'm in—there's room for dinner outside.",
+          "near-beach": "Yep, I'm in—love being that close to the beach.",
+          "wifi": "Yep, I'm in—glad there's Wi-Fi for my calls.",
+          "fire-pit": "Yep, I'm in—that fire pit looks great for evenings.",
+          "hot-tub": "Yep, I'm in—a hot tub after a long day sounds good.",
+          "air-conditioning": "Yep, I'm in—glad there's AC for the nights.",
+          "big-kitchen": "Yep, I'm in—that kitchen is HUGE!"
+        },
         "pause": 700,
         "typing": 800
       },
       {
         "authorId": "chris",
-        "text": "Yes!! Hawaii 2027 is officially happening",
+        "fallback": "sold!",
+        "byPriority": {
+          "private-pool": "a pool just for us? sold",
+          "outdoor-dining": "dinner outside every night? i'm in",
+          "near-beach": "already planning one more swim 🌊",
+          "wifi": "perfect, i can send beach pics to everyone",
+          "fire-pit": "calling a spot by the fire pit 🔥",
+          "hot-tub": "hot tub seals the deal for me",
+          "air-conditioning": "AC? good, i can actually sleep",
+          "big-kitchen": "big breakfast plans for that kitchen"
+        },
         "pause": 700,
         "typing": 700
       }

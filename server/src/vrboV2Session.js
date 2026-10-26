@@ -11,7 +11,11 @@ import {
   pickSharedPriorities,
 } from "../../shared/vrboChatCopy.js";
 import { recommendPropertySet } from "../../shared/vrboRecommendPropertySet.js";
-import { applyStayCopy, countFeatureSelections } from "../../shared/vrboStayCopy.js";
+import {
+  FEATURE_ORDER,
+  applyStayCopy,
+  countFeatureSelections,
+} from "../../shared/vrboStayCopy.js";
 import { config } from "./config.js";
 import {
   HYPERION_STATIONS,
@@ -79,6 +83,33 @@ function submittedLists(submitted, joined) {
 function buildSummaryText(submitted, joined) {
   const counts = countFeatureSelections(submittedLists(submitted, joined));
   return buildGroupRequest(counts, copy);
+}
+
+/**
+ * The two priorities printed on the shared card title ("{stay} w/ {A} & {B}").
+ * Read-only mirror of how buildStayCardTitle picks them — the card itself is untouched.
+ */
+function cardTitleTagIds(property, priorities) {
+  const suppressed = new Set(property?.suppressTags ?? []);
+  const offered = (property?.titleTags ?? property?.features ?? []).filter(
+    (id) => !suppressed.has(id),
+  );
+  const offeredSet = new Set(offered);
+  const rank = (id) => {
+    const index = FEATURE_ORDER.indexOf(id);
+    return index === -1 ? FEATURE_ORDER.length : index;
+  };
+
+  const picked = [];
+  (priorities ?? []).forEach((id) => {
+    if (picked.length < 2 && offeredSet.has(id) && !picked.includes(id)) picked.push(id);
+  });
+  [...offered]
+    .sort((a, b) => rank(a) - rank(b))
+    .forEach((id) => {
+      if (picked.length < 2 && !picked.includes(id)) picked.push(id);
+    });
+  return picked;
 }
 
 function formatReasons(matched) {
@@ -818,6 +849,28 @@ export class VrboV2Session extends EventEmitter {
     const reactions = (finale.reactions ?? []).filter(
       (line) => line.authorId !== "jamie" && isActiveAuthor(line.authorId),
     );
+    // Fixed lines use `text`. Dynamic lines use `byPriority`: each reply reacts to one of the
+    // priorities printed on the shared card title ("{stay} w/ {tag} & {tag}") — so it is always
+    // something the stay really has and the card shows. Prefers a tag that guest picked
+    // themselves, and never the same tag the previous dynamic reply used.
+    const cardTagIds = cardTitleTagIds(result.property, this.state.priorities);
+    const usedPriorityIds = new Set();
+    const replyText = new Map();
+    reactions.forEach((line) => {
+      if (!line.byPriority) {
+        replyText.set(line, line.text);
+        return;
+      }
+      const options = cardTagIds.filter((id) => line.byPriority[id]);
+      const own = this.state.submitted[line.authorId] ?? [];
+      const pick =
+        options.find((id) => own.includes(id) && !usedPriorityIds.has(id)) ??
+        options.find((id) => !usedPriorityIds.has(id)) ??
+        options[0];
+      if (pick) usedPriorityIds.add(pick);
+      replyText.set(line, (pick && line.byPriority[pick]) || line.fallback || "");
+    });
+
     if (!reactions.length) {
       offset += finale.celebrationPause ?? 400;
       this.schedule(() => {
@@ -837,7 +890,7 @@ export class VrboV2Session extends EventEmitter {
               ...this.state.messages,
               this.makeMessage({
                 authorId: line.authorId,
-                text: fillTemplate(line.text, vars),
+                text: fillTemplate(replyText.get(line), vars),
                 phase: "finale",
               }),
             ],
