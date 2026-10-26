@@ -17,11 +17,11 @@ import {
 
 const COPY_DURATION = 0.6;
 const PULL_DURATION = 0.67;
-/** Same hold as luggage UDP before phase advance (arrow click and sensor). */
+/** Hold after the arrow click before the phase advances. */
 const ADVANCE_DELAY_MS = 1000;
 
 function hintPulse(t) {
-  // Keep pulsing while we wait for UDP — no timed auto-advance.
+  // Keep pulsing while we wait for the click — no timed auto-advance.
   if (t < 1.3) return 0;
   const local = (t - 1.3) % 1.1;
   if (local < 0.4) return smooth(local / 0.4);
@@ -31,7 +31,7 @@ function hintPulse(t) {
 }
 
 /**
- * Right-screen suitcase: rise → hint pulse → click or UDP pulls the handle,
+ * Right-screen suitcase: rise → hint pulse → click pulls the handle,
  * then shake advances reveal → building.
  */
 export default function RevealStep() {
@@ -64,18 +64,6 @@ export default function RevealStep() {
     return () => {
       cancelled = true;
     };
-  }, []);
-
-  // Luggage sensor (UDP) uses the same pull + shake path as the arrow click.
-  useEffect(() => {
-    const socket = getSocket();
-    const onUdp = (packet) => {
-      const text = typeof packet === "string" ? packet : packet?.text;
-      if (text == null || !String(text).trim()) return;
-      activateReveal();
-    };
-    socket.on("udp:message", onUdp);
-    return () => socket.off("udp:message", onUdp);
   }, []);
 
   useEffect(() => {
