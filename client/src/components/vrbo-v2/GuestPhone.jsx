@@ -17,7 +17,7 @@ const guests = users.filter((user) => user.role === "guest");
 const PHONE_WIDTH = 393;
 const PHONE_HEIGHT = 851.126;
 
-/** Fixed Figma previews; portrait phone pages fit width, while desktop previews fit both axes. */
+/** Fixed Figma previews; native phone pages fit width and use available height. */
 function ScaledPhoneCanvas({ children }) {
   const viewportRef = useRef(null);
   const [fit, setFit] = useState({ scale: 1, left: 0, top: 0, height: PHONE_HEIGHT });
@@ -29,11 +29,8 @@ function ScaledPhoneCanvas({ children }) {
       const { width, height } = viewport.getBoundingClientRect();
       if (width <= 0 || height <= 0) return;
       const native = Boolean(viewport.closest('.vrbo-v2-device--phone:not(.is-framed)'));
-      const nativePortrait = native && height > width;
-      const scale = nativePortrait
-        ? width / PHONE_WIDTH
-        : Math.min(width / PHONE_WIDTH, height / PHONE_HEIGHT);
-      const canvasHeight = nativePortrait ? height / scale : PHONE_HEIGHT;
+      const scale = native ? width / PHONE_WIDTH : Math.min(width / PHONE_WIDTH, height / PHONE_HEIGHT);
+      const canvasHeight = native ? height / scale : PHONE_HEIGHT;
       const next = {
         scale,
         left: (width - PHONE_WIDTH * scale) / 2,
