@@ -4,6 +4,8 @@ export const PROJECTS = [
     title: "The Family Bucket List",
     subtitle: "Two-screen travel installation",
     path: "/",
+    // Not listed in the projects menu; its routes still work by URL.
+    hidden: true,
     match: (pathname) =>
       pathname === "/" ||
       pathname.startsWith("/control") ||
