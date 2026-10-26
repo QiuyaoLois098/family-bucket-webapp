@@ -177,7 +177,8 @@ function start(id, { allowTapSearch = false } = {}) {
 /** Blue Search button only. */
 export function playTapSearchSound() {
   start("tapSearch", { allowTapSearch: true });
-  suppressFollowups(["textAppear", "sendProperty", "propertyText"], 4000);
+  // Search owns the next second: no scene or message sound may stack on the tap.
+  suppressFollowups(["textAppear", "sendProperty", "propertyText"], 1000);
 }
 
 /** Sound for the screen that was just touched. Later sounds from that same action stay quiet. */
