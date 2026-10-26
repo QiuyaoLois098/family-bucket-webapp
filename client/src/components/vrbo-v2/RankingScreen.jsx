@@ -275,7 +275,8 @@ export default function RankingScreen({
       finaleReadyRef.current = true;
       return;
     }
-    if (celebrating) playSharedVrboSound("textAppear");
+    // Hawaii Trip finale panel enters.
+    if (celebrating) playSharedVrboSound("celebration");
   }, [celebrating, hearSounds]);
 
   if (celebrating) {

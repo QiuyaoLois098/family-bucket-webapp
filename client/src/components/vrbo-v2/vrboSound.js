@@ -1,5 +1,5 @@
 const SOUNDS = {
-  infoSent: "/sound/vrbo/info-sent.wav",
+  celebration: "/sound/vrbo/celebration.wav",
   confirmProperty: "/sound/vrbo/confirm-property.wav",
   sendProperty: "/sound/vrbo/send-property.wav",
   tapProperty: "/sound/vrbo/tap-property.wav",
@@ -185,7 +185,8 @@ export function playTapSearchSound() {
 export function playVrboSound(id) {
   if (SEARCH_ONLY_IDS.has(id)) {
     if (id === "confirmProperty") {
-      suppressFollowups(["sendProperty", "propertyText", "textAppear"], 9000);
+      // Group-chat messages after Share (Jamie, card, reactions) keep their own sounds.
+      suppressFollowups(["sendProperty"], 9000);
     }
     return;
   }
@@ -204,7 +205,6 @@ export function playSharedVrboSound(id) {
     claimed.add(key);
     channel?.postMessage({ type: "played", key });
     start(id);
-    if (id === "infoSent") suppressFollowups(["textAppear"], 3500);
   }, kiosk ? 0 : 140);
 }
 
