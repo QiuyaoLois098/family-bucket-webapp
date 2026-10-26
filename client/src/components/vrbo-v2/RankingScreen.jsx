@@ -264,7 +264,8 @@ export default function RankingScreen({
       return;
     }
     // The results (property) page is intentionally silent.
-    if (stage === "summary" || stage === "searching") {
+    // The summary form enters silently. Search owns its own tap sound.
+    if (stage === "searching") {
       playSharedVrboSound("textAppear");
     }
   }, [stage, hearSounds]);
