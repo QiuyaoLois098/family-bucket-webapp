@@ -629,7 +629,9 @@ export class VrboV2Session extends EventEmitter {
     const submitDelayMs = pref?.submitDelayMs ?? 1000;
     const boldAfterTextsMs = pref?.boldAfterTextsMs ?? 400;
     const jamieDelayMs = pref?.jamieDelayMs ?? 1000;
-    const pullingMs = pref?.pullingMs ?? 2200;
+    // Display 2 waits pullingDelayMs after Jamie's SMS, then shows "Pulling it all together…"
+    // for pullingMs before the summary opens.
+    const pullingMs = (pref?.pullingMs ?? 2200) + (pref?.pullingDelayMs ?? 500);
 
     this.schedule(() => {
       if (this.state.stage !== "selecting") return;

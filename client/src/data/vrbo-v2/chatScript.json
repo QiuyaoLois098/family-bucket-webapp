@@ -15,8 +15,9 @@
     "stagger": 1000,
     "introFadeMs": 420,
     "submitDelayMs": 1000,
-    "boldAfterTextsMs": 400,
+    "boldAfterTextsMs": 800,
     "jamieDelayMs": 1000,
+    "pullingDelayMs": 850,
     "pullingMs": 2200
   },
   "finale": {

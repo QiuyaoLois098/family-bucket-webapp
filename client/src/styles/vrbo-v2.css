@@ -611,8 +611,13 @@
 .vrbo-v2-chat__brand {
   display: block;
   width: auto;
-  /* 137.7px @ 3840 design height — must use cqh so it rides the scaled canvas */
-  height: calc(137.7 / var(--design-h) * 100cqh);
+  /* Vrbo logo, all Display 1 / Display 2 stages: x=160, y=160, height 138 on the 2160×3840 canvas.
+     Shifted with relative offsets (from this masthead's 6cqw / 4.8cqh padding) so the title and
+     guest line below do not move. cqw/cqh keep it proportional on /vrbo-v2 and /vrbo-left. */
+  position: relative;
+  left: calc(160 / var(--design-w, 2160) * 100cqw - 6cqw);
+  top: calc(160 / var(--design-h, 3840) * 100cqh - 4.8cqh);
+  height: calc(138 / var(--design-h) * 100cqh);
   mix-blend-mode: screen;
 }
 
@@ -641,6 +646,46 @@
   color: #ffffff;
   line-height: 1.25;
   letter-spacing: -0.015em;
+}
+
+/* "Waiting for guests to join…" — same breathing dots as Waiting on the phones. All sizes in em, so it
+   scales with the header text on /vrbo-v2 and the full-bleed /vrbo-left. */
+.vrbo-v2-chat__breathe {
+  display: inline-flex;
+  align-items: baseline;
+  margin-left: 0.08em;
+  font-style: normal;
+}
+
+.vrbo-v2-chat__breathe i {
+  display: inline-block;
+  width: 0.3em;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  opacity: 0.45;
+  animation: vrbo-chat-waiting-breathe 1.35s ease-in-out infinite;
+}
+
+.vrbo-v2-chat__breathe i:nth-child(2) {
+  animation-delay: 0.16s;
+}
+
+.vrbo-v2-chat__breathe i:nth-child(3) {
+  animation-delay: 0.32s;
+}
+
+@keyframes vrbo-chat-waiting-breathe {
+  0%,
+  65%,
+  100% {
+    opacity: 0.45;
+    transform: translateY(0);
+  }
+  25% {
+    opacity: 1;
+    transform: translateY(-0.12em);
+  }
 }
 
 .vrbo-v2-chat__body {
@@ -1179,10 +1224,18 @@
 .vrbo-v2-summary__brand {
   display: block;
   width: auto;
-  /* Match left chat logo (137.7px @ 3840) */
   height: calc(137.7 / var(--design-h) * 100cqh);
   margin: 0;
   mix-blend-mode: screen;
+}
+
+/* Display 2 summary logo: x=160, y=160, height 138 (phone's compact summary keeps its own size).
+   Relative offset from this masthead's 6cqw / 3.6cqh padding, so nothing else moves. */
+.vrbo-v2-summary:not(.vrbo-v2-summary--compact) .vrbo-v2-summary__brand {
+  position: relative;
+  left: calc(160 / var(--design-w, 2160) * 100cqw - 6cqw);
+  top: calc(160 / var(--design-h, 3840) * 100cqh - 3.6cqh);
+  height: calc(138 / var(--design-h) * 100cqh);
 }
 
 .vrbo-v2-summary--compact .vrbo-v2-summary__brand {
@@ -1750,6 +1803,20 @@
   padding: 4cqh 6%;
 }
 
+/* "Pulling it all together…" after Jamie's SMS: slow, gentle opacity-only fade (works at any scale). */
+.vrbo-v2-rank__panel--hero.is-soft .vrbo-v2-rank__hero-loading {
+  animation: vrbo-hero-soft-in 1.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes vrbo-hero-soft-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .vrbo-v2-rank__hero-loading h2 {
   margin: 0;
   width: 100%;
@@ -1964,8 +2031,12 @@
 .vrbo-v2-showcase__logo {
   display: block;
   width: auto;
-  /* Match shared logo (137.7px @ 3840) */
-  height: calc(137.7 / var(--design-h) * 100cqh);
+  /* Display 2 results logo: x=160, y=160, height 138 on the 2160×3840 canvas.
+     Relative offset from the masthead's 6cqw / 3.6cqh padding, so the headline does not move. */
+  position: relative;
+  left: calc(160 / var(--design-w, 2160) * 100cqw - 6cqw);
+  top: calc(160 / var(--design-h, 3840) * 100cqh - 3.6cqh);
+  height: calc(138 / var(--design-h) * 100cqh);
 }
 
 .vrbo-v2-showcase__headline {

@@ -43,16 +43,37 @@ function useSummaryTypingComplete(text) {
   return complete;
 }
 
+/** True `delayMs` after `value` becomes true; false again as soon as `value` is false. */
+function useDelayedTrue(value, delayMs) {
+  const [on, setOn] = useState(false);
+
+  useEffect(() => {
+    if (!value) {
+      setOn(false);
+      return undefined;
+    }
+    const timer = window.setTimeout(() => setOn(true), delayMs);
+    return () => window.clearTimeout(timer);
+  }, [value, delayMs]);
+
+  return on;
+}
+
+/** Pause after Jamie's message lands before "Pulling it all together…" appears. */
+const PULLING_DELAY_MS = chatScript.preference?.pullingDelayMs ?? 500;
+
 function WaitingPanel({
   ready,
+  soft = false,
   title = copy.ranking.loadingTitle,
   subtitle = copy.ranking.loadingSubtitle,
-  hint = copy.ranking.loadingHint,
 }) {
+  // `soft`: keep the same blue the opening loop sits on and fade only the text in, slowly.
+  const enterClass = soft ? "is-soft" : "vrbo-v2-rank__panel--enter";
   return (
     <div
       className={`vrbo-v2-rank__panel vrbo-v2-rank__panel--hero ${
-        ready ? "is-loading vrbo-v2-rank__panel--enter" : "is-opening"
+        ready ? `is-loading ${enterClass}` : "is-opening"
       }`}
     >
       {ready ? (
@@ -60,7 +81,6 @@ function WaitingPanel({
           <span className="vrbo-v2-rank__spinner" aria-hidden="true" />
           <h2>{title}</h2>
           <p className="vrbo-v2-rank__lede">{subtitle}</p>
-          <p className="vrbo-v2-rank__hint">{hint}</p>
         </div>
       ) : (
         <OpeningLoop />
@@ -236,6 +256,7 @@ export default function RankingScreen({
 }) {
   const stageReadyRef = useRef(false);
   const finaleReadyRef = useRef(false);
+  const pullingReady = useDelayedTrue(allSubmitted && plannerReady, PULLING_DELAY_MS);
 
   useEffect(() => {
     if (!hearSounds) return;
@@ -275,8 +296,9 @@ export default function RankingScreen({
       {stage === "intro" || stage === "selecting" ? (
         // Opening loop until everyone submitted AND Jamie's SMS is out, then "Pulling it all together…".
         <WaitingPanel
-          key={allSubmitted && plannerReady ? "loading" : "waiting"}
-          ready={allSubmitted && plannerReady}
+          key={pullingReady ? "loading" : "waiting"}
+          ready={pullingReady}
+          soft
         />
       ) : null}
 
@@ -292,11 +314,11 @@ export default function RankingScreen({
         <WaitingPanel
           key="search-loading"
           ready
+          soft
           title={copy.ranking.searchLoadingTitle || copy.ranking.loadingTitle}
           subtitle={
             copy.ranking.searchLoadingSubtitle || copy.ranking.loadingSubtitle
           }
-          hint={copy.ranking.searchLoadingHint || copy.ranking.loadingHint}
         />
       ) : null}
 
