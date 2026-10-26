@@ -39,6 +39,69 @@ function suppressFollowups(ids, ms) {
   channel?.postMessage({ type: "suppress", ids, until });
 }
 
+/**
+ * Playback uses the Web Audio API: every file is decoded once up front and held in memory,
+ * so a tap starts the sound right away (an <audio> element has a slow, uneven start on iPhone).
+ * If a buffer isn't ready yet (or Web Audio is unavailable) we fall back to an <audio> element.
+ */
+
+/** Seconds of dead air at the start of a file to skip (so the files don't need re-exporting). */
+const START_OFFSET_S = {
+  // tap-amenity.wav is silent for its first ~56 ms and the click starts at ~60 ms.
+  // Skipping 36 ms leaves ~24 ms of natural lead-in before the click (56 = no gap at all).
+  tapAmenity: 0.036,
+};
+
+let ctx = null;
+const buffers = new Map();
+const loading = new Map();
+const playing = new Map();
+
+function getContext() {
+  if (ctx) return ctx;
+  if (typeof window === "undefined") return null;
+  const Ctor = window.AudioContext || window.webkitAudioContext;
+  if (!Ctor) return null;
+  try {
+    ctx = new Ctor({ latencyHint: "interactive" });
+  } catch {
+    try {
+      ctx = new Ctor();
+    } catch {
+      ctx = null;
+    }
+  }
+  return ctx;
+}
+
+function decode(context, data) {
+  // Older Safari only has the callback form of decodeAudioData.
+  return new Promise((resolve, reject) => {
+    const result = context.decodeAudioData(data, resolve, reject);
+    if (result && typeof result.then === "function") result.then(resolve, reject);
+  });
+}
+
+function loadBuffer(id) {
+  if (buffers.has(id)) return Promise.resolve(buffers.get(id));
+  if (loading.has(id)) return loading.get(id);
+  const src = SOUNDS[id];
+  const context = getContext();
+  if (!src || !context) return Promise.resolve(null);
+
+  const promise = fetch(src)
+    .then((response) => response.arrayBuffer())
+    .then((data) => decode(context, data))
+    .then((buffer) => {
+      buffers.set(id, buffer);
+      return buffer;
+    })
+    .catch(() => null)
+    .finally(() => loading.delete(id));
+  loading.set(id, promise);
+  return promise;
+}
+
 function clip(id) {
   const src = SOUNDS[id];
   if (!src) return null;
@@ -51,23 +114,65 @@ function clip(id) {
   return audio;
 }
 
+function startWithAudioElement(id) {
+  const audio = clip(id);
+  if (!audio) return;
+  audio.volume = 1;
+  try {
+    audio.currentTime = START_OFFSET_S[id] || 0;
+  } catch {
+    // Ignore seek errors before the file has metadata.
+  }
+  audio.play()?.catch(() => {});
+}
+
+function playBuffer(id, buffer) {
+  const context = ctx;
+  if (!context) return false;
+  // A fresh tap replaces the same sound still playing (same as rewinding one <audio> element).
+  try {
+    playing.get(id)?.stop();
+  } catch {
+    // Already finished.
+  }
+  const source = context.createBufferSource();
+  source.buffer = buffer;
+  source.connect(context.destination);
+  source.onended = () => {
+    if (playing.get(id) === source) playing.delete(id);
+  };
+  playing.set(id, source);
+  const offset = Math.min(START_OFFSET_S[id] || 0, Math.max(0, buffer.duration - 0.01));
+  source.start(0, offset);
+  return true;
+}
+
 const SEARCH_ONLY_IDS = new Set(["tapSearch", "confirmProperty", "sendProperty"]);
 
 function start(id, { allowTapSearch = false } = {}) {
   // confirm-property / send-property are the same recording as tap-search.
   if (SEARCH_ONLY_IDS.has(id) && !allowTapSearch) return;
-  const audio = clip(id);
-  if (!audio) return;
-  audio.volume = 1;
-  try {
-    audio.currentTime = 0;
-  } catch {
-    // Ignore seek errors before the file has metadata.
+  if (!SOUNDS[id]) return;
+
+  const context = getContext();
+  const buffer = buffers.get(id);
+  if (!context || !buffer) {
+    // Not decoded yet: play it the old way this once and finish loading for next time.
+    startWithAudioElement(id);
+    loadBuffer(id);
+    return;
   }
-  audio.play()?.catch((error) => {
-    // Browsers block audio until the page has had a click/tap/key press.
-    console.warn(`[vrbo-sfx] "${id}" did not play:`, error?.name || error);
-  });
+
+  if (context.state === "running") {
+    playBuffer(id, buffer);
+    return;
+  }
+
+  // Suspended (first touch hasn't unlocked it yet): resume, then play.
+  context
+    .resume()
+    .then(() => playBuffer(id, buffer))
+    .catch(() => startWithAudioElement(id));
 }
 
 /** Blue Search button only. */
@@ -105,28 +210,38 @@ export function playSharedVrboSound(id) {
 }
 
 export function preloadVrboSounds() {
-  Object.keys(SOUNDS).forEach((id) => clip(id));
+  Object.keys(SOUNDS).forEach((id) => {
+    loadBuffer(id);
+  });
+}
+
+/** Unlock Web Audio on a touch/click (iOS and Chrome keep it suspended until then). */
+let unlocked = false;
+
+function unlockAudio() {
+  const context = getContext();
+  if (!context) return;
+  if (context.state !== "running") {
+    unlocked = false;
+    context.resume().catch(() => {});
+  }
+  if (unlocked) return;
+  unlocked = true;
+  // Silent one-sample blip: iOS only fully unlocks output after something has played.
+  try {
+    const blip = context.createBufferSource();
+    blip.buffer = context.createBuffer(1, 1, 22050);
+    blip.connect(context.destination);
+    blip.start(0);
+  } catch {
+    // Ignore.
+  }
 }
 
 if (typeof window !== "undefined") {
-  window.addEventListener(
-    "pointerdown",
-    () => {
-      const audio = clip("textAppear");
-      if (!audio) return;
-      const previous = audio.volume;
-      audio.volume = 0;
-      audio
-        .play()
-        ?.then(() => {
-          audio.pause();
-          audio.currentTime = 0;
-          audio.volume = previous || 1;
-        })
-        .catch(() => {
-          audio.volume = previous || 1;
-        });
-    },
-    { once: true },
-  );
+  ["pointerdown", "touchend", "click", "keydown"].forEach((type) => {
+    window.addEventListener(type, unlockAudio, { capture: true, passive: true });
+  });
+  // Start decoding right away so the first tap already has its buffer.
+  preloadVrboSounds();
 }

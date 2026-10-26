@@ -5,7 +5,7 @@
 
 import { randomUUID } from "crypto";
 
-const MAX_ENTRIES = 40;
+const MAX_ENTRIES = 500;
 
 /** @type {import("socket.io").Server | null} */
 let ioRef = null;
@@ -18,6 +18,14 @@ export function bindHyperionActivityIo(io) {
 
 export function getHyperionActivity() {
   return entries.slice();
+}
+
+/** Wipe the in-memory log and tell every connected log view. */
+export function clearHyperionActivity() {
+  entries = [];
+  if (ioRef) {
+    ioRef.emit("hyperion:activity:list", []);
+  }
 }
 
 /**

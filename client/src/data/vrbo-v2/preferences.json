@@ -3,7 +3,7 @@
     "id": "private-pool",
     "label": "Private pool",
     "icon": "🏊",
-    "image": "/images/Vrbo-Images/Preferences/Private-Pool.png",
+    "image": "/images/Vrbo-Images/Preferences/private-pool.png",
     "chatLines": {
       "sarah": "a pool we don't have to share would be AMAZING 🏊",
       "alex": "a private pool, please. I'd rather not work around pool opening hours.",
@@ -14,7 +14,7 @@
     "id": "outdoor-dining",
     "label": "Outdoor dining space",
     "icon": "🍽️",
-    "image": "/images/Vrbo-Images/Preferences/Outdoor-Dining.png",
+    "image": "/images/Vrbo-Images/Preferences/outdoor-dining-space.png",
     "chatLines": {
       "sarah": "dinner outside together every night",
       "alex": "I'd like outdoor dining so we can all sit down for meals.",
@@ -25,7 +25,7 @@
     "id": "near-beach",
     "label": "Near the beach",
     "icon": "🏖️",
-    "image": "/images/Vrbo-Images/Preferences/Near-Beach.png",
+    "image": "/images/Vrbo-Images/Preferences/near-the-beach.png",
     "chatLines": {
       "sarah": "close enough to the beach so we don't have to drive 🌊",
       "alex": "near the beach, please. I'd rather not need the car every time.",
@@ -36,7 +36,7 @@
     "id": "wifi",
     "label": "Wifi",
     "icon": "📶",
-    "image": "/images/Vrbo-Images/Preferences/Wifi.png",
+    "image": "/images/Vrbo-Images/Preferences/wifi.png",
     "chatLines": {
       "sarah": "good WiFi so we can send all the beach photos 📱",
       "alex": "the WiFi needs to work, I might have to hop on a few calls.",
@@ -47,7 +47,7 @@
     "id": "fire-pit",
     "label": "Fire pit",
     "icon": "🔥",
-    "image": "/images/Vrbo-Images/Preferences/Fire-Pit.png",
+    "image": "/images/Vrbo-Images/Preferences/fire-pit.png",
     "chatLines": {
       "sarah": "a fire pit for late-night chats would be SO good 🔥",
       "alex": "a fire pit would be good for sitting outside after dinner.",
@@ -58,7 +58,7 @@
     "id": "hot-tub",
     "label": "Hot tub",
     "icon": "♨️",
-    "image": "/images/Vrbo-Images/Preferences/Private-Pool.png",
+    "image": "/images/Vrbo-Images/Preferences/hot-tub.png",
     "chatLines": {
       "sarah": "a hot tub after a beach day sounds perfect ✨",
       "alex": "a hot tub would be good after a long day out.",
@@ -69,7 +69,7 @@
     "id": "air-conditioning",
     "label": "Air conditioning",
     "icon": "❄️",
-    "image": "/images/Vrbo-Images/Preferences/Air-Conditioning.png",
+    "image": "/images/Vrbo-Images/Preferences/air-conditioning.png",
     "chatLines": {
       "sarah": "AC please, cool rooms after a sunny day would feel SO good",
       "alex": "AC is non-negotiable!",
@@ -80,7 +80,7 @@
     "id": "big-kitchen",
     "label": "Big kitchen",
     "icon": "🍳",
-    "image": "/images/Vrbo-Images/Preferences/Big-Kitchen.png",
+    "image": "/images/Vrbo-Images/Preferences/big-kitchen.png",
     "chatLines": {
       "sarah": "a big kitchen for pancakes together in the morning 🥞",
       "alex": "kitchen big enough that we're not all tripping over each other.",

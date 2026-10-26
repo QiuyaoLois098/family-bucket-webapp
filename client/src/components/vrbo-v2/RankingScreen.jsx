@@ -3,7 +3,6 @@ import chatScript from "../../data/vrbo-v2/chatScript.json";
 import copy from "../../data/vrbo-v2/copy.json";
 import properties from "../../data/vrbo-v2/properties.json";
 import users from "../../data/vrbo-v2/users.json";
-import { runChunkTypewriter } from "../../motion/chunkType.js";
 import OpeningLoop from "./OpeningLoop.jsx";
 import { StayShowcase } from "./StayViews.jsx";
 import { playSharedVrboSound, playTapSearchSound } from "./vrboSound.js";
@@ -12,13 +11,17 @@ const FINALE_BG_SRC = "/images/Vrbo-Images/final-bg.jpg";
 
 const propertyById = new Map(properties.map((property) => [property.id, property]));
 
-function useTypewriter(text) {
-  const [shown, setShown] = useState("");
+const SUMMARY_TEXT_START_MS = 1010;
+const SUMMARY_TEXT_DURATION_MS = 2000;
+const SUMMARY_WORD_FADE_MS = 180;
+
+function useSummaryTypingComplete(text) {
+  const [complete, setComplete] = useState(false);
 
   useEffect(() => {
     const full = text ?? "";
+    setComplete(false);
     if (!full) {
-      setShown("");
       return undefined;
     }
 
@@ -26,25 +29,51 @@ function useTypewriter(text) {
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
-    return runChunkTypewriter(full, {
-      reduceMotion,
-      onUpdate: setShown,
-    });
+    if (reduceMotion) {
+      setComplete(true);
+      return undefined;
+    }
+
+    // Search follows the final word's fade, rather than the first paint.
+    const timer = window.setTimeout(() => setComplete(true),
+      SUMMARY_TEXT_START_MS + SUMMARY_TEXT_DURATION_MS);
+    return () => window.clearTimeout(timer);
   }, [text]);
 
-  return shown;
+  return complete;
 }
+
+/** True `delayMs` after `value` becomes true; false again as soon as `value` is false. */
+function useDelayedTrue(value, delayMs) {
+  const [on, setOn] = useState(false);
+
+  useEffect(() => {
+    if (!value) {
+      setOn(false);
+      return undefined;
+    }
+    const timer = window.setTimeout(() => setOn(true), delayMs);
+    return () => window.clearTimeout(timer);
+  }, [value, delayMs]);
+
+  return on;
+}
+
+/** Pause after Jamie's message lands before "Pulling it all together…" appears. */
+const PULLING_DELAY_MS = chatScript.preference?.pullingDelayMs ?? 500;
 
 function WaitingPanel({
   ready,
+  soft = false,
   title = copy.ranking.loadingTitle,
   subtitle = copy.ranking.loadingSubtitle,
-  hint = copy.ranking.loadingHint,
 }) {
+  // `soft`: keep the same blue the opening loop sits on and fade only the text in, slowly.
+  const enterClass = soft ? "is-soft" : "vrbo-v2-rank__panel--enter";
   return (
     <div
       className={`vrbo-v2-rank__panel vrbo-v2-rank__panel--hero ${
-        ready ? "is-loading vrbo-v2-rank__panel--enter" : "is-opening"
+        ready ? `is-loading ${enterClass}` : "is-opening"
       }`}
     >
       {ready ? (
@@ -52,7 +81,6 @@ function WaitingPanel({
           <span className="vrbo-v2-rank__spinner" aria-hidden="true" />
           <h2>{title}</h2>
           <p className="vrbo-v2-rank__lede">{subtitle}</p>
-          <p className="vrbo-v2-rank__hint">{hint}</p>
         </div>
       ) : (
         <OpeningLoop />
@@ -66,8 +94,9 @@ export function SummaryPanel({
   onSearch,
   compact = false,
 }) {
-  const typedText = useTypewriter(summaryText);
-  const isTyping = Boolean(summaryText) && typedText.length < summaryText.length;
+  const complete = useSummaryTypingComplete(summaryText);
+  const words = String(summaryText ?? "").match(/\S+\s*/g) ?? [];
+  const wordStep = (SUMMARY_TEXT_DURATION_MS - SUMMARY_WORD_FADE_MS) / Math.max(1, words.length - 1);
 
   return (
     <div className={`vrbo-v2-summary ${compact ? "vrbo-v2-summary--compact" : ""}`}>
@@ -97,10 +126,16 @@ export function SummaryPanel({
         >
           <p className="vrbo-v2-summary__box-label">{copy.summary.boxLabel}</p>
           <p
-            className={`vrbo-v2-summary__box-text${isTyping ? " is-typing" : ""}`}
+            className="vrbo-v2-summary__box-text"
             aria-hidden={Boolean(summaryText)}
           >
-            {typedText}
+            {words.map((word, index) => (
+              <span
+                key={`${summaryText}-${index}`}
+                className="vrbo-v2-summary__word"
+                style={{ animationDelay: `${SUMMARY_TEXT_START_MS + index * wordStep}ms`, animationDuration: `${SUMMARY_WORD_FADE_MS}ms` }}
+              >{word}</span>
+            ))}
           </p>
         </div>
 
@@ -108,8 +143,9 @@ export function SummaryPanel({
 
         <button
           type="button"
-          className="vrbo-v2-summary__search is-scene-enter"
-          style={{ "--scene-delay": "400ms", "--scene-y": "20px", "--scene-duration": "650ms" }}
+          className={`vrbo-v2-summary__search${complete ? " is-scene-enter" : ""}`}
+          style={{ visibility: complete ? "visible" : "hidden", "--scene-delay": "0ms", "--scene-y": "20px", "--scene-duration": "650ms" }}
+          disabled={!complete}
           onClick={() => {
             playTapSearchSound();
             onSearch?.();
@@ -173,7 +209,7 @@ function FinaleLockedPanel({
 
   return (
     <div
-      className="vrbo-v2-rank__finale vrbo-v2-rank__panel--enter"
+      className="vrbo-v2-rank__finale"
       aria-label={`${title} locked in`}
       style={{ "--finale-bg": `url("${FINALE_BG_SRC}")` }}
     >
@@ -209,6 +245,7 @@ export default function RankingScreen({
   results,
   priorities,
   allSubmitted,
+  plannerReady = true,
   previewPropertyId,
   selectedPropertyId,
   celebrating = false,
@@ -219,6 +256,7 @@ export default function RankingScreen({
 }) {
   const stageReadyRef = useRef(false);
   const finaleReadyRef = useRef(false);
+  const pullingReady = useDelayedTrue(allSubmitted && plannerReady, PULLING_DELAY_MS);
 
   useEffect(() => {
     if (!hearSounds) return;
@@ -258,7 +296,12 @@ export default function RankingScreen({
   return (
     <div className="vrbo-v2-rank">
       {stage === "intro" || stage === "selecting" ? (
-        <WaitingPanel key={allSubmitted ? "loading" : "waiting"} ready={allSubmitted} />
+        // Opening loop until everyone submitted AND Jamie's SMS is out, then "Pulling it all together…".
+        <WaitingPanel
+          key={pullingReady ? "loading" : "waiting"}
+          ready={pullingReady}
+          soft
+        />
       ) : null}
 
       {stage === "summary" ? (
@@ -273,11 +316,11 @@ export default function RankingScreen({
         <WaitingPanel
           key="search-loading"
           ready
+          soft
           title={copy.ranking.searchLoadingTitle || copy.ranking.loadingTitle}
           subtitle={
             copy.ranking.searchLoadingSubtitle || copy.ranking.loadingSubtitle
           }
-          hint={copy.ranking.searchLoadingHint || copy.ranking.loadingHint}
         />
       ) : null}
 
@@ -294,3 +337,4 @@ export default function RankingScreen({
     </div>
   );
 }
+

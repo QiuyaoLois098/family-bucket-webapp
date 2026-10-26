@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { CANVAS_H, CANVAS_W } from "../canvas.js";
 import GuestPhone from "../components/vrbo-v2/GuestPhone.jsx";
+import HyperionLogPanel from "../components/vrbo-v2/HyperionLogPanel.jsx";
 import MainChatScreen from "../components/vrbo-v2/MainChatScreen.jsx";
 import RankingScreen from "../components/vrbo-v2/RankingScreen.jsx";
 import copy from "../data/vrbo-v2/copy.json";
@@ -10,6 +11,7 @@ import properties from "../data/vrbo-v2/properties.json";
 import users from "../data/vrbo-v2/users.json";
 import { VRBO_UI } from "../config/vrboUi.js";
 import useLandscapeGate from "../hooks/useLandscapeGate.js";
+import useVrboHyperionDevice, { VGC_PHONE_BY_GUEST } from "../hooks/useVrboHyperionDevice.js";
 import useVrboIphoneWebApp from "../hooks/useVrboIphoneWebApp.js";
 import useVrboSessionStartOnActivity from "../hooks/useVrboSessionStartOnActivity.js";
 import useVrboV2Session, { guests } from "../hooks/useVrboV2Session.js";
@@ -144,6 +146,11 @@ function RestartControl({ onReset }) {
   );
 }
 
+/** Jamie's "here's what you all want" SMS — Display 2 shows "Pulling it all together" after it. */
+function hasPlannerMessage(messages) {
+  return (messages ?? []).some((message) => message.phase === "planner");
+}
+
 function VrboDemo() {
   const { state, allSubmitted, actions, hearSounds } = useVrboV2Session();
   const {
@@ -257,6 +264,7 @@ function VrboDemo() {
                   results={results}
                   priorities={priorities}
                   allSubmitted={allSubmitted}
+                  plannerReady={hasPlannerMessage(messages)}
                   previewPropertyId={previewPropertyId}
                   selectedPropertyId={selectedPropertyId}
                   celebrating={celebrating}
@@ -280,6 +288,7 @@ function VrboDemo() {
               </div>
               <div className="vrbo-v2-stage__phones-bottom">
                 {guests.slice(2).map(renderPhone)}
+                <HyperionLogPanel />
               </div>
             </>
           )}
@@ -360,6 +369,7 @@ export function VrboLeftPage({ compareLayout = false } = {}) {
   const { state, actions, hearSounds } = useVrboV2Session({ syncOnly: true });
   const propertyLookup = usePropertyLookup(state.results, state.priorities);
   useVrboSessionStartOnActivity(actions.startSession);
+  useVrboHyperionDevice("organizer");
 
   const reference = vrboLeftReference(state);
   const live = (
@@ -419,6 +429,7 @@ export function VrboLeftPage({ compareLayout = false } = {}) {
 /** Display 2 · Output / search. Prod = full-bleed; `compareLayout` = live + reference. */
 export function VrboRightPage({ compareLayout = false } = {}) {
   const { state, allSubmitted, actions, hearSounds } = useVrboV2Session({ syncOnly: true });
+  useVrboHyperionDevice("output");
   const reference = vrboRightReference(state.stage, {
     celebrating: state.celebrating,
     selectedPropertyId: state.selectedPropertyId,
@@ -431,6 +442,7 @@ export function VrboRightPage({ compareLayout = false } = {}) {
         results={state.results}
         priorities={state.priorities}
         allSubmitted={allSubmitted}
+        plannerReady={hasPlannerMessage(state.messages)}
         previewPropertyId={state.previewPropertyId}
         selectedPropertyId={state.selectedPropertyId}
         celebrating={state.celebrating}
@@ -496,6 +508,7 @@ export function GuestPhonePage({ guestId, compareLayout = false } = {}) {
     (frameParam === "1" || (guestId === "sarah" && frameParam !== "0"));
   const webApp = VRBO_IPHONE_WEBAPP[guestId];
   useVrboIphoneWebApp(webApp ?? {});
+  useVrboHyperionDevice(VGC_PHONE_BY_GUEST[guestId] ?? null);
   const { state, actions } = useVrboV2Session({ syncOnly: true });
   const {
     stage,
@@ -573,7 +586,7 @@ export function GuestPhonePage({ guestId, compareLayout = false } = {}) {
 
   return (
     <div
-      className={`vrbo-v2-device vrbo-v2-device--phone${framed ? " is-framed" : ""}`}
+      className={`vrbo-v2-device vrbo-v2-device--phone${framed ? " is-framed" : ""}${standalone ? " is-standalone" : ""}`}
     >
       {compare && !standalone ? (
         <button

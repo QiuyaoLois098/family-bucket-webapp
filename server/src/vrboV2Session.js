@@ -11,7 +11,11 @@ import {
   pickSharedPriorities,
 } from "../../shared/vrboChatCopy.js";
 import { recommendPropertySet } from "../../shared/vrboRecommendPropertySet.js";
-import { applyStayCopy, countFeatureSelections } from "../../shared/vrboStayCopy.js";
+import {
+  FEATURE_ORDER,
+  applyStayCopy,
+  countFeatureSelections,
+} from "../../shared/vrboStayCopy.js";
 import { config } from "./config.js";
 import {
   HYPERION_STATIONS,
@@ -22,6 +26,18 @@ const VGC_ORGANIZER = {
   id: "expedia-oct26-vgc-organizer",
   label: "organizer",
 };
+
+/** Hyperion device values → Device IDs (event brief, section 2). */
+const VGC_DEVICES = Object.freeze({
+  organizer: "expedia-oct26-vgc-organizer",
+  output: "expedia-oct26-vgc-output",
+  "phone-1": "expedia-oct26-vgc-phone-1",
+  "phone-2": "expedia-oct26-vgc-phone-2",
+  "phone-3": "expedia-oct26-vgc-phone-3",
+});
+
+/** Devices that send vgc_device_joined / vgc_device_left (the organizer owns the session). */
+const VGC_JOINING_DEVICES = new Set(["output", "phone-1", "phone-2", "phone-3"]);
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.resolve(__dirname, "../../client/src/data/vrbo-v2");
@@ -42,6 +58,11 @@ const rankingWeights = loadJson("rankingWeights.json");
 const users = loadJson("users.json");
 
 const guests = users.filter((user) => user.role === "guest");
+
+/** Guest id → Hyperion phone device (sarah → /vrbo-ip1 → phone-1, …). */
+function phoneForGuest(userId) {
+  return `phone-${guests.findIndex((user) => user.id === userId) + 1}`;
+}
 const preferenceOrder = new Map(preferences.map((preference, index) => [preference.id, index]));
 const preferenceById = new Map(preferences.map((preference) => [preference.id, preference]));
 
@@ -62,6 +83,33 @@ function submittedLists(submitted, joined) {
 function buildSummaryText(submitted, joined) {
   const counts = countFeatureSelections(submittedLists(submitted, joined));
   return buildGroupRequest(counts, copy);
+}
+
+/**
+ * The two priorities printed on the shared card title ("{stay} w/ {A} & {B}").
+ * Read-only mirror of how buildStayCardTitle picks them — the card itself is untouched.
+ */
+function cardTitleTagIds(property, priorities) {
+  const suppressed = new Set(property?.suppressTags ?? []);
+  const offered = (property?.titleTags ?? property?.features ?? []).filter(
+    (id) => !suppressed.has(id),
+  );
+  const offeredSet = new Set(offered);
+  const rank = (id) => {
+    const index = FEATURE_ORDER.indexOf(id);
+    return index === -1 ? FEATURE_ORDER.length : index;
+  };
+
+  const picked = [];
+  (priorities ?? []).forEach((id) => {
+    if (picked.length < 2 && offeredSet.has(id) && !picked.includes(id)) picked.push(id);
+  });
+  [...offered]
+    .sort((a, b) => rank(a) - rank(b))
+    .forEach((id) => {
+      if (picked.length < 2 && !picked.includes(id)) picked.push(id);
+    });
+  return picked;
 }
 
 function formatReasons(matched) {
@@ -132,6 +180,14 @@ export class VrboV2Session extends EventEmitter {
     this.timers = [];
     /** Wall-clock start for Hyperion duration_seconds (cleared on session end). */
     this.hyperionSessionStartedAt = null;
+    /** socket.id → Hyperion device value (organizer, output, phone-1..3) for open device pages. */
+    this.deviceSockets = new Map();
+    /** device value → ms timestamp it joined the current session (dwell time). */
+    this.deviceJoinedAt = new Map();
+    /** vgc_interaction events sent in the current session. */
+    this.interactionCount = 0;
+    /** Last output-display screen name reported (null until an output page is open). */
+    this.lastOutputScreen = null;
     this.lastInteractionAt = Date.now();
     this.state = createInitialState(0);
     this.startIntro();
@@ -146,10 +202,12 @@ export class VrboV2Session extends EventEmitter {
     this.lastInteractionAt = Date.now();
   }
 
-  /** Guest/organizer activity: bump idle clock and start Hyperion session if needed. */
+  /**
+   * Guest/organizer activity: bump the idle clock only.
+   * The Hyperion session does NOT start here — it starts when the first guest taps Join.
+   */
   noteActivity() {
     this.touch();
-    return this.startHyperionSession();
   }
 
   devicesJoinedCount() {
@@ -157,7 +215,7 @@ export class VrboV2Session extends EventEmitter {
   }
 
   /**
-   * First click/typing on organizer interactive or any guest phone starts a VGC session.
+   * The first guest tapping Join on a phone starts a VGC session (see joinGuest).
    * Idempotent — broadcasts sessionId via state to output + phones.
    * Starts the session duration timer.
    */
@@ -168,8 +226,15 @@ export class VrboV2Session extends EventEmitter {
 
     const sessionId = randomUUID();
     this.hyperionSessionStartedAt = Date.now();
+    this.interactionCount = 0;
+    this.deviceJoinedAt.clear();
     this.touch();
     this.patch({ hyperionSessionId: sessionId });
+
+    // Open phones + output display receive the session id now → start their dwell time.
+    for (const label of new Set(this.deviceSockets.values())) {
+      if (VGC_JOINING_DEVICES.has(label)) this.joinDevice(label);
+    }
 
     sendHyperionEvent({
       slug: "vgc_session_start",
@@ -212,7 +277,9 @@ export class VrboV2Session extends EventEmitter {
     const durationSeconds = startedAt
       ? Math.max(0, Math.round((Date.now() - startedAt) / 1000))
       : 0;
-    const devicesJoined = this.devicesJoinedCount();
+    // Devices that actually joined (phones + output); fall back to guests who tapped Join.
+    const devicesJoined = this.deviceJoinedAt.size || this.devicesJoinedCount();
+    const interactionsCount = this.interactionCount;
 
     this.hyperionSessionStartedAt = null;
 
@@ -225,6 +292,7 @@ export class VrboV2Session extends EventEmitter {
         device: VGC_ORGANIZER.label,
         reason,
         duration_seconds: durationSeconds,
+        interactions_count: interactionsCount,
         devices_joined: devicesJoined,
       },
     })
@@ -242,6 +310,157 @@ export class VrboV2Session extends EventEmitter {
       .catch((error) => {
         console.warn("[hyperion] vgc_session_end error:", error?.message || error);
       });
+
+    // Organizer ended the session → every device that joined leaves it (ends their dwell time).
+    for (const label of [...this.deviceJoinedAt.keys()]) {
+      this.leaveDevice(label, reason === "timeout" ? "timeout" : "session_ended", sessionId);
+    }
+    this.interactionCount = 0;
+  }
+
+  /** Send one VGC event as `deviceLabel` (its own Device ID + `device` field). */
+  sendVgcEvent(slug, deviceLabel, fieldData = {}, { sessionId = this.state.hyperionSessionId } = {}) {
+    const sourceId = VGC_DEVICES[deviceLabel];
+    if (!sourceId) return;
+
+    sendHyperionEvent({
+      slug,
+      stationId: HYPERION_STATIONS.VRBO_GROUP_CHAT,
+      sessionId: sessionId || undefined,
+      sourceId,
+      fieldData: { device: deviceLabel, ...fieldData },
+    })
+      .then((result) => {
+        if (result.ok) {
+          console.log(`[hyperion] ${slug} ok · ${deviceLabel}`);
+        } else if (!result.skipped) {
+          console.warn(`[hyperion] ${slug} failed: ${result.error}`);
+        }
+      })
+      .catch((error) => {
+        console.warn(`[hyperion] ${slug} error:`, error?.message || error);
+      });
+  }
+
+  deviceConnected(label) {
+    for (const value of this.deviceSockets.values()) {
+      if (value === label) return true;
+    }
+    return false;
+  }
+
+  /**
+   * A device page (/vrbo-left, /vrbo-right, /vrbo-ip1..3) says which device it is.
+   * Pass `label = null` to forget the socket. The same label from two sockets counts once.
+   */
+  registerDevice(socketId, label) {
+    const previous = this.deviceSockets.get(socketId);
+    if (label == null || !VGC_DEVICES[label]) {
+      this.unregisterDevice(socketId);
+      return;
+    }
+    if (previous === label) return;
+    if (previous) this.unregisterDevice(socketId);
+
+    this.deviceSockets.set(socketId, label);
+    if (label === "output") this.lastOutputScreen = this.outputScreenName();
+
+    if (
+      this.state.hyperionSessionId &&
+      VGC_JOINING_DEVICES.has(label) &&
+      !this.deviceJoinedAt.has(label)
+    ) {
+      this.joinDevice(label);
+    }
+  }
+
+  unregisterDevice(socketId) {
+    const label = this.deviceSockets.get(socketId);
+    if (!label) return;
+    this.deviceSockets.delete(socketId);
+    if (this.deviceConnected(label)) return;
+
+    if (this.deviceJoinedAt.has(label)) this.leaveDevice(label, "disconnected");
+    if (label === "output") this.lastOutputScreen = null;
+  }
+
+  joinDevice(label) {
+    this.deviceJoinedAt.set(label, Date.now());
+    this.sendVgcEvent("vgc_device_joined", label, label === "output" ? { screen: this.outputScreenName() } : {});
+  }
+
+  leaveDevice(label, reason, sessionId = this.state.hyperionSessionId) {
+    const joinedAt = this.deviceJoinedAt.get(label);
+    if (joinedAt == null) return;
+    this.deviceJoinedAt.delete(label);
+    this.sendVgcEvent(
+      "vgc_device_left",
+      label,
+      {
+        reason,
+        duration_seconds: Math.max(0, Math.round((Date.now() - joinedAt) / 1000)),
+      },
+      { sessionId },
+    );
+  }
+
+  /**
+   * One front-end interaction (phone or output display), whether it came from the real
+   * device page or the /vrbo-v2 overview. Never starts a session — only Join does —
+   * so it carries the shared sessionId when one exists.
+   */
+  logInteraction(deviceLabel, { action, label, elementId, screen, value }) {
+    if (!VGC_DEVICES[deviceLabel]) return;
+    this.interactionCount += 1;
+    this.sendVgcEvent("vgc_interaction", deviceLabel, {
+      action,
+      label,
+      ...(elementId ? { element_id: elementId } : {}),
+      ...(screen ? { screen } : {}),
+      ...(value != null ? { value: String(value) } : {}),
+    });
+  }
+
+  /** vgc_error from a device page (JS error, dropped socket). No personal data in `message`. */
+  reportDeviceError(socketId, payload) {
+    const label = this.deviceSockets.get(socketId);
+    if (!label) return;
+    const severity = ["warning", "error", "fatal"].includes(payload?.severity)
+      ? payload.severity
+      : "error";
+    this.sendVgcEvent("vgc_error", label, {
+      code: String(payload?.code || "UNKNOWN").slice(0, 40),
+      message: String(payload?.message || "Unknown error").slice(0, 200),
+      severity,
+      ...(payload?.screen ? { screen: String(payload.screen).slice(0, 40) } : {}),
+    });
+  }
+
+  /** Stable names for what Display 2 (the output display) is showing. */
+  outputScreenName(state = this.state) {
+    if (state.celebrating) return "celebration";
+    if (state.stage === "summary") return "summary";
+    if (state.stage === "searching") return "searching";
+    if (state.stage === "results") return "results";
+
+    const joinedGuests = guests.filter((user) => Boolean(state.joined[user.id]));
+    const allSubmitted =
+      joinedGuests.length >= 2 && joinedGuests.every((user) => Boolean(state.submitted[user.id]));
+    const plannerReady = (state.messages ?? []).some((message) => message.phase === "planner");
+    return allSubmitted && plannerReady ? "pulling" : "attract";
+  }
+
+  /** Send vgc_output_screen_changed when Display 2 moves to a new screen (only if its page is open). */
+  noteOutputScreen() {
+    if (!this.deviceConnected("output")) return;
+    const screen = this.outputScreenName();
+    const previous = this.lastOutputScreen;
+    if (screen === previous) return;
+    this.lastOutputScreen = screen;
+    this.sendVgcEvent("vgc_output_screen_changed", "output", {
+      screen,
+      ...(previous ? { previous_screen: previous } : {}),
+    });
   }
 
   /** Map reset trigger + celebration state → vgc_session_end reason. */
@@ -257,6 +476,11 @@ export class VrboV2Session extends EventEmitter {
     if (!this.state.celebrating) return;
     if (!this.state.hyperionSessionId) return;
     if (Date.now() - this.lastInteractionAt < config.vrboCelebrationTimeoutMs) return;
+    this.sendVgcEvent("vgc_timeout", "organizer", {
+      idle_seconds: Math.round((Date.now() - this.lastInteractionAt) / 1000),
+      screen: "celebration",
+      action_taken: "reset",
+    });
     this.reset("inactivity");
   }
 
@@ -279,6 +503,7 @@ export class VrboV2Session extends EventEmitter {
   setState(next, emit = true) {
     this.state = { ...next, updatedAt: Date.now() };
     if (emit) this.emit("state", this.snapshot());
+    this.noteOutputScreen();
   }
 
   patch(patch, emit = true) {
@@ -323,6 +548,15 @@ export class VrboV2Session extends EventEmitter {
     const guest = guests.find((user) => user.id === userId);
     if (!guest) return;
     this.noteActivity();
+    // First Join starts the session (vgc_session_start) before this click is logged.
+    this.startHyperionSession();
+    // Never send the typed name (personal data) — only that Join was pressed.
+    this.logInteraction(phoneForGuest(userId), {
+      action: "click",
+      label: "Join group",
+      elementId: "join",
+      screen: "join",
+    });
     const trimmed = String(displayName ?? "").trim();
     const name = trimmed || guest.name;
     this.patch({
@@ -337,6 +571,12 @@ export class VrboV2Session extends EventEmitter {
     const current = this.state.selections[userId] ?? [];
     const has = current.includes(preferenceId);
     if (!has && current.length >= copy.maxSelections) return;
+    this.logInteraction(phoneForGuest(userId), {
+      action: "select",
+      label: `${has ? "Deselect" : "Select"} ${preferenceById.get(preferenceId)?.label ?? preferenceId}`,
+      elementId: preferenceId,
+      screen: "select",
+    });
     const next = has
       ? current.filter((id) => id !== preferenceId)
       : [...current, preferenceId];
@@ -351,6 +591,12 @@ export class VrboV2Session extends EventEmitter {
     if (picks.length !== copy.maxSelections) return;
 
     this.noteActivity();
+    this.logInteraction(phoneForGuest(userId), {
+      action: "submit",
+      label: "Send priorities",
+      elementId: "send",
+      screen: "select",
+    });
     const nextSubmitted = { ...this.state.submitted, [userId]: picks };
     this.patch({
       submitted: nextSubmitted,
@@ -414,6 +660,9 @@ export class VrboV2Session extends EventEmitter {
     const submitDelayMs = pref?.submitDelayMs ?? 1000;
     const boldAfterTextsMs = pref?.boldAfterTextsMs ?? 400;
     const jamieDelayMs = pref?.jamieDelayMs ?? 1000;
+    // Display 2 waits pullingDelayMs after Jamie's SMS, then shows "Pulling it all together…"
+    // for pullingMs before the summary opens.
+    const pullingMs = (pref?.pullingMs ?? 2200) + (pref?.pullingDelayMs ?? 500);
 
     this.schedule(() => {
       if (this.state.stage !== "selecting") return;
@@ -457,20 +706,35 @@ export class VrboV2Session extends EventEmitter {
           }),
         );
       }
+      // Jamie's SMS lands on Display 1 first. Display 2 keeps its opening loop until
+      // this message exists, then shows "Pulling it all together…" (see RankingScreen).
       this.patch({
-        stage: "summary",
         priorities,
-        summaryText: buildSummaryText(this.state.submitted, this.state.joined),
         sharedPriorityIds,
         typing: [],
         messages,
       });
+
+      // Hold the "Pulling it all together…" panel, then open the summary.
+      this.schedule(() => {
+        if (this.state.stage !== "selecting") return;
+        this.patch({
+          stage: "summary",
+          summaryText: buildSummaryText(this.state.submitted, this.state.joined),
+        });
+      }, pullingMs);
     }, submitDelayMs + boldAfterTextsMs + jamieDelayMs);
   }
 
   searchStays() {
     if (this.state.stage !== "summary") return;
     this.noteActivity();
+    this.logInteraction("output", {
+      action: "click",
+      label: "Search stays",
+      elementId: "search",
+      screen: "summary",
+    });
 
     // Handoff: search loading ~2200ms — reuse "Pulling it all together" panel.
     this.patch({
@@ -508,6 +772,12 @@ export class VrboV2Session extends EventEmitter {
     if (this.state.stage !== "results" || this.state.selectedPropertyId) return;
     if (!this.state.results.some((result) => result.property.id === propertyId)) return;
     this.noteActivity();
+    this.logInteraction("output", {
+      action: "select",
+      label: "Preview stay",
+      elementId: propertyId,
+      screen: "results",
+    });
     this.patch({ previewPropertyId: propertyId });
   }
 
@@ -517,6 +787,12 @@ export class VrboV2Session extends EventEmitter {
     if (!result) return;
 
     this.noteActivity();
+    this.logInteraction("output", {
+      action: "click",
+      label: "Select stay",
+      elementId: propertyId,
+      screen: "results",
+    });
     // Wipe prior preference / intro thread — finale starts from a clean chat.
     this.patch({
       previewPropertyId: propertyId,
@@ -573,6 +849,28 @@ export class VrboV2Session extends EventEmitter {
     const reactions = (finale.reactions ?? []).filter(
       (line) => line.authorId !== "jamie" && isActiveAuthor(line.authorId),
     );
+    // Fixed lines use `text`. Dynamic lines use `byPriority`: each reply reacts to one of the
+    // priorities printed on the shared card title ("{stay} w/ {tag} & {tag}") — so it is always
+    // something the stay really has and the card shows. Prefers a tag that guest picked
+    // themselves, and never the same tag the previous dynamic reply used.
+    const cardTagIds = cardTitleTagIds(result.property, this.state.priorities);
+    const usedPriorityIds = new Set();
+    const replyText = new Map();
+    reactions.forEach((line) => {
+      if (!line.byPriority) {
+        replyText.set(line, line.text);
+        return;
+      }
+      const options = cardTagIds.filter((id) => line.byPriority[id]);
+      const own = this.state.submitted[line.authorId] ?? [];
+      const pick =
+        options.find((id) => own.includes(id) && !usedPriorityIds.has(id)) ??
+        options.find((id) => !usedPriorityIds.has(id)) ??
+        options[0];
+      if (pick) usedPriorityIds.add(pick);
+      replyText.set(line, (pick && line.byPriority[pick]) || line.fallback || "");
+    });
+
     if (!reactions.length) {
       offset += finale.celebrationPause ?? 400;
       this.schedule(() => {
@@ -592,7 +890,7 @@ export class VrboV2Session extends EventEmitter {
               ...this.state.messages,
               this.makeMessage({
                 authorId: line.authorId,
-                text: fillTemplate(line.text, vars),
+                text: fillTemplate(replyText.get(line), vars),
                 phase: "finale",
               }),
             ],
@@ -616,6 +914,7 @@ export class VrboV2Session extends EventEmitter {
     this.lastInteractionAt = Date.now();
     this.state = createInitialState(this.state.runId + 1);
     this.emit("state", this.snapshot());
+    this.noteOutputScreen();
     this.startIntro();
   }
 }

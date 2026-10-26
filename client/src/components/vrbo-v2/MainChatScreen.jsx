@@ -10,6 +10,12 @@ import useTailFitMessages from "./useTailFitMessages.js";
 import { playSharedVrboSound } from "./vrboSound.js";
 
 const JOIN_TOAST_MS = 2800;
+const CHAT_AVATAR_FILLS = {
+  jamie: "#fff1c3",
+  sarah: "#d6f5e8",
+  alex: "#dbf0fa",
+  chris: "#f2f2db",
+};
 
 function fill(template, values) {
   return Object.entries(values).reduce(
@@ -21,7 +27,11 @@ function fill(template, values) {
 function Avatar({ user, className = "vrbo-v2-chat__avatar" }) {
   if (user?.avatar) {
     return (
-      <span className={`${className} has-photo`} aria-hidden="true">
+      <span
+        className={`${className} has-photo`}
+        style={{ "--chat-avatar-fill": CHAT_AVATAR_FILLS[user.id] || user.accent }}
+        aria-hidden="true"
+      >
         <img src={user.avatar} alt="" />
       </span>
     );
@@ -172,6 +182,8 @@ export default function MainChatScreen({
     guestsJoined === 0
       ? copy.chat.waitingGuests
       : members.map((user) => user.name).join(", ");
+  // "Waiting for guests to join" + the same breathing "..." as Waiting on the phones.
+  const waitingLabel = String(copy.chat.waitingGuests ?? "").replace(/[….]+\s*$/, "");
 
   function authorLabel(user) {
     if (user.role === "coordinator") {
@@ -203,7 +215,20 @@ export default function MainChatScreen({
           alt="Vrbo"
         />
         <h2 className="vrbo-v2-chat__trip is-opening-title">{chatScript.groupTitle}</h2>
-        <p className="vrbo-v2-chat__people is-opening-status">{peopleLine}</p>
+        <p className={`vrbo-v2-chat__people is-opening-status${guestsJoined > 0 ? " is-joined" : ""}`}>
+          {guestsJoined === 0 ? (
+            <>
+              {waitingLabel}
+              <span className="vrbo-v2-chat__breathe" role="presentation" aria-hidden="true">
+                <i>.</i>
+                <i>.</i>
+                <i>.</i>
+              </span>
+            </>
+          ) : (
+            peopleLine
+          )}
+        </p>
       </header>
 
       <div className={`vrbo-v2-chat__body${showPickupFooter ? "" : " is-footer-empty"}`}>

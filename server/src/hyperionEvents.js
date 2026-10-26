@@ -89,7 +89,24 @@ function eventRequestLog(payloadOrInput) {
 
 export async function sendHyperionEvent(input) {
   if (!config.hyperionLoggingEnabled) {
-    return { ok: false, skipped: true, status: null, error: "Hyperion logging disabled" };
+    const result = { ok: false, skipped: true, status: null, error: "Hyperion logging disabled" };
+    // Still show what would have been sent in the ?dev=1 overlay and the /vrbo-v2 log panel.
+    recordHyperionActivity({
+      kind: "event",
+      ...result,
+      slug: input?.slug,
+      sessionId: input?.sessionId,
+      sourceId: input?.sourceId,
+      deviceLabel: input?.fieldData?.device,
+      request: eventRequestLog({
+        slug: input?.slug,
+        stationId: input?.stationId,
+        sourceId: input?.sourceId,
+        sessionId: input?.sessionId,
+        fieldData: input?.fieldData,
+      }),
+    });
+    return result;
   }
 
   const token = config.hyperionApi;

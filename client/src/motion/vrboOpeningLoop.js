@@ -8,6 +8,24 @@ export const PHOTO_STEP = 4100;
 export const PHOTO_HOLD = 3000;
 export const PHOTO_TRANSITION = 1100;
 
+// Each node's motion styles are owned here. Avoid invalidating unchanged layers
+// on every animation frame, especially during the long headline/photo holds.
+const motionStyles = new WeakMap();
+function applyMotionStyles(node, values) {
+  let previous = motionStyles.get(node);
+  if (!previous) {
+    previous = {};
+    motionStyles.set(node, previous);
+  }
+  for (const [key, value] of Object.entries(values)) {
+    const next = String(value);
+    if (previous[key] !== next) {
+      node.style[key] = next;
+      previous[key] = next;
+    }
+  }
+}
+
 export const OPENING_PHOTOS = [
   "/images/Vrbo-Images/Properties/sunset-beach-house.jpg",
   "/images/Vrbo-Images/Properties/ohana-beach-house.jpg",
@@ -43,51 +61,56 @@ export function softEase(p) {
 
 export function softEnter(node, t, start, duration, offset, reduced) {
   const p = reduced ? 1 : screenEase((t - start) / duration);
-  node.style.opacity = p;
   /* Design-px travel, relative to the 3840 display container — never raw CSS px. */
-  node.style.transform = `translateY(calc(${offset * (1 - p)} / var(--design-h, 3840) * 100cqh))`;
+  applyMotionStyles(node, {
+    opacity: p,
+    transform: `translate3d(0, calc(${offset * (1 - p)} / var(--design-h, 3840) * 100cqh), 0)`,
+  });
 }
 
 export function updateOpeningPhotos(photos, t, reduced) {
-  photos.forEach((node) => {
-    node.style.opacity = 0;
-    node.style.transform = "translateY(100%)";
-    node.style.zIndex = 0;
-  });
-  if (t < 1800) return;
+  const states = photos.map(() => ({ opacity: 0, y: 100 }));
+  const commit = () => photos.forEach((node, i) => applyMotionStyles(node, {
+    opacity: states[i].opacity,
+    transform: `translate3d(0, ${states[i].y}%, 0)`,
+    zIndex: 0,
+  }));
+  if (t < 1800) {
+    commit();
+    return;
+  }
   if (t < 3100) {
     const p = reduced ? 1 : softEase((t - 1800) / 1300);
-    photos[0].style.opacity = p;
-    photos[0].style.transform = `translateY(${8 * (1 - p)}%)`;
+    states[0] = { opacity: p, y: 8 * (1 - p) };
+    commit();
     return;
   }
   const elapsed = t - PHOTO_LOOP_START;
   const index = Math.floor(elapsed / PHOTO_STEP) % photos.length;
   const local = elapsed % PHOTO_STEP;
-  photos[index].style.opacity = 1;
-  photos[index].style.transform = "translateY(0)";
+  states[index] = { opacity: 1, y: 0 };
   if (local >= PHOTO_HOLD) {
     const next = (index + 1) % photos.length;
     const p = reduced ? 1 : screenEase((local - PHOTO_HOLD) / PHOTO_TRANSITION);
-    photos[index].style.transform = `translateY(${-100 * p}%)`;
-    photos[next].style.opacity = 1;
-    photos[next].style.transform = `translateY(${100 * (1 - p)}%)`;
+    states[index].y = -100 * p;
+    states[next] = { opacity: 1, y: 100 * (1 - p) };
   }
+  commit();
 }
 
 export function updateOpeningHeadlines(slides, t, reduced) {
   const firstSwitch = PHOTO_LOOP_START + PHOTO_STEP + PHOTO_HOLD;
   const elapsed = t - firstSwitch;
-  slides.forEach((node) => {
-    node.style.display = "none";
-    node.style.opacity = 0;
-    node.style.transform = "none";
-  });
+  const states = slides.map(() => ({ opacity: 0, y: 0, visible: false }));
+  const commit = () => slides.forEach((node, i) => applyMotionStyles(node, {
+    // Keep the text layer laid out instead of removing/recreating it each frame.
+    visibility: states[i].visible ? "visible" : "hidden",
+    opacity: states[i].opacity,
+    transform: `translate3d(0, ${states[i].y}%, 0)`,
+  }));
   const show = (i, opacity, y) => {
-    const node = slides[i];
-    node.style.display = "block";
-    node.style.opacity = opacity;
-    node.style.transform = `translateY(${y}%)`;
+    states[i] = { opacity, y, visible: true };
+    commit();
   };
   if (elapsed < 0) {
     show(0, 1, 0);
