@@ -1,5 +1,4 @@
 const SOUNDS = {
-  celebration: "/sound/vrbo/celebration.wav",
   confirmProperty: "/sound/vrbo/confirm-property.wav",
   sendProperty: "/sound/vrbo/send-property.wav",
   tapProperty: "/sound/vrbo/tap-property.wav",
@@ -178,7 +177,8 @@ function start(id, { allowTapSearch = false } = {}) {
 /** Blue Search button only. */
 export function playTapSearchSound() {
   start("tapSearch", { allowTapSearch: true });
-  suppressFollowups(["textAppear", "sendProperty", "propertyText"], 4000);
+  // Search owns the next second: no scene or message sound may stack on the tap.
+  suppressFollowups(["textAppear", "sendProperty", "propertyText"], 1000);
 }
 
 /** Sound for the screen that was just touched. Later sounds from that same action stay quiet. */
@@ -188,6 +188,8 @@ export function playVrboSound(id) {
       // "Share this stay to the group" = same sound as the blue Search button.
       // Group-chat messages after Share (Jamie, card, reactions) keep their own sounds.
       start("tapSearch", { allowTapSearch: true });
+      // Share owns the next second: prevent scene/chat sounds from stacking on the tap.
+      suppressFollowups(["celebration", "sendProperty", "propertyText", "textAppear"], 1000);
     }
     return;
   }

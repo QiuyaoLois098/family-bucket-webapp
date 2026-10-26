@@ -255,7 +255,6 @@ export default function RankingScreen({
   hearSounds = false,
 }) {
   const stageReadyRef = useRef(false);
-  const finaleReadyRef = useRef(false);
   const pullingReady = useDelayedTrue(allSubmitted && plannerReady, PULLING_DELAY_MS);
 
   useEffect(() => {
@@ -264,21 +263,11 @@ export default function RankingScreen({
       stageReadyRef.current = true;
       return;
     }
-    // The results (property) page is intentionally silent.
-    if (stage === "summary" || stage === "searching") {
+    // The results (property) page and summary form enter silently.
+    if (stage === "searching") {
       playSharedVrboSound("textAppear");
     }
   }, [stage, hearSounds]);
-
-  useEffect(() => {
-    if (!hearSounds) return;
-    if (!finaleReadyRef.current) {
-      finaleReadyRef.current = true;
-      return;
-    }
-    // Hawaii Trip finale panel enters.
-    if (celebrating) playSharedVrboSound("celebration");
-  }, [celebrating, hearSounds]);
 
   if (celebrating) {
     return (
