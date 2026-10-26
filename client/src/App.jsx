@@ -10,7 +10,6 @@ import {
   ExpediaLeftPage,
   ExpediaRightPage,
 } from "./screens/ExpediaPortraitScreens.jsx";
-import UdpScreen from "./screens/UdpScreen.jsx";
 import VrboBaScreen from "./screens/VrboBaScreen.jsx";
 import useDisablePinchZoom from "./hooks/useDisablePinchZoom.js";
 import useHyperionHeartbeat from "./hooks/useHyperionHeartbeat.js";
@@ -36,7 +35,6 @@ const DEVICE_PATHS = new Set([
   "/vrbo-ip3",
   "/vrbo-ba",
   "/expedia-ba",
-  "/udp",
 ]);
 
 /** Prod kiosk routes: no page zoom / no document scroll. */
@@ -90,7 +88,6 @@ export default function App() {
         <Route path="/vrbo-v2/sarah" element={<Navigate to="/vrbo-ip1" replace />} />
         <Route path="/vrbo-ba" element={<VrboBaScreen />} />
         <Route path="/expedia-ba" element={<ExpediaBaScreen />} />
-        <Route path="/udp" element={<UdpScreen />} />
         <Route path="/control" element={<ControlScreen />} />
         <Route path="/display" element={<DisplayScreen />} />
         <Route path="*" element={<Navigate to="/" replace />} />

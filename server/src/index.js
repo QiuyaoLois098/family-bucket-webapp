@@ -8,10 +8,6 @@ import { config } from "./config.js";
 import { bindHyperionActivityIo } from "./hyperionActivity.js";
 import { bindHyperionIo } from "./hyperionHeartbeat.js";
 import { registerRoutes, registerSockets } from "./routes.js";
-import { session } from "./session.js";
-import { startUdpBridge } from "./udpBridge.js";
-import { createLuggageUdpTrigger } from "./luggageUdpTrigger.js";
-
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -25,12 +21,6 @@ app.use("/images", express.static(path.join(config.rootDir, "client/public/image
 
 registerRoutes(app);
 registerSockets(io);
-
-const luggageUdp = createLuggageUdpTrigger(session);
-startUdpBridge(io, {
-  port: Number(process.env.UDP_PORT || 41234),
-  onPacket: luggageUdp.handlePacket,
-});
 
 if (fs.existsSync(config.clientDist)) {
   app.use(express.static(config.clientDist));
@@ -55,7 +45,6 @@ server.listen(config.port, () => {
   console.log(`Vrbo iPhone 1:       http://localhost:${config.port}/vrbo-ip1`);
   console.log(`Vrbo iPhone 2:       http://localhost:${config.port}/vrbo-ip2`);
   console.log(`Vrbo iPhone 3:       http://localhost:${config.port}/vrbo-ip3`);
-  console.log(`UDP monitor:         http://localhost:${config.port}/udp`);
   if (!config.openaiApiKey) {
     console.warn("OPENAI_API_KEY is not set - using local fallback images and itineraries.");
   }
