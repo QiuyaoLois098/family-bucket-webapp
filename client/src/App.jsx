@@ -10,7 +10,6 @@ import {
   ExpediaLeftPage,
   ExpediaRightPage,
 } from "./screens/ExpediaPortraitScreens.jsx";
-import PreviewScreen from "./screens/PreviewScreen.jsx";
 import UdpScreen from "./screens/UdpScreen.jsx";
 import VrboBaScreen from "./screens/VrboBaScreen.jsx";
 import useDisablePinchZoom from "./hooks/useDisablePinchZoom.js";
@@ -62,7 +61,7 @@ export default function App() {
       <HyperionDevOverlay heartbeat={heartbeat} />
       <DebugHeightGuide enabled={heightGuide} />
       <Routes>
-        <Route path="/" element={<PreviewScreen />} />
+        <Route path="/" element={<Navigate to="/vrbo-v2" replace />} />
         <Route path="/expedia-left" element={<ExpediaLeftPage />} />
         <Route path="/expedia-right" element={<ExpediaRightPage />} />
         <Route

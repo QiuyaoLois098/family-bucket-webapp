@@ -226,7 +226,8 @@ export default function RankingScreen({
       stageReadyRef.current = true;
       return;
     }
-    if (stage === "summary" || stage === "searching" || stage === "results") {
+    // The results (property) page is intentionally silent.
+    if (stage === "summary" || stage === "searching") {
       playSharedVrboSound("textAppear");
     }
   }, [stage, hearSounds]);
