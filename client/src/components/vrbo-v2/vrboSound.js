@@ -12,31 +12,10 @@ const clips = new Map();
 const channel =
   typeof BroadcastChannel !== "undefined" ? new BroadcastChannel("vrbo-sfx") : null;
 const claimed = new Set();
-const suppressUntil = new Map();
 
 channel?.addEventListener("message", (event) => {
   if (event.data?.type === "played" && event.data.key) claimed.add(event.data.key);
-  if (event.data?.type === "suppress" && Array.isArray(event.data.ids)) {
-    holdSuppress(event.data.ids, event.data.until);
-  }
 });
-
-function holdSuppress(ids, until) {
-  ids.forEach((id) => {
-    suppressUntil.set(id, Math.max(suppressUntil.get(id) || 0, until));
-  });
-}
-
-function isSuppressed(id) {
-  return (suppressUntil.get(id) || 0) > Date.now();
-}
-
-/** Mute the automatic sounds that follow this interaction. */
-function suppressFollowups(ids, ms) {
-  const until = Date.now() + ms;
-  holdSuppress(ids, until);
-  channel?.postMessage({ type: "suppress", ids, until });
-}
 
 /**
  * Playback uses the Web Audio API: every file is decoded once up front and held in memory,
@@ -177,9 +156,6 @@ function start(id, { allowTapSearch = false } = {}) {
 /** Blue Search button only. */
 export function playTapSearchSound() {
   start("tapSearch", { allowTapSearch: true });
-  // Search is the only sound for this transition. Keep delayed scene/message
-  // effects silent while the results screen finishes appearing.
-  suppressFollowups(["textAppear", "sendProperty", "propertyText"], 5000);
 }
 
 /** Sound for the screen that was just touched. Later sounds from that same action stay quiet. */
@@ -188,9 +164,6 @@ export function playVrboSound(id) {
     if (id === "confirmProperty") {
       // "Share this stay to the group" = same sound as the blue Search button.
       start("tapSearch", { allowTapSearch: true });
-      // Share is the only sound for this transition. The property card and
-      // related chat messages can arrive asynchronously, so cover that delay.
-      suppressFollowups(["celebration", "sendProperty", "propertyText", "textAppear"], 5000);
     }
     return;
   }
@@ -205,7 +178,7 @@ export function playSharedVrboSound(id) {
   const key = `${id}:${Math.floor(Date.now() / 450)}`;
   const kiosk = /\/vrbo-(left|right)(\/|$|-)/.test(window.location.pathname);
   window.setTimeout(() => {
-    if (isSuppressed(id) || claimed.has(key)) return;
+    if (claimed.has(key)) return;
     claimed.add(key);
     channel?.postMessage({ type: "played", key });
     start(id);
